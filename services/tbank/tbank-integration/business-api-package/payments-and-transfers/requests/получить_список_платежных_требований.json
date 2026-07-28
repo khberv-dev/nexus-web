@@ -1,0 +1,898 @@
+{
+  "name": "Получить список платежных требований",
+  "id": "1facdcac-4f0d-4ca4-a605-16d5c694be61",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+        "key": "X-Request-Id",
+        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+      "protocol": "https",
+      "host": [
+        "business",
+        "tbank",
+        "ru"
+      ],
+      "path": [
+        "openapi",
+        "sandbox",
+        "secured",
+        "api",
+        "v1",
+        "requests"
+      ],
+      "query": [
+        {
+          "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+          "key": "endDate",
+          "value": "7763-38-59"
+        },
+        {
+          "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+          "key": "limit",
+          "value": "50"
+        },
+        {
+          "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+          "key": "startDate",
+          "value": "7763-38-59"
+        }
+      ]
+    },
+    "description": "Метод возвращает список платежных требований."
+  },
+  "response": [
+    {
+      "id": "83fb1614-d4f2-4e3a-8268-a2423889a177",
+      "name": "Успешный запрос",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"creationDate\": \"2022-11-10\",\n      \"docType\": \"PaymentRequest\",\n      \"direction\": \"Credit\",\n      \"status\": \"Sent\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "009feacc-39b0-4ed1-a8d3-483024b74c28",
+      "name": "Некорректно заполнено поле",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"VALIDATION_ERROR\",\n  \"errorMessage\": \"offset: value must be greater than 0\"\n}"
+    },
+    {
+      "id": "eafd5fbf-aade-415c-8330-75b2ce0fb55a",
+      "name": "Ошибка при неактивном токене",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "3292b259-d156-4733-9904-0844952acd2a",
+      "name": "Ошибка при неправильно заданной компании",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "05f2cc36-049d-4361-8a31-10d40f311bb4",
+      "name": "Ошибка при отсутствии доступов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "0d5a73df-20eb-45df-b4ca-b589f01ea583",
+      "name": "Ошибка при запросе с неизвестного IP",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "97c7fd56-523a-451d-8369-03208e38e3b7",
+      "name": "Ошибка при отсутствии прав на использование продукта",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "54114f7a-7602-440d-86c4-f11de9339763",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+    },
+    {
+      "id": "e0fb4362-cea3-4d54-980d-2ae0bd36a47d",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "eb99150b-171a-4fe9-8702-90969b7f949f",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests?endDate=7763-38-59&limit=50&offset=0&startDate=7763-38-59",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "requests"
+          ],
+          "query": [
+            {
+              "description": "Дата окончания периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "endDate",
+              "value": "7763-38-59"
+            },
+            {
+              "description": "Максимальное количество платежных требований, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество платежных требований, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Дата начала периода (включительно), за который нужно вывести платежные требования. Формат — `YYYY-MM-DD`.",
+              "key": "startDate",
+              "value": "7763-38-59"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.996Z",
+    "parentPath": "api_v1_requests"
+  }
+}

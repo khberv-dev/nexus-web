@@ -1,0 +1,656 @@
+{
+  "name": "Получить выписку по счету клиента за определенный период",
+  "id": "cefdc8a3-7c1c-4ae8-9f96-4bde68fd08e3",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "bank-statement"
+      ],
+      "query": [
+        {
+          "description": "Расчетный счет организации.",
+          "key": "accountNumber",
+          "value": "40702810110011000000"
+        },
+        {
+          "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+          "key": "from",
+          "value": "2021-11-03"
+        },
+        {
+          "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+          "key": "till",
+          "value": "2021-11-03"
+        }
+      ]
+    },
+    "description": "Метод для получения выписок по счетам.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/bank-statements/get</code> — <code>Информация об операциях компании с ИНН {inn} и КПП {kpp}</code>.\n\n\nЗапросы выписок с количеством операций более 50 000 сейчас не поддерживаются и будут возвращать ошибку.\n\n\nОграничение на использование метода — 10 запросов в секунду."
+  },
+  "response": [
+    {
+      "id": "ff68329a-881a-4991-8900-4cd2301ad030",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"accountNumber\": \"99998888777766665555\",\n  \"saldoIn\": 500,\n  \"income\": 500,\n  \"outcome\": 500,\n  \"saldoOut\": 500,\n  \"operation\": [\n    {\n      \"operationId\": \"12345_89765\",\n      \"id\": \"1234567890123456789\",\n      \"date\": \"2015-04-01\",\n      \"amount\": 500,\n      \"drawDate\": \"2015-05-01\",\n      \"payerName\": \"Иванов Иван Иванович\",\n      \"payerInn\": \"987654321987\",\n      \"payerAccount\": \"99998888777766665555\",\n      \"payerCorrAccount\": \"40244447777333300000\",\n      \"payerBic\": \"76543277778\",\n      \"payerBank\": \"банк 'Лидеров'\",\n      \"chargeDate\": \"2015-09-03\",\n      \"recipient\": \"Петров Петр Петрович\",\n      \"recipientInn\": \"765432198765\",\n      \"recipientAccount\": \"77774444222277772222\",\n      \"recipientCorrAccount\": \"40299998888777700000\",\n      \"recipientBic\": \"12345678901\",\n      \"recipientBank\": \"банк 'Чемпионов'\",\n      \"paymentType\": \"\",\n      \"operationType\": \"01\",\n      \"uin\": \"0\",\n      \"paymentPurpose\": \"материальная помощь\",\n      \"creatorStatus\": \"\",\n      \"kbk\": \"44445555666677778888\",\n      \"oktmo\": \"44445555\",\n      \"taxEvidence\": \"ТП\",\n      \"taxPeriod\": \"ГД.00.2019\",\n      \"taxDocNumber\": \"0\",\n      \"taxDocDate\": \"0\",\n      \"taxType\": \"taxType\",\n      \"executionOrder\": \"5\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "5f2f1d9f-fb32-4df1-a965-38fc7b5fb348",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "8d03c58d-fd99-44fa-9b4a-793522d6c921",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "333e9ea2-93af-47e7-86df-edf01a9382bb",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "bdb1d939-26af-4d4c-bbfa-01035f051b4c",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "acfd4264-90cd-47b7-bd99-0b7e5781f2d3",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "eca4b4ad-5194-4a64-b4c8-3548cf4fd441",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "3ef70606-939c-418c-aa7d-f583a4aa1040",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "d624b67f-f163-4d20-b20d-7478e15ed883",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/bank-statement?accountNumber=40702810110011000000&from=2021-11-03&till=2021-11-03",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "bank-statement"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Дата начала периода. Если параметр не передается, дата приравнивается значению даты конца — 1 месяц.",
+              "key": "from",
+              "value": "2021-11-03"
+            },
+            {
+              "description": "Дата окончания периода. Если параметр не передается, приравнивается текущей дате.",
+              "key": "till",
+              "value": "2021-11-03"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:24.128Z",
+    "parentPath": "api_v1_bank-statement"
+  }
+}

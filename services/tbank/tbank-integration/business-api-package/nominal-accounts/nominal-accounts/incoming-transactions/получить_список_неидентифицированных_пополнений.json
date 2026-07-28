@@ -1,0 +1,666 @@
+{
+  "name": "Получить список неидентифицированных пополнений",
+  "id": "57078c4e-2ae1-4edf-abd8-83db46c29329",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "incoming-transactions"
+      ],
+      "query": [
+        {
+          "description": "Номер номинального счета.",
+          "key": "accountNumber",
+          "value": "40702810110011000000"
+        },
+        {
+          "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+          "key": "limit",
+          "value": "50"
+        }
+      ]
+    },
+    "description": "\nПозволяет получить список транзакций пополнения номинального счета, которые еще не прошли идентификацию.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "a1860110-636b-4442-9c68-41e85f8aedc7",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"accountNumber\": \"40702810110011000777\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\",\n      \"amount\": 7500,\n      \"currency\": \"643\",\n      \"operationAmount\": 100,\n      \"operationCurrency\": \"840\",\n      \"payerBik\": \"044525974\",\n      \"payerKpp\": \"773401001\",\n      \"payerInn\": \"906858195320\",\n      \"payerBankName\": \"АО \\\"ТБанк\\\"\",\n      \"payerBankSwiftCode\": \"TICSRUMMXXX\",\n      \"payerAccountNumber\": \"40802810300002711854\",\n      \"payerCorrAccountNumber\": \"30101810145250000974\",\n      \"payerName\": \"Киняев Фома Семенович\",\n      \"paymentPurpose\": \"Назначение платежа\",\n      \"documentNumber\": \"287846\",\n      \"chargeDate\": \"2022-01-20T14:10:56Z\",\n      \"authorizationDate\": \"2022-01-20T14:10:56Z\",\n      \"transactionDate\": \"2022-01-20T14:10:56Z\",\n      \"drawDate\": \"2022-01-20T14:10:56Z\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "15f5daf7-39c7-4b71-8a44-771c11850d84",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "71cb2865-85a9-45e6-a4e8-dc4330ac590f",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "307bd4cd-9e61-41d7-9d6c-75e60f599c4b",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "a1bc9a2b-8056-4733-856d-3704ca29b35e",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "7701d1b3-c99c-499c-8332-d8ec820bce79",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "91f5c1f9-e170-4610-bdc4-b96a89038e99",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "77c60ed4-6704-4341-9516-bcaf90ca0b13",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "41e304f4-f27c-4cea-ba8e-0c3a7bd3a059",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions?accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions"
+          ],
+          "query": [
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество неидентифицированных пополнений, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.955Z",
+    "parentPath": "api_v1_nominal-accounts_incoming-transactions"
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "info": {
+    "_postman_id": "bdd1cf15-553f-482d-963f-f7cab3521af8",
+    "name": "status",
+    "description": "Subcollection for status. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "status",
+      "item": [
+        {
+          "name": "Получить признак иностранного агента",
+          "id": "357dce50-7e35-40fa-8f01-309e6bb6cfcd",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "individual",
+                "foreignagent",
+                "status"
+              ]
+            },
+            "description": "Метод возвращает информацию о том, является ли пользователь иностранным агентом.\nПользователь должен дать согласие на получение информации о признаке иностранного агента.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/individual/foreignagent/status/get</code>.\n         "
+          },
+          "response": [
+            {
+              "id": "2da88bcb-bde5-4390-8258-2f3af9761a5a",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"isForeignAgent\": false\n}"
+            },
+            {
+              "id": "782a47d9-f754-4932-8fc6-5c34c15800b7",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "c829a860-568b-4314-a6f0-5f849e33b854",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "be8fa3d1-899b-428c-9fea-8f25e39f6e2d",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "46c85b94-19f2-4a85-86b3-9455745b62d5",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "3e46aa5f-d778-4017-897c-539acfe6add0",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "f5343140-de9c-4ff8-8864-54a1879148ce",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "e22feec6-1c8a-4a65-9a56-4c8a88807d79",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "127978c8-748e-4230-b8c2-d64207d969e9",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/individual/foreignagent/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "individual",
+                    "foreignagent",
+                    "status"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "6bd1aec3-66ce-4971-846d-267bbc712798"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

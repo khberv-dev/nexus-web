@@ -1,0 +1,971 @@
+{
+  "info": {
+    "_postman_id": "8c169d8b-58e5-4fec-89c5-ce15990daa6c",
+    "name": "reusable",
+    "description": "Subcollection for reusable. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "reusable",
+      "item": [
+        {
+          "name": "Выставить многоразовую ссылку через СБП",
+          "id": "73663b74-6ba4-435e-94a9-8ab60fbc6998",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "api",
+                "v1",
+                "b2b",
+                "qr",
+                "reusable"
+              ]
+            },
+            "description": "Метод для выставления B2B-ссылок через СБП.\n\n[Список банков, которые позволяют оплатить B2B-ссылку или QR-код через СБП](https://sbp.nspk.ru/participants?type=business&label=has_business_transfer)"
+          },
+          "response": [
+            {
+              "id": "b0827014-a11e-4f9f-8806-9a1cb34051b7",
+              "name": "Успешный запрос",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"qrId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"paymentUrl\": \"https://b2b.cbrpay.ru/AO1000670LSS7DN18SJQDNP4B05KLJL2\",\n  \"type\": \"Reusable\",\n  \"status\": \"Ready\",\n  \"accountNumber\": \"40802810000000144655\",\n  \"vat\": \"22\",\n  \"sum\": 12345.67,\n  \"sumVat\": 1234.57,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"redirectUrl\": \"https://example.com\",\n  \"image\": {\n    \"content\": \"SW1hZ2Ugc2hvdWxkIGJlIGhlcmU=\",\n    \"mediaType\": \"image/png\"\n  }\n}"
+            },
+            {
+              "id": "f485ee2f-eca7-4950-a62b-5f7d1da0e38d",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "12febf0c-9643-4e08-952f-6d54e6727ca6",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "e6d9b38e-be98-44ef-b34f-165545ffb5c9",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "45c0bf7c-2cb0-4840-ab20-46f4efdc4a09",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "5cf30a51-4c5b-46a9-a4bc-70f4f27d0ce0",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "8aa60312-d9bc-4589-bf03-abf73dca9097",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "5250174f-d725-4925-b4d7-d148ae824697",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "a9225f72-d71e-4466-a733-096df6742210",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "0278ae6a-3a28-4efb-94c6-dcf80df61115",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"56554da5f4\",\n  \"errorMessage\": \"Данные многоразового QR заполнены некорректно\",\n  \"errorCode\": \"INVALID_REUSABLE_QR_DATA\",\n  \"errorDetails\": {\n    \"message\": \"[ \\\"Назначение платежа не должно быть больше 255 символов\\\" ]\"\n  }\n}"
+            },
+            {
+              "id": "29f88a7e-1d0d-42b7-a3ee-516f6f4d6f6c",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "b3c8ff83-6fb8-4999-aa08-2549843d25d4",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountNumber\": \"40802810000000144655\",\n  \"sum\": 12345.67,\n  \"purpose\": \"Назначение платежа, которое будет указано при оплате\",\n  \"vat\": \"22\",\n  \"redirectUrl\": \"https://example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/b2b/qr/reusable",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "b2b",
+                    "qr",
+                    "reusable"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "15641b59-9cff-41e8-8ba5-6c597edc497c"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

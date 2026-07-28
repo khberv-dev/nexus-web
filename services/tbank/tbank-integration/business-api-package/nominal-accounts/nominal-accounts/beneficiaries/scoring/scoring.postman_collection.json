@@ -1,0 +1,739 @@
+{
+  "info": {
+    "_postman_id": "724b3211-a628-42e0-a4e6-d7cfd6281880",
+    "name": "scoring",
+    "description": "Subcollection for scoring. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "scoring",
+      "item": [
+        {
+          "name": "Получить результаты проверки бенефициаров в финансовом мониторинге v2",
+          "id": "a885ce66-3ee7-460a-8934-87f8c5b11c53",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "nominal-accounts",
+                "beneficiaries",
+                "scoring"
+              ],
+              "query": [
+                {
+                  "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                  "key": "beneficiaryId",
+                  "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                },
+                {
+                  "description": "Фильтр по результату проверки (прошел/не прошел).",
+                  "key": "passed",
+                  "value": "true"
+                },
+                {
+                  "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "\nВозвращает информацию о результатах проверки бенефициаров в финансовом мониторинге:\n\n * Для ФЛ-резидентов (`FL_RESIDENT`) — корректность паспортных данных, действительность паспорта и проверка по черным спискам.\n * Для ИП-резидентов (`IP_RESIDENT`) — корректность паспортных данных, действительность паспорта и проверка в ЕГРЮЛ.\n * Для ИП-нерезидентов (`IP_NONRESIDENT`) — проверка в ЕГРЮЛ.\n * Для ЮЛ-резидентов (`UL_RESIDENT`) — проверка в ЕГРЮЛ.\n\n\nСписок возможных кодов непройденных проверок:\n\n * <code>INVALID_INN</code> — не пройдена проверка на корректность паспортных данных бенефициара.\n * <code>INVALID_PASSPORT</code> — не пройдена проверка на действительность паспорта бенефициара.\n * <code>IN_BLACKLIST</code> — бенефициар найден в черных списках.\n * <code>UL_CLOSED</code>, <code>UL_NOT_FOUND</code> — не пройдена проверка бенефициара в ЕГРЮЛ.\n\n\n<b>Критичные проверки</b>\n\n * <code>INVALID_INN</code>\n * <code>INVALID_PASSPORT</code>\n * <code>UL_CLOSED</code>\n * <code>UL_NOT_FOUND</code>\n\n\nКоды всех непройденных критичных проверок вернутся в массиве <b>errors</b>.\n\n\n⚠️ Если не пройдена хотя бы одна критичная проверка, итоговый статус будет <code>FAILED</code>.\n\nВыплата с участием такого бенефициара через метод <a href=\"/docs/api/post-api-v-1-nominal-accounts-deals-dealid-steps-stepid-complete\">Завершить этап сделки</a>\nили через метод <a href=\"/docs/api/post-api-v-1-nominal-accounts-payments\">Выполнить платеж в пользу бенефициара на реальный счет</a>\nне сможет завершиться успешно, потому что такое лицо не может быть бенефициаром по номинальному счету.\n\n\n<b>Некритичные проверки</b>\n\n * <code>IN_BLACKLIST</code>\n\n\nКоды всех непройденных некритичных проверок вернутся в массиве <b>warnings</b>.\n\n\n⚠️ Непрохождение некритичных проверок не влияет на выплаты бенефициарам.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "98219626-c097-431e-a695-3f6093965d82",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 3,\n  \"total\": 3,\n  \"results\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"status\": \"FAILED\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"status\": \"SUCCEEDED\",\n      \"warnings\": [\n        {\n          \"code\": \"IN_BLACKLIST\",\n          \"description\": \"Бенефициар найден в черных списках.\"\n        }\n      ]\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"status\": \"FAILED\",\n      \"warnings\": [\n        {\n          \"code\": \"IN_BLACKLIST\",\n          \"description\": \"Бенефициар найден в черных списках.\"\n        }\n      ],\n      \"errors\": [\n        {\n          \"code\": \"INVALID_INN\",\n          \"description\": \"Данные паспорта физического лица или ИП некорректны — проверка по ФИО, паспортным данным и дате рождения. Попробуйте доуточнить данные.Исключение — случаи, по которым ИНН нет в принципе. В таком случае обратитесь к сотруднику поддержки, чтобы вам помогли выключить проверку.\"\n        },\n        {\n          \"code\": \"INVALID_PASSPORT\",\n          \"description\": \"Паспорт бенефициара найден в базе недействителеных паспортов — например, истек срок действия или утерян.\"\n        },\n        {\n          \"code\": \"UL_CLOSED\",\n          \"description\": \"Юридическое лицо или ИП больше не существует (ликвидировано). Данный контрагент не может являться бенефициаром по номинальному счету.\"\n        },\n        {\n          \"code\": \"UL_NOT_FOUND\",\n          \"description\": \"Юридическое лицо или ИП не найдено в ЕГРЮЛ — вероятнее всего, ошибка в ИНН. Заполните данные еще раз.\"\n        }\n      ]\n    }\n  ]\n}"
+            },
+            {
+              "id": "4ef47326-b191-4798-ba5e-497143b0d111",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "a4b60b1f-44d2-49d7-a7a1-17ea0e4af01b",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "45b0c468-7352-466b-8b95-f7b1d3e0c3ad",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "52f22cd2-d453-4325-bf02-351700388235",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "2ff7e8a5-70db-46f9-8da1-adc92c9bec42",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "132e4761-cb7e-44df-b8e6-f638b16c3082",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "1418c67e-f167-4338-b3e0-42663f430dd1",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "d51074c8-de82-4ddd-a98e-8892b5bccfbb",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v2/nominal-accounts/beneficiaries/scoring?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&passed=true&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    "scoring"
+                  ],
+                  "query": [
+                    {
+                      "description": "\nИдентификатор бенефициара, по которому необходимо вернуть результаты проверки.\nЕсли вы не передаете параметр, возвращаются результаты по всем бенефициарам.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Фильтр по результату проверки (прошел/не прошел).",
+                      "key": "passed",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество результатов проверки, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "85161063-d077-4d7a-b79f-7948491d337a"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

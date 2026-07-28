@@ -1,0 +1,766 @@
+{
+  "name": "Получить список платежей",
+  "id": "5db31f25-9b54-424e-b157-2f0665328014",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "payments"
+      ],
+      "query": [
+        {
+          "description": "ID бенефициара.",
+          "key": "beneficiaryId",
+          "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+        },
+        {
+          "description": "ID сделки.",
+          "key": "dealId",
+          "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+        },
+        {
+          "description": "Номер номинального счета.",
+          "key": "accountNumber",
+          "value": "40702810110011000000"
+        },
+        {
+          "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+          "key": "limit",
+          "value": "50"
+        }
+      ]
+    },
+    "description": "\nПозволяет получить список платежей в рамках одной сделки.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "c921f270-2a7e-499e-a342-f5f7d41723af",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 8,\n  \"total\": 8,\n  \"results\": [\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"044525974\",\n        \"kpp\": \"773401001\",\n        \"inn\": \"906858195320\",\n        \"name\": \"Киняев Фома Семенович\",\n        \"bankName\": \"АО \\\"ТБанк\\\"\",\n        \"accountNumber\": \"11223344556677889900\",\n        \"corrAccountNumber\": \"30101810145250000974\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"044525974\",\n        \"kpp\": \"773401001\",\n        \"inn\": \"906858195320\",\n        \"name\": \"Киняев Фома Семенович\",\n        \"bankName\": \"АО \\\"ТБанк\\\"\",\n        \"accountNumber\": \"11223344556677889900\",\n        \"corrAccountNumber\": \"30101810145250000974\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"CARD\",\n        \"cardId\": \"70000000707\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"CARD\",\n        \"cardId\": \"70000000707\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Transaction not permitted to card\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"SBP\",\n        \"phoneNumber\": \"+79001112233\",\n        \"bankId\": \"100000000004\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"SBP\",\n        \"phoneNumber\": \"+79001112233\",\n        \"bankId\": \"100000000004\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Specified bank is not SBP member\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"TAX\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"444555666\",\n        \"kpp\": \"111222333\",\n        \"inn\": \"1234567890\",\n        \"name\": \"Какой-то отдел ФНС\",\n        \"bankName\": \"Чемпион\",\n        \"accountNumber\": \"11122233344455566677\",\n        \"corrAccountNumber\": \"12345678901234567890\"\n      },\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n      \"uin\": \"0\",\n      \"tax\": {\n        \"payerStatus\": \"19\",\n        \"kbk\": \"18210301000011000110\",\n        \"oktmo\": \"50701000\",\n        \"evidence\": \"0\",\n        \"period\": \"0\",\n        \"docNumber\": \"01;0201251245\",\n        \"docDate\": \"0\",\n        \"thirdParty\": {\n          \"inn\": \"123456789012\",\n          \"kpp\": \"0\"\n        }\n      },\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"TAX\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"444555666\",\n        \"kpp\": \"111222333\",\n        \"inn\": \"1234567890\",\n        \"name\": \"Какой-то отдел ФНС\",\n        \"bankName\": \"Чемпион\",\n        \"accountNumber\": \"11122233344455566677\",\n        \"corrAccountNumber\": \"12345678901234567890\"\n      },\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n      \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n      \"uin\": \"0\",\n      \"tax\": {\n        \"payerStatus\": \"19\",\n        \"kbk\": \"18210301000011000110\",\n        \"oktmo\": \"50701000\",\n        \"evidence\": \"0\",\n        \"period\": \"0\",\n        \"docNumber\": \"01;0201251245\",\n        \"docDate\": \"0\",\n        \"thirdParty\": {\n          \"inn\": \"123456789012\",\n          \"kpp\": \"0\"\n        }\n      },\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "387c37f6-575b-4749-b3a6-bfe164207dd8",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "1fbbaf0e-57c0-4f7e-876a-f593acf85f63",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "45dfeff9-6ba4-4128-9d3c-202bda35b8f7",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "34df5a37-4b53-449e-bcc7-6d6164324b63",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "72e8880c-b5fe-477b-8e9f-56fcbf0f6dc8",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "c3d1d7be-a22b-4487-af8b-c44d8bf436da",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "a146c65b-d078-4487-9f33-46aeb130552d",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "3dec5795-fa85-47ab-a09b-1cdb74434f16",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments"
+          ],
+          "query": [
+            {
+              "description": "ID бенефициара.",
+              "key": "beneficiaryId",
+              "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+            },
+            {
+              "description": "ID сделки.",
+              "key": "dealId",
+              "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+            },
+            {
+              "description": "Номер номинального счета.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.408Z",
+    "parentPath": "api_v1_nominal-accounts_payments"
+  }
+}

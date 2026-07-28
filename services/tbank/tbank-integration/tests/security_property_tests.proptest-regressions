@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 031ba76a78a2264b8771693ba014e7e1daa462849d27a5a62fc91c9196fa89f6 # shrinks to sensitive_data = "4111111111111111", encryption_key = "AaA0AA000A00aaAAa0A00A0aAa0aa0A0"

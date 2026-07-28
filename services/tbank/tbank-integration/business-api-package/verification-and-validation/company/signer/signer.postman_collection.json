@@ -1,0 +1,795 @@
+{
+  "info": {
+    "_postman_id": "f54043d4-e777-4fcb-8243-1532f5e2861d",
+    "name": "signer",
+    "description": "Subcollection for signer. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "signer",
+      "item": [
+        {
+          "name": "status",
+          "item": [
+            {
+              "name": "Получить информацию о статусе подписанта",
+              "id": "2fc28bbc-6c40-4b1b-bee9-55ed45e27937",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "company",
+                    "signer",
+                    "status"
+                  ]
+                },
+                "description": "Метод возвращает информацию о том, является ли пользователь подписантом. Пользователь должен дать согласие на доступ к просмотру информации о статусе подписанта."
+              },
+              "response": [
+                {
+                  "id": "73b7d2d8-1515-4012-88a3-acb8a7b594bc",
+                  "name": "Untitled Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"isSigner\": true\n}"
+                },
+                {
+                  "id": "22cc0c35-6d18-4ead-b434-0ff2dcdddbe7",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "f0f3c45d-529a-4e8e-8a37-ba881c4ced7c",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "6717874d-983e-443f-8518-16fe9624c0c6",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "8c7092dd-b9f2-40a4-89bb-8ea31246e365",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "c47f98f2-6495-4a0c-8472-2303f7679216",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "51631fe8-5829-4614-8075-fe864396bb5d",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "76041052-7385-44a8-b0b7-7fe2de7bd740",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "b44fb2ad-7070-4fc2-93ea-fa6d6100b0c7",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "23aa0b3f-ea5c-43cc-aa0e-675411c0f2c6",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+                },
+                {
+                  "id": "a8bbf078-f292-4ff4-91f5-7c074cd2afe6",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "af6a97e8-df5a-429e-91e7-68711c030e6d",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/company/signer/status",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "company",
+                        "signer",
+                        "status"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "f13eb3a7-00d7-4638-88bc-857d63fc458e"
+        }
+      ],
+      "id": "06648813-f33f-4a90-b89f-12ef187832b1"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

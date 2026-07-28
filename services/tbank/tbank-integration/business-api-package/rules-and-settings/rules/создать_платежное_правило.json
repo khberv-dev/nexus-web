@@ -1,0 +1,1734 @@
+{
+  "name": "Создать платежное правило",
+  "id": "5a8167f4-a5c7-476f-8379-fe516a7e8c0a",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "POST",
+    "header": [
+      {
+        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+        "key": "Idempotency-Key",
+        "value": "string"
+      },
+      {
+        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+        "key": "X-Request-Id",
+        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+      },
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+      "options": {
+        "raw": {
+          "headerFamily": "json",
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+      "protocol": "https",
+      "host": [
+        "business",
+        "tbank",
+        "ru"
+      ],
+      "path": [
+        "openapi",
+        "sandbox",
+        "secured",
+        "api",
+        "v1",
+        "rules"
+      ]
+    },
+    "description": " Метод для создания платежного правила.\n\nЗадать правило можно двумя способами:\n* Регулярное списание по расписанию. Правило может выполняться не чаще одного раза в 24 часа — например, каждый день в 12:00 мск.\n* Списание по событию. Когда происходит событие, соответствующее заданным параметрам, система автоматически генерирует платежное требование, которое позволит списать средства вам на счет. Например, если вам нужно списывать роялти с ваших франчайзи, мы можем автоматически списывать определенный процент от всех пополнений по торговому эквайрингу и зачислять вам на счет.\n\nВ рамках одного правила доступна одна из обязательных категорий пополнения и вариант списания — фиксированная сумма или процент от платежа. Категории:\n* внесение наличных на счет контрагента;\n* торговый эквайринг;\n* интернет-эквайринг;\n* входящие переводы от контрагентов — если используете эту категорию, обязательно указывайте данные компаний-инициаторов платежей.\n\nЕсли денег на счете плательщика не хватает, платеж встает в картотеку. Остаток списывается при следующих поступлениях."
+  },
+  "response": [
+    {
+      "id": "3fb0908e-841f-40eb-a72b-2007197dc6f6",
+      "name": "Рекуррентное правило",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"ruleId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+    },
+    {
+      "id": "082db07e-803d-4490-8b7a-ca0fd9d355ba",
+      "name": "Триггерное правило (процентная сумма, внесение наличных)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"ruleId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+    },
+    {
+      "id": "e60de6f8-8a30-4f0e-b1b4-f00a6a210297",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"ruleId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+    },
+    {
+      "id": "2f0d6c51-43d1-49d4-b1e7-f9fd993ad3af",
+      "name": "Соглашение не найдено",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+    },
+    {
+      "id": "3a7485bd-f294-4e98-9308-bfe7776a2128",
+      "name": "Некорректно заполнено поле",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"VALIDATION_ERROR\",\n  \"errorMessage\": \"acceptTerm: value must be greater than 0\"\n}"
+    },
+    {
+      "id": "7c9d1582-e7d4-4a12-b909-fc36e5d56fce",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+    },
+    {
+      "id": "441d354d-1a39-4165-9f23-24d6d43630a2",
+      "name": "Ошибка при неактивном токене",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "e7aeea69-d0cd-47ef-abef-f7ee486bcf10",
+      "name": "Ошибка при неправильно заданной компании",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "081791ba-50ef-4966-8388-5a8bb6109e22",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "d4eee481-7da6-45d1-8b96-5846f8f40e5b",
+      "name": "Ошибка при отсутствии доступов",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "a6721ebf-e551-49bd-ad3e-a7367fff9160",
+      "name": "Ошибка при запросе с неизвестного IP",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "ac8d0f8d-167f-45dd-a88a-7eddf6745456",
+      "name": "Ошибка при отсутствии прав на использование продукта",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "57048ffa-0c63-48f3-be9b-d739191073e1",
+      "name": "Рекуррентное правило",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"INVALID_STATE\",\n  \"errorMessage\": \"Invalid state\"\n}"
+    },
+    {
+      "id": "be3271b1-3640-4b42-b18c-a69d7018e628",
+      "name": "Триггерное правило (процентная сумма, внесение наличных)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"INVALID_STATE\",\n  \"errorMessage\": \"Invalid state\"\n}"
+    },
+    {
+      "id": "c9ae0f17-1196-4e6f-b091-8f697748298e",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"INVALID_STATE\",\n  \"errorMessage\": \"Invalid state\"\n}"
+    },
+    {
+      "id": "82518a49-39ed-4cce-b88d-b0a1b363c9cc",
+      "name": "Ошибка при превышении лимитов запросов",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "4be79784-4e9f-4248-b4d8-280c794ca740",
+      "name": "Триггерное правило (процентная сумма, внесение наличных)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "f321f330-c29c-40f2-b935-c250e05576de",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "b9b625d3-3406-43a2-81e0-3b6b31cc1fda",
+      "name": "Непредвиденная ошибка",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    },
+    {
+      "id": "98933518-ea26-48c6-8886-88739da02de1",
+      "name": "Триггерное правило (процентная сумма, внесение наличных)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    },
+    {
+      "id": "3992c680-99d2-44e6-914b-56ba96b827bf",
+      "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+            "key": "Idempotency-Key",
+            "value": "string"
+          },
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"Trigger\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:24.024Z",
+    "parentPath": "api_v1_rules"
+  }
+}

@@ -1,0 +1,3277 @@
+{
+  "info": {
+    "_postman_id": "cbf2a011-dcc8-48df-a106-f9a03cd0dc18",
+    "name": "{ruleId}",
+    "description": "Subcollection for {ruleId}. Contains 3 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "{ruleId}",
+      "item": [
+        {
+          "name": "Получить детали платежного правила",
+          "id": "68730fc3-9666-4dcd-b4dc-fda461327aeb",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "sandbox",
+                "secured",
+                "api",
+                "v1",
+                "rules",
+                ":ruleId"
+              ],
+              "variable": [
+                {
+                  "key": "ruleId",
+                  "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                  "description": "ID платежного правила."
+                }
+              ]
+            },
+            "description": "Метод для получения детальной информации о платежном правиле по ID."
+          },
+          "response": [
+            {
+              "id": "9db584c0-bdb7-4842-a2c2-fbe98fd82bee",
+              "name": "Рекуррентное правило",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"c31e2fc0-3a2b-4482-9025-6ec36ed857bc\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}"
+            },
+            {
+              "id": "da0a366a-ae42-4f05-8cb4-c83be788fd0a",
+              "name": "Триггерное правило",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"c31e2fc0-3a2b-4482-9025-6ec36ed857bc\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": null,\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}"
+            },
+            {
+              "id": "ea6e4586-2422-4719-9b8f-0cde805c970e",
+              "name": "Правило не найдено",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "57bb0254-3d79-4696-aba1-82a34e218cb3",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "d8fd94ee-7a48-4601-b997-e10d831cc3d8",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "354bf575-a870-4449-9ec9-ae7c19d90168",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "a2b70961-ab4d-4707-af16-042f91debdf0",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "86741569-2111-420b-a740-526ca0717db9",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "a3b01c05-32c1-4164-92b3-ba2918be8c9c",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "f9114add-81e1-4518-9931-c605729e330a",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "e158e5f1-c373-4913-b908-61d10dc9f675",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Изменить платежное правило",
+          "id": "4ebeefeb-9913-4ff5-85a8-7ffcdec55b53",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "sandbox",
+                "secured",
+                "api",
+                "v1",
+                "rules",
+                ":ruleId"
+              ],
+              "variable": [
+                {
+                  "key": "ruleId",
+                  "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                  "description": "ID платежного правила."
+                }
+              ]
+            },
+            "description": " Метод для обновления конфигурации платежного правила.\n\nВажные детали работы с рекуррентными правилами:\n\nПосле изменения правила следующее списание выполняется не раньше, чем через 24 часа после последнего платежа. Например, списание настроено раз в месяц на 14 число в 10:00. Сейчас 15 декабря, последнее списание было 14 декабря. Рассмотрим несколько случаев:\n* Вы хотите изменить расписание на списание раз в месяц 16 числа. Тогда следующее списание произойдет 16 декабря — между предыдущим списанием 14 числа и новым списанием 16 пройдет больше 24 часов.\n* Вы хотите изменить расписание на списание раз в месяц 15 числа в 15:00. Тогда следующее списание произойдет 15 декабря в 15:00 — между предыдущим списанием 14 числа в 10:00 и новым списанием 15 числа в 15:00 пройдет больше 24 часов.\n* Вы хотите изменить расписание на списание раз в месяц 15-го числа в 9:00. Тогда следующее списание произойдет 15 января в 9:00 — между предыдущим списанием 14 декабря в 10:00 и новым списанием 15 декабря в 9:00 пройдет меньше 24 часов, поэтому будет взята следующая по расписанию дата — 15 января."
+          },
+          "response": [
+            {
+              "id": "1853f6db-65ef-4ea3-b11a-e4cdd6d617f6",
+              "name": "Рекуррентное правило",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"c31e2fc0-3a2b-4482-9025-6ec36ed857bc\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}"
+            },
+            {
+              "id": "579b0721-a303-452d-9fe9-103e3e781ea5",
+              "name": "Триггерное правило (процентная сумма, внесение наличных)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"c31e2fc0-3a2b-4482-9025-6ec36ed857bc\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": null,\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"payers\": null,\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}"
+            },
+            {
+              "id": "b91867f2-fec3-4896-9e18-5d6f266f4151",
+              "name": "Рекуррентное правило",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "6e155cbb-82c5-4d69-a6df-c65c1a6d45fd",
+              "name": "Триггерное правило (процентная сумма, внесение наличных)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "1e194f21-e8ed-4ef5-b0e0-8c1b29131069",
+              "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "aa8b8094-8945-4c23-9afe-f7fffe120945",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "202ebb21-9f1b-4783-9bde-ab8512c4915c",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "fa1fda24-6006-4d21-b476-965d3f7e4e70",
+              "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "7ce2c88c-9ad6-44ea-8646-0c32d1befc4d",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "bacd8427-7b09-45aa-b320-71f38c0056fb",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "0bdf2eb8-9320-48c6-aa24-90d297ba582f",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "d59f6b71-b4ca-40ac-999b-e189b92e87e0",
+              "name": "Ошибка при недостатке средств",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "d2ae8836-c28f-4168-b6a0-62b1f4419d24",
+              "name": "Триггерное правило (процентная сумма, внесение наличных)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "e66a7bb9-080e-478e-ae3f-f9843faaefcf",
+              "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "c666fb48-72ea-4604-a796-86a63dbdb863",
+              "name": "Ошибка при превышении лимитов запросов",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "ef24999f-c00c-4df1-bffe-fe7333231855",
+              "name": "Триггерное правило (процентная сумма, внесение наличных)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "9a0875c6-6aba-4611-b415-c59a468dc092",
+              "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "3eda3ecc-1c13-40b9-ba68-0a8bfd312bad",
+              "name": "Непредвиденная ошибка",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Recurrent\",\n  \"cronExpr\": \"0 12 * * *\",\n  \"requisites\": {\n    \"amount\": 1000.55,\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            },
+            {
+              "id": "b0d88b53-f1ac-4bf9-98c3-9e4007722d0f",
+              "name": "Триггерное правило (процентная сумма, внесение наличных)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"percent\": 0.0815\n  },\n  \"replenishmentFilter\": {\n    \"category\": \"CashIn\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            },
+            {
+              "id": "0df4ab60-9131-4ece-9649-4aec44708415",
+              "name": "Триггерное правило (фиксированная сумма, переводы от контрагентов)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"Trigger\",\n  \"amount\": {\n    \"fixed\": 1000.55\n  },\n  \"replenishmentFilter\": {\n    \"payers\": [\n      {\n        \"inn\": \"7777777777\",\n        \"kpp\": \"987654321\"\n      },\n      {\n        \"inn\": \"8888888888\",\n        \"kpp\": \"0\"\n      }\n    ],\n    \"category\": \"CounterpartyIncome\"\n  },\n  \"requisites\": {\n    \"docType\": \"PaymentRequest\",\n    \"payerAccount\": \"12345678900987654321\",\n    \"payerINN\": \"1234567890\",\n    \"payerKPP\": \"123456789\",\n    \"payerBIC\": \"044525974\",\n    \"payerCorAccount\": \"30101810145250000974\",\n    \"payerName\": \"ИП Петров Петр Иванович\",\n    \"recipientAccount\": \"09876543211234567890\",\n    \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n    \"paymentCondition\": \"WithoutAcceptance\",\n    \"acceptTerm\": 6\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Удалить правило",
+          "id": "ffb92cac-dfd4-4fac-b75c-78b9a7726012",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "sandbox",
+                "secured",
+                "api",
+                "v1",
+                "rules",
+                ":ruleId"
+              ],
+              "variable": [
+                {
+                  "key": "ruleId",
+                  "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                  "description": "ID платежного правила."
+                }
+              ]
+            },
+            "description": " Метод для удаления платежного правила по ID.\n\nПри расторжении соглашения правила также перестают действовать."
+          },
+          "response": [
+            {
+              "id": "bcc79600-d876-4fc6-a6d3-f981606efa81",
+              "name": "Успешный запрос",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{}"
+            },
+            {
+              "id": "94639b67-f82f-45af-b0e3-619bff24ab7a",
+              "name": "Правило не найдено",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "323cefdb-d726-4aa8-b3ff-3c0d96701235",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "23d02a05-f7bc-4326-8f9a-5b88a214b745",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "b2ba85da-afb8-4d5e-aad8-9cb427676f5e",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "e221138e-7ffd-4092-993b-971c38451a33",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "21ebe11d-6c44-417b-b127-891288fc5b93",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "583f544b-081a-4056-8155-14385fcaba5b",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "2fcbf269-dd10-4e01-b9bb-2033f29c0e85",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "a746239e-c12a-4f93-8cf5-1b4ce7ea83f2",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules/:ruleId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "rules",
+                    ":ruleId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "ruleId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного правила."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "39932637-f17b-4946-a575-599181c2a71f"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

@@ -1,0 +1,756 @@
+{
+  "name": "Получить всех реципиентов этапа",
+  "id": "96db914f-42fc-4a40-aef6-c8e48d42c011",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "deals",
+        ":dealId",
+        "steps",
+        ":stepId",
+        "recipients"
+      ],
+      "query": [
+        {
+          "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+          "key": "limit",
+          "value": "50"
+        }
+      ],
+      "variable": [
+        {
+          "key": "dealId",
+          "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+        },
+        {
+          "key": "stepId",
+          "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+        }
+      ]
+    },
+    "description": "\nПозволяет получить всех получателей денежных средств — реципиентов (recipients) этапа сделки.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "b82fe7f8-970a-465e-a17e-9130955b41fc",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 90,\n      \"tax\": 5,\n      \"purpose\": \"Назначение платежа\",\n      \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n      \"keepOnVirtualAccount\": false\n    }\n  ]\n}"
+    },
+    {
+      "id": "af139de4-c84c-4fcc-82d2-12240497e0c2",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "0fb7e39c-e26a-4727-b126-264732773cb2",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "2c006a25-98bb-4396-ab32-981fc77db6c7",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "522f2398-591f-4d01-afdd-066a62db0ce3",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "156d0bc1-6535-485f-9c65-1596d5f3e3a8",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "50b6dff0-c42d-4168-a008-4d683b320465",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "9d103268-d6ff-4a9a-8909-53f4ed5e2c1b",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "4ec5043b-d23b-4475-9776-4020ef510637",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "deals",
+            ":dealId",
+            "steps",
+            ":stepId",
+            "recipients"
+          ],
+          "query": [
+            {
+              "description": "Количество реципиентов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реципиентов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "stepId",
+              "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.593Z",
+    "parentPath": "api_v1_nominal-accounts_deals_{dealid}_steps_{stepid}_recipients"
+  }
+}

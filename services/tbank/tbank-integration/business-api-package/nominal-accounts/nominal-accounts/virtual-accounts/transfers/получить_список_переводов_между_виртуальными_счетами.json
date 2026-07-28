@@ -1,0 +1,1166 @@
+{
+  "name": "Получить список переводов между виртуальными счетами",
+  "id": "f23a4233-f576-4f47-b2aa-09d9a93fb494",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+        "key": "X-Request-Id",
+        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+      "protocol": "https",
+      "host": [
+        "business",
+        "tbank",
+        "ru"
+      ],
+      "path": [
+        "openapi",
+        "sandbox",
+        "secured",
+        "api",
+        "v1",
+        "nominal-accounts",
+        "virtual-accounts",
+        "transfers"
+      ],
+      "query": [
+        {
+          "key": "accountNumber",
+          "value": "5973187361810620099909"
+        },
+        {
+          "key": "dealId",
+          "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+        },
+        {
+          "key": "fromBeneficiaryId",
+          "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+        },
+        {
+          "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+          "key": "limit",
+          "value": "7820"
+        },
+        {
+          "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+          "key": "offset",
+          "value": "7820"
+        },
+        {
+          "key": "toBeneficiaryId",
+          "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+        }
+      ]
+    },
+    "description": "Метод для получения информации о переводах средств между виртуальными счетами бенефициаров в рамках одного номинального счета."
+  },
+  "response": [
+    {
+      "id": "5ff6dd4e-94ac-4c6c-93d5-941150ecbc43",
+      "name": "Успешный запрос",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 3,\n  \"total\": 3,\n  \"results\": [\n    {\n      \"type\": \"DIRECT\",\n      \"transferId\": \"a769f88b-b215-4a92-8473-c6b6ca60d0d0\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"from\": {\n        \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\"\n      },\n      \"to\": {\n        \"beneficiaryId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n      },\n      \"purpose\": \"Назначение платежа\",\n      \"amount\": 322\n    },\n    {\n      \"type\": \"TO_DEAL\",\n      \"transferId\": \"a769f88b-b215-4a92-8473-c6b6ca60d0d1\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"from\": {\n        \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\"\n      },\n      \"to\": {\n        \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n        \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\"\n      },\n      \"amount\": 322\n    },\n    {\n      \"type\": \"FROM_DEAL\",\n      \"transferId\": \"a769f88b-b215-4a92-8473-c6b6ca60d0d2\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"from\": {\n        \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n        \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\"\n      },\n      \"to\": {\n        \"beneficiaryId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n      },\n      \"purpose\": \"Назначение платежа\",\n      \"amount\": 322\n    }\n  ]\n}"
+    },
+    {
+      "id": "6276f0b0-1dc2-435c-b029-c6eda94cc432",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "5cc6b7db-a5b7-4093-be68-9ad7eb8c396c",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "e360f938-e9c1-42e1-9a85-6a930f99c06e",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "4e0daa83-fdc9-4637-96f7-d87785a5a63b",
+      "name": "Ошибка при неактивном токене",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "a37cff13-0b2a-4c4b-ba6e-4605d228f016",
+      "name": "Ошибка при неправильно заданной компании",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "5ed5a05a-267d-4c3a-b419-54c6ed4e3b1d",
+      "name": "Ошибка при отсутствии доступов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "858b9e26-fc46-4193-a3d8-e6b18ca5d9ab",
+      "name": "Ошибка при запросе с неизвестного IP",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "612e247f-7ad0-4486-b3da-baa73fe7d3ff",
+      "name": "Ошибка при отсутствии прав на использование продукта",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "d3ef3bf9-b828-4359-8951-e71012559543",
+      "name": "Ошибка при обработке данных.",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Ошибка при обработке данных\",\n  \"errorCode\": \"UNPROCESSABLE_ENTITY\"\n}"
+    },
+    {
+      "id": "6cb4d715-be89-474b-a08c-3a3bede2402f",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "69e8db58-545b-46dd-883d-9e5ada1112cc",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/virtual-accounts/transfers?accountNumber=5973187361810620099909&dealId=a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a&fromBeneficiaryId=18eda2b7-800b-6073-f773-50c9f03debee&limit=7820&offset=7820&toBeneficiaryId=ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "virtual-accounts",
+            "transfers"
+          ],
+          "query": [
+            {
+              "key": "accountNumber",
+              "value": "5973187361810620099909"
+            },
+            {
+              "key": "dealId",
+              "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+            },
+            {
+              "key": "fromBeneficiaryId",
+              "value": "18eda2b7-800b-6073-f773-50c9f03debee"
+            },
+            {
+              "description": "Количество переводов, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "7820"
+            },
+            {
+              "description": "Количество переводов, которое нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "7820"
+            },
+            {
+              "key": "toBeneficiaryId",
+              "value": "ec6bf54e-639c-7c2c-c8f6-623bf1ce6d32"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.443Z",
+    "parentPath": "api_v1_nominal-accounts_virtual-accounts_transfers"
+  }
+}

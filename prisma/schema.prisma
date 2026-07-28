@@ -1,0 +1,683 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CLIENT
+  SPECIALIST
+  ADMIN
+}
+
+/// Каналы переписки по проекту (заказу).
+enum OrderChatChannel {
+  /// Общая лента: видят заказчик + дизайнер + администратор.
+  COMMON
+  /// Приватный канал: администратор ↔ заказчик (дизайнер не видит).
+  ADMIN_CLIENT
+  /// Приватный канал: администратор ↔ дизайнер (заказчик не видит).
+  ADMIN_SPECIALIST
+}
+
+enum OnboardingStatus {
+  PENDING
+  TEST_INVITED
+  INTERVIEW_INVITED
+  REGULATIONS
+  CONTRACT
+  ACTIVE
+  REJECTED
+}
+
+enum StepType {
+  FORM
+  TEST
+  INTERVIEW
+  REGULATIONS_READ
+  REGULATIONS
+  CONTRACT
+}
+
+enum StepStatus {
+  PENDING
+  IN_PROGRESS
+  PASSED
+  FAILED
+}
+
+enum OrderStatus {
+  DRAFT
+  BRIEFING
+  BRIEF_REVIEW
+  ACTIVE
+  DONE
+  CANCELLED
+}
+
+enum StageType {
+  CONCEPT
+  PLANNING
+  VISUALIZATION
+  DOCUMENTATION
+  SPECIFICATION
+}
+
+enum StageStatus {
+  AWAITING_PAYMENT
+  BLOCKED
+  PENDING
+  UPLOADED
+  MOD_REVIEW
+  MOD_REVISION
+  CLIENT_REVIEW
+  CLIENT_REVISION
+  APPROVED
+  EXTRA_PAYMENT
+}
+
+enum ReviewerRole {
+  MODERATOR
+  CLIENT
+}
+
+enum Verdict {
+  APPROVED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  HELD
+  RELEASED
+  REFUNDED
+  FAILED
+}
+
+model User {
+  id                String             @id @default(cuid())
+  name              String?
+  email             String?            @unique
+  emailVerified     DateTime?
+  image             String?
+  zitadelId         String?            @unique
+  phone             String?
+  role              Role               @default(CLIENT)
+  archivedAt        DateTime?
+  sessionVersion    Int                @default(1)
+  createdAt         DateTime           @default(now())
+  accounts          Account[]
+  sessions          Session[]
+  specialistProfile SpecialistProfile?
+  clientProfile     ClientProfile?
+  orders            Order[]            @relation("ClientOrders")
+  assignedOrders    Order[]            @relation("SpecialistOrders")
+  files             UserFile[]
+  landingBundles    LandingBundle[]
+  signedActs        StageAct[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  portfolioProjects PortfolioProject[]
+  requisiteChangeRequests RequisiteChangeRequest[] @relation("SpecialistRequisiteChanges")
+  clientRequisiteChangeRequests RequisiteChangeRequest[] @relation("ClientRequisiteChanges")
+  stageChatMessages             StageChatMessage[]
+  orderChatMessages             OrderChatMessage[]
+  orderChatReads                OrderChatReadState[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+/// Роль/имя до первого входа по magic link (см. /api/auth/pending-signup)
+model PendingSignup {
+  email     String   @id
+  role      Role
+  name      String?
+  formData  Json?
+  createdAt DateTime @default(now())
+}
+
+enum ClientFrameworkContractStatus {
+  NONE
+  AWAITING_SIGNATURE
+  SIGNED_BY_CLIENT
+  SIGNED_BY_ADMIN
+  DECLINED_BY_CLIENT
+}
+
+/// Договор специалиста с платформой (PDF из админки, подпись дизайнера + подтверждение админа)
+enum SpecialistContractStatus {
+  NONE
+  AWAITING_SIGNATURE
+  SIGNED_BY_SPECIALIST
+  SIGNED_BY_ADMIN
+  DECLINED_BY_SPECIALIST
+}
+
+model ClientProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  formData  Json?
+  createdAt DateTime @default(now())
+
+  /// Договор оказания услуг (прикрепляет админ в карточке заказчика)
+  frameworkContractS3Key      String?
+  frameworkContractStatus     ClientFrameworkContractStatus @default(NONE)
+  frameworkContractNumber     String?
+  frameworkContractUploadedAt DateTime?
+
+  /// Подписанный заказчиком скан договора
+  signedContractS3Key         String?
+  signedContractUploadedAt    DateTime?
+}
+
+enum FileCategory {
+  AVATAR
+  PORTRAIT
+  LANDING_WORK
+  PORTFOLIO
+  DOCUMENT
+  INTRO_VIDEO
+  BRIEF_VIDEO
+  BRIEF_FILE
+}
+
+model UserFile {
+  id           String       @id @default(cuid())
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+  category     FileCategory
+  s3Key        String
+  filename     String
+  mimeType     String?
+  size         Int?
+  title        String?
+  description  String?
+  landingOrder Int?
+  createdAt    DateTime     @default(now())
+  briefVideoForOrder        Order?                          @relation("OrderBriefVideo")
+  briefAttachments          OrderBriefAttachment[]          @relation("OrderBriefAttachmentFile")
+  mainForCard               PortfolioCard?                  @relation("PortfolioCardMainFile")
+  cardLinks                 PortfolioCardAttachment[]         @relation("PortfolioCardAttachmentFile")
+  portfolioAttachmentAnchors PortfolioCardAttachment[]      @relation("PortfolioCardAttachmentLinkedVisual")
+  portfolioProjectAttachments PortfolioProjectAttachment[]  @relation("PortfolioProjectAttachmentFile")
+
+  @@index([userId, category])
+}
+
+model PortfolioProject {
+  id          String                       @id @default(cuid())
+  userId      String
+  user        User                         @relation(fields: [userId], references: [id])
+  name        String
+  cards       PortfolioCard[]
+  attachments PortfolioProjectAttachment[]
+  createdAt   DateTime                     @default(now())
+  updatedAt   DateTime                     @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+/// Общие материалы папки-проекта (не привязаны к конкретной работе)
+model PortfolioProjectAttachment {
+  id        String           @id @default(cuid())
+  projectId String
+  project   PortfolioProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fileId    String
+  file      UserFile         @relation("PortfolioProjectAttachmentFile", fields: [fileId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+
+  @@unique([projectId, fileId])
+  @@index([projectId, createdAt])
+}
+
+model PortfolioCard {
+  id          String                    @id @default(cuid())
+  projectId   String
+  project     PortfolioProject          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  mainFileId  String?                   @unique
+  mainFile    UserFile?                 @relation("PortfolioCardMainFile", fields: [mainFileId], references: [id], onDelete: SetNull)
+  attachments PortfolioCardAttachment[]
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+
+  @@index([projectId, createdAt])
+}
+
+model PortfolioCardAttachment {
+  id                 String        @id @default(cuid())
+  cardId             String
+  card               PortfolioCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  fileId             String
+  file               UserFile      @relation("PortfolioCardAttachmentFile", fields: [fileId], references: [id], onDelete: Cascade)
+  /// Файл-«кадр», к которому подвязано вложение (PDF, видео и т.д.); null — только сетка материалов без привязки к фото
+  linkedVisualFileId String?
+  linkedVisualFile   UserFile?     @relation("PortfolioCardAttachmentLinkedVisual", fields: [linkedVisualFileId], references: [id], onDelete: SetNull)
+  createdAt          DateTime      @default(now())
+
+  @@unique([cardId, fileId])
+  @@index([cardId, createdAt])
+  @@index([linkedVisualFileId])
+}
+
+model SpecialistProfile {
+  id                String           @id @default(cuid())
+  userId            String           @unique
+  user              User             @relation(fields: [userId], references: [id])
+  onboardingStatus  OnboardingStatus @default(PENDING)
+  formData          Json?
+  steps             OnboardingStep[]
+  rating            Float?
+  bio               String?
+  videoUrl          String?
+  featuredOnLanding Boolean          @default(false)
+  landingWorkPos    String?
+  createdAt         DateTime         @default(now())
+
+  /// Договор с платформой (загрузка в админке, скачивание в онбординге и в карточке админа)
+  specialistContractS3Key      String?
+  specialistContractStatus     SpecialistContractStatus @default(NONE)
+  specialistContractNumber     String?
+  specialistContractUploadedAt DateTime?
+  specialistSignedContractS3Key String?
+  specialistSignedContractUploadedAt DateTime?
+}
+
+model OnboardingStep {
+  id         String            @id @default(cuid())
+  profileId  String
+  profile    SpecialistProfile @relation(fields: [profileId], references: [id])
+  type       StepType
+  status     StepStatus        @default(PENDING)
+  comment    String?
+  updatedAt  DateTime          @updatedAt
+}
+
+model Order {
+  id           String         @id @default(cuid())
+  clientId     String
+  client       User           @relation("ClientOrders", fields: [clientId], references: [id])
+  specialistId String?
+  specialist   User?          @relation("SpecialistOrders", fields: [specialistId], references: [id])
+  title        String?
+  price        Int?
+  status              OrderStatus    @default(DRAFT)
+  briefData           Json?
+  briefStep           Int            @default(0)
+  briefHelpRequested  Boolean        @default(false)
+  briefVideoFileId    String?        @unique
+  briefVideoFile      UserFile?      @relation("OrderBriefVideo", fields: [briefVideoFileId], references: [id])
+  briefAttachments    OrderBriefAttachment[]
+  deletedAt           DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  stages       ProjectStage[]
+  payments     Payment[]
+  invoices     Invoice[]
+  contracts    Contract[]
+  chatMessages OrderChatMessage[]
+  chatReads    OrderChatReadState[]
+
+  @@index([clientId])
+  @@index([specialistId])
+  @@index([status])
+}
+
+model OrderBriefAttachment {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fileId    String
+  file      UserFile @relation("OrderBriefAttachmentFile", fields: [fileId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([orderId, fileId])
+  @@index([orderId, createdAt])
+  @@index([fileId])
+}
+
+/// Переписка по заказу, разделённая на каналы:
+/// - ADMIN_CLIENT: админ ↔ заказчик
+/// - ADMIN_SPECIALIST: админ ↔ дизайнер
+model OrderChatMessage {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  channel   OrderChatChannel @default(COMMON)
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([orderId, channel, createdAt])
+}
+
+/// Состояние прочтения чата по заказу для конкретного пользователя.
+model OrderChatReadState {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  channel    OrderChatChannel @default(COMMON)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([orderId, userId, channel])
+  @@index([userId])
+}
+
+model ProjectStage {
+  id            String         @id @default(cuid())
+  orderId       String
+  order         Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type          StageType
+  status        StageStatus    @default(PENDING)
+  version       Int            @default(1)
+  modRound      Int            @default(0)
+  clientRound   Int            @default(0)
+  price         Int?
+  rulesS3Key    String?        // PDF-инструкция от админа для дизайнера
+  rulesSentAt   DateTime?
+  rulesSentS3Key String?
+  rulesAckAt    DateTime?
+  rulesAckS3Key String?
+  files         StageFile[]
+  reviews       StageReview[]
+  extraPayments ExtraPayment[]
+  act           StageAct?
+  payment       Payment?
+  chatMessages  StageChatMessage[]
+
+  @@index([orderId])
+}
+
+/// Переписка по конкретному этапу заказа.
+/// Сейчас прямой чат заказчик↔дизайнер не используем: обсуждение идёт через админа на уровне заказа.
+model StageChatMessage {
+  id        String       @id @default(cuid())
+  stageId   String
+  stage     ProjectStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body      String       @db.Text
+  createdAt DateTime     @default(now())
+
+  @@index([stageId, createdAt])
+}
+
+enum FileAudience {
+  DESIGNER
+  CLIENT
+  SHARED
+}
+
+model StageFile {
+  id           String       @id @default(cuid())
+  stageId      String
+  stage        ProjectStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  s3Key        String
+  filename     String
+  uploadedAt   DateTime     @default(now())
+  audience     FileAudience @default(SHARED)
+  /// W3C Web Annotation JSON (массив), пометки заказчика по изображению
+  annotations  Json?
+}
+
+model StageReview {
+  id           String       @id @default(cuid())
+  stageId      String
+  stage        ProjectStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  reviewerRole ReviewerRole
+  verdict      Verdict
+  comment      String?
+  createdAt    DateTime     @default(now())
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  orderId        String
+  order          Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  stageId        String?       @unique
+  stage          ProjectStage? @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  amount         Int
+  status         PaymentStatus @default(PENDING)
+  tBankPaymentId String?
+  createdAt      DateTime      @default(now())
+}
+
+model ExtraPayment {
+  id             String        @id @default(cuid())
+  stageId        String
+  stage          ProjectStage  @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  amount         Int
+  reason         String
+  status         PaymentStatus @default(PENDING)
+  tBankPaymentId String?
+}
+
+enum ActStatus {
+  PENDING
+  SPECIALIST_UPLOADED
+  ADMIN_APPROVED
+  CLIENT_SIGNED
+  CONFIRMED
+  REJECTED
+}
+
+model StageAct {
+  id                  String       @id @default(cuid())
+  stageId             String       @unique
+  stage               ProjectStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  generatedAt         DateTime     @default(now())
+  
+  // Status flow
+  status              ActStatus    @default(PENDING)
+  
+  // Files
+  specialistActS3Key  String?      // Акт от дизайнера (PDF)
+  clientActS3Key      String?      // Подписанный акт от заказчика
+  
+  // Timestamps
+  specialistUploadedAt DateTime?   // Когда дизайнер загрузил акт
+  adminApprovedAt      DateTime?   // Когда админ проверил акт
+  clientSignedAt       DateTime?   // Когда заказчик подписал
+  adminConfirmedAt      DateTime?   // Когда админ подтвердил
+  
+  // Legacy fields (for backward compatibility)
+  signedAt            DateTime?
+  signedById          String?
+  signedBy            User?        @relation(fields: [signedById], references: [id])
+
+  @@index([stageId])
+}
+
+enum InvoiceStatus {
+  CREATED
+  SENT
+  PAID
+  CANCELLED
+}
+
+model Invoice {
+  id        String        @id @default(cuid())
+  number    String        @unique
+  orderId   String
+  order     Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  amount    Int
+  status    InvoiceStatus @default(CREATED)
+  purpose   String
+  s3Key     String?
+  createdAt DateTime      @default(now())
+  paidAt    DateTime?
+
+  @@index([orderId])
+}
+
+enum ContractStatus {
+  DRAFT
+  SENT_TO_SPECIALIST
+  SPECIALIST_SIGNED
+  SENT_TO_CLIENT
+  CLIENT_SIGNED
+  CONFIRMED
+  CANCELLED
+}
+
+model Contract {
+  id                     String         @id @default(cuid())
+  number                 String         @unique
+  orderId                String
+  order                  Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status                 ContractStatus @default(DRAFT)
+  
+  // Original contract file from admin
+  s3Key                  String?
+  
+  // Signed files
+  specialistSignedS3Key   String?
+  clientSignedS3Key       String?
+  
+  // Timestamps
+  createdAt               DateTime       @default(now())
+  sentToSpecialistAt      DateTime?
+  specialistSignedAt      DateTime?
+  sentToClientAt          DateTime?
+  clientSignedAt          DateTime?
+  confirmedAt             DateTime?
+
+  @@index([orderId])
+}
+
+enum LandingBundleStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model LandingBundle {
+  id             String              @id @default(cuid())
+  userId         String
+  user           User                @relation(fields: [userId], references: [id])
+  status         LandingBundleStatus @default(DRAFT)
+  portraitFileId String?
+  workFileId     String?
+  workPos        String?             @default("center center")
+  videoFileId    String?
+  specialty      String?
+  about          String?
+  rejectReason   String?
+  reviewedBy     String?
+  reviewedAt     DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  items          LandingBundleItem[]
+
+  @@index([userId, status])
+}
+
+model LandingBundleItem {
+  id       String        @id @default(cuid())
+  bundleId String
+  bundle   LandingBundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  fileId   String
+  position Int           @default(0)
+
+  @@unique([bundleId, fileId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String
+  changes   Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  message   String?
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, readAt])
+  @@index([createdAt])
+}
+
+enum RequisiteChangeStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model RequisiteChangeRequest {
+  id              String                @id @default(cuid())
+  specialistId    String?
+  specialist      User?                 @relation("SpecialistRequisiteChanges", fields: [specialistId], references: [id])
+  clientId        String?
+  client          User?                 @relation("ClientRequisiteChanges", fields: [clientId], references: [id])
+  status          RequisiteChangeStatus @default(PENDING)
+  oldData         Json
+  newData         Json
+  adminComment    String?
+  reviewedAt      DateTime?
+  reviewedBy      String?
+  createdAt       DateTime              @default(now())
+
+  @@index([specialistId, status])
+  @@index([clientId, status])
+  @@index([status, createdAt])
+}

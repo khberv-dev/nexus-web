@@ -1,0 +1,843 @@
+{
+  "name": "Получить список платежных правил для указанного соглашения",
+  "id": "41cba0dc-370d-4401-b604-34fb555c89c8",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+        "key": "X-Request-Id",
+        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+      "protocol": "https",
+      "host": [
+        "business",
+        "tbank",
+        "ru"
+      ],
+      "path": [
+        "openapi",
+        "sandbox",
+        "secured",
+        "api",
+        "v1",
+        "rules"
+      ],
+      "query": [
+        {
+          "description": "ID соглашения, в рамках которого заключены правила.",
+          "key": "agreementId",
+          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+        },
+        {
+          "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+          "key": "limit",
+          "value": "50"
+        },
+        {
+          "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+          "key": "offset",
+          "value": "0"
+        }
+      ]
+    },
+    "description": " Метод для получения списка платежных правил, созданных для указанного соглашения. Возвращает только правила с типом `Recurrent`. Чтобы получить информацию о триггерных правилах, используйте метод [/api/v2/rules](/docs/api/get-api-v-2-nonacceptance-rule-list).\n\nВ поле <code>scope</code> у токена должен быть доступ <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nonacceptance-debits/manage</code> — <code>Управление соглашениями о безакцептных списаниях</code>. "
+  },
+  "response": [
+    {
+      "id": "803d7e9a-2bd2-4a32-95e2-37425cc6f68d",
+      "name": "Успешный запрос",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"type\": \"Recurrent\",\n      \"amount\": 1000.55,\n      \"cronExpr\": \"0 12 * * *\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "e9362a57-b4ce-4cf3-ad6d-41239402fbfe",
+      "name": "Соглашение не найдено",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+    },
+    {
+      "id": "c83af216-0f7b-49a3-9aa7-49f71a518d50",
+      "name": "Ошибка при неактивном токене",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "50859661-5c58-40c6-a65e-66aea68f2ffb",
+      "name": "Ошибка при неправильно заданной компании",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "1a3c4ba8-2eb4-40d9-894c-ca7a93c0ca3e",
+      "name": "Ошибка при отсутствии доступов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "838d050a-5080-4d09-852f-9ad587a4f9bf",
+      "name": "Ошибка при запросе с неизвестного IP",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "5a359733-f20d-4d18-a30c-e9d72f1c20a6",
+      "name": "Ошибка при отсутствии прав на использование продукта",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "a460493d-0357-400d-819e-5e4d616c63ab",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+    },
+    {
+      "id": "28df8685-8a0f-4c99-ad4a-04f3c6548153",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "d6587e6e-99d0-4ec6-a528-fba15ec4cefd",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/rules?agreementId=fa1c49ca-234b-91eb-c41e-c23327352ae4&limit=50&offset=0",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "rules"
+          ],
+          "query": [
+            {
+              "description": "ID соглашения, в рамках которого заключены правила.",
+              "key": "agreementId",
+              "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4"
+            },
+            {
+              "description": "Максимальное количество правил, которое нужно вывести. Значение по умолчанию — `50`.",
+              "key": "limit",
+              "value": "50"
+            },
+            {
+              "description": "Количество правил, которые нужно пропустить. Значение по умолчанию — `0`.",
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:24.022Z",
+    "parentPath": "api_v1_rules"
+  }
+}

@@ -1,0 +1,2183 @@
+{
+  "info": {
+    "_postman_id": "841434c2-b9d7-4ef2-950d-9f158cb3bbec",
+    "name": "payments-by-requisites",
+    "description": "Subcollection for payments-by-requisites. Contains 2 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "payments-by-requisites",
+      "item": [
+        {
+          "name": "statuses",
+          "item": [
+            {
+              "name": "Получить список статусов платежей",
+              "id": "89ec4000-80da-4d8c-a273-9449a7025db5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  \"string\",\n  \"string\"\n]",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "payments-orders",
+                    "payments-by-requisites",
+                    "statuses"
+                  ]
+                },
+                "description": "Метод для получения статусов платежных поручений по списку их идентификаторов."
+              },
+              "response": [
+                {
+                  "id": "eec3bf71-c849-4a30-9e0f-daca2e9ffd7a",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"result\": [\n    {\n      \"externalPaymentId\": \"id1\",\n      \"status\": \"EXECUTED\"\n    },\n    {\n      \"externalPaymentId\": \"id2\",\n      \"status\": \"DRAFT\"\n    }\n  ],\n  \"resultError\": [\n    {\n      \"externalPaymentId\": \"id3\",\n      \"errorMessage\": \"Не удалось получить информацию о статусе платежа\"\n    },\n    {\n      \"externalPaymentId\": \"id4\",\n      \"errorMessage\": \"Не удалось получить информацию о статусе платежа\"\n    }\n  ]\n}"
+                },
+                {
+                  "id": "7eadbab1-9855-41f8-b432-859a04197160",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "5f2c6981-d129-489a-bc2e-38e96dee909d",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "61b5e5a8-b679-487e-ac7e-fb8d3d02c989",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "a5178e39-a695-4a41-a569-66667cef21fc",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "eb08d8f4-865b-4e7b-b142-f460b0887ddb",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "7dad53db-c92a-4c81-a95b-c594b6b61b92",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "5a10d981-d8b8-49bf-a28b-0505a3cba414",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "95e0522d-f911-46dc-b18f-3828148a9e89",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "b9c6a27c-803e-4952-acde-8ca189557593",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+                },
+                {
+                  "id": "4c977f20-d7d7-4521-887d-ed44d21f8148",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "af286c1b-087c-462a-ad9d-6a1e80088c86",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  \"string\",\n  \"string\"\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/statuses",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "statuses"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "ef837c17-3638-4dfd-8c43-4e876002c719"
+        },
+        {
+          "name": "submit",
+          "item": [
+            {
+              "name": "Отправить набор платежных поручений",
+              "id": "c845c2d6-1d80-4e16-aeb8-184ac785a58f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                    "key": "Signature",
+                    "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                  },
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "description": "Hash (hmac-sha256) от тела запроса",
+                    "key": "data",
+                    "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                  },
+                  {
+                    "description": "Время выполнения запроса.",
+                    "key": "date",
+                    "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "payments-orders",
+                    "payments-by-requisites",
+                    "submit"
+                  ]
+                },
+                "description": "Метод для отправки платежных поручений в рублях.\n\nОбратите внимание: чтобы использовать метод, нужно выпустить mTLS-сертификат и один или несколько сертификатов криптографической подписи — их количество зависит от ваших настроек правил подписания документов. [Подробнее про сертификаты](/docs/intro/manuals/certificates/)."
+              },
+              "response": [
+                {
+                  "id": "3a2d3337-0be0-4263-8abb-72dc71190dce",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{}"
+                },
+                {
+                  "id": "e5db8351-715b-47ec-a8e3-a2644a12c9f3",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "2ea9a284-56b2-4561-a88a-9658c5fba5c6",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "a60cf05b-b306-48a2-939f-6edd32fce36e",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "225cbee5-a047-4469-86a2-e3af2ce56a65",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "62896595-6fa0-4cb3-b431-8483e9a6cf14",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "34fc29b3-fd1d-4155-828a-4932177899dd",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "0a85f53d-102e-4faa-943b-fbcb5797da99",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "49859f2e-e00a-4a6b-8e99-72df591ad8cc",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "91aab8ae-12aa-4982-bcee-d9386718fa24",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+                },
+                {
+                  "id": "055bc270-4309-4d8a-bd8d-70c60952d353",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "7f0d1223-3998-424c-b84f-253932093d0d",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Подпись с данными в формате:\nSignature keyId=\"<keyId>\",algorithm=\"<algorithm>\",[headers=\"<headers>\"],signature=\"<signature>\"\nkeyId -- уникальный ключ, полученый от менеджера.\nalgoritm -- алгоритм. На данный момент поддерживается только hmac-sha256.\nheaders -- список с порядком подписанных заголовков запроса. Допустимы только хедеры, название которых указано в примере.\nsignature -- подпись.\nпараметр (request-target) определяется как \"post /api/v1/payments-orders/payments-by-requisites/submit?",
+                        "key": "Signature",
+                        "value": "Signature keyId=\"9706dd58-4810-4bb8-b318-285cd97dd4af\",algorithm=\"hmac-sha256\",headers=\"(request-target) data date X-Request-Id\",signature=\"bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1\""
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "description": "Hash (hmac-sha256) от тела запроса",
+                        "key": "data",
+                        "value": "bb26ca0bb7b2e622ce066deb9bc41a859b79b777b77b83df67fc5fcb5d16e9c1"
+                      },
+                      {
+                        "description": "Время выполнения запроса.",
+                        "key": "date",
+                        "value": "Tue, 18 Aug 2020 15:09:03 GMT"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"documentId\": \"string\",\n    \"documentNumber\": 56272,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"55484483419615200314\",\n    \"paymentExecutionOrder\": 1,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"90\",\n    \"payeePersonKpp\": \"5588\",\n    \"payeePersonBankName\": \"DPB:VD)@\\\\4zgsBJ6Y1azR\\\\pB*i),U8.&oUyW2vr;nBk\\\\hfHz<vRfs8'$]wmMn-7~*8fhGp#u2Ryv47V=r}ah.~0^8!\\\"/I$ckU8`&<rGwb~-=\",\n    \"payeePersonBankCorrespondentAccount\": \"56080493306438799\",\n    \"payeePersonBankBic\": \"318109\",\n    \"payeePersonAccountNumber\": \"70298010131666274530\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"0\",\n    \"counterpartyUip\": \"0\",\n    \"revenueTypeCode\": 4,\n    \"budgetPaymentPayeePersonKbk\": \"1261519852173211848\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"06\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"48\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"571\",\n    \"taxPaymentTaxType\": \"ПЦ\",\n    \"taxPaymentTaxEvidence\": \"PC\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"44219151\",\n    \"taxPaymentTaxDocumentNumber\": \"string\"\n  },\n  {\n    \"documentId\": \"stri\",\n    \"documentNumber\": 110466,\n    \"isExpressPayment\": true,\n    \"payerAccountNumber\": \"57950851895688666857\",\n    \"paymentExecutionOrder\": 2,\n    \"payeePersonName\": \"string\",\n    \"payeePersonInn\": \"0\",\n    \"payeePersonKpp\": \"0\",\n    \"payeePersonBankName\": \"U\\\\Im%ao$x&?RJd/FFhdZ)Tn-v99T;4CJ'%#FA0[]e\\\\7!hbO\\\"'~b?d$os$N?ishur`lnmzP;}b6j_L(Nh!YJ\\\"Q8BQS224LKN_UUt++nA-,m]KitQ=]g1\",\n    \"payeePersonBankCorrespondentAccount\": \"67673\",\n    \"payeePersonBankBic\": \"7917\",\n    \"payeePersonAccountNumber\": \"98357727451964853188\",\n    \"paymentPurpose\": \"string\",\n    \"paymentAmount\": \"100.00\",\n    \"paymentExecutionDate\": \"2025-04-05T10:30:00+03:00\",\n    \"budgetPaymentUin\": \"Je[| 95_r3;o-#:7]fA`gf\",\n    \"counterpartyUip\": \"m[$o0@ly\",\n    \"revenueTypeCode\": 1,\n    \"budgetPaymentPayeePersonKbk\": \"0\",\n    \"budgetPaymentBudgetPayerPersonStatus\": \"10\",\n    \"budgetPaymentOktmo\": \"0\",\n    \"budgetPaymentThirdPartyPayerPersonInn\": \"7878495\",\n    \"budgetPaymentThirdPartyPayerPersonName\": \"string\",\n    \"budgetPaymentThirdPartyPayerPersonKpp\": \"652437\",\n    \"taxPaymentTaxType\": \"АВ\",\n    \"taxPaymentTaxEvidence\": \"ИД\",\n    \"taxPaymentTaxDocumentDate\": \"01.01.2000\",\n    \"taxPaymentTaxPeriod\": \"09260447\",\n    \"taxPaymentTaxDocumentNumber\": \"st\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/payments-orders/payments-by-requisites/submit",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "payments-orders",
+                        "payments-by-requisites",
+                        "submit"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "637bf084-a6e1-4fa5-8157-1cb71a59b503"
+        }
+      ],
+      "id": "b7522c54-86b7-4ad9-8ddc-e2425b22d589"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

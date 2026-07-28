@@ -1,0 +1,716 @@
+{
+  "name": "Идентифицировать пополнение",
+  "id": "72114a60-1e60-4f04-ba1b-f4b39a5f776c",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+      "options": {
+        "raw": {
+          "headerFamily": "json",
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "incoming-transactions",
+        ":operationId",
+        "identify"
+      ],
+      "variable": [
+        {
+          "key": "operationId",
+          "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+        }
+      ]
+    },
+    "description": "\nПозволяет идентифицировать одну из операций пополнения.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "cc472f37-85cb-49ed-9009-21ca32a09652",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{}"
+    },
+    {
+      "id": "ffccaf36-3e61-4d3a-86cc-e005cd77052d",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "4ec81a2d-8607-4a1d-93dc-7327503c40e5",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "c65b3fc3-f3c7-49c7-8817-1cac6da9f3df",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "32fa7965-7626-494e-9844-3d830dff2578",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "e5303e5f-06ef-4754-9915-8e207f92061c",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "fd045174-ed05-419d-a77c-dca501251e29",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "bd6813c9-fad5-45f9-8349-eeec7d1713bd",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "a300177e-c9f7-45de-b086-b53856e36805",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amountDistribution\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"amount\": 100\n    },\n    {\n      \"beneficiaryId\": \"75c0d3c4-1a5b-11ec-8669-0326f772aecb\",\n      \"amount\": 50\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/incoming-transactions/:operationId/identify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "incoming-transactions",
+            ":operationId",
+            "identify"
+          ],
+          "variable": [
+            {
+              "key": "operationId",
+              "value": "2c5037cd-3940-caa2-a6a1-2645566d42fa"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.949Z",
+    "parentPath": "api_v1_nominal-accounts_incoming-transactions_{operationid}_identify"
+  }
+}

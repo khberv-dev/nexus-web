@@ -1,0 +1,41 @@
+{
+  "summary": {
+    "originalCollection": "T-API Copy",
+    "originalId": "8d83507c-2008-4493-b23f-7410d0c2c5cf",
+    "splitDate": "2026-01-13T18:42:24.213Z",
+    "businessItemsCount": 1,
+    "statistics": {
+      "totalRequests": 95,
+      "totalFolders": 102,
+      "createdFiles": 197,
+      "createdCollections": 102
+    },
+    "filteredPaths": [
+      "api/v1/invoice",
+      "api/v1/company",
+      "api/v1/individual",
+      "api/v1/b2b",
+      "api/v1/payments-orders",
+      "api/v1/nominal-accounts",
+      "api/v1/requests",
+      "api/v1/rules",
+      "api/v1/bank-accounts",
+      "api/v2/bank-accounts",
+      "api/v3/bank-accounts",
+      "api/v4/bank-accounts",
+      "api/v1/bank-statement",
+      "api/v1/account-operations",
+      "api/v1/statement",
+      "api/v1/openapi",
+      "api/v2/nominal-accounts",
+      "api/v2/rules"
+    ]
+  },
+  "options": {
+    "maxItemsPerCollection": 10,
+    "createIndividualRequests": true,
+    "createSubCollections": true,
+    "preserveStructure": true,
+    "generateDocumentation": true
+  }
+}

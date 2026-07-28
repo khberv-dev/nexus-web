@@ -1,0 +1,3396 @@
+{
+  "name": "Создать бенефициара",
+  "id": "f8bb3d72-7987-4825-8d3d-c6050e773498",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "POST",
+    "header": [
+      {
+        "key": "Idempotency-Key",
+        "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+      },
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+      "options": {
+        "raw": {
+          "headerFamily": "json",
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "beneficiaries"
+      ]
+    },
+    "description": "\nМетод создает бенефициара и возвращает его с ID, который нужен для дальнейшей работы.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>.\n\n\nЗаполняемые данные будут отличаться в зависимости от типа бенефициара — например, физическое лицо-резидент или физическое лицо-нерезидент.\nПримеры данных по каждому из типов приведены ниже."
+  },
+  "response": [
+    {
+      "id": "c43149fe-5858-44c1-8212-e4844fa29283",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}"
+    },
+    {
+      "id": "8fc86136-ebf3-4a94-a99c-fd01028ae3d6",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}"
+    },
+    {
+      "id": "4ecd48a2-7337-4190-bb0b-65ac9e6b29d7",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}"
+    },
+    {
+      "id": "94daa8a6-cc14-45bb-8819-edbd7afcf0c8",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}"
+    },
+    {
+      "id": "4fe19e0a-f319-48f4-8e16-86ad401a0cfd",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}"
+    },
+    {
+      "id": "acab4862-02b8-43ff-92b5-b6362517704c",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}"
+    },
+    {
+      "id": "245d79ec-6f25-4789-a8b6-34b60b6d5b3a",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"type\": \"LITE_CONTACT\"\n}"
+    },
+    {
+      "id": "5d060113-80fe-4d1f-a60a-3670d66eae68",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "3b6a7354-38f2-4a5f-ab2c-aa0baf99f18c",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "b57071ab-4101-49f3-8299-f2a6484b5ee7",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "e4551003-cf47-4221-b403-4ae182549ea8",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "b8948ed6-4a1d-455a-870e-e5e7a0f10c16",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "4bf57159-9f14-4e46-8ef3-48ec2936f06c",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "77a41f6e-4adb-4bf7-80e8-068193ea03b6",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "8622579e-9da1-4340-9d5b-818d0d4cb95b",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "beca476b-4456-47a7-aceb-7f19d09aaab7",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "e7d81fa4-8bff-4c01-ac7d-13ab05131878",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "bf6bcb48-ae6f-4333-81b2-d714386109db",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "45663509-4fa1-47b4-8a7b-c26c1dfb678d",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "9ae9ea63-d47f-4513-9fdf-ffc94ce22cf5",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "da0ecad1-4ace-4799-9bff-ebd95e96e893",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "975fd4c4-f8be-4d33-9861-051fb9653f5d",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "b4497e99-2afd-4106-8285-d7532c46a760",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "e76f49da-6eb7-487e-9a6d-6c3f6d1e5aef",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "293cfa87-5150-48fc-9c77-0b7acb0dfb57",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "aba3d468-cf61-4f45-bc5b-ad147b12fb2f",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "ef0e2a87-aa0f-4cb2-93ff-3757aa466418",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "eb954318-aa19-4066-b2fb-4b29922f5607",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "113e2415-e161-49fa-8f59-fada1fed6fd5",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "64ab6f9e-0966-4c31-ac26-88b11e708b84",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "8debf5a3-0a5f-4d11-aa58-78c38759e692",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "7db4d3d9-dcdd-4a81-90ba-6d32c0830ccb",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "479b0fd6-6d9e-46b3-9233-4b8e2225f335",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "eddc0c98-6b30-4a25-8228-784ec7860dbe",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "f5fe20f7-2da0-4edf-a56d-589c358e1ee4",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "4a1d9ad7-a308-43c1-bf5e-7daefa62517a",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "62befe30-b07c-4c43-a76c-7d11ef332608",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "b4820235-dfe7-4faa-b62b-c715b6579d07",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "fbca885b-23e1-4fd8-aa79-edb1cc9e2fbf",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "3af9d3ce-b819-4448-b498-362d62eeaafc",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "461a7a88-8f01-4248-953e-fec3e4371d88",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "28517188-cee7-439b-8a29-aff2a20f2566",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "6a2d5ca8-5a5d-4b48-bf70-e0767945a6fb",
+      "name": "Физическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_RESIDENT\",\n  \"firstName\": \"Фома\",\n  \"middleName\": \"Семенович\",\n  \"lastName\": \"Киняев\",\n  \"isSelfEmployed\": true,\n  \"birthDate\": \"1969-08-21\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+79998887766\",\n  \"email\": \"f.kiniaev@tbank.ru\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"inn\": \"266445718640\",\n  \"snils\": \"72865174431\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "6e155ae0-db05-482d-916e-d4e560d5b19e",
+      "name": "Физическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"FL_NONRESIDENT\",\n  \"firstName\": \"John\",\n  \"middleName\": \"William\",\n  \"lastName\": \"Smith\",\n  \"isSelfEmployed\": false,\n  \"birthDate\": \"1978-04-03\",\n  \"birthPlace\": \"Pietersburg\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+12025550190\",\n  \"email\": \"john.smith@example.com\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"VISA\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"RESIDENCE_ADDRESS\",\n      \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n    }\n  ],\n  \"inn\": \"906858195320\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "dbea642c-e4c9-4e4b-9234-0d5ab367ac92",
+      "name": "Юридическое лицо, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_RESIDENT\",\n  \"name\": \"Акционерное общество «ТБанк»\",\n  \"phoneNumber\": \"+78007551110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n    },\n    {\n      \"type\": \"POSTAL_ADDRESS\",\n      \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n    }\n  ],\n  \"registrationDate\": \"2002-11-28\",\n  \"opf\": \"АО\",\n  \"inn\": \"7710140679\",\n  \"ogrn\": \"1027739642281\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "b8b71eb0-359d-4717-aaa5-4132104176cd",
+      "name": "Юридическое лицо, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"UL_NONRESIDENT\",\n  \"name\": \"TCS Group Holding Plc.\",\n  \"phoneNumber\": \"+74996051110\",\n  \"email\": \"business.welcome@tbank.ru\",\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n    },\n    {\n      \"type\": \"LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    },\n    {\n      \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n      \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n    }\n  ],\n  \"nza\": \"12345678912\",\n  \"registrationDate\": \"2015-11-13\",\n  \"registrationNumber\": \"107963\",\n  \"opf\": \"Plc.\",\n  \"inn\": \"9909215909\",\n  \"kio\": \"21590\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "ca604d01-d82e-4f0e-8958-07fde6fd39ed",
+      "name": "ИП, резидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_RESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"RU\",\n  \"phoneNumber\": \"+71378820200\",\n  \"email\": \"KDDwKOwWD0@Pijg1\",\n  \"documents\": [\n    {\n      \"type\": \"PASSPORT\",\n      \"serial\": \"5000\",\n      \"number\": \"287846\",\n      \"date\": \"1998-01-01\",\n      \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n      \"division\": \"123-456\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"306707771448\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "12c68a54-8a30-4f85-92bd-94369c41263e",
+      "name": "ИП, нерезидент",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"IP_NONRESIDENT\",\n  \"firstName\": \"Олег\",\n  \"middleName\": \"Юрьевич\",\n  \"lastName\": \"Анисимов\",\n  \"birthDate\": \"1974-01-23\",\n  \"birthPlace\": \"г. Москва\",\n  \"citizenship\": \"US\",\n  \"phoneNumber\": \"+447768027220\",\n  \"email\": \"OAAQAYkiXe@uUmPe\",\n  \"documents\": [\n    {\n      \"type\": \"FOREIGN_PASSPORT\",\n      \"number\": \"123456789\",\n      \"date\": \"1992-02-12\",\n      \"organization\": \"Issuing organization\"\n    },\n    {\n      \"type\": \"MIGRATION_CARD\",\n      \"number\": \"123456789\",\n      \"date\": \"1998-01-01\",\n      \"expireDate\": \"2023-01-01\"\n    }\n  ],\n  \"addresses\": [\n    {\n      \"type\": \"REGISTRATION_ADDRESS\",\n      \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n    }\n  ],\n  \"registrationDate\": \"2010-01-15\",\n  \"inn\": \"173527033406\",\n  \"ogrn\": \"310774601501066\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "18d1e8dd-f5db-423a-bbf9-ec9918fe1e45",
+      "name": "Легкий контакт",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"LITE_CONTACT\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.933Z",
+    "parentPath": "api_v1_nominal-accounts_beneficiaries"
+  }
+}

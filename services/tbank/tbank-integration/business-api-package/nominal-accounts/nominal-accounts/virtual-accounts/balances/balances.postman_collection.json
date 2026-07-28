@@ -1,0 +1,739 @@
+{
+  "info": {
+    "_postman_id": "da6ff926-fb6a-49d6-ae88-6bbee678fd98",
+    "name": "balances",
+    "description": "Subcollection for balances. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "balances",
+      "item": [
+        {
+          "name": "Получить информацию по остаткам на виртуальных счетах бенефициаров",
+          "id": "696cb70e-63bf-4034-b931-714549b756e9",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "virtual-accounts",
+                "balances"
+              ],
+              "query": [
+                {
+                  "description": "Номер номинального счета.",
+                  "key": "accountNumber",
+                  "value": "40702810110011000000"
+                },
+                {
+                  "description": "ID бенефициара.",
+                  "key": "beneficiaryId",
+                  "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                },
+                {
+                  "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "\nПозволяет получить список балансов бенефициаров по одному или нескольким виртуальным счетам\nв рамках номинального счета.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "35c2b08f-3029-4b66-81b9-bc50fdbb530c",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"amount\": 7500,\n      \"amountOnHold\": 1000\n    }\n  ]\n}"
+            },
+            {
+              "id": "91864dd3-4848-4e8d-bc00-33a1316a035f",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "df15245f-7c4a-407d-9831-b1497641c3a7",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "429fbf00-2a7f-424f-bd5f-d401e97ff9e1",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "f9b126fe-5e09-410e-8414-47c1b16b79d8",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "a027a1ec-2620-433e-9106-2caf213b472d",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "4fd79a32-8075-4862-9e31-9488189e1f4c",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "1abd107b-2911-4607-948c-858709463fd6",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "331997cc-757a-4781-bab8-0f7f3da0cf46",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/balances?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "balances"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество балансов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "7ac63d6c-6e21-4845-a789-93a36a248ef2"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

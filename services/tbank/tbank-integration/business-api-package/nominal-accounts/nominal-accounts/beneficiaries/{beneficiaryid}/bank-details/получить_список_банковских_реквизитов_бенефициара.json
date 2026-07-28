@@ -1,0 +1,696 @@
+{
+  "name": "Получить список банковских реквизитов бенефициара",
+  "id": "a9557dd7-55ad-48fe-9d98-1bfceb9fbc98",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "beneficiaries",
+        ":beneficiaryId",
+        "bank-details"
+      ],
+      "query": [
+        {
+          "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+          "key": "limit",
+          "value": "50"
+        }
+      ],
+      "variable": [
+        {
+          "key": "beneficiaryId",
+          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+        }
+      ]
+    },
+    "description": "\nВозвращает информацию о всех банковских реквизитах бенефициара.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "31a3a1c8-f6b7-4764-96d9-acd0d6e444a1",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 3,\n  \"total\": 3,\n  \"results\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n      \"type\": \"PAYMENT_DETAILS\",\n      \"isDefault\": false,\n      \"bik\": \"044525974\",\n      \"kpp\": \"773401001\",\n      \"inn\": \"906858195320\",\n      \"name\": \"Киняев Фома Семенович\",\n      \"bankName\": \"АО \\\"ТБанк\\\"\",\n      \"accountNumber\": \"11223344556677889900\",\n      \"corrAccountNumber\": \"30101810145250000974\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n      \"type\": \"CARD\",\n      \"isDefault\": false,\n      \"cardId\": \"70000000707\",\n      \"terminalKey\": \"1573803282696E2C\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n      \"type\": \"SBP\",\n      \"isDefault\": false,\n      \"phoneNumber\": \"+79001112233\",\n      \"bankId\": \"100000000004\",\n      \"terminalKey\": \"1573803282696E2C\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "8670c9f4-e3bb-4911-afae-5f0a8906a7b9",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "13525caa-8aa9-4f6f-8e48-0a797f3daf6b",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "c90902f7-73aa-487d-8f53-da91cef57f3c",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "0ec28c8d-7b02-43c4-9f40-4051ad30a069",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "37c8a3db-3c14-4256-be07-96ade935eeff",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "10c6958d-4bd6-48e9-b91a-569e023ad583",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "daef8eca-6b3b-4594-9679-7a68f665320a",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "2be7aa37-5d5c-484e-9ecf-35e2d253e9e5",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "query": [
+            {
+              "description": "Количество реквизитов, которое необходимо пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество реквизитов, которое необходимо вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.899Z",
+    "parentPath": "api_v1_nominal-accounts_beneficiaries_{beneficiaryid}_bank-details"
+  }
+}

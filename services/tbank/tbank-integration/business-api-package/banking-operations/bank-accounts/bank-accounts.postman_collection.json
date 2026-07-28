@@ -1,0 +1,569 @@
+{
+  "info": {
+    "_postman_id": "5c80c4e0-0622-45de-aaf7-a45c70755b12",
+    "name": "bank-accounts",
+    "description": "Subcollection for bank-accounts. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "bank-accounts",
+      "item": [
+        {
+          "name": "Получить счета v4",
+          "id": "9520ece5-2ed3-40bc-93b2-9f21c87dca5f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v4",
+                "bank-accounts"
+              ],
+              "query": [
+                {
+                  "description": "Флаг получения инвестиционных счетов.",
+                  "key": "withInvest",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Метод для получения информации по расчетным и инвестиционным счетам организаций.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/bank-accounts/get</code> — <code>Информация о счетах компании с ИНН {inn} и КПП {kpp}</code>.\n\n\nОграничение на использование метода — 6 запросов в секунду."
+          },
+          "response": [
+            {
+              "id": "62a68179-05b2-49ad-a7e9-713b6dcdc42b",
+              "name": "Расчетные счета",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"accountNumber\": \"40802678901234567890\",\n    \"name\": \"Валютный фунтовый счет\",\n    \"status\": \"NORM\",\n    \"tariffName\": \"Тарифный план \\\"Продвинутый\\\" GBP\",\n    \"tariffCode\": \"TFLE1.2GBP\",\n    \"currency\": \"643\",\n    \"createdOn\": \"2010-08-03\",\n    \"mainFlag\": \"Y\",\n    \"bankBik\": \"123456789\",\n    \"accountType\": \"Current\",\n    \"activationDate\": \"2010-08-03\",\n    \"balance\": {\n      \"balance\": 444333,\n      \"realOtb\": 44000,\n      \"otb\": 45089,\n      \"authorized\": 0,\n      \"pendingPayments\": 0,\n      \"pendingRequisitions\": 0\n    },\n    \"transitAccount\": {\n      \"accountNumber\": \"11223344556677889900\"\n    }\n  },\n  {\n    \"accountNumber\": \"\",\n    \"name\": \"Инвестиционный счет\",\n    \"status\": \"NORM\",\n    \"tariffName\": \"\",\n    \"tariffCode\": \"TRD12.1\",\n    \"currency\": \"643\",\n    \"createdOn\": \"2023-01-01\",\n    \"mainFlag\": \"N\",\n    \"bankBik\": \"123456789\",\n    \"accountType\": \"Invest\",\n    \"activationDate\": \"2023-01-01\",\n    \"balance\": {\n      \"balance\": 50000,\n      \"realOtb\": 0,\n      \"otb\": 0,\n      \"authorized\": 0,\n      \"pendingPayments\": 0,\n      \"pendingRequisitions\": 0\n    },\n    \"brokerCurrencyBalance\": [\n      {\n        \"currency\": \"RUB\",\n        \"currentBalance\": 125,\n        \"currentBalanceForWithdrawal\": 115,\n        \"blockedQuantity\": 10\n      }\n    ]\n  }\n]"
+            },
+            {
+              "id": "2112ea42-dcc6-425d-9167-3e0839d512c2",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "2e0d3950-91f6-458c-9e2f-022156cf69d3",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "209c63bc-398d-43c5-b63a-0fdd6005d0ef",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "7e48e144-4b13-4c6a-921f-7d055b472d47",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "dbaf897f-f95b-4fd6-b2fc-2063c346ccd3",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "a02a2784-e97a-472e-8829-6e270e6c3883",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "f10f04e3-c055-4ee8-a8aa-cc5bbf74d907",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "b56bb69e-cd27-4342-b664-3db5881b9ed3",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v4/bank-accounts?withInvest=true",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v4",
+                    "bank-accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Флаг получения инвестиционных счетов.",
+                      "key": "withInvest",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "aa90c79e-c59e-4a8b-9ac4-e867c9c6efbb"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

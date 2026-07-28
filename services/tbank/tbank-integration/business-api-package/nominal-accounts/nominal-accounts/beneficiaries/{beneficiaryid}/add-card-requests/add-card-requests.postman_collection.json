@@ -1,0 +1,1522 @@
+{
+  "info": {
+    "_postman_id": "2b078175-e7e2-469d-9f55-72b71084e8b6",
+    "name": "add-card-requests",
+    "description": "Subcollection for add-card-requests. Contains 2 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "add-card-requests",
+      "item": [
+        {
+          "name": "{addCardRequestId}",
+          "item": [
+            {
+              "name": "Получить запрос на добавление реквизитов типа CARD для бенефициара",
+              "id": "7f3620c7-a626-493e-ba0e-e6c0d2729cd7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests",
+                    ":addCardRequestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    },
+                    {
+                      "key": "addCardRequestId",
+                      "value": "string"
+                    }
+                  ]
+                },
+                "description": "\nВозвращает состояние запроса на добавление реквизитов типа `CARD` для бенефициара.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+              },
+              "response": [
+                {
+                  "id": "da92f5cf-cd21-47fa-b602-bb340ecb8a42",
+                  "name": "карта в процессе добавления;",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"addCardRequestId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"terminalKey\": \"1573803282696E2C\",\n  \"status\": \"PENDING\",\n  \"addCardUrl\": \"https://securepay.tinkoff.ru/e2c/f36d8e7f-4bc6-4250-9f64-7fe986d3dc62\"\n}"
+                },
+                {
+                  "id": "26502eb8-d223-4bbe-b392-d04d51459e61",
+                  "name": "карта успешно добавлена;",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"addCardRequestId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"terminalKey\": \"1573803282696E2C\",\n  \"status\": \"READY\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}"
+                },
+                {
+                  "id": "f066ff79-556d-4578-ad4a-68e18670a78b",
+                  "name": "не удалось добавить карту.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"addCardRequestId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"terminalKey\": \"1573803282696E2C\",\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Внутренняя ошибка системы [9999]\"\n}"
+                },
+                {
+                  "id": "06e3eb3a-d40e-4bf4-9c0b-a070ea2b5fc4",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "203f1811-76d1-4d3c-aa40-6b0d023c84f0",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "26726912-5f56-40d9-baa5-4823cc1534eb",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "69125ac1-bb7b-47a7-a540-6505e86dc8ab",
+                  "name": "Ошибка аутентификации",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+                },
+                {
+                  "id": "dc471ccd-8bda-42e9-b278-09b4ddaf2b56",
+                  "name": "Ошибка авторизации",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+                },
+                {
+                  "id": "acda4820-10a9-4c5d-a990-b9d5924f6f22",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+                },
+                {
+                  "id": "80a5de2f-44e5-4cf5-81ed-226ce7f7f6a3",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+                },
+                {
+                  "id": "455ca0ad-90cf-4a5d-a68f-2a8743d095b6",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests/:addCardRequestId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "beneficiaries",
+                        ":beneficiaryId",
+                        "add-card-requests",
+                        ":addCardRequestId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "beneficiaryId",
+                          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                        },
+                        {
+                          "key": "addCardRequestId",
+                          "value": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "ec27d94d-8421-4688-ad55-128102ff11ba"
+        },
+        {
+          "name": "Создать запрос на добавление реквизитов типа CARD для бенефициара",
+          "id": "5e7926c1-61f8-4acf-895e-8e94ab543e25",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Idempotency-Key",
+                "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "beneficiaries",
+                ":beneficiaryId",
+                "add-card-requests"
+              ],
+              "variable": [
+                {
+                  "key": "beneficiaryId",
+                  "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                }
+              ]
+            },
+            "description": "\nСоздает запрос на добавление реквизитов типа `CARD` для бенефициара и возвращает его с ID, который нужен для дальнейшего взаимодействия.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "ac74abcb-ffa8-4aa6-b8ff-40f4d8e18c4f",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"addCardRequestId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"terminalKey\": \"1573803282696E2C\",\n  \"status\": \"PENDING\",\n  \"addCardUrl\": \"https://securepay.tinkoff.ru/e2c/f36d8e7f-4bc6-4250-9f64-7fe986d3dc62\"\n}"
+            },
+            {
+              "id": "0a90cfee-e183-4eac-821e-2353438a2b99",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "26bd997a-0f7a-4542-81d4-c98346f08df9",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "b44bfc25-f72d-413f-87cd-b58fb9098d44",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "17fd9599-0601-4da6-bdd5-0847556a2090",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "e52bba90-0a40-4fe2-b5f0-526b0abfe2d9",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "892fd450-dfda-401f-8101-2ec419381dc4",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "794a4683-6aef-4cf0-bd92-a7523dcab41e",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "f8a9f6d0-b2ea-4a5d-837b-5c784cc8a638",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"terminalKey\": \"1573803282696E2C\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/add-card-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "beneficiaries",
+                    ":beneficiaryId",
+                    "add-card-requests"
+                  ],
+                  "variable": [
+                    {
+                      "key": "beneficiaryId",
+                      "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "22e549bf-6f0c-46b8-93e9-8aee57ffeb5e"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

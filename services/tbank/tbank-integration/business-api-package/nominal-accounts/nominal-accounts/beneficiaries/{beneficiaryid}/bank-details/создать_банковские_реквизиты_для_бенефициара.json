@@ -1,0 +1,1516 @@
+{
+  "name": "Создать банковские реквизиты для бенефициара",
+  "id": "207be864-9387-42b1-b5dc-9ac9558b75ed",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "POST",
+    "header": [
+      {
+        "key": "Idempotency-Key",
+        "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+      },
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+      "options": {
+        "raw": {
+          "headerFamily": "json",
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "beneficiaries",
+        ":beneficiaryId",
+        "bank-details"
+      ],
+      "variable": [
+        {
+          "key": "beneficiaryId",
+          "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+        }
+      ]
+    },
+    "description": "\nСоздает банковские реквизиты для бенефициара и возвращает их с ID, который нужен для дальнейшего взаимодействия.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nС помощью метода можно создать реквизиты типов `PAYMENT_DETAILS`, `CARD` и `SBP`.\nДобавить реквизиты типа `CARD` могут только партнеры с сертификатом PCI DSS.\nЧтобы подключиться к методу, перед интеграцией напишите на <a href=\"mailto:openapi@tbank.ru\">openapi@tbank.ru</a>.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "d224389e-ff65-4fb6-a0fb-b573ed8e826d",
+      "name": "Через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Created",
+      "code": 201,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\",\n  \"terminalKey\": \"1573803282696E2C\"\n}"
+    },
+    {
+      "id": "c86293a6-d05e-4440-86ca-c1f4b0484602",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "b7302571-2251-4934-8f69-576af7ec4142",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "8073684c-bb60-487e-8810-da6fc7809d26",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "5563a5df-84d9-4c9a-9c79-d267b3e3ef37",
+      "name": "по реквизитам счета;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "6bca7294-5d84-41dd-95ad-7daa6e7e493a",
+      "name": "по карте;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "3158481c-5fda-48bf-bccb-ca11cfdd4ae2",
+      "name": "через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "66dfc833-9857-45bb-9f91-19b14a18700c",
+      "name": "по реквизитам счета;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "7b6464c1-e95f-4f91-a54b-499e143da5e5",
+      "name": "по карте;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "ae826868-884b-4ecf-ba93-92fa5599c1be",
+      "name": "через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "3e685fe1-c19e-4328-915e-cd72a38e7c6e",
+      "name": "по реквизитам счета;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "645a07f7-c67d-4be2-941e-c91d951b44f2",
+      "name": "по карте;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "c61ce659-5ca3-4de1-9572-22560cd0875f",
+      "name": "через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "be24a6be-e755-45a4-bbd9-00bfc731b72f",
+      "name": "по реквизитам счета;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "57edf946-09e3-481b-9601-768ab5e2e169",
+      "name": "по карте;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "c26c07ea-dc20-409f-804c-f578374069aa",
+      "name": "через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "b1a41462-aaf2-4935-9403-b30d2efa0684",
+      "name": "по реквизитам счета;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"PAYMENT_DETAILS\",\n  \"isDefault\": true,\n  \"bik\": \"044525974\",\n  \"kpp\": \"773401001\",\n  \"inn\": \"906858195320\",\n  \"name\": \"Киняев Фома Семенович\",\n  \"bankName\": \"АО \\\"ТБанк\\\"\",\n  \"accountNumber\": \"11223344556677889900\",\n  \"corrAccountNumber\": \"30101810145250000974\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "9855f8ec-ce01-4724-86c4-c0fcb69bffc3",
+      "name": "по карте;",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"CARD\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"cardData\": \"ZV5eh9/1JXyBouiDDLpM84dgNBXata7LX/lB1vb8macuJ/bhV8qGe9SzYAsAG8WnmP0G1aNdu4FiLjclzgG1Scn2jJLNex5wM4Acr882QVgV00ZxGAmN3A8su1iVyDWV19Sq7l3WsFWZx2HZPbn8XvkcRHTUHeW528+7pbwSHi/1cTgsqyUpuBrBIz4SaYEVc8Rn57M7YxcdbtR/SAlyInWUUaIAEOJSSJwIQ/35cXLdK/7beLVtIuy2NcjIOnW5yOA1qDRcMiAd+wVhrDb8iZQMf/jPm7a4atlcA+x1z/eaf9gaOXqzDMjtRcFC9/fBsJV+QMMlecmaDhW8ZY1vuA==\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "bf03f863-5418-4657-aab9-9e124bdca122",
+      "name": "через СБП.",
+      "originalRequest": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Idempotency-Key",
+            "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SBP\",\n  \"isDefault\": true,\n  \"terminalKey\": \"1573803282696E2C\",\n  \"phoneNumber\": \"+79001112233\",\n  \"bankId\": \"100000000004\"\n}",
+          "options": {
+            "raw": {
+              "headerFamily": "json",
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries/:beneficiaryId/bank-details",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries",
+            ":beneficiaryId",
+            "bank-details"
+          ],
+          "variable": [
+            {
+              "key": "beneficiaryId",
+              "value": "eaf10fc5-f61a-5805-8005-382feb384501"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.900Z",
+    "parentPath": "api_v1_nominal-accounts_beneficiaries_{beneficiaryid}_bank-details"
+  }
+}

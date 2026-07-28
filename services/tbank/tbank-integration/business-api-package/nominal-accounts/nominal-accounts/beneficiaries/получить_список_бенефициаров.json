@@ -1,0 +1,616 @@
+{
+  "name": "Получить список бенефициаров",
+  "id": "9eceb542-e8ed-4334-be7b-76ec227ade0b",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "nominal-accounts",
+        "beneficiaries"
+      ],
+      "query": [
+        {
+          "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+          "key": "offset",
+          "value": "0"
+        },
+        {
+          "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+          "key": "limit",
+          "value": "50"
+        }
+      ]
+    },
+    "description": "\nВозвращает информацию о бенефициарах компании.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+  },
+  "response": [
+    {
+      "id": "39194e3e-9d86-49e4-afd3-529edd1883d2",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 7,\n  \"total\": 7,\n  \"results\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"FL_RESIDENT\",\n      \"firstName\": \"Фома\",\n      \"middleName\": \"Семенович\",\n      \"lastName\": \"Киняев\",\n      \"isSelfEmployed\": true,\n      \"birthDate\": \"1969-08-21\",\n      \"birthPlace\": \"г. Москва\",\n      \"citizenship\": \"RU\",\n      \"phoneNumber\": \"+79998887766\",\n      \"email\": \"f.kiniaev@tbank.ru\",\n      \"documents\": [\n        {\n          \"type\": \"PASSPORT\",\n          \"serial\": \"5000\",\n          \"number\": \"287846\",\n          \"date\": \"1998-01-01\",\n          \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n          \"division\": \"123-456\"\n        }\n      ],\n      \"addresses\": [\n        {\n          \"type\": \"REGISTRATION_ADDRESS\",\n          \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n        }\n      ],\n      \"inn\": \"266445718640\",\n      \"snils\": \"72865174431\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"FL_NONRESIDENT\",\n      \"firstName\": \"John\",\n      \"middleName\": \"William\",\n      \"lastName\": \"Smith\",\n      \"isSelfEmployed\": false,\n      \"birthDate\": \"1978-04-03\",\n      \"birthPlace\": \"Pietersburg\",\n      \"citizenship\": \"US\",\n      \"phoneNumber\": \"+12025550190\",\n      \"email\": \"john.smith@example.com\",\n      \"documents\": [\n        {\n          \"type\": \"FOREIGN_PASSPORT\",\n          \"number\": \"123456789\",\n          \"date\": \"1992-02-12\",\n          \"organization\": \"Issuing organization\"\n        },\n        {\n          \"type\": \"VISA\",\n          \"number\": \"123456789\",\n          \"date\": \"1998-01-01\",\n          \"expireDate\": \"2023-01-01\"\n        }\n      ],\n      \"addresses\": [\n        {\n          \"type\": \"RESIDENCE_ADDRESS\",\n          \"address\": \"Pietersburg, Transvaal Province, South Africa\"\n        }\n      ],\n      \"inn\": \"906858195320\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"UL_RESIDENT\",\n      \"name\": \"Акционерное общество «ТБанк»\",\n      \"phoneNumber\": \"+78007551110\",\n      \"email\": \"business.welcome@tbank.ru\",\n      \"addresses\": [\n        {\n          \"type\": \"LEGAL_ENTITY_ADDRESS\",\n          \"address\": \"127287, г. Москва, ул. Хуторская 2-я, д. 38А, стр. 26\"\n        },\n        {\n          \"type\": \"POSTAL_ADDRESS\",\n          \"address\": \"Москва, 127287, ул. Хуторская 2-я, д. 38А, стр. 26; а/я 23, г. Москва, 102001\"\n        }\n      ],\n      \"registrationDate\": \"2002-11-28\",\n      \"opf\": \"АО\",\n      \"inn\": \"7710140679\",\n      \"ogrn\": \"1027739642281\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"UL_NONRESIDENT\",\n      \"name\": \"TCS Group Holding Plc.\",\n      \"phoneNumber\": \"+74996051110\",\n      \"email\": \"business.welcome@tbank.ru\",\n      \"addresses\": [\n        {\n          \"type\": \"REGISTRATION_ADDRESS\",\n          \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036a\"\n        },\n        {\n          \"type\": \"LEGAL_ENTITY_ADDRESS\",\n          \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n        },\n        {\n          \"type\": \"OFFICE_OF_FOREIGN_LEGAL_ENTITY_ADDRESS\",\n          \"address\": \"5th floor BERENGARIA 25 Spyrou Araouzou 25 Limassol, Cyprus, 3036\"\n        }\n      ],\n      \"nza\": \"12345678912\",\n      \"registrationDate\": \"2015-11-13\",\n      \"registrationNumber\": \"107963\",\n      \"opf\": \"Plc.\",\n      \"inn\": \"9909215909\",\n      \"kio\": \"21590\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"IP_RESIDENT\",\n      \"firstName\": \"Олег\",\n      \"middleName\": \"Юрьевич\",\n      \"lastName\": \"Анисимов\",\n      \"birthDate\": \"1974-01-23\",\n      \"birthPlace\": \"г. Москва\",\n      \"citizenship\": \"RU\",\n      \"phoneNumber\": \"+71378820200\",\n      \"email\": \"KDDwKOwWD0@Pijg1\",\n      \"documents\": [\n        {\n          \"type\": \"PASSPORT\",\n          \"serial\": \"5000\",\n          \"number\": \"287846\",\n          \"date\": \"1998-01-01\",\n          \"organization\": \"Отделом УФМС по всем городам всех областей необъятной нашей Родины\",\n          \"division\": \"123-456\"\n        }\n      ],\n      \"addresses\": [\n        {\n          \"type\": \"REGISTRATION_ADDRESS\",\n          \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n        }\n      ],\n      \"registrationDate\": \"2010-01-15\",\n      \"inn\": \"306707771448\",\n      \"ogrn\": \"310774601501066\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"IP_NONRESIDENT\",\n      \"firstName\": \"Олег\",\n      \"middleName\": \"Юрьевич\",\n      \"lastName\": \"Анисимов\",\n      \"birthDate\": \"1974-01-23\",\n      \"birthPlace\": \"г. Москва\",\n      \"citizenship\": \"US\",\n      \"phoneNumber\": \"+447768027220\",\n      \"email\": \"OAAQAYkiXe@uUmPe\",\n      \"documents\": [\n        {\n          \"type\": \"FOREIGN_PASSPORT\",\n          \"number\": \"123456789\",\n          \"date\": \"1992-02-12\",\n          \"organization\": \"Issuing organization\"\n        },\n        {\n          \"type\": \"MIGRATION_CARD\",\n          \"number\": \"123456789\",\n          \"date\": \"1998-01-01\",\n          \"expireDate\": \"2023-01-01\"\n        }\n      ],\n      \"addresses\": [\n        {\n          \"type\": \"REGISTRATION_ADDRESS\",\n          \"address\": \"127287, г. Москва, ул. 2-я Хуторская, д. 38А, стр. 26\"\n        }\n      ],\n      \"registrationDate\": \"2010-01-15\",\n      \"inn\": \"173527033406\",\n      \"ogrn\": \"310774601501066\"\n    },\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"type\": \"LITE_CONTACT\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "cd6b58cd-fbfe-4fb2-8141-17f35f56372b",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "ec1c62a2-9b11-425a-8d28-72f65123bb65",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "9d82ac3f-bf51-4384-851c-241ef82adeca",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "0e91f894-a27b-4db2-a72d-570854372c9f",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "f2a57a33-f02e-4fa8-88e5-17c58adb4b74",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "ce911f42-2f01-4c3d-bf4c-5c151054a473",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "13578bcd-505c-4df8-83f6-eab147cc8a1b",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "fab1d68c-4ca0-4ff0-be6d-2a5ae5fb4aae",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/nominal-accounts/beneficiaries?offset=0&limit=50",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "nominal-accounts",
+            "beneficiaries"
+          ],
+          "query": [
+            {
+              "description": "Количество бенефициаров, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+              "key": "offset",
+              "value": "0"
+            },
+            {
+              "description": "Количество бенефициаров, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+              "key": "limit",
+              "value": "50"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.931Z",
+    "parentPath": "api_v1_nominal-accounts_beneficiaries"
+  }
+}

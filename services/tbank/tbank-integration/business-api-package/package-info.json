@@ -1,0 +1,54 @@
+{
+  "name": "ADQuest Business API Collections",
+  "version": "1.0.0",
+  "description": "Структурированные Postman коллекции для работы с API юридических лиц",
+  "created": "2026-01-13T18:54:10.255Z",
+  "categories": [
+    {
+      "name": "Выставление счетов и биллинг",
+      "folder": "billing-and-invoicing",
+      "icon": "💰",
+      "description": "Создание и управление счетами для юридических лиц"
+    },
+    {
+      "name": "Проверка и валидация",
+      "folder": "verification-and-validation",
+      "icon": "🔍",
+      "description": "Проверка ИНН, документов, статусов компаний и физлиц"
+    },
+    {
+      "name": "Платежи и переводы",
+      "folder": "payments-and-transfers",
+      "icon": "💳",
+      "description": "B2B платежи через СБП, платежные поручения и требования"
+    },
+    {
+      "name": "Банковские операции",
+      "folder": "banking-operations",
+      "icon": "🏦",
+      "description": "Работа со счетами, выписками и операциями"
+    },
+    {
+      "name": "Номинальные счета",
+      "folder": "nominal-accounts",
+      "icon": "📊",
+      "description": "Управление номинальными счетами, бенефициарами и сделками"
+    },
+    {
+      "name": "Правила и настройки",
+      "folder": "rules-and-settings",
+      "icon": "⚙️",
+      "description": "Платежные правила и настройки автоматизации"
+    }
+  ],
+  "usage": {
+    "quickStart": "QUICK_START.md",
+    "apiIndex": "API_INDEX.md",
+    "mainGuide": "README.md"
+  },
+  "requirements": {
+    "postman": ">=8.0.0",
+    "auth": "Bearer Token или mTLS сертификаты",
+    "rateLimit": "10 запросов в секунду"
+  }
+}

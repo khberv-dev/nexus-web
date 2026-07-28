@@ -1,0 +1,2398 @@
+{
+  "info": {
+    "_postman_id": "82d50cd9-aebf-4d96-8994-3db290325a27",
+    "name": "{requestId}",
+    "description": "Subcollection for {requestId}. Contains 3 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "{requestId}",
+      "item": [
+        {
+          "name": "revoke",
+          "item": [
+            {
+              "name": "Отозвать платежное требование",
+              "id": "8fba01e8-af6d-4e8f-baa3-450977a4dbcc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                    "key": "Idempotency-Key",
+                    "value": "string"
+                  },
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId",
+                    "revoke"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                },
+                "description": "Метод для отзыва платежного требования.\n\nОтозвать платежное требование в статусе `Archived` нельзя."
+              },
+              "response": [
+                {
+                  "id": "abda023e-3663-4585-afa9-0b6a23c56c82",
+                  "name": "Успешный запрос",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{}"
+                },
+                {
+                  "id": "af513d1c-4b90-420a-95cc-f5fb9d5549f5",
+                  "name": "Платежное требование не найдено",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+                },
+                {
+                  "id": "b467bc3c-3cab-495d-9f2d-fd1e03296c2c",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "0c41f003-4b56-43b9-8e36-7ad62aedfe26",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "eeabb1af-c285-4582-a9b7-a3f5ad9a3fd6",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "6c6d31fe-b54f-4130-a713-c928f1fd1d53",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "3936fa36-df5e-4e4d-9baa-534b7d218f49",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "3f8081ad-e2b9-4fa0-8ac8-ec646acdf284",
+                  "name": "Попытка отозвать входящее платежное требование",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"REVOKE_FORBIDDEN\",\n  \"errorMessage\": \"Unable to revoke payment request\"\n}"
+                },
+                {
+                  "id": "b1de831b-862b-474e-8f54-4e4b05c9366a",
+                  "name": "Требование не может быть отозвано",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"INVALID_STATE\",\n  \"errorMessage\": \"Invalid state\"\n}"
+                },
+                {
+                  "id": "b35acedc-2a1d-409c-9efe-9788a32952db",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "a9f166d7-9f7a-4dea-a6fb-437a26445a7e",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ключ идемпотентности. [Подробнее](https://cloud.yandex.ru/docs/api-design-guide/concepts/idempotency).",
+                        "key": "Idempotency-Key",
+                        "value": "string"
+                      },
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/revoke",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "revoke"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "610838b8-295c-48e2-940f-eaa849dd0a12"
+        },
+        {
+          "name": "file",
+          "item": [
+            {
+              "name": "Получить платежное требование в PDF",
+              "id": "d7e49b26-fc55-42b6-84b5-9250e4a03339",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId",
+                    "file"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                },
+                "description": " Метод для получения PDF-файла с деталями платежного требования. Файл закодирован в `base64`."
+              },
+              "response": [
+                {
+                  "id": "0a3438e8-cb5b-429d-a221-537c9949d5be",
+                  "name": "Успешный запрос",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"content\": \"UERGIGZpbGUgc2hvdWxkIGJlIGhlcmU=\"\n}"
+                },
+                {
+                  "id": "6c733c25-59b6-42b1-a543-c8dd6869bdd9",
+                  "name": "Платежное требование не найдено",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+                },
+                {
+                  "id": "0d351145-ad59-4be2-83ca-d97b23645e34",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "8cc6ec9f-0c44-4e67-b921-a14361754725",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "d6b75fbd-b849-40fd-8b05-341fb2d86c75",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "38ffd002-85db-4af2-86da-cd9d35592422",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "0ad3b2ec-8135-4535-ada6-a31fef719c41",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "9020ee0d-0abe-4085-96ae-f97049e1440e",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+                },
+                {
+                  "id": "8f05ffd8-bfd5-4b87-8d3b-3bd2fe6fad2c",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "8c84a407-df49-4dff-a0d4-09db69e5f02a",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId/file",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "requests",
+                        ":requestId",
+                        "file"
+                      ],
+                      "variable": [
+                        {
+                          "key": "requestId",
+                          "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                          "description": "ID платежного требования."
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "4ac0bbd1-be62-4119-9457-17bd1fa4bcfe"
+        },
+        {
+          "name": "Получить детали платежного требования",
+          "id": "fbf80a9b-e8db-4330-b6a5-004e6bfda6f6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "sandbox",
+                "secured",
+                "api",
+                "v1",
+                "requests",
+                ":requestId"
+              ],
+              "variable": [
+                {
+                  "key": "requestId",
+                  "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                  "description": "ID платежного требования."
+                }
+              ]
+            },
+            "description": "Метод для получения деталей платежного требования — ID, дата создания, тип платежного документа и другие.\n\nТакже вы можете получать информацию об изменении статуса платежного требования, когда его статус меняется — для этого используйте вебхук <a href=\"/docs/intro/webhooks/payment-request\">Обновление статуса платежного требования</a>."
+          },
+          "response": [
+            {
+              "id": "aba82feb-5973-4d44-894c-46e13f9fac3d",
+              "name": "Успешный запрос",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"creationDate\": \"2022-11-10\",\n  \"docType\": \"PaymentRequest\",\n  \"amount\": 599.99,\n  \"paymentCondition\": \"WithoutAcceptance\",\n  \"acceptTerm\": 6,\n  \"docDispatchDate\": \"2022-11-10\",\n  \"payerAccount\": \"12345678900987654321\",\n  \"payerINN\": \"1234567890\",\n  \"payerKPP\": \"123456789\",\n  \"payerBIC\": \"044525974\",\n  \"payerCorAccount\": \"30101810145250000974\",\n  \"payerName\": \"ИП Петров Петр Иванович\",\n  \"recipientAccount\": \"09876543211234567890\",\n  \"documentNumber\": 123456,\n  \"purpose\": \"Платеж по соглашению №236383626412/2022-08-05/25.421\",\n  \"agreementId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"direction\": \"Credit\",\n  \"status\": \"Sent\",\n  \"ruleId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+            },
+            {
+              "id": "5171c394-f253-4a8c-9a5b-d8cb7f939ef2",
+              "name": "Не найдена форма для соглашения о безакцептных списаниях",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"bcadsa12\",\n  \"errorCode\": \"NOT_FOUND\",\n  \"errorMessage\": \"Resource not found\"\n}"
+            },
+            {
+              "id": "23d8750a-59fc-446c-8058-7977e7023e7e",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "195b52f5-9ca5-4369-8fe0-ab0d49a13b28",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "06bfd7af-0e8a-4de0-bcae-e593ed48a52a",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "08200870-7935-4524-94da-2e521d20a377",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "2d023223-a9a6-4cfb-bfa4-183d2509b1a3",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "aa693083-0098-4c14-8a14-c279e2ca0dd0",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\"\n}"
+            },
+            {
+              "id": "88045117-81d6-450d-b814-d3d15b9f7768",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "4ecbfb39-d5a2-42b2-a920-a6b0828308d6",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/requests/:requestId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "requests",
+                    ":requestId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "requestId",
+                      "value": "fa1c49ca-234b-91eb-c41e-c23327352ae4",
+                      "description": "ID платежного требования."
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "fb030431-1c4b-4375-a1a5-ffe4d7639bf0"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

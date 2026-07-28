@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <CORSRule>
+    <AllowedOrigin>https://nexuspro.ru</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>DELETE</AllowedMethod>
+    <AllowedHeader>content-type</AllowedHeader>
+    <AllowedHeader>x-amz-*</AllowedHeader>
+    <AllowedHeader>authorization</AllowedHeader>
+    <AllowedHeader>origin</AllowedHeader>
+    <ExposeHeader>ETag</ExposeHeader>
+    <MaxAgeSeconds>3600</MaxAgeSeconds>
+  </CORSRule>
+</CORSConfiguration>

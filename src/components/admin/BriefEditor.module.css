@@ -1,0 +1,22 @@
+/* Native <select> listbox follows OS unless color-scheme matches the UI; options need explicit colors where supported. */
+@media (prefers-color-scheme: light) {
+  .nativeSelect {
+    color-scheme: light;
+  }
+
+  .nativeSelect option {
+    background-color: var(--adm-sidebar, #ffffff);
+    color: var(--adm-text, #111827);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .nativeSelect {
+    color-scheme: dark;
+  }
+
+  .nativeSelect option {
+    background-color: var(--adm-sidebar, #1e293b);
+    color: var(--adm-text, #f1f5f9);
+  }
+}

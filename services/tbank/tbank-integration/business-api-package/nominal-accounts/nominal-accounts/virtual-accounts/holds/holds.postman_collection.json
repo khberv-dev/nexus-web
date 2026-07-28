@@ -1,0 +1,739 @@
+{
+  "info": {
+    "_postman_id": "ed5c7e3d-074c-40aa-9af9-a2ba13f28a48",
+    "name": "holds",
+    "description": "Subcollection for holds. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "holds",
+      "item": [
+        {
+          "name": "Получить информацию по холдам на виртуальных счетах бенефициаров",
+          "id": "e46b0e08-d173-4225-8b43-058f8dbec665",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "virtual-accounts",
+                "holds"
+              ],
+              "query": [
+                {
+                  "description": "Номер номинального счета.",
+                  "key": "accountNumber",
+                  "value": "40702810110011000000"
+                },
+                {
+                  "description": "ID бенефициара.",
+                  "key": "beneficiaryId",
+                  "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                },
+                {
+                  "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "\nПозволяет получить список холдов на виртуальных счетах бенефициаров в рамках номинального счета.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "55ee8ee3-7243-461b-b905-0864fa2f4081",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 1,\n  \"total\": 1,\n  \"results\": [\n    {\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"holdId\": \"7540c2ca-2373-472a-a099-7756475484a9\",\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"amount\": 100\n    }\n  ]\n}"
+            },
+            {
+              "id": "33c8828a-9670-418d-8bcf-6d4e1a7fcf53",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "1548d108-ec66-4bbc-8642-4019b465107f",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "68ec7469-716b-4dc3-80fd-b74232bcc939",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "2b8869a6-b8ec-4640-8226-773e262f93a7",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "8219a962-196e-411e-92c5-16629b029239",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "be4a0966-fd75-44f7-8356-3f3d956949b9",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "e31a5f46-53db-426a-8ea9-238690857e89",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "cbd2b043-9039-4d76-83b7-dad3e27b30a4",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/virtual-accounts/holds?accountNumber=40702810110011000000&beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "virtual-accounts",
+                    "holds"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество холдов, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "af7522e6-1a0c-4538-8985-a36b17d4d552"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

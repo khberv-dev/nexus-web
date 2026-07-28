@@ -1,0 +1,1855 @@
+{
+  "info": {
+    "_postman_id": "2d5878d9-2a6b-4114-802b-ff0e06304bab",
+    "name": "💰 Выставление счетов и биллинг",
+    "description": "Создание и управление счетами для юридических лиц",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "invoice",
+      "item": [
+        {
+          "name": "send",
+          "item": [
+            {
+              "name": "Выставить счет",
+              "id": "38cc1ef2-6814-45b7-ac78-2706ad52a630",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "invoice",
+                    "send"
+                  ]
+                },
+                "description": "Метод для выставления счетов — номер, срок оплаты, дата выставления, информация о плательщике и другое.\n\nПользователь должен дать согласие на доступ к созданию и отправке счетов на оплату контрагенту.\n\n[Как добавить логотип, подпись и печать](/docs/logo)"
+              },
+              "response": [
+                {
+                  "id": "6dde6ddb-442b-40e1-bdca-5f8eed8e93d2",
+                  "name": "Успешный запрос",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"pdfUrl\": \"https://example.com/qwetq\",\n  \"invoiceId\": \"d8327c28-4a8e-4084-93ea-a94b7bd144c5\",\n  \"incomingInvoiceUrl\": \"https://business.tbank.ru/sme/invoices/incoming/d8327c28-4a8e-4084-93ea-a94b7bd144c5\"\n}"
+                },
+                {
+                  "id": "3acae31a-cc9e-47b6-8568-a51018707826",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "0e22a615-8c25-444b-a25e-ae94393c1c71",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "24cbb7b0-8dfe-4aa5-b548-608b2c2ee275",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "5c7cd307-5b4f-481a-8a4b-fc1b1fe36a2b",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "69a69dff-3c98-4454-8d3e-41e4c5e81d40",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "8b48d6c3-e334-4b0a-b611-9cfc47f9685e",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "a6dc050c-97d5-4b89-9b88-47da87c22aae",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "5594dd67-a325-4336-b34a-3d1518acbe2a",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "6fe90a7c-ef09-4114-86aa-b3d3af5aed9a",
+                  "name": "Ошибка при обработке данных",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"56554da5f4\",\n  \"errorMessage\": \"Выставляемый счет заполнен некорректно.\",\n  \"errorCode\": \"INVALID_INVOICE\",\n  \"errorDetails\": {\n    \"message\": \"[ \\\"Значение \\\\\\\"Номер счета\\\\\\\" должно быть числом\\\" ]\"\n  }\n}"
+                },
+                {
+                  "id": "849af5c8-31e1-4756-97b7-d5cab894fd8a",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "da492f82-1ddb-4927-9b28-9f8cdca0b0cb",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"invoiceNumber\": \"12345\",\n  \"dueDate\": \"2020-08-22\",\n  \"invoiceDate\": \"2020-07-23\",\n  \"accountNumber\": \"40802123456789012345\",\n  \"payer\": {\n    \"name\": \"ООО «Название вашей компании»\",\n    \"inn\": \"730990470834\",\n    \"kpp\": \"123456789\"\n  },\n  \"items\": [\n    {\n      \"name\": \"Рога\",\n      \"price\": 10,\n      \"unit\": \"Шт\",\n      \"vat\": \"None\",\n      \"amount\": 10\n    },\n    {\n      \"name\": \"Копыта\",\n      \"price\": 100,\n      \"unit\": \"Шт\",\n      \"vat\": \"22\",\n      \"amount\": 2\n    }\n  ],\n  \"contacts\": [\n    {\n      \"email\": \"example@mail.com\"\n    }\n  ],\n  \"contactPhone\": \"+74996051110\",\n  \"comment\": \"Комментарий, например, информанция для контрагента.\",\n  \"customPaymentPurpose\": \"Кастомное назначение платежа.\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/invoice/send",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "invoice",
+                        "send"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "8449d98a-790c-4d50-b331-ce4036378b98"
+        }
+      ],
+      "id": "7881c8f5-1d03-4d02-ab77-91987b9e04e0"
+    },
+    {
+      "name": "invoice",
+      "item": [
+        {
+          "name": "{invoiceId}",
+          "item": [
+            {
+              "name": "info",
+              "item": [
+                {
+                  "name": "Получить информацию о выставленном счете",
+                  "id": "de9965ff-86c4-4200-8ec2-3a58706a5119",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "api",
+                        "v1",
+                        "openapi",
+                        "invoice",
+                        ":invoiceId",
+                        "info"
+                      ],
+                      "variable": [
+                        {
+                          "key": "invoiceId",
+                          "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                          "description": "Идентификатор выставленного счета."
+                        }
+                      ]
+                    },
+                    "description": "Метод для получения статуса выставленного счета."
+                  },
+                  "response": [
+                    {
+                      "id": "6ad192c2-c9b7-448c-b5ab-f5cee90e4c25",
+                      "name": "Успешный запрос",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"status\": \"SUBMITTED\"\n}"
+                    },
+                    {
+                      "id": "8ba7f2e4-4ae5-48c4-83f6-395313f2df2d",
+                      "name": "Ошибка при неправильно заполненном ИНН",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                    },
+                    {
+                      "id": "71c7f4db-4f1f-4cab-ade5-e005cac0c02a",
+                      "name": "Ошибка при неправильно переданном значении поля fieldName",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                    },
+                    {
+                      "id": "4ac376ee-4a32-40d0-9fb6-50580a1fb014",
+                      "name": "Ошибка при неправильно переданной дате платежа",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                    },
+                    {
+                      "id": "fe5fe8eb-bd64-4306-858c-2754d55cb4a9",
+                      "name": "Ошибка при неактивном токене",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                    },
+                    {
+                      "id": "a9934425-f09f-426b-a52a-bef1a39ff847",
+                      "name": "Ошибка при неправильно заданной компании",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                    },
+                    {
+                      "id": "4845e6c3-84fd-4e09-9be1-adc73867d644",
+                      "name": "Ошибка при отсутствии доступов",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                    },
+                    {
+                      "id": "805c6f48-9f8b-4aeb-b416-57f37b8981ac",
+                      "name": "Ошибка при запросе с неизвестного IP",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                    },
+                    {
+                      "id": "5126a287-e76e-414a-a965-24c537ea54fc",
+                      "name": "Ошибка при отсутствии прав на использование продукта",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                    },
+                    {
+                      "id": "d06a69f9-9f49-4d93-9c11-81c3dc089b34",
+                      "name": "Ошибка при обработке данных",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"56554da5f4\",\n  \"errorMessage\": \"Счет не найден\",\n  \"errorCode\": \"INVOICE_NOT_FOUND\"\n}"
+                    },
+                    {
+                      "id": "7bd906b5-658a-468e-9d7c-6e1d10f71893",
+                      "name": "Слишком много запросов",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                    },
+                    {
+                      "id": "09f01e57-e9ac-43f8-9694-bbd203343e46",
+                      "name": "Ошибка сервера",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                            "key": "X-Request-Id",
+                            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://business.tbank.ru/openapi/api/v1/openapi/invoice/:invoiceId/info",
+                          "protocol": "https",
+                          "host": [
+                            "business",
+                            "tbank",
+                            "ru"
+                          ],
+                          "path": [
+                            "openapi",
+                            "api",
+                            "v1",
+                            "openapi",
+                            "invoice",
+                            ":invoiceId",
+                            "info"
+                          ],
+                          "variable": [
+                            {
+                              "key": "invoiceId",
+                              "value": "aefc4648-47e0-5604-dbcf-346534725469",
+                              "description": "Идентификатор выставленного счета."
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                    }
+                  ]
+                }
+              ],
+              "id": "d8432f59-ebbb-4cba-b9ff-e4aa6663ba9d"
+            }
+          ],
+          "id": "87918d9d-ea11-42b1-8956-923aca12e0a8"
+        }
+      ],
+      "id": "c0d3061c-21ab-47b5-8695-8a40d87ccd40"
+    }
+  ]
+}

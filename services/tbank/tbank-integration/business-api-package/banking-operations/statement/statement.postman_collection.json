@@ -1,0 +1,1439 @@
+{
+  "info": {
+    "_postman_id": "fb17084f-e93d-4a40-a34e-9c2ca7dd32bb",
+    "name": "statement",
+    "description": "Subcollection for statement. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "statement",
+      "item": [
+        {
+          "name": "Получить выписку по счету",
+          "id": "2cfd64d4-5fb7-4901-8cfb-6c3e10131fa9",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                "key": "X-Request-Id",
+                "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+              "protocol": "https",
+              "host": [
+                "business",
+                "tbank",
+                "ru"
+              ],
+              "path": [
+                "openapi",
+                "api",
+                "v1",
+                "statement"
+              ],
+              "query": [
+                {
+                  "description": "Номер счета.",
+                  "key": "accountNumber",
+                  "value": "40702810510000710417"
+                },
+                {
+                  "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                  "key": "categories",
+                  "value": "fee"
+                },
+                {
+                  "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                  "key": "cursor",
+                  "value": "string"
+                },
+                {
+                  "description": "Дата начала периода, включительно.",
+                  "key": "from",
+                  "value": "2022-02-01T21:00:00Z"
+                },
+                {
+                  "description": "ИНН контрагентов.",
+                  "key": "inns",
+                  "value": "17499237465"
+                },
+                {
+                  "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                  "key": "limit",
+                  "value": "1000"
+                },
+                {
+                  "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                  "key": "operationStatus",
+                  "value": "Transaction"
+                },
+                {
+                  "description": "Дата окончания периода, не включительно.",
+                  "key": "to",
+                  "value": "2022-02-02T21:00:00Z"
+                },
+                {
+                  "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                  "key": "ucid",
+                  "value": "1234567890"
+                },
+                {
+                  "description": "Если передан `true`, возвращаются балансы.",
+                  "key": "withBalances",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": " Метод для получения списка операций по счету за определенный период по указанным критериям поиска. Данные доступны с июня 2023 года.\n\nЧтобы оперативно отслеживать статус оплаты, вы также можете воспользоваться вебхуком <a href=\"/docs/intro/webhooks/account-info\">Операция по счету</a>.\n\nПоля с датой и временем в запросе и ответе передаются в формате ISO 8601 по UTC.\n\nОперации получаются порциями. Максимальный размер порции регулируется параметром <b>limit</b>. Если в текущем запросе не удается вернуть все операции, в ответе будет заполнено поле <b>nextCursor</b> с указателем на последнюю операцию в ответе. Чтобы получить очередную порцию операций, повторите запрос — в поле <b>cursor</b> укажите значение, полученное из <b>nextCursor</b>.\n\nЧтобы в ответе вернулись балансы, передайте параметр <b>withBalances</b> со значением <code>true</code>. Они вернутся только для первого запроса — для следующих запросов очередной порции операций при заполнении поля <b>cursor</b> балансы не возвращаются. "
+          },
+          "response": [
+            {
+              "id": "94192510-0fe5-40e8-9335-00bb9edf5e5b",
+              "name": "Список операций",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"balances\": {\n    \"balanceBegin\": 0,\n    \"balanceEnd\": 484.5,\n    \"credit\": 484.5,\n    \"debit\": 0,\n    \"creditAuthorizations\": 0,\n    \"debitAuthorizations\": 0,\n    \"operationsCount\": 1,\n    \"balances\": [\n      {\n        \"date\": \"2022-02-02\",\n        \"balanceBegin\": 0,\n        \"balanceEnd\": 484.5,\n        \"credit\": 484.5,\n        \"debit\": 0,\n        \"creditAuthorizations\": 0,\n        \"debitAuthorizations\": 0,\n        \"operationsCount\": 1\n      }\n    ]\n  },\n  \"operations\": [\n    {\n      \"operationDate\": \"2022-02-02T20:07:04Z\",\n      \"operationId\": \"64be58f9-c7fc-0027-96ba-763ec56a2317\",\n      \"operationStatus\": \"Transaction\",\n      \"accountNumber\": \"40702810510000710417\",\n      \"bic\": \"044525974\",\n      \"typeOfOperation\": \"Credit\",\n      \"category\": \"fee\",\n      \"trxnPostDate\": \"2021-03-29T18:37:02Z\",\n      \"authorizationDate\": \"2021-03-29T15:29:15Z\",\n      \"drawDate\": \"2022-02-02T20:07:04Z\",\n      \"chargeDate\": \"2022-02-02T20:07:04Z\",\n      \"docDate\": \"2022-02-02T20:07:04Z\",\n      \"documentNumber\": \"175926\",\n      \"payVo\": \"payment-order\",\n      \"vo\": \"17\",\n      \"priority\": 5,\n      \"operationAmount\": 484.5,\n      \"operationCurrencyDigitalCode\": \"643\",\n      \"accountAmount\": 484.5,\n      \"accountCurrencyDigitalCode\": \"643\",\n      \"rubleAmount\": 176.54,\n      \"description\": \"Перевод собственных средств на счет. НДС не облагается\",\n      \"payPurpose\": \"Оплата услуг по договору 17369058. НДС не облагается\",\n      \"payer\": {\n        \"acct\": \"40702810510000710417\",\n        \"name\": \"ИП Котиков Александр Михайлович\",\n        \"inn\": \"17499237465\",\n        \"kpp\": \"0\",\n        \"bicRu\": \"044525974\",\n        \"bicSwift\": \"CHASUS33\",\n        \"bankName\": \"АО «ТБанк»\",\n        \"corAcct\": \"30102810945250000974\"\n      },\n      \"receiver\": {\n        \"acct\": \"40702810510000710417\",\n        \"name\": \"ИП Котиков Александр Михайлович\",\n        \"inn\": \"17499237465\",\n        \"kpp\": \"0\",\n        \"bicRu\": \"044525974\",\n        \"bicSwift\": \"CHASUS33\",\n        \"bankName\": \"АО «ТБанк»\",\n        \"corAcct\": \"30102810945250000974\"\n      },\n      \"counterParty\": {\n        \"account\": \"40702810510000710417\",\n        \"bankBic\": \"044525974\",\n        \"bankName\": \"АО «ТБанк»\",\n        \"bankSwiftCode\": \"CHASUS33\",\n        \"corrAccount\": \"30002340500001234056\",\n        \"inn\": \"366109554501\",\n        \"kpp\": \"0\",\n        \"name\": \"Межрайонная ИФНС России № 17 по Воронежской области\"\n      },\n      \"cardNumber\": \"5534*****6400\",\n      \"ucid\": 1053539419,\n      \"mcc\": \"0010\",\n      \"merch\": {\n        \"address\": \"13 VOLODARSKOGO STR\",\n        \"city\": \"MOSCOW\",\n        \"index\": \"183038\",\n        \"country\": \"RUS\",\n        \"name\": \"Tinkoff.cc_trans\"\n      },\n      \"authCode\": \"643\",\n      \"rrn\": \"8408475\",\n      \"acquirerId\": \"17495726\",\n      \"tax\": {\n        \"kbk\": \"18210302101081013260\",\n        \"oktmo\": \"40519000\",\n        \"payerStatus\": \"09\",\n        \"evidence\": \"ТП\",\n        \"period\": \"ГД.00.2021\",\n        \"nalType\": \"0\",\n        \"docNumber\": \"0\",\n        \"docDate\": \"0\",\n        \"uin\": \"0\",\n        \"thirdPartyInn\": \"366109554501\",\n        \"thirdPartyKpp\": \"0\"\n      }\n    }\n  ],\n  \"nextCursor\": \"0plHq1GMtZTd39VywSrQ5C1an0tj0Q4Lo91ZPul5i0Y=\"\n}"
+            },
+            {
+              "id": "5288d634-61d7-48e8-bac2-077a76d6bcb0",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "26e8d81e-d8d1-4b4b-81cd-35d0dbe44982",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "3aaf4795-38a8-4f04-a10c-e27281534ceb",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "d1c1e9e4-abed-4c0e-878d-f7fdc8e0327f",
+              "name": "Ошибка при неактивном токене",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "a3b240d3-5ea6-48e1-a229-1668c3e0f475",
+              "name": "Ошибка при неправильно заданной компании",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+            },
+            {
+              "id": "5f00052f-08eb-4f3b-9749-6818ec19c76e",
+              "name": "Ошибка при отсутствии доступов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "00748871-d7f1-4f58-bd3b-700cdffa5c30",
+              "name": "Ошибка при запросе с неизвестного IP",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "7a556ad0-f977-43c7-a8c2-99715696b089",
+              "name": "Ошибка при отсутствии прав на использование продукта",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+            },
+            {
+              "id": "3af21e75-ea9e-4a0f-a003-21e71e0a3ce4",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"5fdf22eb91012189\",\n  \"errorCode\": \"NO_EXISTING_ACCOUNT\",\n  \"errorMessage\": \"Selected account for company not found.\"\n}"
+            },
+            {
+              "id": "89ac6595-7515-420e-a0ab-9c0c47fed136",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+            },
+            {
+              "id": "4dc78f48-eb13-4613-aa83-48b71fa55336",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/api/v1/statement?accountNumber=40702810510000710417&categories=fee&cursor=string&from=2022-02-01T21:00:00Z&inns=17499237465&limit=1000&operationStatus=Transaction&to=2022-02-02T21:00:00Z&ucid=1234567890&withBalances=true",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "api",
+                    "v1",
+                    "statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "Номер счета.",
+                      "key": "accountNumber",
+                      "value": "40702810510000710417"
+                    },
+                    {
+                      "description": "Категории операций. <a href=\"/docs/products/scenarios/account-info#категории-операций\">Подробнее о категориях</a>.",
+                      "key": "categories",
+                      "value": "fee"
+                    },
+                    {
+                      "description": "Указатель на последнюю операцию, полученную в предыдущем запросе. Максимальное количество операций в запросе — 5000, значение по умолчанию — 1000.\n\nЕсли количество операций больше лимита, этот параметр вернется в последней строке ответа — его нужно передать в следующем запросе.",
+                      "key": "cursor",
+                      "value": "string"
+                    },
+                    {
+                      "description": "Дата начала периода, включительно.",
+                      "key": "from",
+                      "value": "2022-02-01T21:00:00Z"
+                    },
+                    {
+                      "description": "ИНН контрагентов.",
+                      "key": "inns",
+                      "value": "17499237465"
+                    },
+                    {
+                      "description": "Максимальное количество операций, которое нужно получить за один вызов метода.",
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "description": "Статус операции для фильтрации: все операции, только авторизации или только подтвержденные транзакции.",
+                      "key": "operationStatus",
+                      "value": "Transaction"
+                    },
+                    {
+                      "description": "Дата окончания периода, не включительно.",
+                      "key": "to",
+                      "value": "2022-02-02T21:00:00Z"
+                    },
+                    {
+                      "description": "UCID карты — ее уникальный идентификатор. Его можно получить через метод <a herf=\"/docs/api/get-api-v-3-card\">Получить список карт компании</a>.",
+                      "key": "ucid",
+                      "value": "1234567890"
+                    },
+                    {
+                      "description": "Если передан `true`, возвращаются балансы.",
+                      "key": "withBalances",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "85daf1c7-af6f-4df3-928f-7cf50d496d99"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

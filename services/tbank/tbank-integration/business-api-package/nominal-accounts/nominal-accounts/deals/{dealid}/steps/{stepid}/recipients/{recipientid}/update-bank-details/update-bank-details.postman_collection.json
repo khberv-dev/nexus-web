@@ -1,0 +1,849 @@
+{
+  "info": {
+    "_postman_id": "f5073092-bf29-458a-a5fe-6207ef81c941",
+    "name": "update-bank-details",
+    "description": "Subcollection for update-bank-details. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "update-bank-details",
+      "item": [
+        {
+          "name": "Обновить банковские реквизиты у реципиента на этапе сделки",
+          "id": "7041c6d4-e1fc-4112-b8d2-24d78a5a89bf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "deals",
+                ":dealId",
+                "steps",
+                ":stepId",
+                "recipients",
+                ":recipientId",
+                "update-bank-details"
+              ],
+              "variable": [
+                {
+                  "key": "dealId",
+                  "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                },
+                {
+                  "key": "stepId",
+                  "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                },
+                {
+                  "key": "recipientId",
+                  "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                }
+              ]
+            },
+            "description": "\nПозволяет обновить банковские реквизиты у получателя денежных средств — реципиента (recipient) при неуспешности платежа.\nТолько для сделок в статусе `PAYMENT_FAILED`.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "fb343a66-617f-487e-bc6e-da2d993b6dd9",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{}"
+            },
+            {
+              "id": "63ed6c68-50f8-4948-aef7-f0be423ce325",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "f2596336-6a3a-4dc9-9d2e-be85be2fc0dd",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "a3ddc187-b0bd-4c80-b6fe-5bac05a5b3a7",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "dfd23cf8-91fb-41a3-99da-0c0e445da96f",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "a7025f9e-8c48-48e1-a97e-d2c105066174",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "2c962a72-db70-49e6-9e21-0e5978e7ec35",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "8a98dbb7-8561-4594-8591-b79aaf7d1324",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "a6778f76-3f4c-4d99-bd46-d0394eecdb9b",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/recipients/:recipientId/update-bank-details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "recipients",
+                    ":recipientId",
+                    "update-bank-details"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    },
+                    {
+                      "key": "recipientId",
+                      "value": "fa8bc2c5-a721-f818-d5fa-e783fb011f55"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "7fbcb28b-72f9-483b-a324-54dfe06ffadc"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

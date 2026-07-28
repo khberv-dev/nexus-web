@@ -1,0 +1,1356 @@
+{
+  "name": "Получить платеж по ID платежа",
+  "id": "0dd9de5b-3e7c-48f8-bcaa-4d4ee9a9582a",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+        "key": "X-Request-Id",
+        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+      },
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+      "protocol": "https",
+      "host": [
+        "business",
+        "tbank",
+        "ru"
+      ],
+      "path": [
+        "openapi",
+        "sandbox",
+        "secured",
+        "api",
+        "v1",
+        "nominal-accounts",
+        "payments",
+        ":paymentId"
+      ],
+      "variable": [
+        {
+          "key": "paymentId",
+          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+        }
+      ]
+    },
+    "description": "Метод для получения платежа по ID платежа."
+  },
+  "response": [
+    {
+      "id": "933a1395-e3a4-49cb-9575-ff5689d0088b",
+      "name": "Успешный обычный платеж по реквизитам счета",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО «ТБанк»\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "bcbfab03-4797-46eb-8797-5aed0838b613",
+      "name": "Неуспешный обычный платеж по реквизитам счета",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО «ТБанк»\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "21faeb05-723d-49c7-99b4-7df83f79b82f",
+      "name": "Успешный обычный платеж по карточным реквизитам",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"CARD\",\n    \"cardId\": \"70000000707\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "1b850599-1187-4e29-91ac-9d1c7ce0da9c",
+      "name": "Неуспешный обычный платеж по карточным реквизитам",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"CARD\",\n    \"cardId\": \"70000000707\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Transaction not permitted to card\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "930b2e0b-78af-4b49-90fc-3c746fbbba5d",
+      "name": "Успешный обычный платеж через СБП",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"SBP\",\n    \"phoneNumber\": \"+79001112233\",\n    \"bankId\": \"100000000004\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "c6c6ef00-c106-460b-a53f-208de66f98db",
+      "name": "Неуспешный обычный платеж через СБП",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"SBP\",\n    \"phoneNumber\": \"+79001112233\",\n    \"bankId\": \"100000000004\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Specified bank is not SBP member\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+    },
+    {
+      "id": "2de270ad-534d-427a-979b-a0b21468a834",
+      "name": "Успешный налоговый платеж",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}"
+    },
+    {
+      "id": "8b57566a-0e32-4710-ae94-ce5b46f032c9",
+      "name": "Неуспешный налоговый платеж",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}"
+    },
+    {
+      "id": "a8e5bfd8-97e0-43c5-932a-1f936b044acf",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "7b9e9aec-c0a4-4158-9de0-566c8ea7cc5a",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "a6572fa1-9146-40f5-aec0-7ff666f3619d",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "d8254cc0-5c41-432a-a76e-f2d032316a62",
+      "name": "Ошибка при неактивном токене",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "b2033ae7-13a6-46af-aef5-2dcec157dc99",
+      "name": "Ошибка при неправильно заданной компании",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+    },
+    {
+      "id": "6b6b6288-219a-4bf4-8825-8bee2807b305",
+      "name": "Ошибка при отсутствии доступов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "b19c96a8-243d-4d89-92fc-2c9f135b67c4",
+      "name": "Ошибка при запросе с неизвестного IP",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "2ccbed68-e258-4978-9a80-c6eb6b53191d",
+      "name": "Ошибка при отсутствии прав на использование продукта",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+    },
+    {
+      "id": "0368c9fb-e3b2-47c7-aba8-aab35e0ae58c",
+      "name": "Ошибка при обработке данных.",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Ошибка при обработке данных\",\n  \"errorCode\": \"UNPROCESSABLE_ENTITY\"\n}"
+    },
+    {
+      "id": "4752f671-a70a-4875-bb62-9485362bee0a",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+    },
+    {
+      "id": "87625648-13e5-483e-9ae6-5afc0c80577c",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+            "key": "X-Request-Id",
+            "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+          "protocol": "https",
+          "host": [
+            "business",
+            "tbank",
+            "ru"
+          ],
+          "path": [
+            "openapi",
+            "sandbox",
+            "secured",
+            "api",
+            "v1",
+            "nominal-accounts",
+            "payments",
+            ":paymentId"
+          ],
+          "variable": [
+            {
+              "key": "paymentId",
+              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:23.401Z",
+    "parentPath": "api_v1_nominal-accounts_payments_{paymentid}"
+  }
+}

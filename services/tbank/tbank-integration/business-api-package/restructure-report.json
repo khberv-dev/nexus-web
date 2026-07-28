@@ -1,0 +1,114 @@
+{
+  "restructureDate": "2026-01-13T18:47:40.549Z",
+  "sourceDirectory": "D:\\cloudbridge\\ADQuest\\t-api\\postman\\business-collections",
+  "targetDirectory": "D:\\cloudbridge\\ADQuest\\t-api\\postman\\business-collections-structured",
+  "statistics": {
+    "movedFolders": 22,
+    "createdCollections": 6,
+    "createdFiles": 260
+  },
+  "categories": [
+    {
+      "category": "billing-and-invoicing",
+      "name": "Выставление счетов и биллинг",
+      "folders": 2,
+      "requests": 2
+    },
+    {
+      "category": "verification-and-validation",
+      "name": "Проверка и валидация",
+      "folders": 6,
+      "requests": 6
+    },
+    {
+      "category": "payments-and-transfers",
+      "name": "Платежи и переводы",
+      "folders": 3,
+      "requests": 3
+    },
+    {
+      "category": "banking-operations",
+      "name": "Банковские операции",
+      "folders": 7,
+      "requests": 7
+    },
+    {
+      "category": "nominal-accounts",
+      "name": "Номинальные счета",
+      "folders": 2,
+      "requests": 2
+    },
+    {
+      "category": "rules-and-settings",
+      "name": "Правила и настройки",
+      "folders": 2,
+      "requests": 2
+    }
+  ],
+  "structure": {
+    "billing-and-invoicing": {
+      "name": "Выставление счетов и биллинг",
+      "description": "Создание и управление счетами для юридических лиц",
+      "folders": [
+        "api/v1/invoice",
+        "api/v1/openapi/invoice"
+      ],
+      "icon": "💰"
+    },
+    "verification-and-validation": {
+      "name": "Проверка и валидация",
+      "description": "Проверка ИНН, документов, статусов компаний и физлиц",
+      "folders": [
+        "api/v1/company",
+        "api/v1/individual/documents",
+        "api/v1/individual/blacklist",
+        "api/v1/individual/pdl",
+        "api/v1/individual/foreignagent",
+        "api/v1/individual/self-employed"
+      ],
+      "icon": "🔍"
+    },
+    "payments-and-transfers": {
+      "name": "Платежи и переводы",
+      "description": "B2B платежи через СБП, платежные поручения и требования",
+      "folders": [
+        "api/v1/b2b",
+        "api/v1/payments-orders",
+        "api/v1/requests"
+      ],
+      "icon": "💳"
+    },
+    "banking-operations": {
+      "name": "Банковские операции",
+      "description": "Работа со счетами, выписками и операциями",
+      "folders": [
+        "api/v1/bank-accounts",
+        "api/v2/bank-accounts",
+        "api/v3/bank-accounts",
+        "api/v4/bank-accounts",
+        "api/v1/bank-statement",
+        "api/v1/account-operations",
+        "api/v1/statement"
+      ],
+      "icon": "🏦"
+    },
+    "nominal-accounts": {
+      "name": "Номинальные счета",
+      "description": "Управление номинальными счетами, бенефициарами и сделками",
+      "folders": [
+        "api/v1/nominal-accounts",
+        "api/v2/nominal-accounts"
+      ],
+      "icon": "📊"
+    },
+    "rules-and-settings": {
+      "name": "Правила и настройки",
+      "description": "Платежные правила и настройки автоматизации",
+      "folders": [
+        "api/v1/rules",
+        "api/v2/rules"
+      ],
+      "icon": "⚙️"
+    }
+  }
+}

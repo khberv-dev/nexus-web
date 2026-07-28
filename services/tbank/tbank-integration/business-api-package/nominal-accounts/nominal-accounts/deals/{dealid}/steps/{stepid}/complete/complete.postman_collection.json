@@ -1,0 +1,649 @@
+{
+  "info": {
+    "_postman_id": "60ad9b93-4a4d-4f11-9500-518a32ff3ea0",
+    "name": "complete",
+    "description": "Subcollection for complete. Contains 1 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "complete",
+      "item": [
+        {
+          "name": "Завершить этап сделки",
+          "id": "3bb6b156-ed7a-4ee8-92d4-545e2fc768c3",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "deals",
+                ":dealId",
+                "steps",
+                ":stepId",
+                "complete"
+              ],
+              "variable": [
+                {
+                  "key": "dealId",
+                  "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                },
+                {
+                  "key": "stepId",
+                  "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                }
+              ]
+            },
+            "description": "\nПозволяет завершить этап для совершения выплат конечным получателям — реципиентам (recipients),\nкогда все условия сделки выполнены.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "169ba316-3a32-45e5-9e90-160ab6572de6",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{}"
+            },
+            {
+              "id": "442854ce-b2ee-4491-a68b-a7ff80f09534",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "53284631-213c-4240-86de-4765e0af2451",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "9e50f8d7-d260-41b3-ae1f-f0d6729a3e5f",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "3383038a-3c07-43bf-8d43-a83396acea31",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "705ecf9e-ea7d-457e-941d-0004d70b66e6",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "fd5fff34-f312-4994-8bdb-4e20b80b8e90",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "e91657ba-e4b2-4275-8872-9154962b8358",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "1a37c992-d643-4fc9-8864-4e67185cfdeb",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/deals/:dealId/steps/:stepId/complete",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "deals",
+                    ":dealId",
+                    "steps",
+                    ":stepId",
+                    "complete"
+                  ],
+                  "variable": [
+                    {
+                      "key": "dealId",
+                      "value": "a16e7a0c-b6ec-9c3c-5401-65f9aa74d08a"
+                    },
+                    {
+                      "key": "stepId",
+                      "value": "5f23d30a-963b-cd0e-7a4d-cbf0c65a014d"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "fe60a03c-a5bb-46f7-9a70-1d8ab9db6fc0"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

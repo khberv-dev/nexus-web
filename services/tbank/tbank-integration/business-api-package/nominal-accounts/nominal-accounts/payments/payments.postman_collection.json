@@ -1,0 +1,3928 @@
+{
+  "info": {
+    "_postman_id": "0d8551e5-2dee-423a-9312-6e1ae8b0f033",
+    "name": "payments",
+    "description": "Subcollection for payments. Contains 3 items.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "payments",
+      "item": [
+        {
+          "name": "{paymentId}",
+          "item": [
+            {
+              "name": "retry",
+              "item": [
+                {
+                  "name": "Повторить неуспешный платеж в рамках сделки",
+                  "id": "245fd991-58da-4643-8c25-a0b301285599",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId",
+                        "retry"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    },
+                    "description": "\nПозволяет повторить неуспешный платеж в рамках сделки по ID платежа.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+                  },
+                  "response": [
+                    {
+                      "id": "b4dbfb51-8ab1-4604-9c6e-387f7d332ff8",
+                      "name": "Untitled Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"retryPaymentId\": \"126ffab2-62e9-11ec-bca6-43f40eceb896\"\n}"
+                    },
+                    {
+                      "id": "7ff4fa77-6a94-4196-8421-271821b8063c",
+                      "name": "Ошибка при неправильно заполненном ИНН",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                    },
+                    {
+                      "id": "9689a133-ac41-4f7d-a6f2-e79dc9e5b75d",
+                      "name": "Ошибка при неправильно переданном значении поля fieldName",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                    },
+                    {
+                      "id": "f5659c83-daf9-436d-bdbc-2058fc24b00d",
+                      "name": "Ошибка при неправильно переданной дате платежа",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                    },
+                    {
+                      "id": "2469f0ad-a153-4706-bfaf-a9b04b2c80b5",
+                      "name": "Ошибка аутентификации",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+                    },
+                    {
+                      "id": "a627c99f-3dfe-41a2-8c6b-987250b4f297",
+                      "name": "Ошибка авторизации",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+                    },
+                    {
+                      "id": "af0a90ab-81d4-4066-942c-6758f0c3eb6c",
+                      "name": "Ошибка при обработке данных",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+                    },
+                    {
+                      "id": "c4b0ef92-beac-4626-8b82-9fc43abf7ea7",
+                      "name": "Слишком много запросов",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+                    },
+                    {
+                      "id": "8a5b4035-2dc0-492e-99fa-6c32b668abd2",
+                      "name": "Ошибка сервера",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments/:paymentId/retry",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "nominal-accounts",
+                            "payments",
+                            ":paymentId",
+                            "retry"
+                          ],
+                          "variable": [
+                            {
+                              "key": "paymentId",
+                              "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Request-Id",
+                          "value": "string"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+                    }
+                  ]
+                }
+              ],
+              "id": "b70e8252-e4cc-4d07-b360-ea35b438318a"
+            },
+            {
+              "name": "Получить платеж по ID платежа",
+              "id": "0dd9de5b-3e7c-48f8-bcaa-4d4ee9a9582a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                    "key": "X-Request-Id",
+                    "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                  "protocol": "https",
+                  "host": [
+                    "business",
+                    "tbank",
+                    "ru"
+                  ],
+                  "path": [
+                    "openapi",
+                    "sandbox",
+                    "secured",
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments",
+                    ":paymentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "paymentId",
+                      "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                    }
+                  ]
+                },
+                "description": "Метод для получения платежа по ID платежа."
+              },
+              "response": [
+                {
+                  "id": "933a1395-e3a4-49cb-9575-ff5689d0088b",
+                  "name": "Успешный обычный платеж по реквизитам счета",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО «ТБанк»\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "bcbfab03-4797-46eb-8797-5aed0838b613",
+                  "name": "Неуспешный обычный платеж по реквизитам счета",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО «ТБанк»\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "21faeb05-723d-49c7-99b4-7df83f79b82f",
+                  "name": "Успешный обычный платеж по карточным реквизитам",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"CARD\",\n    \"cardId\": \"70000000707\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "1b850599-1187-4e29-91ac-9d1c7ce0da9c",
+                  "name": "Неуспешный обычный платеж по карточным реквизитам",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"CARD\",\n    \"cardId\": \"70000000707\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Transaction not permitted to card\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "930b2e0b-78af-4b49-90fc-3c746fbbba5d",
+                  "name": "Успешный обычный платеж через СБП",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"SBP\",\n    \"phoneNumber\": \"+79001112233\",\n    \"bankId\": \"100000000004\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "c6c6ef00-c106-460b-a53f-208de66f98db",
+                  "name": "Неуспешный обычный платеж через СБП",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"SBP\",\n    \"phoneNumber\": \"+79001112233\",\n    \"bankId\": \"100000000004\",\n    \"terminalKey\": \"1573803282696E2C\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Specified bank is not SBP member\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+                },
+                {
+                  "id": "2de270ad-534d-427a-979b-a0b21468a834",
+                  "name": "Успешный налоговый платеж",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}"
+                },
+                {
+                  "id": "8b57566a-0e32-4710-ae94-ce5b46f032c9",
+                  "name": "Неуспешный налоговый платеж",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}"
+                },
+                {
+                  "id": "a8e5bfd8-97e0-43c5-932a-1f936b044acf",
+                  "name": "Ошибка при неправильно заполненном ИНН",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+                },
+                {
+                  "id": "7b9e9aec-c0a4-4158-9de0-566c8ea7cc5a",
+                  "name": "Ошибка при неправильно переданном значении поля fieldName",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+                },
+                {
+                  "id": "a6572fa1-9146-40f5-aec0-7ff666f3619d",
+                  "name": "Ошибка при неправильно переданной дате платежа",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+                },
+                {
+                  "id": "d8254cc0-5c41-432a-a76e-f2d032316a62",
+                  "name": "Ошибка при неактивном токене",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Токен недействителен\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "b2033ae7-13a6-46af-aef5-2dcec157dc99",
+                  "name": "Ошибка при неправильно заданной компании",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Компания с такими ИНН/КПП не найдена. Проверьте реквизиты. Если реквизиты изменились, необходимо перевыпустить токен.\",\n  \"errorCode\": \"UNAUTHORIZED\"\n}"
+                },
+                {
+                  "id": "6b6b6288-219a-4bf4-8825-8bee2807b305",
+                  "name": "Ошибка при отсутствии доступов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"У вас неподходящие скопы для данной операции, требуемые скопы: scope\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "b19c96a8-243d-4d89-92fc-2c9f135b67c4",
+                  "name": "Ошибка при запросе с неизвестного IP",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"efc04138-7d50-40f9-a367-0e1ca4d7cd49\",\n  \"errorMessage\": \"Запрос был отправлен с IP-адреса, который не был указан при получении токена. Пожалуйста, укажите этот IP-адрес при получении нового токена\",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "2ccbed68-e258-4978-9a80-c6eb6b53191d",
+                  "name": "Ошибка при отсутствии прав на использование продукта",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"5d1de3e5-82b9-4b1d-b805-a9de95cf83bb\",\n  \"errorMessage\": \"Недостаточно прав на совершаемое действие. Свяжитесь с вашим менеджером, чтобы подключить данную функциональность. \",\n  \"errorCode\": \"FORBIDDEN\"\n}"
+                },
+                {
+                  "id": "0368c9fb-e3b2-47c7-aba8-aab35e0ae58c",
+                  "name": "Ошибка при обработке данных.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Ошибка при обработке данных\",\n  \"errorCode\": \"UNPROCESSABLE_ENTITY\"\n}"
+                },
+                {
+                  "id": "4752f671-a70a-4875-bb62-9485362bee0a",
+                  "name": "Слишком много запросов",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\"\n}"
+                },
+                {
+                  "id": "87625648-13e5-483e-9ae6-5afc0c80577c",
+                  "name": "Ошибка сервера",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Уникальный идентификатор для трассировки запроса. Не влияет на логику исполнения запроса.",
+                        "key": "X-Request-Id",
+                        "value": "938f6dc6-29b3-ce51-bedf-3bd00c0608b6"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://business.tbank.ru/openapi/sandbox/secured/api/v1/nominal-accounts/payments/:paymentId",
+                      "protocol": "https",
+                      "host": [
+                        "business",
+                        "tbank",
+                        "ru"
+                      ],
+                      "path": [
+                        "openapi",
+                        "sandbox",
+                        "secured",
+                        "api",
+                        "v1",
+                        "nominal-accounts",
+                        "payments",
+                        ":paymentId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "paymentId",
+                          "value": "7beb9244-87dc-8e13-0f77-6547630c4f43"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Request-Id",
+                      "value": "string"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"errorId\": \"60324c74-e4b9-477d-baae-786956876a28\",\n  \"errorMessage\": \"Непредвиденная ошибка. Попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\"\n}"
+                }
+              ]
+            }
+          ],
+          "id": "a472150d-dd0d-4f2a-b43d-e20d8c114951"
+        },
+        {
+          "name": "Получить список платежей",
+          "id": "5db31f25-9b54-424e-b157-2f0665328014",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "payments"
+              ],
+              "query": [
+                {
+                  "description": "ID бенефициара.",
+                  "key": "beneficiaryId",
+                  "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                },
+                {
+                  "description": "ID сделки.",
+                  "key": "dealId",
+                  "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                },
+                {
+                  "description": "Номер номинального счета.",
+                  "key": "accountNumber",
+                  "value": "40702810110011000000"
+                },
+                {
+                  "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "\nПозволяет получить список платежей в рамках одной сделки.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "c921f270-2a7e-499e-a342-f5f7d41723af",
+              "name": "Untitled Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"offset\": 0,\n  \"limit\": 50,\n  \"size\": 8,\n  \"total\": 8,\n  \"results\": [\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"044525974\",\n        \"kpp\": \"773401001\",\n        \"inn\": \"906858195320\",\n        \"name\": \"Киняев Фома Семенович\",\n        \"bankName\": \"АО \\\"ТБанк\\\"\",\n        \"accountNumber\": \"11223344556677889900\",\n        \"corrAccountNumber\": \"30101810145250000974\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"044525974\",\n        \"kpp\": \"773401001\",\n        \"inn\": \"906858195320\",\n        \"name\": \"Киняев Фома Семенович\",\n        \"bankName\": \"АО \\\"ТБанк\\\"\",\n        \"accountNumber\": \"11223344556677889900\",\n        \"corrAccountNumber\": \"30101810145250000974\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"CARD\",\n        \"cardId\": \"70000000707\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"CARD\",\n        \"cardId\": \"70000000707\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Transaction not permitted to card\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"SBP\",\n        \"phoneNumber\": \"+79001112233\",\n        \"bankId\": \"100000000004\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"REGULAR\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"SBP\",\n        \"phoneNumber\": \"+79001112233\",\n        \"bankId\": \"100000000004\",\n        \"terminalKey\": \"1573803282696E2C\"\n      },\n      \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n      \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n      \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Specified bank is not SBP member\",\n      \"purpose\": \"Назначение платежа\",\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"TAX\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"444555666\",\n        \"kpp\": \"111222333\",\n        \"inn\": \"1234567890\",\n        \"name\": \"Какой-то отдел ФНС\",\n        \"bankName\": \"Чемпион\",\n        \"accountNumber\": \"11122233344455566677\",\n        \"corrAccountNumber\": \"12345678901234567890\"\n      },\n      \"amount\": 100,\n      \"status\": \"SUCCEEDED\",\n      \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n      \"uin\": \"0\",\n      \"tax\": {\n        \"payerStatus\": \"19\",\n        \"kbk\": \"18210301000011000110\",\n        \"oktmo\": \"50701000\",\n        \"evidence\": \"0\",\n        \"period\": \"0\",\n        \"docNumber\": \"01;0201251245\",\n        \"docDate\": \"0\",\n        \"thirdParty\": {\n          \"inn\": \"123456789012\",\n          \"kpp\": \"0\"\n        }\n      },\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    },\n    {\n      \"type\": \"TAX\",\n      \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n      \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n      \"accountNumber\": \"40702810110011000777\",\n      \"bankDetails\": {\n        \"type\": \"PAYMENT_DETAILS\",\n        \"bik\": \"444555666\",\n        \"kpp\": \"111222333\",\n        \"inn\": \"1234567890\",\n        \"name\": \"Какой-то отдел ФНС\",\n        \"bankName\": \"Чемпион\",\n        \"accountNumber\": \"11122233344455566677\",\n        \"corrAccountNumber\": \"12345678901234567890\"\n      },\n      \"amount\": 100,\n      \"status\": \"FAILED\",\n      \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n      \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n      \"uin\": \"0\",\n      \"tax\": {\n        \"payerStatus\": \"19\",\n        \"kbk\": \"18210301000011000110\",\n        \"oktmo\": \"50701000\",\n        \"evidence\": \"0\",\n        \"period\": \"0\",\n        \"docNumber\": \"01;0201251245\",\n        \"docDate\": \"0\",\n        \"thirdParty\": {\n          \"inn\": \"123456789012\",\n          \"kpp\": \"0\"\n        }\n      },\n      \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n    }\n  ]\n}"
+            },
+            {
+              "id": "387c37f6-575b-4749-b3a6-bfe164207dd8",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "1fbbaf0e-57c0-4f7e-876a-f593acf85f63",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "45dfeff9-6ba4-4128-9d3c-202bda35b8f7",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "34df5a37-4b53-449e-bcc7-6d6164324b63",
+              "name": "Ошибка аутентификации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "72e8880c-b5fe-477b-8e9f-56fcbf0f6dc8",
+              "name": "Ошибка авторизации",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "c3d1d7be-a22b-4487-af8b-c44d8bf436da",
+              "name": "Ошибка при обработке данных",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "a146c65b-d078-4487-9f33-46aeb130552d",
+              "name": "Слишком много запросов",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "3dec5795-fa85-47ab-a09b-1cdb74434f16",
+              "name": "Ошибка сервера",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments?beneficiaryId=61f656e0-0a86-4ec2-bd43-232499f7ad66&dealId=dd6c3237-9958-47d9-9ba0-f6faeaa0e788&accountNumber=40702810110011000000&offset=0&limit=50",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ],
+                  "query": [
+                    {
+                      "description": "ID бенефициара.",
+                      "key": "beneficiaryId",
+                      "value": "61f656e0-0a86-4ec2-bd43-232499f7ad66"
+                    },
+                    {
+                      "description": "ID сделки.",
+                      "key": "dealId",
+                      "value": "dd6c3237-9958-47d9-9ba0-f6faeaa0e788"
+                    },
+                    {
+                      "description": "Номер номинального счета.",
+                      "key": "accountNumber",
+                      "value": "40702810110011000000"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно пропустить. Значение по умолчанию — <code>0</code>.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Количество платежей, которое нужно вывести. Значение по умолчанию — <code>50</code>.",
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Выполнить платеж в пользу бенефициара на реальный счет",
+          "id": "ea6b8638-fe92-4e9d-a7b5-efd2b12107e1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Idempotency-Key",
+                "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "nominal-accounts",
+                "payments"
+              ]
+            },
+            "description": "\nПозволяет напрямую вывести средства с виртуального счета бенефициара на реальный счет.\nДля налогового платежа можно указать реквизиты целиком. Только для типа `PAYMENT_DETAILS`.\n\n\nОграничение на использование метода — 10 запросов в секунду.\n\n\nЧтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/nominal-accounts/manage</code> — <code>Управление номинальными счетами</code>."
+          },
+          "response": [
+            {
+              "id": "8a8a9a1d-843f-45d2-b74b-64a7d94cdc10",
+              "name": "Успешный обычный платеж по реквизитам счета.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО \\\"ТБанк\\\"\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+            },
+            {
+              "id": "d06d6e19-5984-43ef-96bc-913d2c05d12b",
+              "name": "Неуспешный обычный платеж по реквизитам счета.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"REGULAR\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"044525974\",\n    \"kpp\": \"773401001\",\n    \"inn\": \"906858195320\",\n    \"name\": \"Киняев Фома Семенович\",\n    \"bankName\": \"АО \\\"ТБанк\\\"\",\n    \"accountNumber\": \"11223344556677889900\",\n    \"corrAccountNumber\": \"30101810145250000974\"\n  },\n  \"dealId\": \"dd6c3237-9958-47d9-9ba0-f6faeaa0e788\",\n  \"stepId\": \"c87d3297-f4ae-4f88-add9-6722c1fc0b8c\",\n  \"recipientId\": \"00021d4e-536f-11ec-ac0b-370ccfeacec2\",\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Назначение платежа\",\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+            },
+            {
+              "id": "374b8ea1-c0b1-41b5-bdea-89296e55224f",
+              "name": "Успешный налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"SUCCEEDED\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  },\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+            },
+            {
+              "id": "1d8b418c-de0b-458d-a5f3-8de43950e7de",
+              "name": "Неуспешный налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"type\": \"TAX\",\n  \"paymentId\": \"58097aa1-9660-47e7-8550-f2167fa80cea\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"status\": \"FAILED\",\n  \"errorMessage\": \"Проверьте номер счета банка получателя — возможно, вы указали неправильные цифры\",\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  },\n  \"operationId\": \"171f9b1f-9f7c-4d7d-b6b3-4bf4a1d6cc7d\"\n}"
+            },
+            {
+              "id": "3446861f-10f6-4f2f-b645-8efb9eb4cc3c",
+              "name": "Ошибка при неправильно заполненном ИНН",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+            },
+            {
+              "id": "bb1e8e34-8a38-4f1e-a04d-2ee4228cb7f2",
+              "name": "Ошибка при неправильно переданном значении поля fieldName",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+            },
+            {
+              "id": "586fe955-c402-40c9-b871-fc1746344f10",
+              "name": "Ошибка при неправильно переданной дате платежа",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+            },
+            {
+              "id": "cd48bee1-b126-4bd7-924f-37be5fed409c",
+              "name": "Обычный платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "d4e625fa-9bf0-4907-9ef8-811df41f5771",
+              "name": "Налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "9127bbcb-a123-4aea-a149-201c35fe5852",
+              "name": "Обычный платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "e573eac3-be51-4a8b-8b26-8a592822f144",
+              "name": "Налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+            },
+            {
+              "id": "f41560d6-e7fb-44f7-ba1e-7b1ddce5789a",
+              "name": "Обычный платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "2cacf9bf-1cd8-4a91-82f2-f0e6565ed871",
+              "name": "Налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+            },
+            {
+              "id": "32b2da38-77ce-4c55-b254-bc5fe0b632d1",
+              "name": "Обычный платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "4f582a24-0f51-449c-908c-4c479e9303dd",
+              "name": "Налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+            },
+            {
+              "id": "15620a1a-2e27-4e9f-8efe-645896b704e5",
+              "name": "Обычный платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"REGULAR\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetailsId\": \"49e46893-9a7e-409b-8c79-647aecaae555\",\n  \"amount\": 100,\n  \"purpose\": \"Назначение платежа\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            },
+            {
+              "id": "e0b27004-75e1-46d2-b39a-5783e9fa3921",
+              "name": "Налоговый платеж.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Idempotency-Key",
+                    "value": "a77abb61-8a19-e0c8-363f-8b2077b7e597"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"TAX\",\n  \"beneficiaryId\": \"61f656e0-0a86-4ec2-bd43-232499f7ad66\",\n  \"accountNumber\": \"40702810110011000777\",\n  \"bankDetails\": {\n    \"type\": \"PAYMENT_DETAILS\",\n    \"bik\": \"444555666\",\n    \"kpp\": \"111222333\",\n    \"inn\": \"1234567890\",\n    \"name\": \"Какой-то отдел ФНС\",\n    \"bankName\": \"Чемпион\",\n    \"accountNumber\": \"11122233344455566677\",\n    \"corrAccountNumber\": \"12345678901234567890\"\n  },\n  \"amount\": 100,\n  \"purpose\": \"Сумма налога на имущество, Иванов Иван Иванович, по исполнительному листу от 01.08.2021 по делу N 2-2733/2021\",\n  \"uin\": \"0\",\n  \"tax\": {\n    \"payerStatus\": \"19\",\n    \"kbk\": \"18210301000011000110\",\n    \"oktmo\": \"50701000\",\n    \"evidence\": \"0\",\n    \"period\": \"0\",\n    \"docNumber\": \"01;0201251245\",\n    \"docDate\": \"0\",\n    \"thirdParty\": {\n      \"inn\": \"123456789012\",\n      \"kpp\": \"0\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/nominal-accounts/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "nominal-accounts",
+                    "payments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Request-Id",
+                  "value": "string"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+            }
+          ]
+        }
+      ],
+      "id": "d2dfa77e-f6dd-4dc8-bac4-53578bdac891"
+    }
+  ],
+  "variable": [],
+  "event": []
+}

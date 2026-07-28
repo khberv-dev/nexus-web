@@ -1,0 +1,756 @@
+{
+  "name": "Получить выписку с авторизациями за определенный период",
+  "id": "970b9f7b-ac4c-4909-8c5e-f4eccbfd4b0a",
+  "protocolProfileBehavior": {
+    "disableBodyPruning": true
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "GET",
+    "header": [
+      {
+        "key": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "url": {
+      "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "api",
+        "v1",
+        "account-operations"
+      ],
+      "query": [
+        {
+          "description": "Расчетный счет организации.",
+          "key": "accountNumber",
+          "value": "40702810110011000000"
+        },
+        {
+          "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+          "key": "ucid",
+          "value": "1234567890"
+        },
+        {
+          "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+          "key": "operationStatus",
+          "value": "transaction"
+        },
+        {
+          "description": "Дата начала периода, включительно.",
+          "key": "from",
+          "value": "2021-11-03T11:00:00+03:00"
+        },
+        {
+          "description": "Дата конца периода, исключительно.",
+          "key": "till",
+          "value": "2021-11-03T11:00:00+03:00"
+        }
+      ]
+    },
+    "description": "Необходимо согласие пользователя на доступ к информации об операциях компании. Чтобы использовать метод, нужен [доступ](/docs/intro/manuals/self-service-auth#доступы): <code>opensme/inn/[{inn}]/kpp/[{kpp}]/account-operations/get</code> — <code>Информация о транзакциях и авторизациях по счетам компании с инн {inn} и кпп {kpp}</code>.Запросы с количеством операций более 10 000 будут возвращать ошибку TOO_MANY_OPERATIONS. Ограничение на использование метода — 3 запроса в секунду."
+  },
+  "response": [
+    {
+      "id": "9f17efc4-006a-4075-8816-62b55b09712d",
+      "name": "Untitled Response",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "OK",
+      "code": 200,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "[\n  {\n    \"accountNumber\": \"40702810110011000777\",\n    \"authDateTime\": \"2021-11-17T12:10+03:00\",\n    \"trxnDateTime\": \"2021-11-17T12:11+03:00\",\n    \"authId\": \"123456789\",\n    \"trxnId\": \"123456789\",\n    \"authStatus\": \"succeed\",\n    \"operationType\": \"debit\",\n    \"operationStatus\": \"transaction\",\n    \"amount\": 100,\n    \"currency\": \"RUB\",\n    \"accountAmount\": 100,\n    \"description\": \"Нужно совершить платеж\",\n    \"card\": {\n      \"ucid\": \"12345678901234567890\",\n      \"mcc\": \"1234\",\n      \"number\": \"1111********9999\"\n    },\n    \"merch\": {\n      \"id\": \"123456\",\n      \"name\": \"Лучший Банк\",\n      \"address\": \"ул. Уличная, д. 666\",\n      \"city\": \"MOSCOW\",\n      \"country\": \"RUS\"\n    },\n    \"rrn\": \"123456789012\",\n    \"acquirerId\": \"010455\"\n  }\n]"
+    },
+    {
+      "id": "1fa294a6-f686-4646-a346-a80aa1a38386",
+      "name": "Ошибка при неправильно заполненном ИНН",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"retw6789\",\n  \"errorMessage\": \"Некорректно заполнен ИНН\",\n  \"errorCode\": \"VALIDATION_ERROR\"\n}"
+    },
+    {
+      "id": "623f90d2-6c66-4b00-9bff-e5742ee28436",
+      "name": "Ошибка при неправильно переданном значении поля fieldName",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Ваш запрос невалиден\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"fieldName\": \"expected fieldName to be one of (1, 2, 3, 4, 5), but got \\\"0\\\"\"\n  }\n}"
+    },
+    {
+      "id": "f85021fc-3692-494d-ba9d-3fd8cde0fae5",
+      "name": "Ошибка при неправильно переданной дате платежа",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Bad Request",
+      "code": 400,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorId\": \"cde4zxc5\",\n  \"errorMessage\": \"Данные не соответствуют формату платежного поручения\",\n  \"errorCode\": \"INVALID_DATA\",\n  \"errorDetails\": {\n    \"Дата платежа\": \"Дата исполнения платежа не может быть в прошлом\"\n  }\n}"
+    },
+    {
+      "id": "7b1418d5-3ea4-47ee-8625-23fd5450b28e",
+      "name": "Ошибка аутентификации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Unauthorized",
+      "code": 401,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Не хватает учетных данных\",\n  \"errorCode\": \"UNAUTHORIZED\",\n  \"errorId\": \"asdq3412\"\n}"
+    },
+    {
+      "id": "e660bb57-b744-4675-994c-bbf121d2bcbe",
+      "name": "Ошибка авторизации",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Forbidden",
+      "code": 403,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Неправильный Tls сертификат\",\n  \"errorCode\": \"FORBIDDEN\",\n  \"errorId\": \"rtbe4567\"\n}"
+    },
+    {
+      "id": "555dabfd-2d3f-41be-81fc-e82315dbdbff",
+      "name": "Ошибка при обработке данных",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+      "code": 422,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"На балансе недостаточно средств\",\n  \"errorCode\": \"INSUFFICIENT_FUNDS\",\n  \"errorId\": \"bcde3412\"\n}"
+    },
+    {
+      "id": "f70f4b65-ae2f-4854-917e-91e3181b3a69",
+      "name": "Слишком много запросов",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Too Many Requests",
+      "code": 429,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Слишком много запросов. Попробуйте позже\",\n  \"errorCode\": \"TOO_MANY_REQUESTS\",\n  \"errorId\": \"acdf000\"\n}"
+    },
+    {
+      "id": "22fa4e64-c02a-414b-b699-bd11002ab0f2",
+      "name": "Ошибка сервера",
+      "originalRequest": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "description": "Added as a part of security scheme: bearer",
+            "key": "Authorization",
+            "value": "Bearer <token>"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/account-operations?accountNumber=40702810110011000000&ucid=1234567890&operationStatus=transaction&from=2021-11-03T11:00:00+03:00&till=2021-11-03T11:00:00+03:00",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "account-operations"
+          ],
+          "query": [
+            {
+              "description": "Расчетный счет организации.",
+              "key": "accountNumber",
+              "value": "40702810110011000000"
+            },
+            {
+              "description": "UCID карты. Если не указан, вернутся все операции по счету.",
+              "key": "ucid",
+              "value": "1234567890"
+            },
+            {
+              "description": "Статус операции. Если не указан, вернутся как транзакции, так и авторизации.",
+              "key": "operationStatus",
+              "value": "transaction"
+            },
+            {
+              "description": "Дата начала периода, включительно.",
+              "key": "from",
+              "value": "2021-11-03T11:00:00+03:00"
+            },
+            {
+              "description": "Дата конца периода, исключительно.",
+              "key": "till",
+              "value": "2021-11-03T11:00:00+03:00"
+            }
+          ]
+        }
+      },
+      "status": "Internal Server Error",
+      "code": 500,
+      "_postman_previewlanguage": "json",
+      "header": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "disabled": false,
+          "description": {
+            "content": "",
+            "type": "text/plain"
+          },
+          "key": "X-Request-Id",
+          "value": "string"
+        }
+      ],
+      "cookie": [],
+      "body": "{\n  \"errorMessage\": \"Непредвиденная ошибка. Пожалуйста, попробуйте позже\",\n  \"errorCode\": \"INTERNAL_ERROR\",\n  \"errorId\": \"asdq3412\"\n}"
+    }
+  ],
+  "_meta": {
+    "extractedFrom": "T-API Copy",
+    "extractedAt": "2026-01-13T18:42:24.057Z",
+    "parentPath": "api_v1_account-operations"
+  }
+}
