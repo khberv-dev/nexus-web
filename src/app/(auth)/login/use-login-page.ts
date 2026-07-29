@@ -14,6 +14,7 @@ export function useLoginPage() {
   const [regOpen, setRegOpen] = useState(false)
 
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [sent, setSent] = useState(false)
@@ -36,6 +37,7 @@ export function useLoginPage() {
   const closeAuth = useCallback(() => {
     setAuthOpen(false)
     setEmail("")
+    setPassword("")
     setError(null)
     setSent(false)
     setLoading(false)
@@ -59,6 +61,7 @@ export function useLoginPage() {
     setRegError(null)
     setRegSent(false)
     setEmail("")
+    setPassword("")
     setError(null)
     setSent(false)
     setAuthOpen(true)
@@ -67,6 +70,7 @@ export function useLoginPage() {
   const openReg = useCallback(() => {
     setAuthOpen(false)
     setEmail("")
+    setPassword("")
     setError(null)
     setSent(false)
     setRegForm({})
@@ -108,6 +112,37 @@ export function useLoginPage() {
       setLoading(false)
     }
   }, [email, selected])
+
+  const signInWithPassword = useCallback(async () => {
+    const e = email.trim().toLowerCase()
+    if (!e.includes("@")) {
+      setError("Введите корректный email")
+      return
+    }
+    if (!password) {
+      setError("Введите пароль")
+      return
+    }
+    setError(null)
+    setLoading(true)
+    try {
+      const res = await signIn("credentials", {
+        email: e,
+        password,
+        redirect: false,
+        callbackUrl: AUTH_CALLBACK,
+      })
+      if (res?.error) {
+        setError("Неверный email или пароль")
+        return
+      }
+      globalThis.location.assign(res?.url ?? AUTH_CALLBACK)
+    } catch {
+      setError("Не удалось выполнить вход. Попробуйте позже.")
+    } finally {
+      setLoading(false)
+    }
+  }, [email, password])
 
   const submitClientRegister = useCallback(
     async (e: React.FormEvent) => {
@@ -245,6 +280,8 @@ export function useLoginPage() {
     regOpen,
     email,
     setEmail,
+    password,
+    setPassword,
     loading,
     error,
     sent,
@@ -258,6 +295,7 @@ export function useLoginPage() {
     openAuth,
     openReg,
     sendMagicLinkAuth,
+    signInWithPassword,
     submitClientRegister,
     submitSpecialistRegister,
     specialistDataConsent,

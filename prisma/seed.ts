@@ -1,9 +1,13 @@
 import { PrismaClient, Role, OrderStatus, StageStatus, OnboardingStatus } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { STAGE_ORDER } from "../src/lib/stage-constants";
+import { hashPassword } from "../src/lib/auth/password";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
+
+// Demo password shared by all seeded users — login at /login with email + this password.
+const DEMO_PASSWORD = process.env.DEMO_SEED_PASSWORD ?? "Demo12345!";
 
 async function main() {
   if (process.env.DEMO_SEED !== "1") {
@@ -11,46 +15,52 @@ async function main() {
     return;
   }
 
+  const password = await hashPassword(DEMO_PASSWORD);
+
   // Admin
   const admin = await prisma.user.upsert({
     where: { email: "admin@example.com" },
-    update: {},
+    update: { password },
     create: {
       zitadelId: "admin-zitadel-id",
       email: "admin@example.com",
       role: Role.ADMIN,
+      password,
     },
   });
 
   // Clients
   const client1 = await prisma.user.upsert({
     where: { email: "client1@example.com" },
-    update: {},
+    update: { password },
     create: {
       zitadelId: "client1-zitadel-id",
       email: "client1@example.com",
       role: Role.CLIENT,
+      password,
     },
   });
 
   const client2 = await prisma.user.upsert({
     where: { email: "client2@example.com" },
-    update: {},
+    update: { password },
     create: {
       zitadelId: "client2-zitadel-id",
       email: "client2@example.com",
       role: Role.CLIENT,
+      password,
     },
   });
 
   // Specialists
   const spec1 = await prisma.user.upsert({
     where: { email: "specialist1@example.com" },
-    update: {},
+    update: { password },
     create: {
       zitadelId: "spec1-zitadel-id",
       email: "specialist1@example.com",
       role: Role.SPECIALIST,
+      password,
       specialistProfile: {
         create: {
           onboardingStatus: OnboardingStatus.ACTIVE,
@@ -62,11 +72,12 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: "specialist2@example.com" },
-    update: {},
+    update: { password },
     create: {
       zitadelId: "spec2-zitadel-id",
       email: "specialist2@example.com",
       role: Role.SPECIALIST,
+      password,
       specialistProfile: {
         create: {
           onboardingStatus: OnboardingStatus.PENDING,
@@ -99,6 +110,7 @@ async function main() {
   }
 
   console.log("Seed completed:", { admin: admin.email, client1: client1.email, client2: client2.email, spec1: spec1.email });
+  console.log(`Demo password for all seeded users: ${DEMO_PASSWORD} (override with DEMO_SEED_PASSWORD)`);
 }
 
 main()

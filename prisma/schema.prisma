@@ -107,6 +107,7 @@ model User {
   image             String?
   zitadelId         String?            @unique
   phone             String?
+  password          String?
   role              Role               @default(CLIENT)
   archivedAt        DateTime?
   sessionVersion    Int                @default(1)

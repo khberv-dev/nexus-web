@@ -1,9 +1,13 @@
 import type { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/db/prisma";
-import { Prisma, Role } from "@prisma/client";
+import { Prisma, PrismaClient, Role } from "@prisma/client";
 import { resendEmailProvider } from "./email-provider";
+import { credentialsProvider } from "./credentials-provider";
 import { zitadelProvider } from "./providers";
+
+/** JWT-сессия (используется как access token) — 3 дня. */
+const ACCESS_TOKEN_MAX_AGE = 3 * 24 * 60 * 60;
 
 const PENDING_ROLE_WINDOW_MS = 30 * 60 * 1000; // 30 минут — достаточно для корпоративных почт
 
@@ -86,7 +90,7 @@ async function ensureSpecialistProfile(userId: string) {
 type AuthProvider = NonNullable<AuthOptions["providers"]>[number];
 
 function buildProviders(): AuthProvider[] {
-  const list: AuthProvider[] = [resendEmailProvider()];
+  const list: AuthProvider[] = [resendEmailProvider(), credentialsProvider()];
   if (
     process.env.ZITADEL_ISSUER &&
     process.env.ZITADEL_CLIENT_ID &&
@@ -98,11 +102,14 @@ function buildProviders(): AuthProvider[] {
 }
 
 export const authConfig: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // Cast: `prisma` carries a narrower generic type from the global `omit` config
+  // (see src/lib/db/prisma.ts), which the adapter's own PrismaClient type doesn't
+  // model — the adapter only touches Account/Session/VerificationToken at runtime.
+  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
   secret: process.env.NEXTAUTH_SECRET,
   providers: buildProviders(),
-  session: { strategy: "jwt", maxAge: 3600 },
-  jwt: { maxAge: 3600 },
+  session: { strategy: "jwt", maxAge: ACCESS_TOKEN_MAX_AGE },
+  jwt: { maxAge: ACCESS_TOKEN_MAX_AGE },
   useSecureCookies: process.env.NODE_ENV === "production",
   pages: {
     signIn: "/login",

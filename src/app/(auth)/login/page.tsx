@@ -16,6 +16,8 @@ export default function LoginPage() {
     regOpen,
     email,
     setEmail,
+    password,
+    setPassword,
     loading,
     error,
     sent,
@@ -29,6 +31,7 @@ export default function LoginPage() {
     openAuth,
     openReg,
     sendMagicLinkAuth,
+    signInWithPassword,
     submitClientRegister,
     submitSpecialistRegister,
     specialistDataConsent,
@@ -68,10 +71,13 @@ export default function LoginPage() {
         onClose={closeAuth}
         email={email}
         setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
         loading={loading}
         error={error}
         sent={sent}
         onSubmit={sendMagicLinkAuth}
+        onSubmitPassword={signInWithPassword}
       />
 
       <RegisterClientModal
