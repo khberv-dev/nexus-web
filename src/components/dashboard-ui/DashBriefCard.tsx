@@ -23,7 +23,17 @@ function toLinkCandidate(token: string): string | null {
   return null
 }
 
-function renderReadonlyValue(value: string): ReactNode {
+/** briefData — Prisma Json; старые брифы хранят rooms как массив, budget как число и т.п. */
+function toDisplayString(raw: unknown): string {
+  if (raw == null) return ""
+  if (typeof raw === "string") return raw
+  if (Array.isArray(raw)) return raw.map(toDisplayString).filter(Boolean).join(", ")
+  if (typeof raw === "number" || typeof raw === "boolean") return String(raw)
+  return String(raw)
+}
+
+function renderReadonlyValue(rawValue: unknown): ReactNode {
+  const value = toDisplayString(rawValue)
   if (!value.trim()) return "—"
   const tokens = value.split(/[\s,;\n]+/).filter(Boolean)
   const links = tokens.map(toLinkCandidate).filter((v): v is string => Boolean(v))
@@ -86,7 +96,8 @@ export function DashBriefCard({
 }: {
   title?: string
   labels: Record<string, string>
-  values: Record<string, string>
+  // Backed by Order.briefData (Prisma Json) — legacy briefs can hold arrays/numbers, not just strings.
+  values: Record<string, unknown>
   editable?: boolean
   showOnlyFilled?: boolean
   onChange?: (key: string, value: string) => void
@@ -105,7 +116,7 @@ export function DashBriefCard({
       {/* Shared UI component: brief card */}
       <DashSurfaceCard className="dash-brief-card" style={{ overflow: "hidden" }}>
         {entries.map(([key, label], i) => {
-          const value = values[key] ?? ""
+          const value = toDisplayString(values[key])
           return (
             <div
               key={key}

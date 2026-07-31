@@ -1,4 +1,4 @@
-import { PrismaClient, Role, OrderStatus, StageStatus, OnboardingStatus } from "@prisma/client";
+import { PrismaClient, Role, OrderStatus, StageStatus, OnboardingStatus, ContractStatus } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { STAGE_ORDER } from "../src/lib/stage-constants";
 import { hashPassword } from "../src/lib/auth/password";
@@ -104,6 +104,15 @@ async function main() {
                 ? StageStatus.AWAITING_PAYMENT
                 : StageStatus.BLOCKED,
           })),
+        },
+        // Without a CONFIRMED contract, syncStageSequentialLocks() re-blocks even the
+        // first stage after payment, so the demo order would be permanently stuck.
+        contracts: {
+          create: {
+            number: "DEMO-0001",
+            status: ContractStatus.CONFIRMED,
+            confirmedAt: new Date(),
+          },
         },
       },
     });
