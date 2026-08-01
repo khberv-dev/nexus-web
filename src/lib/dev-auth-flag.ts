@@ -7,7 +7,7 @@
  * `__Secure-` префикса, а middleware по умолчанию искал именно префиксованную —
  * токен не находился, и после логина всегда редиректило обратно на /login без ошибок.
  */
-export function useSecureAuthCookies(): boolean {
+export function shouldUseSecureAuthCookies(): boolean {
   return (process.env.NEXTAUTH_URL ?? "").startsWith("https://");
 }
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { isDevAuthBypass, useSecureAuthCookies } from "@/lib/dev-auth-flag";
+import { isDevAuthBypass, shouldUseSecureAuthCookies } from "@/lib/dev-auth-flag";
 
 const ROUTE_GUARDS = [
   { pattern: /^\/admin/, allowedRoles: ["ADMIN"] },
@@ -45,7 +45,7 @@ export async function middleware(request: NextRequest) {
     // Must match authConfig.useSecureCookies exactly, or the cookie this looks for
     // (__Secure-next-auth.session-token vs next-auth.session-token) won't match what
     // was actually set at sign-in, and every protected route silently bounces to /login.
-    secureCookie: useSecureAuthCookies(),
+    secureCookie: shouldUseSecureAuthCookies(),
   });
   if (!token?.sub) {
     return NextResponse.redirect(new URL("/login", request.url));

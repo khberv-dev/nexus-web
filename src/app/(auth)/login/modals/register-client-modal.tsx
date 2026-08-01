@@ -13,7 +13,6 @@ type Props = {
   setRegForm: React.Dispatch<React.SetStateAction<Record<string, string>>>
   regLoading: boolean
   regError: string | null
-  regSent: boolean
   dataConsent: boolean
   setDataConsent: (v: boolean) => void
   onSubmit: (e: React.FormEvent) => void
@@ -44,7 +43,6 @@ export function RegisterClientModal({
   setRegForm,
   regLoading,
   regError,
-  regSent,
   dataConsent,
   setDataConsent,
   onSubmit,
@@ -53,12 +51,7 @@ export function RegisterClientModal({
   return (
     <AuthGlassModal open={open} onClose={onClose} maxWidth={440}>
       <h2 style={{ margin: "0 2.25rem 1rem 0", fontSize: "1.2rem", fontWeight: 500 }}>Регистрация заказчика</h2>
-      {regSent ? (
-        <p style={{ fontSize: "0.95rem", lineHeight: 1.5, margin: 0 }}>
-          Ссылка на <strong style={{ color: "#fff" }}>{regForm.email?.trim().toLowerCase()}</strong>
-        </p>
-      ) : (
-        <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
           {CLIENT_MODAL_FIELDS.map((field) => (
             <div key={field.name} style={{ marginBottom: 12 }}>
               <span style={{ display: "block", marginBottom: 6, fontSize: "0.76rem", color: "rgba(255,255,255,0.45)" }}>
@@ -77,12 +70,25 @@ export function RegisterClientModal({
           ))}
           <div style={{ marginBottom: 12 }}>
             <span style={{ display: "block", marginBottom: 6, fontSize: "0.76rem", color: "rgba(255,255,255,0.45)" }}>
-              Телефон<span style={{ color: "#f87171", marginLeft: 3 }}>*</span>
+              Пароль<span style={{ color: "#f87171", marginLeft: 3 }}>*</span>
+            </span>
+            <input
+              type="password"
+              autoComplete="new-password"
+              required
+              placeholder="Не короче 8 символов"
+              value={regForm.password || ""}
+              onChange={(ev) => setRegForm((f) => ({ ...f, password: ev.target.value }))}
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <span style={{ display: "block", marginBottom: 6, fontSize: "0.76rem", color: "rgba(255,255,255,0.45)" }}>
+              Телефон <span style={{ color: "rgba(255,255,255,0.35)" }}>(необязательно)</span>
             </span>
             <PhoneField
               value={regForm.phone || ""}
               onChange={(v) => setRegForm((f) => ({ ...f, phone: v }))}
-              required
               className="onb-phone"
             />
           </div>
@@ -123,10 +129,9 @@ export function RegisterClientModal({
             </button>
           )}
           <button type="submit" disabled={regLoading} style={primaryAuthButton(regLoading)}>
-            {regLoading ? "Отправка…" : "Получить ссылку на email"}
+            {regLoading ? "Регистрация…" : "Зарегистрироваться"}
           </button>
-        </form>
-      )}
+      </form>
     </AuthGlassModal>
   )
 }

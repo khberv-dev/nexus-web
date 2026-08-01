@@ -5,7 +5,7 @@ import { Prisma, PrismaClient, Role } from "@prisma/client";
 import { resendEmailProvider } from "./email-provider";
 import { credentialsProvider } from "./credentials-provider";
 import { zitadelProvider } from "./providers";
-import { useSecureAuthCookies } from "@/lib/dev-auth-flag";
+import { shouldUseSecureAuthCookies } from "@/lib/dev-auth-flag";
 
 /** JWT-сессия (используется как access token) — 3 дня. */
 const ACCESS_TOKEN_MAX_AGE = 3 * 24 * 60 * 60;
@@ -112,8 +112,8 @@ export const authConfig: AuthOptions = {
   session: { strategy: "jwt", maxAge: ACCESS_TOKEN_MAX_AGE },
   jwt: { maxAge: ACCESS_TOKEN_MAX_AGE },
   // Driven by NEXTAUTH_URL (not NODE_ENV) so this always agrees with middleware's
-  // getToken() cookie-name check — see useSecureAuthCookies() for why that matters.
-  useSecureCookies: useSecureAuthCookies(),
+  // getToken() cookie-name check — see shouldUseSecureAuthCookies() for why that matters.
+  useSecureCookies: shouldUseSecureAuthCookies(),
   pages: {
     signIn: "/login",
     error: "/error",

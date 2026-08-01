@@ -24,7 +24,6 @@ export function useLoginPage() {
   const [clientDataConsent, setClientDataConsent] = useState(false)
   const [regLoading, setRegLoading] = useState(false)
   const [regError, setRegError] = useState<string | null>(null)
-  const [regSent, setRegSent] = useState(false)
 
   useEffect(() => {
     const mq = globalThis.matchMedia(MOBILE_MQ)
@@ -49,7 +48,6 @@ export function useLoginPage() {
     setSpecialistDataConsent(false)
     setClientDataConsent(false)
     setRegError(null)
-    setRegSent(false)
     setRegLoading(false)
   }, [])
 
@@ -59,7 +57,6 @@ export function useLoginPage() {
     setSpecialistDataConsent(false)
     setClientDataConsent(false)
     setRegError(null)
-    setRegSent(false)
     setEmail("")
     setPassword("")
     setError(null)
@@ -77,7 +74,6 @@ export function useLoginPage() {
     setSpecialistDataConsent(false)
     setClientDataConsent(false)
     setRegError(null)
-    setRegSent(false)
     setRegOpen(true)
   }, [])
 
@@ -144,12 +140,44 @@ export function useLoginPage() {
     }
   }, [email, password])
 
+  /** Регистрация: создаёт аккаунт сразу (без письма) и логинит через credentials. Телефон необязателен. */
+  const registerAndSignIn = useCallback(
+    async (params: { email: string; password: string; role: "CLIENT" | "SPECIALIST"; name: string; phone: string; formData: Record<string, unknown> }) => {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(params),
+      })
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string; code?: string }
+        if (res.status === 409 && data?.code === "ALREADY_REGISTERED") {
+          return { error: "Вы уже зарегистрированы. Войдите в систему." }
+        }
+        return { error: data?.error ?? "Не удалось зарегистрироваться. Попробуйте позже." }
+      }
+
+      const signInRes = await signIn("credentials", {
+        email: params.email,
+        password: params.password,
+        redirect: false,
+        callbackUrl: AUTH_CALLBACK,
+      })
+      if (signInRes?.error) {
+        return { error: "Аккаунт создан, но вход не выполнен. Войдите вручную." }
+      }
+      globalThis.location.assign(signInRes?.url ?? AUTH_CALLBACK)
+      return { error: null }
+    },
+    []
+  )
+
   const submitClientRegister = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
       setRegError(null)
       const em = regForm.email?.trim().toLowerCase()
       const fullName = regForm.fullName?.trim()
+      const password = regForm.password ?? ""
       if (!em?.includes("@")) {
         setRegError("Введите корректный email")
         return
@@ -158,8 +186,12 @@ export function useLoginPage() {
         setRegError("Введите ФИО")
         return
       }
+      if (password.length < 8) {
+        setRegError("Пароль должен быть не короче 8 символов")
+        return
+      }
       const phone = regForm.phone?.trim() ?? ""
-      if (!phone || !isValidPhoneNumber(phone)) {
+      if (phone && !isValidPhoneNumber(phone)) {
         setRegError("Введите корректный номер телефона")
         return
       }
@@ -169,41 +201,22 @@ export function useLoginPage() {
       }
       setRegLoading(true)
       try {
-        const pr = await fetch("/api/auth/pending-signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: em,
-            role: "CLIENT",
-            name: fullName,
-            formData: { fullName, phone, email: em, personalDataConsentAccepted: true },
-          }),
-        })
-        if (!pr.ok) {
-          const data = (await pr.json().catch(() => ({}))) as { error?: string; code?: string }
-          if (pr.status === 409 && data?.code === "ALREADY_REGISTERED") {
-            setRegError("Вы уже зарегистрированы. Войдите в систему.")
-            return
-          }
-          throw new Error("pending-signup failed")
-        }
-        const res = await signIn("email", {
+        const { error } = await registerAndSignIn({
           email: em,
-          redirect: false,
-          callbackUrl: AUTH_CALLBACK,
+          password,
+          role: "CLIENT",
+          name: fullName,
+          phone,
+          formData: { fullName, ...(phone ? { phone } : {}), email: em },
         })
-        if (res?.error) {
-          setRegError(explainNextAuthEmailError(res.error))
-          return
-        }
-        setRegSent(true)
+        if (error) setRegError(error)
       } catch {
-        setRegError("Не удалось отправить запрос. Попробуйте позже.")
+        setRegError("Не удалось зарегистрироваться. Попробуйте позже.")
       } finally {
         setRegLoading(false)
       }
     },
-    [regForm, clientDataConsent]
+    [regForm, clientDataConsent, registerAndSignIn]
   )
 
   const submitSpecialistRegister = useCallback(
@@ -212,6 +225,7 @@ export function useLoginPage() {
       setRegError(null)
       const em = regForm.email?.trim().toLowerCase()
       const fullName = regForm.fullName?.trim()
+      const password = regForm.password ?? ""
       if (!em?.includes("@")) {
         setRegError("Введите корректный email")
         return
@@ -220,8 +234,12 @@ export function useLoginPage() {
         setRegError("Введите ФИО")
         return
       }
+      if (password.length < 8) {
+        setRegError("Пароль должен быть не короче 8 символов")
+        return
+      }
       const phone = regForm.phone?.trim() ?? ""
-      if (!phone || !isValidPhoneNumber(phone)) {
+      if (phone && !isValidPhoneNumber(phone)) {
         setRegError("Введите корректный номер телефона")
         return
       }
@@ -231,45 +249,22 @@ export function useLoginPage() {
       }
       setRegLoading(true)
       try {
-        const pr = await fetch("/api/auth/pending-signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: em,
-            role: "SPECIALIST",
-            name: fullName,
-            formData: {
-              fullName,
-              phone,
-              personalDataConsentAccepted: true,
-            },
-          }),
-        })
-        if (!pr.ok) {
-          const data = (await pr.json().catch(() => ({}))) as { error?: string; code?: string }
-          if (pr.status === 409 && data?.code === "ALREADY_REGISTERED") {
-            setRegError("Вы уже зарегистрированы. Войдите в систему.")
-            return
-          }
-          throw new Error("pending-signup failed")
-        }
-        const res = await signIn("email", {
+        const { error } = await registerAndSignIn({
           email: em,
-          redirect: false,
-          callbackUrl: AUTH_CALLBACK,
+          password,
+          role: "SPECIALIST",
+          name: fullName,
+          phone,
+          formData: { fullName, ...(phone ? { phone } : {}) },
         })
-        if (res?.error) {
-          setRegError(explainNextAuthEmailError(res.error))
-          return
-        }
-        setRegSent(true)
+        if (error) setRegError(error)
       } catch {
-        setRegError("Не удалось отправить запрос. Попробуйте позже.")
+        setRegError("Не удалось зарегистрироваться. Попробуйте позже.")
       } finally {
         setRegLoading(false)
       }
     },
-    [regForm, specialistDataConsent]
+    [regForm, specialistDataConsent, registerAndSignIn]
   )
 
   return {
@@ -289,7 +284,6 @@ export function useLoginPage() {
     setRegForm,
     regLoading,
     regError,
-    regSent,
     closeAuth,
     closeReg,
     openAuth,

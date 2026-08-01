@@ -25,7 +25,6 @@ export default function LoginPage() {
     setRegForm,
     regLoading,
     regError,
-    regSent,
     closeAuth,
     closeReg,
     openAuth,
@@ -87,7 +86,6 @@ export default function LoginPage() {
         setRegForm={setRegForm}
         regLoading={regLoading}
         regError={regError}
-        regSent={regSent}
         dataConsent={clientDataConsent}
         setDataConsent={setClientDataConsent}
         onSubmit={submitClientRegister}
@@ -101,7 +99,6 @@ export default function LoginPage() {
         setRegForm={setRegForm}
         regLoading={regLoading}
         regError={regError}
-        regSent={regSent}
         dataConsent={specialistDataConsent}
         setDataConsent={setSpecialistDataConsent}
         onSubmit={submitSpecialistRegister}
