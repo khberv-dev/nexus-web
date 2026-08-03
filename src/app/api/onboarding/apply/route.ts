@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSessionWithDevBypass } from "@/lib/session";
 import { prisma } from "@/lib/db/prisma";
 import { sendEmail } from "@/lib/email";
+import { notify } from "@/lib/notifications";
 import type { Prisma } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
@@ -48,6 +49,20 @@ export async function POST(req: NextRequest) {
 
   const admin = await prisma.user.findFirst({ where: { role: "ADMIN" } });
   if (admin?.email) void sendEmail("new_application", admin.email, { specialistId: user.id });
+
+  const fullNameFromForm =
+    typeof normalizedFormData.fullName === "string" ? normalizedFormData.fullName.trim() : "";
+  const specialistName = fullNameFromForm || user.name?.trim() || user.email || "Специалист";
+  const admins = await prisma.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+  for (const a of admins) {
+    await notify(
+      a.id,
+      "new_application",
+      "Новая анкета специалиста",
+      `${specialistName} подал(а) заявку на регистрацию`,
+      "/admin/specialists",
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }
