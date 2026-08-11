@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from "next/server"
-import { cfAiAsk, stripJsonFences } from "@/lib/cf-ai"
-import { getSessionUser } from "@/lib/session"
-import { rateLimit } from "@/lib/rate-limit"
+import {NextRequest, NextResponse} from "next/server"
+import {cfAiAsk, stripJsonFences} from "@/lib/cf-ai"
+import {getSessionUser} from "@/lib/session"
+import {rateLimit} from "@/lib/rate-limit"
 
 const BRIEF_LABELS: Record<string, string> = {
-  objectType: "Тип объекта",
-  area: "Площадь",
-  address: "Адрес",
-  style: "Стиль",
-  materials: "Материалы и цвета",
-  vision: "Образ и атмосфера",
-  budget: "Бюджет",
-  deadline: "Срок",
-  rooms: "Помещения",
-  notes: "Особые требования",
+    objectType: "Тип объекта",
+    area: "Площадь",
+    address: "Адрес",
+    style: "Стиль",
+    materials: "Материалы и цвета",
+    vision: "Образ и атмосфера",
+    budget: "Бюджет",
+    deadline: "Срок",
+    rooms: "Помещения",
+    notes: "Особые требования",
 }
 
 const SYSTEM = `Ты — опытный консультант по дизайну коммерческих интерьеров на B2B-платформе NEXUS.
@@ -22,24 +22,24 @@ const SYSTEM = `Ты — опытный консультант по дизайн
 Отвечай ТОЛЬКО валидным JSON массивом, без markdown, без пояснений, без текста до или после JSON.`
 
 export async function POST(req: NextRequest) {
-  const user = await getSessionUser()
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const user = await getSessionUser()
+    if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
 
-  const rl = rateLimit(`ai:${user.id}`, 20, 60 * 60 * 1000)
-  if (!rl.ok) return NextResponse.json({ error: "Слишком много запросов. Попробуйте позже." }, { status: 429 })
+    const rl = rateLimit(`ai:${user.id}`, 20, 60 * 60 * 1000)
+    if (!rl.ok) return NextResponse.json({error: "Слишком много запросов. Попробуйте позже."}, {status: 429})
 
-  const { briefData } = await req.json() as { briefData: Record<string, string> }
+    const {briefData} = await req.json() as { briefData: Record<string, string> }
 
-  const filled = Object.entries(briefData ?? {})
-    .filter(([, v]) => String(v ?? "").trim())
-    .map(([k, v]) => `${BRIEF_LABELS[k] ?? k}: ${v}`)
-    .join("\n")
+    const filled = Object.entries(briefData ?? {})
+        .filter(([, v]) => String(v ?? "").trim())
+        .map(([k, v]) => `${BRIEF_LABELS[k] ?? k}: ${v}`)
+        .join("\n")
 
-  const missing = Object.keys(BRIEF_LABELS)
-    .filter(k => !String(briefData?.[k] ?? "").trim())
-    .map(k => BRIEF_LABELS[k])
+    const missing = Object.keys(BRIEF_LABELS)
+        .filter(k => !String(briefData?.[k] ?? "").trim())
+        .map(k => BRIEF_LABELS[k])
 
-  const userPrompt = `Заполненные поля брифа:
+    const userPrompt = `Заполненные поля брифа:
 ${filled || "Пока ничего не заполнено"}
 
 Незаполненные поля: ${missing.join(", ") || "все заполнены"}
@@ -60,12 +60,12 @@ ${filled || "Пока ничего не заполнено"}
 Отвечь ТОЛЬКО JSON массивом:
 [{"field":"vision","tip":"...","reason":"...","example":"..."}]`
 
-  try {
-    const raw = await cfAiAsk(SYSTEM, userPrompt, 1024)
-    const suggestions = JSON.parse(stripJsonFences(raw))
-    return NextResponse.json({ suggestions })
-  } catch (err) {
-    console.error("[ai/brief-suggest]", err)
-    return NextResponse.json({ error: "AI недоступен" }, { status: 500 })
-  }
+    try {
+        const raw = await cfAiAsk(SYSTEM, userPrompt, 1024)
+        const suggestions = JSON.parse(stripJsonFences(raw))
+        return NextResponse.json({suggestions})
+    } catch (err) {
+        console.error("[ai/brief-suggest]", err)
+        return NextResponse.json({error: "AI недоступен"}, {status: 500})
+    }
 }

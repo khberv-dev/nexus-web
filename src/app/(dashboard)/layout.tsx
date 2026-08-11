@@ -1,30 +1,30 @@
-import type { ReactNode } from "react"
-import { redirect } from "next/navigation"
-import { getSessionUser } from "@/lib/session"
-import { prisma } from "@/lib/db/prisma"
+import type {ReactNode} from "react"
+import {redirect} from "next/navigation"
+import {getSessionUser} from "@/lib/session"
+import {prisma} from "@/lib/db/prisma"
 
-export default async function DashboardRootLayout({ children }: { children: ReactNode }) {
-  // /work/* is SPECIALIST-only (enforced by middleware), but role alone isn't enough:
-  // a specialist must also clear onboarding (test → interview → regulations → contract)
-  // before the cabinet is accessible — only individual pages checked for a profile
-  // existing, none checked onboardingStatus, so a freshly registered (PENDING) specialist
-  // could open /work directly and see the full dashboard before admin approval.
-  const user = await getSessionUser()
-  if (user?.role === "SPECIALIST") {
-    const profile = await prisma.specialistProfile.findUnique({
-      where: { userId: user.id },
-      select: { onboardingStatus: true },
-    })
-    if (profile?.onboardingStatus !== "ACTIVE") redirect("/onboarding")
-  }
+export default async function DashboardRootLayout({children}: { children: ReactNode }) {
+    // /work/* is SPECIALIST-only (enforced by middleware), but role alone isn't enough:
+    // a specialist must also clear onboarding (test → interview → regulations → contract)
+    // before the cabinet is accessible — only individual pages checked for a profile
+    // existing, none checked onboardingStatus, so a freshly registered (PENDING) specialist
+    // could open /work directly and see the full dashboard before admin approval.
+    const user = await getSessionUser()
+    if (user?.role === "SPECIALIST") {
+        const profile = await prisma.specialistProfile.findUnique({
+            where: {userId: user.id},
+            select: {onboardingStatus: true},
+        })
+        if (profile?.onboardingStatus !== "ACTIVE") redirect("/onboarding")
+    }
 
-  return (
-    <>
-      <link rel="stylesheet" href="/sneat/core.css" />
-      <link rel="stylesheet" href="/sneat/demo.css" />
-      <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css" />
-      {/* Переопределяем Bootstrap font — убираем Public Sans, используем Inter */}
-      <style>{`
+    return (
+        <>
+            <link rel="stylesheet" href="/sneat/core.css"/>
+            <link rel="stylesheet" href="/sneat/demo.css"/>
+            <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css"/>
+            {/* Переопределяем Bootstrap font — убираем Public Sans, используем Inter */}
+            <style>{`
         :root {
           /* Шрифт */
           --bs-font-sans-serif: var(--font-inter), 'Inter', -apple-system, sans-serif;
@@ -52,9 +52,9 @@ export default async function DashboardRootLayout({ children }: { children: Reac
           font-weight: 500;
         }
       `}</style>
-      <div className="layout-wrapper layout-content-navbar">
-        {children}
-      </div>
-    </>
-  )
+            <div className="layout-wrapper layout-content-navbar">
+                {children}
+            </div>
+        </>
+    )
 }

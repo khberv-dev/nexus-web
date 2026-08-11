@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/db/prisma";
-import { StageStatus } from "@prisma/client";
+import {prisma} from "@/lib/db/prisma";
+import {StageStatus} from "@prisma/client";
 
 /**
  * Canonical order-completion rule: an order is complete when every one of its
@@ -12,8 +12,8 @@ import { StageStatus } from "@prisma/client";
  * completion criterion, so completion is keyed on stage approval.
  */
 export async function isOrderComplete(orderId: string): Promise<boolean> {
-  const notApproved = await prisma.projectStage.count({
-    where: { orderId, status: { not: StageStatus.APPROVED } },
-  });
-  return notApproved === 0;
+    const notApproved = await prisma.projectStage.count({
+        where: {orderId, status: {not: StageStatus.APPROVED}},
+    });
+    return notApproved === 0;
 }

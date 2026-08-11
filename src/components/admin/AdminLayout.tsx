@@ -1,106 +1,106 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import type { ReactNode } from "react"
-import { AdminRefreshProvider, useAdminRefreshControls } from "./AdminRefreshContext"
+import {usePathname} from "next/navigation"
+import type {ReactNode} from "react"
+import {AdminRefreshProvider, useAdminRefreshControls} from "./AdminRefreshContext"
 import NotificationBell from "@/components/Community/NotificationBell"
 
 const NAV = [
-  { href: "/admin", label: "Дашборд", icon: "bx-home-alt" },
-  { href: "/admin/specialists", label: "Специалисты", icon: "bx-user-check" },
-  { href: "/admin/clients", label: "Заказчики", icon: "bx-user" },
-  { href: "/admin/orders", label: "Заказы", icon: "bx-folder-open" },
-  { href: "/admin/payments", label: "Платежи", icon: "bx-credit-card" },
-  { href: "/admin/landing", label: "Лендинг", icon: "bx-globe" },
-  { href: "/admin/audit", label: "Аудит", icon: "bx-history" },
+    {href: "/admin", label: "Дашборд", icon: "bx-home-alt"},
+    {href: "/admin/specialists", label: "Специалисты", icon: "bx-user-check"},
+    {href: "/admin/clients", label: "Заказчики", icon: "bx-user"},
+    {href: "/admin/orders", label: "Заказы", icon: "bx-folder-open"},
+    {href: "/admin/payments", label: "Платежи", icon: "bx-credit-card"},
+    {href: "/admin/landing", label: "Лендинг", icon: "bx-globe"},
+    {href: "/admin/audit", label: "Аудит", icon: "bx-history"},
 ]
 
 interface AdminLayoutProps {
-  children: ReactNode
-  noPadding?: boolean
+    children: ReactNode
+    noPadding?: boolean
 }
 
-export function AdminLayout({ children, noPadding }: AdminLayoutProps) {
-  return (
-    <AdminRefreshProvider>
-      <AdminLayoutShell noPadding={noPadding}>{children}</AdminLayoutShell>
-    </AdminRefreshProvider>
-  )
+export function AdminLayout({children, noPadding}: AdminLayoutProps) {
+    return (
+        <AdminRefreshProvider>
+            <AdminLayoutShell noPadding={noPadding}>{children}</AdminLayoutShell>
+        </AdminRefreshProvider>
+    )
 }
 
-function AdminLayoutShell({ children, noPadding }: AdminLayoutProps) {
-  const pathname = usePathname()
-  const { runRefresh, refreshing } = useAdminRefreshControls()
+function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
+    const pathname = usePathname()
+    const {runRefresh, refreshing} = useAdminRefreshControls()
 
-  const isActive = (href: string) =>
-    href === "/admin" ? pathname === "/admin" : pathname.startsWith(href)
+    const isActive = (href: string) =>
+        href === "/admin" ? pathname === "/admin" : pathname.startsWith(href)
 
-  return (
-    <div className="adm-root">
-      <aside className="adm-sidebar">
-        <div className="adm-logo">
-          <Link href="/admin" className="adm-logo-link">
-            <i className="bx bx-grid-alt adm-logo-icon" />
-          </Link>
-        </div>
-        <nav className="adm-nav">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              title={item.label}
-              className={`adm-nav-item${isActive(item.href) ? " adm-nav-item--active" : ""}`}
-            >
-              <i className={`bx ${item.icon}`} />
-            </Link>
-          ))}
-        </nav>
-        <div className="adm-sidebar-bottom">
-          <Link href="/" title="На сайт" className="adm-nav-item">
-            <i className="bx bx-globe" />
-          </Link>
-        </div>
-      </aside>
+    return (
+        <div className="adm-root">
+            <aside className="adm-sidebar">
+                <div className="adm-logo">
+                    <Link href="/admin" className="adm-logo-link">
+                        <i className="bx bx-grid-alt adm-logo-icon"/>
+                    </Link>
+                </div>
+                <nav className="adm-nav">
+                    {NAV.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            title={item.label}
+                            className={`adm-nav-item${isActive(item.href) ? " adm-nav-item--active" : ""}`}
+                        >
+                            <i className={`bx ${item.icon}`}/>
+                        </Link>
+                    ))}
+                </nav>
+                <div className="adm-sidebar-bottom">
+                    <Link href="/" title="На сайт" className="adm-nav-item">
+                        <i className="bx bx-globe"/>
+                    </Link>
+                </div>
+            </aside>
 
-      <div className="adm-main">
-        <header className="adm-header">
-          <nav className="adm-tabs">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`adm-tab${isActive(item.href) ? " adm-tab--active" : ""}`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="adm-header-right">
-            <NotificationBell />
-            <button
-              type="button"
-              className="adm-header-refresh"
-              title="Обновить данные текущей страницы без перезагрузки (на дашборде — обновление с сервера)"
-              aria-label="Обновить"
-              disabled={refreshing}
-              onClick={() => void runRefresh()}
-            >
-              <i className={`bx bx-refresh${refreshing ? " adm-header-refresh--spin" : ""}`} />
-            </button>
-            <div className="adm-profile">
+            <div className="adm-main">
+                <header className="adm-header">
+                    <nav className="adm-tabs">
+                        {NAV.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`adm-tab${isActive(item.href) ? " adm-tab--active" : ""}`}
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="adm-header-right">
+                        <NotificationBell/>
+                        <button
+                            type="button"
+                            className="adm-header-refresh"
+                            title="Обновить данные текущей страницы без перезагрузки (на дашборде — обновление с сервера)"
+                            aria-label="Обновить"
+                            disabled={refreshing}
+                            onClick={() => void runRefresh()}
+                        >
+                            <i className={`bx bx-refresh${refreshing ? " adm-header-refresh--spin" : ""}`}/>
+                        </button>
+                        <div className="adm-profile">
               <span className="adm-profile-avatar">
-                <i className="bx bx-user" />
+                <i className="bx bx-user"/>
               </span>
-              <span className="adm-profile-label">Админ</span>
+                            <span className="adm-profile-label">Админ</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div className={`adm-content${noPadding ? " adm-content--np" : ""}`}>{children}</div>
             </div>
-          </div>
-        </header>
 
-        <div className={`adm-content${noPadding ? " adm-content--np" : ""}`}>{children}</div>
-      </div>
-
-      <style>{`
+            <style>{`
         .adm-root {
           --adm-outer:          #f3f4f6;
           --adm-sidebar:        #ffffff;
@@ -282,6 +282,6 @@ function AdminLayoutShell({ children, noPadding }: AdminLayoutProps) {
           .adm-content table { display: block; overflow-x: auto; max-width: 100%; }
         }
       `}</style>
-    </div>
-  )
+        </div>
+    )
 }

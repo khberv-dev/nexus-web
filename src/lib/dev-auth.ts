@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/db/prisma"
-import { OnboardingStatus, Role } from "@prisma/client"
-import { isDevAuthBypass } from "@/lib/dev-auth-flag"
+import {prisma} from "@/lib/db/prisma"
+import {OnboardingStatus, Role} from "@prisma/client"
+import {isDevAuthBypass} from "@/lib/dev-auth-flag"
 
-export { isDevAuthBypass } from "@/lib/dev-auth-flag"
+export {isDevAuthBypass} from "@/lib/dev-auth-flag"
 
 /**
  * Локальная проверка UI без логина.
@@ -18,68 +18,68 @@ export { isDevAuthBypass } from "@/lib/dev-auth-flag"
  */
 
 export async function resolveDevMockDbUser() {
-  if (!isDevAuthBypass()) return null
+    if (!isDevAuthBypass()) return null
 
-  const id = process.env.DEV_MOCK_USER_ID?.trim()
-  if (id) {
-    const byId = await prisma.user.findUnique({ where: { id } })
-    if (byId) return byId
-  }
+    const id = process.env.DEV_MOCK_USER_ID?.trim()
+    if (id) {
+        const byId = await prisma.user.findUnique({where: {id}})
+        if (byId) return byId
+    }
 
-  const r =
-    process.env.DEV_MOCK_ROLE?.trim().toUpperCase() ??
-    process.env.NEXT_PUBLIC_DEV_MOCK_ROLE?.trim().toUpperCase()
-  const roleFromEnv: Role | undefined =
-    r === "ADMIN" || r === "SPECIALIST" || r === "CLIENT" ? (r as Role) : undefined
+    const r =
+        process.env.DEV_MOCK_ROLE?.trim().toUpperCase() ??
+        process.env.NEXT_PUBLIC_DEV_MOCK_ROLE?.trim().toUpperCase()
+    const roleFromEnv: Role | undefined =
+        r === "ADMIN" || r === "SPECIALIST" || r === "CLIENT" ? (r as Role) : undefined
 
-  if (roleFromEnv) {
-    const byRole = await prisma.user.findFirst({
-      where: { role: roleFromEnv },
-      orderBy: { createdAt: "asc" },
-    })
-    if (byRole) return byRole
-  } else {
-    const anyUser = await prisma.user.findFirst({ orderBy: { createdAt: "asc" } })
-    if (anyUser) return anyUser
-  }
-
-  const bootRole: Role = roleFromEnv ?? Role.CLIENT
-  const email = `dev-bypass-${bootRole.toLowerCase()}@local.invalid`
-
-  try {
-    const user = await prisma.$transaction(async (tx) => {
-      const u = await tx.user.upsert({
-        where: { email },
-        create: {
-          email,
-          name: "Dev bypass",
-          role: bootRole,
-          zitadelId: null,
-        },
-        update: {},
-      })
-
-      if (u.role === Role.SPECIALIST) {
-        await tx.specialistProfile.upsert({
-          where: { userId: u.id },
-          create: { userId: u.id, onboardingStatus: OnboardingStatus.ACTIVE },
-          update: { onboardingStatus: OnboardingStatus.ACTIVE },
+    if (roleFromEnv) {
+        const byRole = await prisma.user.findFirst({
+            where: {role: roleFromEnv},
+            orderBy: {createdAt: "asc"},
         })
-      } else if (u.role === Role.CLIENT) {
-        await tx.clientProfile.upsert({
-          where: { userId: u.id },
-          create: { userId: u.id },
-          update: {},
+        if (byRole) return byRole
+    } else {
+        const anyUser = await prisma.user.findFirst({orderBy: {createdAt: "asc"}})
+        if (anyUser) return anyUser
+    }
+
+    const bootRole: Role = roleFromEnv ?? Role.CLIENT
+    const email = `dev-bypass-${bootRole.toLowerCase()}@local.invalid`
+
+    try {
+        const user = await prisma.$transaction(async (tx) => {
+            const u = await tx.user.upsert({
+                where: {email},
+                create: {
+                    email,
+                    name: "Dev bypass",
+                    role: bootRole,
+                    zitadelId: null,
+                },
+                update: {},
+            })
+
+            if (u.role === Role.SPECIALIST) {
+                await tx.specialistProfile.upsert({
+                    where: {userId: u.id},
+                    create: {userId: u.id, onboardingStatus: OnboardingStatus.ACTIVE},
+                    update: {onboardingStatus: OnboardingStatus.ACTIVE},
+                })
+            } else if (u.role === Role.CLIENT) {
+                await tx.clientProfile.upsert({
+                    where: {userId: u.id},
+                    create: {userId: u.id},
+                    update: {},
+                })
+            }
+
+            return u
         })
-      }
 
-      return u
-    })
-
-    console.warn(`[dev-auth] В БД не было User — создан тестовый ${email} (${bootRole})`)
-    return user
-  } catch (e) {
-    console.error("[dev-auth] Не удалось создать dev User:", e)
-    return null
-  }
+        console.warn(`[dev-auth] В БД не было User — создан тестовый ${email} (${bootRole})`)
+        return user
+    } catch (e) {
+        console.error("[dev-auth] Не удалось создать dev User:", e)
+        return null
+    }
 }

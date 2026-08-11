@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation"
+import {redirect} from "next/navigation"
 
 export default function PaymentsPage() {
-  redirect("/work/community?tab=payments")
+    redirect("/work/community?tab=payments")
 }

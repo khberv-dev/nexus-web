@@ -13,17 +13,17 @@
  * Ответ:
  *   { result: { structured: string, checklist: string[] } }
  */
-import { NextRequest, NextResponse } from "next/server"
-import { getSessionUser } from "@/lib/session"
-import { cfAiAsk, stripJsonFences } from "@/lib/cf-ai"
-import { rateLimit } from "@/lib/rate-limit"
+import {NextRequest, NextResponse} from "next/server"
+import {getSessionUser} from "@/lib/session"
+import {cfAiAsk, stripJsonFences} from "@/lib/cf-ai"
+import {rateLimit} from "@/lib/rate-limit"
 
 const STAGE_NAMES: Record<string, string> = {
-  CONCEPT: "Концепция",
-  PLANNING: "Планировочное решение",
-  VISUALIZATION: "Визуализация",
-  DOCUMENTATION: "Рабочая документация",
-  SPECIFICATION: "Спецификация на материалы",
+    CONCEPT: "Концепция",
+    PLANNING: "Планировочное решение",
+    VISUALIZATION: "Визуализация",
+    DOCUMENTATION: "Рабочая документация",
+    SPECIFICATION: "Спецификация на материалы",
 }
 
 const SYSTEM = `Ты — опытный арт-директор в дизайн-студии. Помогаешь клиентам формулировать конкретные и профессиональные замечания к работе дизайнера.
@@ -31,23 +31,23 @@ const SYSTEM = `Ты — опытный арт-директор в дизайн-
 Отвечай ТОЛЬКО валидным JSON объектом, без markdown, без пояснений.`
 
 export async function POST(req: NextRequest) {
-  const user = await getSessionUser()
-  if (!user || user.role !== "CLIENT") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
-  }
+    const user = await getSessionUser()
+    if (!user || user.role !== "CLIENT") {
+        return NextResponse.json({error: "Forbidden"}, {status: 403})
+    }
 
-  const rl = rateLimit(`ai:${user.id}`, 20, 60 * 60 * 1000)
-  if (!rl.ok) return NextResponse.json({ error: "Слишком много запросов. Попробуйте позже." }, { status: 429 })
+    const rl = rateLimit(`ai:${user.id}`, 20, 60 * 60 * 1000)
+    if (!rl.ok) return NextResponse.json({error: "Слишком много запросов. Попробуйте позже."}, {status: 429})
 
-  const { stageType, rawFeedback, files } = await req.json() as {
-    stageType: string
-    rawFeedback: string
-    files?: string[]
-  }
+    const {stageType, rawFeedback, files} = await req.json() as {
+        stageType: string
+        rawFeedback: string
+        files?: string[]
+    }
 
-  const stageName = STAGE_NAMES[stageType] ?? stageType
+    const stageName = STAGE_NAMES[stageType] ?? stageType
 
-  const userPrompt = `Этап работ: ${stageName}
+    const userPrompt = `Этап работ: ${stageName}
 ${files?.length ? `Загруженные файлы: ${files.join(", ")}` : ""}
 
 Замечание клиента (в свободной форме):
@@ -72,12 +72,12 @@ ${files?.length ? `Загруженные файлы: ${files.join(", ")}` : ""}
 - Если замечание слишком расплывчатое — сформулируй наиболее вероятные требования для данного этапа
 - На русском языке`
 
-  try {
-    const raw = await cfAiAsk(SYSTEM, userPrompt, 600)
-    const result = JSON.parse(stripJsonFences(raw))
-    return NextResponse.json({ result })
-  } catch (err) {
-    console.error("[ai/revision-feedback]", err)
-    return NextResponse.json({ error: "AI недоступен" }, { status: 500 })
-  }
+    try {
+        const raw = await cfAiAsk(SYSTEM, userPrompt, 600)
+        const result = JSON.parse(stripJsonFences(raw))
+        return NextResponse.json({result})
+    } catch (err) {
+        console.error("[ai/revision-feedback]", err)
+        return NextResponse.json({error: "AI недоступен"}, {status: 500})
+    }
 }

@@ -1,12 +1,12 @@
-import type { ReactNode } from "react"
+import type {ReactNode} from "react"
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
-  return (
-    <>
-      <link rel="stylesheet" href="/sneat/core.css" />
-      <link rel="stylesheet" href="/sneat/demo.css" />
-      <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css" />
-      <style>{`
+export default function AdminLayout({children}: { children: ReactNode }) {
+    return (
+        <>
+            <link rel="stylesheet" href="/sneat/core.css"/>
+            <link rel="stylesheet" href="/sneat/demo.css"/>
+            <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css"/>
+            <style>{`
         body { margin: 0; overflow: hidden; }
 
         :root {
@@ -107,7 +107,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           [style*="background: #fafafa"] { background: #141e30 !important; }
         }
       `}</style>
-      {children}
-    </>
-  )
+            {children}
+        </>
+    )
 }

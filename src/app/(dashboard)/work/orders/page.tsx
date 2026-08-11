@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation"
+import {redirect} from "next/navigation"
 
 export default function OrdersPage() {
-  redirect("/work/community?tab=orders")
+    redirect("/work/community?tab=orders")
 }

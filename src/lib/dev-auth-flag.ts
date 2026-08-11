@@ -8,19 +8,19 @@
  * токен не находился, и после логина всегда редиректило обратно на /login без ошибок.
  */
 export function shouldUseSecureAuthCookies(): boolean {
-  return (process.env.NEXTAUTH_URL ?? "").startsWith("https://");
+    return (process.env.NEXTAUTH_URL ?? "").startsWith("https://");
 }
 
 /** Только проверка env — без Prisma (безопасно для Edge middleware). */
 export function isDevAuthBypass(): boolean {
-  // Guard: никогда не работает в production, даже если флаг выставлен явно.
-  if (process.env.NODE_ENV === "production") return false;
+    // Guard: никогда не работает в production, даже если флаг выставлен явно.
+    if (process.env.NODE_ENV === "production") return false;
 
-  const raw =
-    process.env.DEV_AUTH_BYPASS?.trim().toLowerCase() ??
-    process.env.NEXT_PUBLIC_DEV_AUTH_BYPASS?.trim().toLowerCase() ??
-    "";
+    const raw =
+        process.env.DEV_AUTH_BYPASS?.trim().toLowerCase() ??
+        process.env.NEXT_PUBLIC_DEV_AUTH_BYPASS?.trim().toLowerCase() ??
+        "";
 
-  // Требуем явного включения — без флага bypass выключен.
-  return raw === "true" || raw === "1" || raw === "yes";
+    // Требуем явного включения — без флага bypass выключен.
+    return raw === "true" || raw === "1" || raw === "yes";
 }

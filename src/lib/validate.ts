@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import type { z } from "zod";
+import {NextResponse} from "next/server";
+import type {z} from "zod";
 
 /**
  * Parse & validate a request JSON body against a zod schema.
@@ -14,24 +14,24 @@ import type { z } from "zod";
  *   const { field } = parsed.data;
  */
 export async function parseJsonBody<T extends z.ZodTypeAny>(
-  req: Request,
-  schema: T,
+    req: Request,
+    schema: T,
 ): Promise<{ ok: true; data: z.infer<T> } | { ok: false; response: NextResponse }> {
-  let raw: unknown;
-  try {
-    raw = await req.json();
-  } catch {
-    return { ok: false, response: NextResponse.json({ error: "Invalid JSON" }, { status: 400 }) };
-  }
-  const parsed = schema.safeParse(raw);
-  if (!parsed.success) {
-    return {
-      ok: false,
-      response: NextResponse.json(
-        { error: "Invalid request", details: parsed.error.flatten().fieldErrors },
-        { status: 400 },
-      ),
-    };
-  }
-  return { ok: true, data: parsed.data };
+    let raw: unknown;
+    try {
+        raw = await req.json();
+    } catch {
+        return {ok: false, response: NextResponse.json({error: "Invalid JSON"}, {status: 400})};
+    }
+    const parsed = schema.safeParse(raw);
+    if (!parsed.success) {
+        return {
+            ok: false,
+            response: NextResponse.json(
+                {error: "Invalid request", details: parsed.error.flatten().fieldErrors},
+                {status: 400},
+            ),
+        };
+    }
+    return {ok: true, data: parsed.data};
 }

@@ -1,8 +1,8 @@
 "use client"
 
 export function LandingUploaderStyles() {
-  return (
-    <style>{`
+    return (
+        <style>{`
       .landing-up { font-size: 14px; }
       .landing-up-banner {
         padding: 10px 14px;
@@ -135,5 +135,5 @@ export function LandingUploaderStyles() {
         .landing-up-thumb { width: 92px; height: 92px; }
       }
     `}</style>
-  )
+    )
 }

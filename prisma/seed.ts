@@ -30,95 +30,95 @@ async function main() {
   });
 
   // Clients
-  const client1 = await prisma.user.upsert({
-    where: { email: "client1@example.com" },
-    update: { password },
-    create: {
-      zitadelId: "client1-zitadel-id",
-      email: "client1@example.com",
-      role: Role.CLIENT,
-      password,
-    },
-  });
-
-  const client2 = await prisma.user.upsert({
-    where: { email: "client2@example.com" },
-    update: { password },
-    create: {
-      zitadelId: "client2-zitadel-id",
-      email: "client2@example.com",
-      role: Role.CLIENT,
-      password,
-    },
-  });
+  // const client1 = await prisma.user.upsert({
+  //   where: { email: "client1@example.com" },
+  //   update: { password },
+  //   create: {
+  //     zitadelId: "client1-zitadel-id",
+  //     email: "client1@example.com",
+  //     role: Role.CLIENT,
+  //     password,
+  //   },
+  // });
+  //
+  // const client2 = await prisma.user.upsert({
+  //   where: { email: "client2@example.com" },
+  //   update: { password },
+  //   create: {
+  //     zitadelId: "client2-zitadel-id",
+  //     email: "client2@example.com",
+  //     role: Role.CLIENT,
+  //     password,
+  //   },
+  // });
 
   // Specialists
-  const spec1 = await prisma.user.upsert({
-    where: { email: "specialist1@example.com" },
-    update: { password },
-    create: {
-      zitadelId: "spec1-zitadel-id",
-      email: "specialist1@example.com",
-      role: Role.SPECIALIST,
-      password,
-      specialistProfile: {
-        create: {
-          onboardingStatus: OnboardingStatus.ACTIVE,
-          formData: { name: "Specialist One", portfolio: "https://portfolio.example.com" },
-        },
-      },
-    },
-  });
-
-  await prisma.user.upsert({
-    where: { email: "specialist2@example.com" },
-    update: { password },
-    create: {
-      zitadelId: "spec2-zitadel-id",
-      email: "specialist2@example.com",
-      role: Role.SPECIALIST,
-      password,
-      specialistProfile: {
-        create: {
-          onboardingStatus: OnboardingStatus.PENDING,
-          formData: { name: "Specialist Two", portfolio: "https://portfolio2.example.com" },
-        },
-      },
-    },
-  });
+  // const spec1 = await prisma.user.upsert({
+  //   where: { email: "specialist1@example.com" },
+  //   update: { password },
+  //   create: {
+  //     zitadelId: "spec1-zitadel-id",
+  //     email: "specialist1@example.com",
+  //     role: Role.SPECIALIST,
+  //     password,
+  //     specialistProfile: {
+  //       create: {
+  //         onboardingStatus: OnboardingStatus.ACTIVE,
+  //         formData: { name: "Specialist One", portfolio: "https://portfolio.example.com" },
+  //       },
+  //     },
+  //   },
+  // });
+  //
+  // await prisma.user.upsert({
+  //   where: { email: "specialist2@example.com" },
+  //   update: { password },
+  //   create: {
+  //     zitadelId: "spec2-zitadel-id",
+  //     email: "specialist2@example.com",
+  //     role: Role.SPECIALIST,
+  //     password,
+  //     specialistProfile: {
+  //       create: {
+  //         onboardingStatus: OnboardingStatus.PENDING,
+  //         formData: { name: "Specialist Two", portfolio: "https://portfolio2.example.com" },
+  //       },
+  //     },
+  //   },
+  // });
 
   // Order with stages
-  const existingOrder = await prisma.order.findFirst({ where: { clientId: client1.id } });
-  if (!existingOrder) {
-    await prisma.order.create({
-      data: {
-        clientId: client1.id,
-        specialistId: spec1.id,
-        status: OrderStatus.ACTIVE,
-        briefData: { style: "modern", rooms: ["living", "bedroom"], budget: 500000 },
-        stages: {
-          create: STAGE_ORDER.map((type, i) => ({
-            type,
-            status:
-              i === 0
-                ? StageStatus.AWAITING_PAYMENT
-                : StageStatus.BLOCKED,
-          })),
-        },
-        // Without a CONFIRMED contract, syncStageSequentialLocks() re-blocks even the
-        // first stage after payment, so the demo order would be permanently stuck.
-        contracts: {
-          create: {
-            number: "DEMO-0001",
-            status: ContractStatus.CONFIRMED,
-            confirmedAt: new Date(),
-          },
-        },
-      },
-    });
-  }
+  // const existingOrder = await prisma.order.findFirst({ where: { clientId: client1.id } });
+  // if (!existingOrder) {
+  //   await prisma.order.create({
+  //     data: {
+  //       clientId: client1.id,
+  //       specialistId: spec1.id,
+  //       status: OrderStatus.ACTIVE,
+  //       briefData: { style: "modern", rooms: ["living", "bedroom"], budget: 500000 },
+  //       stages: {
+  //         create: STAGE_ORDER.map((type, i) => ({
+  //           type,
+  //           status:
+  //             i === 0
+  //               ? StageStatus.AWAITING_PAYMENT
+  //               : StageStatus.BLOCKED,
+  //         })),
+  //       },
+  //       // Without a CONFIRMED contract, syncStageSequentialLocks() re-blocks even the
+  //       // first stage after payment, so the demo order would be permanently stuck.
+  //       contracts: {
+  //         create: {
+  //           number: "DEMO-0001",
+  //           status: ContractStatus.CONFIRMED,
+  //           confirmedAt: new Date(),
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
-  console.log("Seed completed:", { admin: admin.email, client1: client1.email, client2: client2.email, spec1: spec1.email });
+  // console.log("Seed completed:", { admin: admin.email, client1: client1.email, client2: client2.email, spec1: spec1.email });
   console.log(`Demo password for all seeded users: ${DEMO_PASSWORD} (override with DEMO_SEED_PASSWORD)`);
 }
 

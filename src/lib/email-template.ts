@@ -1,25 +1,25 @@
 type EmailLayoutOptions = {
-  preheader?: string
-  welcomeText?: string
-  bodyHtml: string
+    preheader?: string
+    welcomeText?: string
+    bodyHtml: string
 }
 
 export function escapeHtml(value: unknown): string {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;")
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;")
 }
 
-export function renderEmailLayout({ preheader, welcomeText, bodyHtml }: EmailLayoutOptions): string {
-  const pre = preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(preheader)}</div>` : ""
-  const welcome = welcomeText
-    ? `<div class="text-welcome">${escapeHtml(welcomeText)}</div>`
-    : ""
+export function renderEmailLayout({preheader, welcomeText, bodyHtml}: EmailLayoutOptions): string {
+    const pre = preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(preheader)}</div>` : ""
+    const welcome = welcomeText
+        ? `<div class="text-welcome">${escapeHtml(welcomeText)}</div>`
+        : ""
 
-  return `
+    return `
 <!doctype html>
 <html lang="ru">
 <head>
@@ -58,6 +58,6 @@ export function renderEmailLayout({ preheader, welcomeText, bodyHtml }: EmailLay
 }
 
 export function renderJsonBlock(data: Record<string, unknown>): string {
-  const pretty = escapeHtml(JSON.stringify(data, null, 2))
-  return `<pre style="text-align:left;background:#f7f6fc;border:1px solid #ece9fb;border-radius:8px;padding:12px;font-size:12px;line-height:18px;overflow:auto;">${pretty}</pre>`
+    const pretty = escapeHtml(JSON.stringify(data, null, 2))
+    return `<pre style="text-align:left;background:#f7f6fc;border:1px solid #ece9fb;border-radius:8px;padding:12px;font-size:12px;line-height:18px;overflow:auto;">${pretty}</pre>`
 }

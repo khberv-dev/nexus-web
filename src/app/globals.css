@@ -8,144 +8,158 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-geist-mono);
+    --font-heading: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-  --background: #0f1535;
-  --foreground: #d3d7dc;
-  --card: #070c29;
-  --card-foreground: #e6ecf0;
-  --popover: #070c29;
-  --popover-foreground: #d3d7dc;
-  --primary: #7928ca;
-  --primary-foreground: #ffffff;
-  --secondary: #181f4a;
-  --secondary-foreground: #d3d7dc;
-  --muted: #181f4a;
-  --muted-foreground: #939aa0;
-  --accent: #181f4a;
-  --accent-foreground: #ffffff;
-  --destructive: #f01414;
-  --border: rgba(255, 255, 255, 0.15);
-  --input: rgba(255, 255, 255, 0.15);
-  --ring: #7928ca;
-  --radius: 0.625rem;
+    --background: #0f1535;
+    --foreground: #d3d7dc;
+    --card: #070c29;
+    --card-foreground: #e6ecf0;
+    --popover: #070c29;
+    --popover-foreground: #d3d7dc;
+    --primary: #7928ca;
+    --primary-foreground: #ffffff;
+    --secondary: #181f4a;
+    --secondary-foreground: #d3d7dc;
+    --muted: #181f4a;
+    --muted-foreground: #939aa0;
+    --accent: #181f4a;
+    --accent-foreground: #ffffff;
+    --destructive: #f01414;
+    --border: rgba(255, 255, 255, 0.15);
+    --input: rgba(255, 255, 255, 0.15);
+    --ring: #7928ca;
+    --radius: 0.625rem;
 }
 
 .dark {
-  --background: #070c29;
-  --foreground: #ffffff;
-  --card: #0f1535;
-  --card-foreground: #ffffff;
-  --primary: #00c6fb;
-  --primary-foreground: #ffffff;
+    --background: #070c29;
+    --foreground: #ffffff;
+    --card: #0f1535;
+    --card-foreground: #ffffff;
+    --primary: #00c6fb;
+    --primary-foreground: #ffffff;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    html {
+        @apply font-sans;
+    }
 }
 
 /* Sneat dashboard isolation — reset Tailwind overrides inside layout-wrapper */
 .layout-wrapper {
-  all: revert;
-  font-family: "Public Sans", sans-serif;
+    all: revert;
+    font-family: "Public Sans", sans-serif;
 }
+
 .layout-wrapper * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
-.admin-nav-card { transition: transform 0.15s; }
-.admin-nav-card:hover { transform: translateY(-2px); }
+
+.admin-nav-card {
+    transition: transform 0.15s;
+}
+
+.admin-nav-card:hover {
+    transform: translateY(-2px);
+}
 
 /* react-phone-number-input — shared with onboarding / auth (PhoneField + className onb-phone) */
 .onb-phone.PhoneInput {
-  display: flex;
-  align-items: stretch;
-  gap: 10px;
-  width: 100%;
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
 }
+
 .onb-phone .PhoneField-country {
-  display: flex;
-  align-self: stretch;
-  min-height: 48px;
+    display: flex;
+    align-self: stretch;
+    min-height: 48px;
 }
+
 .onb-phone input.PhoneInputInput {
-  flex: 1;
-  min-width: 0;
-  align-self: stretch;
-  min-height: 48px;
-  height: auto;
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 12px;
-  color: #f4f4f4 !important;
-  -webkit-text-fill-color: #f4f4f4;
-  font-size: 0.9rem;
-  line-height: 1.35;
-  padding: 12px 14px;
-  outline: none;
-  font-family: inherit;
-  box-sizing: border-box;
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+    min-height: 48px;
+    height: auto;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 12px;
+    color: #f4f4f4 !important;
+    -webkit-text-fill-color: #f4f4f4;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    padding: 12px 14px;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
 }
+
 .onb-phone input.PhoneInputInput::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.35);
 }
+
 .onb-phone input.PhoneInputInput:-webkit-autofill,
 .onb-phone input.PhoneInputInput:-webkit-autofill:hover,
 .onb-phone input.PhoneInputInput:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
-  box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
+    box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
 }

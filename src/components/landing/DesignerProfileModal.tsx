@@ -1,1 +1,1 @@
-export { DesignerProfileModal, type DesignerSlide } from "./designer-profile-modal"
+export {DesignerProfileModal, type DesignerSlide} from "./designer-profile-modal"

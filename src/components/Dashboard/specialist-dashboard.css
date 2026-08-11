@@ -1,424 +1,424 @@
 .spec-dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
 }
 
 /* Hero Section */
 .spec-dashboard__hero {
-  margin-bottom: 32px;
-  padding: 24px;
-  background: linear-gradient(135deg, var(--dash-accent) 0%, var(--dash-accent-bg) 100%);
-  border-radius: 12px;
-  color: white;
+    margin-bottom: 32px;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--dash-accent) 0%, var(--dash-accent-bg) 100%);
+    border-radius: 12px;
+    color: white;
 }
 
 .spec-dashboard__greeting {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .spec-dashboard__avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 20px;
-  flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
 }
 
 .spec-dashboard__title {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.2;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .spec-dashboard__subtitle {
-  margin: 4px 0 0;
-  font-size: 14px;
-  opacity: 0.9;
+    margin: 4px 0 0;
+    font-size: 14px;
+    opacity: 0.9;
 }
 
 /* Stats Grid */
 .spec-dashboard__stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
 }
 
 .spec-dashboard__stat-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background: var(--dash-bg);
-  border: 1px solid var(--dash-border);
-  border-radius: 8px;
-  transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--dash-bg);
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
 .spec-dashboard__stat-card:hover {
-  border-color: var(--dash-accent);
-  box-shadow: 0 2px 8px rgba(115, 103, 240, 0.1);
+    border-color: var(--dash-accent);
+    box-shadow: 0 2px 8px rgba(115, 103, 240, 0.1);
 }
 
 .spec-dashboard__stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
 }
 
 .spec-dashboard__stat-content {
-  flex: 1;
+    flex: 1;
 }
 
 .spec-dashboard__stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--dash-text);
-  margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dash-text);
+    margin-bottom: 4px;
 }
 
 .spec-dashboard__stat-label {
-  font-size: 12px;
-  color: var(--dash-muted);
-  font-weight: 500;
+    font-size: 12px;
+    color: var(--dash-muted);
+    font-weight: 500;
 }
 
 /* Main Content */
 .spec-dashboard__main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .spec-dashboard__section {
-  background: var(--dash-bg);
-  border: 1px solid var(--dash-border);
-  border-radius: 8px;
-  padding: 24px;
+    background: var(--dash-bg);
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    padding: 24px;
 }
 
 .spec-dashboard__section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .spec-dashboard__section-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--dash-text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dash-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .spec-dashboard__section-title i {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .spec-dashboard__link {
-  font-size: 13px;
-  color: var(--dash-accent);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
+    font-size: 13px;
+    color: var(--dash-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
 }
 
 .spec-dashboard__link:hover {
-  color: var(--dash-accent-hover, var(--dash-accent));
-  text-decoration: underline;
+    color: var(--dash-accent-hover, var(--dash-accent));
+    text-decoration: underline;
 }
 
 .spec-dashboard__badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: var(--dash-danger);
-  color: white;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--dash-danger);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 /* Urgent Items */
 .spec-dashboard__urgent-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .spec-dashboard__urgent-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--dash-bg-alt);
-  border-left: 3px solid var(--dash-warn);
-  border-radius: 6px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--dash-bg-alt);
+    border-left: 3px solid var(--dash-warn);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .spec-dashboard__urgent-item:hover {
-  background: var(--dash-border);
-  transform: translateX(4px);
+    background: var(--dash-border);
+    transform: translateX(4px);
 }
 
 .spec-dashboard__urgent-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 159, 67, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--dash-warn);
-  font-size: 18px;
-  flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 159, 67, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dash-warn);
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 .spec-dashboard__urgent-content {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 }
 
 .spec-dashboard__urgent-title {
-  font-weight: 600;
-  color: var(--dash-text);
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-weight: 600;
+    color: var(--dash-text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .spec-dashboard__urgent-meta {
-  display: flex;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--dash-muted);
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--dash-muted);
 }
 
 .spec-dashboard__urgent-status {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .spec-dashboard__urgent-item i:last-child {
-  color: var(--dash-muted);
-  font-size: 18px;
+    color: var(--dash-muted);
+    font-size: 18px;
 }
 
 /* Empty State */
 .spec-dashboard__empty {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--dash-muted);
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--dash-muted);
 }
 
 .spec-dashboard__empty i {
-  font-size: 48px;
-  opacity: 0.3;
-  display: block;
-  margin-bottom: 12px;
+    font-size: 48px;
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 12px;
 }
 
 .spec-dashboard__empty p {
-  margin: 0;
-  font-size: 14px;
+    margin: 0;
+    font-size: 14px;
 }
 
 /* Orders Table */
 .spec-dashboard__orders-table {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 .spec-dashboard__orders-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
 }
 
 .spec-dashboard__orders-table thead {
-  background: var(--dash-bg-alt);
-  border-bottom: 1px solid var(--dash-border);
+    background: var(--dash-bg-alt);
+    border-bottom: 1px solid var(--dash-border);
 }
 
 .spec-dashboard__orders-table th {
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--dash-muted);
-  white-space: nowrap;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--dash-muted);
+    white-space: nowrap;
 }
 
 .spec-dashboard__orders-table tbody tr {
-  border-bottom: 1px solid var(--dash-border);
-  transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--dash-border);
+    transition: background-color 0.2s ease;
 }
 
 .spec-dashboard__orders-table tbody tr:hover {
-  background-color: var(--dash-bg-alt);
+    background-color: var(--dash-bg-alt);
 }
 
 .spec-dashboard__orders-table td {
-  padding: 12px 16px;
-  vertical-align: middle;
+    padding: 12px 16px;
+    vertical-align: middle;
 }
 
 .spec-dashboard__order-link {
-  color: var(--dash-accent);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
+    color: var(--dash-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
 }
 
 .spec-dashboard__order-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .spec-dashboard__status {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .spec-dashboard__status--active {
-  background: rgba(41, 205, 130, 0.1);
-  color: var(--dash-success);
+    background: rgba(41, 205, 130, 0.1);
+    color: var(--dash-success);
 }
 
 .spec-dashboard__status--done {
-  background: rgba(115, 115, 115, 0.1);
-  color: var(--dash-muted);
+    background: rgba(115, 115, 115, 0.1);
+    color: var(--dash-muted);
 }
 
 .spec-dashboard__status--draft {
-  background: rgba(255, 159, 67, 0.1);
-  color: var(--dash-warn);
+    background: rgba(255, 159, 67, 0.1);
+    color: var(--dash-warn);
 }
 
 /* Progress Bar */
 .spec-dashboard__progress {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .spec-dashboard__progress-bar {
-  flex: 1;
-  height: 4px;
-  background: var(--dash-border);
-  border-radius: 2px;
-  overflow: hidden;
-  min-width: 60px;
+    flex: 1;
+    height: 4px;
+    background: var(--dash-border);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 60px;
 }
 
 .spec-dashboard__progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--dash-accent), var(--dash-success));
-  transition: width 0.3s ease;
+    height: 100%;
+    background: linear-gradient(90deg, var(--dash-accent), var(--dash-success));
+    transition: width 0.3s ease;
 }
 
 .spec-dashboard__progress-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--dash-muted);
-  min-width: 30px;
-  text-align: right;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dash-muted);
+    min-width: 30px;
+    text-align: right;
 }
 
 /* Quick Links */
 .spec-dashboard__quick-links {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
 }
 
 .spec-dashboard__quick-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px;
-  background: var(--dash-bg-alt);
-  border: 1px solid var(--dash-border);
-  border-radius: 8px;
-  text-decoration: none;
-  color: var(--dash-text);
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    background: var(--dash-bg-alt);
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--dash-text);
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .spec-dashboard__quick-link:hover {
-  background: var(--dash-accent);
-  color: white;
-  border-color: var(--dash-accent);
+    background: var(--dash-accent);
+    color: white;
+    border-color: var(--dash-accent);
 }
 
 .spec-dashboard__quick-link i {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .spec-dashboard {
-    padding: 16px;
-  }
+    .spec-dashboard {
+        padding: 16px;
+    }
 
-  .spec-dashboard__stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .spec-dashboard__stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-  .spec-dashboard__quick-links {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .spec-dashboard__quick-links {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-  .spec-dashboard__orders-table {
-    font-size: 12px;
-  }
+    .spec-dashboard__orders-table {
+        font-size: 12px;
+    }
 
-  .spec-dashboard__orders-table th,
-  .spec-dashboard__orders-table td {
-    padding: 8px 12px;
-  }
+    .spec-dashboard__orders-table th,
+    .spec-dashboard__orders-table td {
+        padding: 8px 12px;
+    }
 }
 
 @media (max-width: 480px) {
-  .spec-dashboard__stats-grid {
-    grid-template-columns: 1fr;
-  }
+    .spec-dashboard__stats-grid {
+        grid-template-columns: 1fr;
+    }
 
-  .spec-dashboard__greeting {
-    flex-direction: column;
-    text-align: center;
-  }
+    .spec-dashboard__greeting {
+        flex-direction: column;
+        text-align: center;
+    }
 
-  .spec-dashboard__quick-links {
-    grid-template-columns: 1fr;
-  }
+    .spec-dashboard__quick-links {
+        grid-template-columns: 1fr;
+    }
 }
