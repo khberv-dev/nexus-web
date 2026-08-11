@@ -1,4 +1,5 @@
 import {formatEdoProvidersLabel} from "@/lib/edo-providers"
+import {splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {SPECIALIST_FORMDATA_KNOWN} from "../constants"
 import {boolRu} from "../utils"
 
@@ -43,6 +44,7 @@ export function QuestionnaireCard({
                             color: "#f97316"
                         },
                         {label: "Программы", value: fd.software, icon: "bx-wrench", color: "#22c55e"},
+                        {label: "Нейросети", value: fd.aiServices, icon: "bx-bot", color: "#a855f7"},
                         {label: "3D моделирование", value: boolRu(fd.has3d) || "—", icon: "bx-cube", color: "#8b5cf6"},
                         {label: "Чертежи", value: boolRu(fd.hasRd) || "—", icon: "bx-file", color: "#8b5cf6"},
                         {
@@ -79,8 +81,12 @@ export function QuestionnaireCard({
                         </div>
                         <div style={{minWidth: 0}}>
                             <div className="sp-info-label">Портфолио</div>
-                            <a href={fd.portfolio} target="_blank" rel="noopener noreferrer"
-                               className="sp-info-link">{fd.portfolio}</a>
+                            <div style={{display: "grid", gap: 4}}>
+                                {splitPortfolioLinks(fd.portfolio).map((link) => (
+                                    <a key={link} href={link} target="_blank" rel="noopener noreferrer"
+                                       className="sp-info-link">{link}</a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 )}

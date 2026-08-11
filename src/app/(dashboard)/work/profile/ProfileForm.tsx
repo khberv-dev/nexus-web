@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react"
 import {toast} from "sonner"
 import {EDO_PROVIDER_OPTIONS, parseEdoProviders} from "@/lib/edo-providers"
+import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 
 const FIELDS = [
     {name: "fullName", label: "ФИО", placeholder: "Иван Иванов"},
@@ -14,6 +15,7 @@ const FIELDS = [
     {name: "specialty", label: "Специализация", placeholder: "Минимализм · Сканди"},
     {name: "portfolio", label: "Портфолио (ссылка)", placeholder: "https://behance.net/..."},
     {name: "software", label: "Программы", placeholder: "AutoCAD, 3ds Max"},
+    {name: "aiServices", label: "Нейросети", placeholder: "ChatGPT, Midjourney"},
 ]
 
 const TOGGLE_FIELDS = [
@@ -132,6 +134,7 @@ export default function ProfileForm({
                 ...form,
                 specialty: form.specialty ?? "",
                 specialization: form.specialty ?? "",
+                portfolio: splitPortfolioLinks(form.portfolio || "").join("\n"),
             }
             const payload =
                 submitMethod === "PATCH" && submitUrl.includes("/api/admin/specialists/")
@@ -175,7 +178,7 @@ export default function ProfileForm({
             )}
             <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem"}}>
                 {FIELDS.map((f) => (
-                    <div key={f.name}>
+                    <div key={f.name} style={f.name === "portfolio" ? {gridColumn: "1 / -1"} : undefined}>
                         <label style={{
                             display: "block",
                             fontSize: "0.68rem",
@@ -185,8 +188,41 @@ export default function ProfileForm({
                             color: "var(--dash-muted)",
                             marginBottom: 6
                         }}>{f.label}</label>
-                        <input type="text" placeholder={f.placeholder} value={form[f.name] || ""}
-                               onChange={(e) => setForm((p) => ({...p, [f.name]: e.target.value}))} style={inputStyle}/>
+                        {f.name === "portfolio" ? (
+                            <PortfolioLinksField
+                                value={form.portfolio || ""}
+                                onChange={(v) => setForm((p) => ({...p, portfolio: v}))}
+                                inputStyle={inputStyle}
+                                placeholder={f.placeholder}
+                                addButtonStyle={{
+                                    alignSelf: "flex-start",
+                                    padding: "0.4em 0.9em",
+                                    borderRadius: 8,
+                                    border: "1px dashed var(--dash-border)",
+                                    background: "transparent",
+                                    color: "var(--dash-muted)",
+                                    fontSize: "0.82rem",
+                                    cursor: "pointer",
+                                    fontFamily: "inherit",
+                                }}
+                                removeButtonStyle={{
+                                    flexShrink: 0,
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: 6,
+                                    border: "1px solid var(--dash-border)",
+                                    background: "transparent",
+                                    color: "var(--dash-muted)",
+                                    cursor: "pointer",
+                                    fontFamily: "inherit",
+                                    lineHeight: 1,
+                                }}
+                            />
+                        ) : (
+                            <input type="text" placeholder={f.placeholder} value={form[f.name] || ""}
+                                   onChange={(e) => setForm((p) => ({...p, [f.name]: e.target.value}))}
+                                   style={inputStyle}/>
+                        )}
                     </div>
                 ))}
             </div>

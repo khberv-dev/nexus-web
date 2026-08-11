@@ -6,6 +6,7 @@ import {toast} from "sonner"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {PhoneField} from "@/components/ui/PhoneField"
+import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 
 // ─── Типы AI ─────────────────────────────────────────────────────────────────
 
@@ -18,7 +19,7 @@ interface AISuggestion {
 
 const FIELD_LABELS: Record<string, string> = {
     fullName: "ФИО", city: "Город", experience: "Опыт",
-    portfolio: "Портфолио", software: "Программы", about: "О себе",
+    portfolio: "Портфолио", software: "Программы", aiServices: "Нейросети", about: "О себе",
 }
 
 const FIELDS = [
@@ -46,6 +47,13 @@ const FIELDS = [
         required: false
     },
     {
+        name: "aiServices",
+        label: "Нейросети",
+        type: "ai",
+        placeholder: "Начните вводить или выберите ниже…",
+        required: false
+    },
+    {
         name: "about",
         label: "О себе",
         type: "textarea",
@@ -69,6 +77,15 @@ const SOFTWARE_SUGGESTIONS = [
     "V-Ray", "Corona Renderer", "Lumion", "Twinmotion", "Enscape", "Unreal Engine",
     // Презентации и графика
     "Photoshop", "Illustrator", "InDesign", "Figma",
+]
+
+const AI_SERVICE_SUGGESTIONS = [
+    // Текст / ассистенты
+    "ChatGPT", "Claude", "Gemini", "DeepSeek", "Perplexity", "Copilot", "Grok",
+    // Изображения / визуализация
+    "Midjourney", "DALL-E", "Stable Diffusion", "Adobe Firefly",
+    // Видео
+    "Runway", "Luma",
 ]
 
 const inputStyle: React.CSSProperties = {
@@ -170,6 +187,20 @@ export default function OnboardingFormPage() {
         (form.software ?? "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
     )
 
+    // Переключение нейросети в поле aiServices — тот же паттерн, что и для software
+    const toggleAiService = (name: string) => {
+        const current = (form.aiServices ?? "").split(",").map(s => s.trim()).filter(Boolean)
+        const exists = current.some(s => s.toLowerCase() === name.toLowerCase())
+        const next = exists
+            ? current.filter(s => s.toLowerCase() !== name.toLowerCase())
+            : [...current, name]
+        setForm(f => ({...f, aiServices: next.join(", ")}))
+    }
+
+    const activeAiServices = new Set(
+        (form.aiServices ?? "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
+    )
+
     const openDrawer = async () => {
         setDrawerOpen(true)
         setLoadingAI(true)
@@ -263,10 +294,11 @@ export default function OnboardingFormPage() {
         setLoading(true)
         setError(null)
         try {
+            const payload = {...form, portfolio: splitPortfolioLinks(form.portfolio || "").join("\n")}
             const res = await fetch("/api/onboarding/apply", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(form),
+                body: JSON.stringify(payload),
             })
             if (!res.ok) {
                 const body = await res.json().catch(() => ({}))
@@ -304,7 +336,7 @@ export default function OnboardingFormPage() {
                             }}
                         >
                             {FIELDS.map(field => {
-                                const isWide = field.type === "textarea" || field.type === "software"
+                                const isWide = field.type === "textarea" || field.type === "software" || field.type === "ai" || field.name === "portfolio"
                                 return (
                                     <div
                                         key={field.name}
@@ -319,7 +351,37 @@ export default function OnboardingFormPage() {
                                             {field.label}
                                         </label>
 
-                                        {field.type === "toggle" ? (
+                                        {field.name === "portfolio" ? (
+                                            <PortfolioLinksField
+                                                value={form.portfolio || ""}
+                                                onChange={v => setForm(f => ({...f, portfolio: v}))}
+                                                inputStyle={inputStyle}
+                                                placeholder={field.placeholder}
+                                                addButtonStyle={{
+                                                    alignSelf: "flex-start",
+                                                    padding: "0.4em 0.9em",
+                                                    borderRadius: 8,
+                                                    border: "1px dashed rgba(255,255,255,0.25)",
+                                                    background: "transparent",
+                                                    color: "rgba(255,255,255,0.55)",
+                                                    fontSize: "0.82rem",
+                                                    cursor: "pointer",
+                                                    fontFamily: "inherit",
+                                                }}
+                                                removeButtonStyle={{
+                                                    flexShrink: 0,
+                                                    width: 32,
+                                                    height: 32,
+                                                    borderRadius: 6,
+                                                    border: "1px solid rgba(255,255,255,0.15)",
+                                                    background: "transparent",
+                                                    color: "rgba(255,255,255,0.45)",
+                                                    cursor: "pointer",
+                                                    fontFamily: "inherit",
+                                                    lineHeight: 1,
+                                                }}
+                                            />
+                                        ) : field.type === "toggle" ? (
                                             <button
                                                 type="button"
                                                 onClick={() => setForm(f => ({
@@ -398,6 +460,52 @@ export default function OnboardingFormPage() {
                                                                     fontSize: "0.65rem"
                                                                 }}>✓</span>}
                                                                 {sw}
+                                                            </button>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </>
+                                        ) : field.type === "ai" ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    placeholder={field.placeholder}
+                                                    value={form[field.name] || ""}
+                                                    onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
+                                                    style={inputStyle}
+                                                    onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
+                                                    onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                                                />
+                                                <div style={{
+                                                    display: "flex",
+                                                    flexWrap: "wrap",
+                                                    gap: "0.4em",
+                                                    marginTop: "0.2em"
+                                                }}>
+                                                    {AI_SERVICE_SUGGESTIONS.map(ai => {
+                                                        const active = activeAiServices.has(ai.toLowerCase())
+                                                        return (
+                                                            <button
+                                                                key={ai}
+                                                                type="button"
+                                                                onClick={() => toggleAiService(ai)}
+                                                                style={{
+                                                                    background: active ? "rgba(121,40,202,0.3)" : "rgba(255,255,255,0.04)",
+                                                                    border: `1px solid ${active ? "rgba(121,40,202,0.55)" : "rgba(255,255,255,0.1)"}`,
+                                                                    borderRadius: 100,
+                                                                    color: active ? "#e0d0ff" : "rgba(255,255,255,0.45)",
+                                                                    cursor: "pointer",
+                                                                    fontSize: "0.75rem",
+                                                                    fontFamily: "inherit",
+                                                                    padding: "0.3em 0.8em",
+                                                                    transition: "all 0.15s",
+                                                                }}
+                                                            >
+                                                                {active && <span style={{
+                                                                    marginRight: "0.3em",
+                                                                    fontSize: "0.65rem"
+                                                                }}>✓</span>}
+                                                                {ai}
                                                             </button>
                                                         )
                                                     })}

@@ -21,6 +21,7 @@ const FORM_LABELS: Record<string, string> = {
     specialization: "Специализация",
     portfolio: "Портфолио",
     software: "Программы",
+    aiServices: "Нейросети",
     about: "О себе",
     has3d: "3D моделирование",
     hasRd: "Чертежи",
@@ -40,6 +41,7 @@ const FORM_LABELS: Record<string, string> = {
 function formatFormValue(key: string, value: string): string {
     if (key === "has3d" || key === "hasRd") return value === "true" ? "Да" : value === "false" ? "Нет" : value
     if (key === "taxStatus") return value === "IP" ? "ИП" : value === "SZ" ? "Самозанятый" : value === "OOO" ? "ООО" : value
+    if (key === "portfolio") return value.split("\n").map((v) => v.trim()).filter(Boolean).join(", ")
     return value
 }
 

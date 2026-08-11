@@ -2,6 +2,7 @@
 
 import type {StatusVariant} from "./AppCard"
 import {InfoRow, SectionLabel, StatusBadge} from "./AppCard"
+import {splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 
 // ── Типы ──────────────────────────────────────────────────────────────────────
 
@@ -15,6 +16,7 @@ export interface SpecialistFormData {
     experience?: string
     portfolio?: string
     software?: string
+    aiServices?: string
     about?: string
 }
 
@@ -224,8 +226,18 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                         )}
                                         {fd?.portfolio && (
                                             <div className="col-sm-6">
-                                                <InfoRow icon="bx-link-external" label="Портфолио" value={fd.portfolio}
-                                                         href={fd.portfolio}/>
+                                                <div className="d-flex align-items-start gap-2 mb-2">
+                                                    <i className="bx bx-link-external text-muted mt-1"/>
+                                                    <div>
+                                                        <div className="text-uppercase text-muted"
+                                                             style={{fontSize: "0.7rem", letterSpacing: "0.05em"}}>Портфолио</div>
+                                                        {splitPortfolioLinks(fd.portfolio).map((link) => (
+                                                            <a key={link} href={link} target="_blank" rel="noopener noreferrer"
+                                                               className="text-primary d-block"
+                                                               style={{fontSize: "0.875rem"}}>{link}</a>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                         {fd?.software && (
@@ -238,6 +250,20 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                                     {fd.software.split(",").map(s => s.trim()).filter(Boolean).map(sw => (
                                                         <span key={sw}
                                                               className="badge bg-label-primary rounded-pill">{sw}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {fd?.aiServices && (
+                                            <div className="col-12">
+                                                <div className="text-uppercase text-muted fw-semibold mb-2"
+                                                     style={{fontSize: "0.68rem", letterSpacing: "0.07em"}}>
+                                                    Нейросети
+                                                </div>
+                                                <div className="d-flex flex-wrap gap-1">
+                                                    {fd.aiServices.split(",").map(s => s.trim()).filter(Boolean).map(ai => (
+                                                        <span key={ai}
+                                                              className="badge bg-label-primary rounded-pill">{ai}</span>
                                                     ))}
                                                 </div>
                                             </div>
