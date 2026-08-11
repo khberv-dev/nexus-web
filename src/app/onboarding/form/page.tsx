@@ -380,6 +380,7 @@ export default function OnboardingFormPage() {
                                                     fontFamily: "inherit",
                                                     lineHeight: 1,
                                                 }}
+                                                hintStyle={{fontSize: "0.75rem", color: "rgba(255,255,255,0.38)"}}
                                             />
                                         ) : field.type === "toggle" ? (
                                             <button

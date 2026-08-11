@@ -32,6 +32,12 @@ const defaultRemoveButtonStyle: React.CSSProperties = {
     lineHeight: 1,
 }
 
+const defaultHintStyle: React.CSSProperties = {
+    fontSize: "0.75rem",
+    opacity: 0.55,
+    color: "inherit",
+}
+
 export function PortfolioLinksField({
     value,
     onChange,
@@ -40,6 +46,8 @@ export function PortfolioLinksField({
     addLabel = "+ Добавить ссылку",
     addButtonStyle,
     removeButtonStyle,
+    hint = "Добавьте ссылку на портфолио — Behance, Pinterest, личный сайт и т.д. Можно указать несколько ссылок.",
+    hintStyle,
 }: {
     value: string
     onChange: (value: string) => void
@@ -48,6 +56,9 @@ export function PortfolioLinksField({
     addLabel?: string
     addButtonStyle?: React.CSSProperties
     removeButtonStyle?: React.CSSProperties
+    /** Текст подсказки под полем; передайте "" чтобы скрыть. */
+    hint?: string
+    hintStyle?: React.CSSProperties
 }) {
     // Пустая строка в конце всегда даёт хотя бы одно поле ввода.
     const rawLines = value.split("\n")
@@ -92,6 +103,7 @@ export function PortfolioLinksField({
             <button type="button" onClick={addLink} style={addButtonStyle ?? defaultAddButtonStyle}>
                 {addLabel}
             </button>
+            {hint && <div style={hintStyle ?? defaultHintStyle}>{hint}</div>}
         </div>
     )
 }

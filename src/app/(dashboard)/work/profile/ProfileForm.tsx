@@ -217,6 +217,7 @@ export default function ProfileForm({
                                     fontFamily: "inherit",
                                     lineHeight: 1,
                                 }}
+                                hintStyle={{fontSize: "0.75rem", color: "var(--dash-muted)"}}
                             />
                         ) : (
                             <input type="text" placeholder={f.placeholder} value={form[f.name] || ""}
