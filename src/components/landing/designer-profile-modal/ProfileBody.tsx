@@ -26,7 +26,7 @@ export function ProfileBody({designer: d, works, onOpenWork}: ProfileBodyProps) 
                     {label: "Реализовано", value: `${d.sqm} м²`},
                     {label: "Стиль", value: d.style},
                     {label: "3D моделирование", value: d.has3d ? "Да" : "Нет"},
-                    {label: "Стадия РД", value: d.hasRd ? "Да" : "Нет"},
+                    {label: "Чертежи", value: d.hasRd ? "Да" : "Нет"},
                 ].map(item => (
                     <div key={item.label} style={{minWidth: 100}}>
                         <p style={{

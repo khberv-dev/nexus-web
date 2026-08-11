@@ -27,6 +27,15 @@ function toAbsoluteAppUrl(url: string | null): string | null {
     return `${base}/${u}`
 }
 
+/** Все href из рендеренного HTML письма — для dev-лога (см. AUTH_EMAIL_DEV_LOG в email-provider.ts). */
+function extractLinks(html: string): string[] {
+    const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1])
+    const unique = Array.from(new Set(hrefs))
+    return unique.map((u) =>
+        u.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    )
+}
+
 export type EmailTrigger =
     | "new_application"
     | "onboarding_status"
@@ -373,14 +382,21 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
 }
 
 export async function sendEmail(trigger: EmailTrigger, to: string, data: Record<string, unknown>): Promise<void> {
+    const subject = trigger === "onboarding_status" ? resolveOnboardingSubject(data) : SUBJECTS[trigger]
+    const html = renderTriggerEmail(trigger, data)
+
+    const devLog = process.env.NODE_ENV === "development" || process.env.AUTH_EMAIL_DEV_LOG === "1"
+    if (devLog) {
+        const links = extractLinks(html)
+        console.warn(
+            `\n[email] ${trigger} → ${to} (${subject})\n` +
+            (links.length ? `Ссылки в письме:\n${links.map((l) => `  - ${l}`).join("\n")}` : "Ссылок в письме нет") +
+            "\n"
+        )
+    }
+
     try {
-        const subject = trigger === "onboarding_status" ? resolveOnboardingSubject(data) : SUBJECTS[trigger]
-        await getResend().emails.send({
-            from: FROM,
-            to,
-            subject,
-            html: renderTriggerEmail(trigger, data),
-        });
+        await getResend().emails.send({ from: FROM, to, subject, html });
     } catch (err) {
         console.error(`[email] Failed to send ${trigger} to ${to}:`, err);
     }

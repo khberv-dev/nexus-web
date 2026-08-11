@@ -37,7 +37,7 @@ const FIELDS = [
     },
     {name: "portfolio", label: "Портфолио", type: "url", placeholder: "https://behance.net/...", required: false},
     {name: "has3d", label: "3D моделирование", type: "toggle", placeholder: "", required: false},
-    {name: "hasRd", label: "Стадия РД", type: "toggle", placeholder: "", required: false},
+    {name: "hasRd", label: "Чертежи", type: "toggle", placeholder: "", required: false},
     {
         name: "software",
         label: "Программы",

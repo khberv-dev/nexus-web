@@ -18,7 +18,7 @@ const FIELDS = [
 
 const TOGGLE_FIELDS = [
     {name: "has3d", label: "3D моделирование"},
-    {name: "hasRd", label: "Стадия РД"},
+    {name: "hasRd", label: "Чертежи"},
 ]
 
 const TAX_STATUSES = [

@@ -51,7 +51,7 @@ const FIELD_LABEL: Record<string, string> = {
     fullName: "ФИО", phone: "Телефон", city: "Город", experience: "Опыт (лет)",
     sqm: "Реализовано м²", interiorStyle: "Стиль", specialty: "Специализация",
     portfolio: "Портфолио", software: "Программы", about: "О себе",
-    has3d: "3D моделирование", hasRd: "Стадия РД",
+    has3d: "3D моделирование", hasRd: "Чертежи",
     taxStatus: "Налоговый статус", inn: "ИНН", ogrnip: "ОГРНИП",
     bankAccount: "Расчетный счет", bankName: "Банк", bankBik: "БИК",
     edoProviders: "ЭДО",

@@ -23,7 +23,7 @@ const FORM_LABELS: Record<string, string> = {
     software: "Программы",
     about: "О себе",
     has3d: "3D моделирование",
-    hasRd: "Стадия РД",
+    hasRd: "Чертежи",
     taxStatus: "Налоговый статус",
     inn: "ИНН",
     ogrnip: "ОГРНИП",

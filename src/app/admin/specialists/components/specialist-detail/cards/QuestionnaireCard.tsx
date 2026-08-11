@@ -44,7 +44,7 @@ export function QuestionnaireCard({
                         },
                         {label: "Программы", value: fd.software, icon: "bx-wrench", color: "#22c55e"},
                         {label: "3D моделирование", value: boolRu(fd.has3d) || "—", icon: "bx-cube", color: "#8b5cf6"},
-                        {label: "Стадия РД", value: boolRu(fd.hasRd) || "—", icon: "bx-file", color: "#8b5cf6"},
+                        {label: "Чертежи", value: boolRu(fd.hasRd) || "—", icon: "bx-file", color: "#8b5cf6"},
                         {
                             label: "ЭДО",
                             value: formatEdoProvidersLabel(fd.edoProviders) || "Не указано",
