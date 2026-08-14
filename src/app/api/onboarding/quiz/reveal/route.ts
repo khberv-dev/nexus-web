@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
-import {getLevelBank, getLevelQuestion} from "@/lib/onboarding/levels/banks"
+import {getLevelBank, getLevelQuestion, toOriginalOptionIndex, toShownOptionIndex} from "@/lib/onboarding/levels/banks"
 import {countCorrectForLevel, parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
 
@@ -105,12 +105,20 @@ export async function POST(req: NextRequest) {
         base = {...state.answers}
     }
 
+    // answers хранит индекс варианта КАК ПОКАЗАН на экране (после перемешивания) — так же, как
+    // его потом резолвит клиент при финальной отправке в /api/onboarding/step. Для проверки
+    // правильности транслируем через optionOrder этой попытки в исходный индекс из банка.
+    const optionOrderForQuestion = state.optionOrder[String(questionId)]
     const effectiveSelectedValue = effectiveTimedOut ? -1 : selectedValue
     const answers = {...base, [String(questionId)]: effectiveSelectedValue}
-    const liveCorrect = countCorrectForLevel(level, answers)
+    const liveCorrect = countCorrectForLevel(level, answers, state.optionOrder)
     const total = getLevelBank(level).questions.length
     const answeredCount = Object.keys(answers).length
-    const nextQuestionId = answeredCount < total ? questionId + 1 : 0
+    const posInOrder = state.questionOrder.indexOf(questionId)
+    const nextQuestionId =
+        answeredCount < total && posInOrder >= 0 && posInOrder + 1 < state.questionOrder.length
+            ? state.questionOrder[posInOrder + 1]
+            : 0
     const nextDeadline = nextQuestionId > 0 ? new Date(now + QUESTION_TIME_LIMIT_SEC * 1000).toISOString() : null
     const comment = JSON.stringify({
         version: 5,
@@ -126,6 +134,8 @@ export async function POST(req: NextRequest) {
         attempts: state?.attempts ?? [],
         passedLevels: state?.passedLevels ?? [],
         pendingApprovalLevel: null,
+        questionOrder: state.questionOrder,
+        optionOrder: state.optionOrder,
     })
 
     if (existing) {
@@ -139,9 +149,11 @@ export async function POST(req: NextRequest) {
         })
     }
 
+    const originalSelected = toOriginalOptionIndex(optionOrderForQuestion, effectiveSelectedValue)
+
     return NextResponse.json({
-        isCorrect: effectiveSelectedValue === q.correct,
-        correctIndex: q.correct,
+        isCorrect: originalSelected === q.correct,
+        correctIndex: toShownOptionIndex(optionOrderForQuestion, q.correct),
         explain: q.explain,
         savedIndex: effectiveSelectedValue,
         timedOut: effectiveTimedOut,

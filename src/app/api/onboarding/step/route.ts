@@ -105,7 +105,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({error: "Нужны ответы на все вопросы (индексы вариантов -1 или 0–3)"}, {status: 400})
         }
 
-        const grade = gradeLevel(level, testAnswers)
+        // testAnswers хранит индексы КАК ПОКАЗАНЫ на экране (после перемешивания) — gradeLevel
+        // транслирует их в исходные индексы банка через optionOrder текущей попытки.
+        const priorState = parseQuizLevelState(existingTestStep?.comment ?? null)
+        const grade = gradeLevel(level, testAnswers, priorState?.optionOrder)
         const now = new Date().toISOString()
         // Wrap in serializable transaction to prevent race conditions on attempt counting
         const txResult = await prisma.$transaction(async (tx) => {
@@ -146,7 +149,8 @@ export async function POST(req: NextRequest) {
                     percent: grade.percent,
                 },
                 grade.passed,
-                testAnswers as Record<string, number>
+                testAnswers as Record<string, number>,
+                priorState?.optionOrder
             )
             // После каждого уровня требуется подтверждение администратора → остаёмся IN_PROGRESS.
             const status = grade.passed ? "IN_PROGRESS" : "FAILED"

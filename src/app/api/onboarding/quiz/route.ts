@@ -3,7 +3,14 @@ import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 import type {NexusQuizQuestionWire} from "@/lib/onboarding/quiz-wire"
-import {getPublicLevelQuestions, QUIZ_LEVEL_META, QUIZ_LEVEL_ORDER} from "@/lib/onboarding/levels/banks"
+import {
+    buildShuffledOptionOrder,
+    buildShuffledQuestionOrder,
+    getLevelBank,
+    getPublicLevelQuestionsOrdered,
+    QUIZ_LEVEL_META,
+    QUIZ_LEVEL_ORDER,
+} from "@/lib/onboarding/levels/banks"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
 
@@ -83,28 +90,21 @@ export async function GET(req: NextRequest) {
     const availableLevels = [activeLevel]
     const resolvedLevel = availableLevels.includes(requested) ? requested : activeLevel
 
-    const plain = getPublicLevelQuestions(resolvedLevel)
-    const questions: NexusQuizQuestionWire[] = plain.map((q) => ({
-        id: q.id,
-        s64: utf8ToBase64(q.section),
-        t64: utf8ToBase64(q.text),
-        o64: q.options.map((o) => utf8ToBase64(o)),
-    }))
-
     const QUESTION_TIME_LIMIT_SEC = 30
     const now = Date.now()
-    const bank = getPublicLevelQuestions(resolvedLevel)
-    const totalQuestions = bank.length
-    const findNextQuestionId = (answers: Record<string, number>) => {
-        const answeredSet = new Set(Object.keys(answers))
-        for (let i = 1; i <= totalQuestions; i++) {
-            if (!answeredSet.has(String(i))) return i
+    const totalQuestions = getLevelBank(resolvedLevel).questions.length
+    const findNextQuestionId = (answers: Record<string, number>, order: number[]) => {
+        for (const id of order) {
+            if (!(String(id) in answers)) return id
         }
         return 0
     }
     const hasActiveState = state && state.currentLevel === resolvedLevel && testStep?.status === "IN_PROGRESS"
     if (!hasActiveState) {
-        const currentQuestionId = 1
+        // Новый уровень/попытка — вопросы и варианты ответов перемешиваются заново.
+        const questionOrder = buildShuffledQuestionOrder(resolvedLevel)
+        const optionOrder = buildShuffledOptionOrder(resolvedLevel)
+        const currentQuestionId = questionOrder[0] ?? 0
         const questionDeadlineAt = new Date(now + QUESTION_TIME_LIMIT_SEC * 1000).toISOString()
         const nextState = {
             version: 5 as const,
@@ -120,6 +120,8 @@ export async function GET(req: NextRequest) {
             attempts: state?.attempts ?? [],
             passedLevels: state?.passedLevels ?? [],
             pendingApprovalLevel: null,
+            questionOrder,
+            optionOrder,
         }
         if (testStep) {
             await prisma.onboardingStep.update({
@@ -133,7 +135,7 @@ export async function GET(req: NextRequest) {
         }
         state = nextState
     } else if (state) {
-        const expectedQuestionId = findNextQuestionId(state.answers)
+        const expectedQuestionId = findNextQuestionId(state.answers, state.questionOrder)
         const needsSync =
             (state.currentQuestionId === 0 && expectedQuestionId > 0) ||
             (expectedQuestionId > 0 && state.currentQuestionId !== expectedQuestionId)
@@ -152,6 +154,18 @@ export async function GET(req: NextRequest) {
             state = nextState
         }
     }
+
+    const orderedQuestions = getPublicLevelQuestionsOrdered(
+        resolvedLevel,
+        state?.questionOrder ?? [],
+        state?.optionOrder ?? {},
+    )
+    const questions: NexusQuizQuestionWire[] = orderedQuestions.map((q) => ({
+        id: q.id,
+        s64: utf8ToBase64(q.section),
+        t64: utf8ToBase64(q.text),
+        o64: q.options.map((o) => utf8ToBase64(o)),
+    }))
     let resume: {
         answers: Record<string, number>
         answeredCount: number

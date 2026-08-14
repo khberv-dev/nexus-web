@@ -11,13 +11,18 @@ import {
     AdminTableWrapper,
 } from "@/components/admin/AdminTable"
 import type {TestModalData} from "../types"
-import {getLevelBank, QUIZ_LEVEL_ORDER} from "@/lib/onboarding/levels/banks"
+import {getLevelBank, QUIZ_LEVEL_ORDER, toOriginalOptionIndex} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelAttempt, QuizLevelCode} from "@/lib/onboarding/levels/types"
 import {parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 
 const LEVEL_LABELS: Record<QuizLevelCode, string> = {L1: "Начинающий", L2: "Профессионал", L3: "Мастер", L4: "Элита"}
 
-type ParsedState = { attempts: QuizLevelAttempt[]; passedLevels: QuizLevelCode[] }
+type ParsedState = {
+    attempts: QuizLevelAttempt[]
+    passedLevels: QuizLevelCode[]
+    /** Верхнеуровневый optionOrder — актуален только для ТЕКУЩЕЙ (незавершённой) попытки. */
+    optionOrder: Record<string, number[]>
+}
 
 function parseState(comment: string | null | undefined): ParsedState | null {
     if (!comment) return null
@@ -26,9 +31,12 @@ function parseState(comment: string | null | undefined): ParsedState | null {
             version?: number;
             attempts?: QuizLevelAttempt[];
             passedLevels?: QuizLevelCode[]
+            optionOrder?: Record<string, number[]>
         }
         // Accept both v4 (legacy) and v5 (with admin approval gate)
-        if (p.version === 4 || p.version === 5) return {attempts: p.attempts ?? [], passedLevels: p.passedLevels ?? []}
+        if (p.version === 4 || p.version === 5) {
+            return {attempts: p.attempts ?? [], passedLevels: p.passedLevels ?? [], optionOrder: p.optionOrder ?? {}}
+        }
     } catch { /* ignore */
     }
     return null
@@ -44,8 +52,11 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
     const attempts = state?.attempts ?? []
     const passedLevels = new Set(state?.passedLevels ?? [])
     const parsed = parseStoredTestComment(testModal?.comment ?? null)
-    const detailAnswers =
-        Object.keys(testModal?.answers ?? {}).length > 0 ? testModal!.answers : parsed.answers
+    const isLiveAttempt = Object.keys(testModal?.answers ?? {}).length > 0
+    const detailAnswers = isLiveAttempt ? testModal!.answers : parsed.answers
+    // Живая попытка ещё не завершена — берём верхнеуровневый optionOrder; иначе это последняя
+    // завершённая попытка — берём её собственный снимок (верхнеуровневый уже перезаписан следующей).
+    const detailOptionOrder = isLiveAttempt ? state?.optionOrder : attempts[attempts.length - 1]?.optionOrder
     const detailLevel =
         parsed.currentLevel && ["L1", "L2", "L3", "L4"].includes(parsed.currentLevel)
             ? (parsed.currentLevel as QuizLevelCode)
@@ -151,11 +162,18 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                     }}
                                 >
                                     {detailQuestions.map((q) => {
+                                        // detailAnswers хранит индекс КАК ПОКАЗАН на экране (после
+                                        // перемешивания) — транслируем в исходный индекс банка для
+                                        // корректного сравнения/отображения.
                                         const saved = detailAnswers[String(q.id)]
-                                        const ok = saved === q.correct
-                                        const timedOut = saved === -1
+                                        const original =
+                                            typeof saved === "number"
+                                                ? toOriginalOptionIndex(detailOptionOrder?.[String(q.id)], saved)
+                                                : saved
+                                        const ok = original === q.correct
+                                        const timedOut = original === -1
                                         const picked =
-                                            typeof saved === "number" && saved >= 0 ? q.options[saved] : null
+                                            typeof original === "number" && original >= 0 ? q.options[original] : null
                                         return (
                                             <div
                                                 key={q.id}
@@ -179,10 +197,10 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                                                 <div style={{color: "var(--adm-muted)", lineHeight: 1.4}}>{q.text}</div>
                                                 {picked && (
                                                     <div style={{marginTop: 2}}>
-                                                        Выбрано ({LETTERS[saved]}): {picked}
+                                                        Выбрано ({LETTERS[original]}): {picked}
                                                     </div>
                                                 )}
-                                                {!timedOut && saved !== undefined && !ok && (
+                                                {!timedOut && original !== undefined && !ok && (
                                                     <div style={{marginTop: 2, color: "var(--adm-muted)"}}>
                                                         Верно ({LETTERS[q.correct]}): {q.options[q.correct]}
                                                     </div>

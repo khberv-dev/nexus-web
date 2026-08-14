@@ -76,3 +76,62 @@ export function getPublicLevelQuestions(level: QuizLevelCode): QuizLevelQuestion
 export function getLevelQuestion(level: QuizLevelCode, questionId: number): QuizLevelQuestion | undefined {
     return getLevelBank(level).questions.find((q) => q.id === questionId)
 }
+
+function shuffleArray<T>(arr: readonly T[]): T[] {
+    const a = [...arr]
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[a[i], a[j]] = [a[j], a[i]]
+    }
+    return a
+}
+
+/** Новый порядок показа вопросов (id из банка) — генерируется заново при старте каждой попытки. */
+export function buildShuffledQuestionOrder(level: QuizLevelCode): number[] {
+    return shuffleArray(getLevelBank(level).questions.map((q) => q.id))
+}
+
+/** Новый порядок вариантов ответа для каждого вопроса уровня — questionId (строкой) → [0..3] перемешанные. */
+export function buildShuffledOptionOrder(level: QuizLevelCode): Record<string, number[]> {
+    const result: Record<string, number[]> = {}
+    for (const q of getLevelBank(level).questions) {
+        result[String(q.id)] = shuffleArray([0, 1, 2, 3])
+    }
+    return result
+}
+
+/** Публичные вопросы уровня в заданном порядке показа, с вариантами в заданном перемешанном порядке. */
+export function getPublicLevelQuestionsOrdered(
+    level: QuizLevelCode,
+    questionOrder: readonly number[],
+    optionOrder: Record<string, number[]>,
+): QuizLevelQuestionPublic[] {
+    const bank = getLevelBank(level)
+    const byId = new Map(bank.questions.map((q) => [q.id, q]))
+    const order = questionOrder.length > 0 ? questionOrder : bank.questions.map((q) => q.id)
+    return order.map((id) => {
+        const q = byId.get(id)
+        if (!q) throw new Error(`Unknown question id ${id} for level ${level}`)
+        const optOrder = optionOrder[String(id)]
+        const options: readonly [string, string, string, string] =
+            optOrder && optOrder.length === 4
+                ? [q.options[optOrder[0]], q.options[optOrder[1]], q.options[optOrder[2]], q.options[optOrder[3]]]
+                : q.options
+        const {correct, ...rest} = q
+        void correct
+        return {...rest, options}
+    })
+}
+
+/** Позиция на экране (перемешанная) → исходный индекс варианта в банке. */
+export function toOriginalOptionIndex(optionOrder: number[] | undefined, shownIndex: number): number {
+    if (shownIndex < 0 || !optionOrder || shownIndex >= optionOrder.length) return shownIndex
+    return optionOrder[shownIndex]
+}
+
+/** Исходный индекс варианта в банке → позиция на экране (перемешанная). */
+export function toShownOptionIndex(optionOrder: number[] | undefined, originalIndex: number): number {
+    if (originalIndex < 0 || !optionOrder) return originalIndex
+    const pos = optionOrder.indexOf(originalIndex)
+    return pos === -1 ? originalIndex : pos
+}

@@ -1,4 +1,4 @@
-import {getLevelBank} from "./banks"
+import {getLevelBank, toOriginalOptionIndex} from "./banks"
 import type {QuizLevelAttempt, QuizLevelCode, QuizLevelStateStored} from "./types"
 
 export function parseQuizLevelState(comment: string | null): QuizLevelStateStored | null {
@@ -35,24 +35,40 @@ export function parseQuizLevelState(comment: string | null): QuizLevelStateStore
                 parsed.version === 5 && (parsed.pendingApprovalLevel === null || typeof parsed.pendingApprovalLevel === "string")
                     ? ((parsed.pendingApprovalLevel ?? null) as QuizLevelCode | null)
                     : null,
+            questionOrder: Array.isArray(parsed.questionOrder) ? (parsed.questionOrder as number[]) : [],
+            optionOrder:
+                parsed.optionOrder && typeof parsed.optionOrder === "object" && !Array.isArray(parsed.optionOrder)
+                    ? (parsed.optionOrder as Record<string, number[]>)
+                    : {},
         }
     } catch {
         return null
     }
 }
 
-export function countCorrectForLevel(level: QuizLevelCode, answers: Record<string, number>): number {
+/**
+ * answers хранит индекс варианта КАК ОН ПОКАЗАН на экране (после перемешивания), поэтому для
+ * проверки правильности нужно транслировать его через optionOrder этой попытки обратно в
+ * исходный индекс из банка перед сравнением с q.correct.
+ */
+export function countCorrectForLevel(
+    level: QuizLevelCode,
+    answers: Record<string, number>,
+    optionOrder?: Record<string, number[]>
+): number {
     const bank = getLevelBank(level)
     let n = 0
     for (const q of bank.questions) {
-        if (answers[String(q.id)] === q.correct) n++
+        const shown = answers[String(q.id)]
+        const original = toOriginalOptionIndex(optionOrder?.[String(q.id)], shown)
+        if (original === q.correct) n++
     }
     return n
 }
 
-export function gradeLevel(level: QuizLevelCode, answers: Record<string, number>) {
+export function gradeLevel(level: QuizLevelCode, answers: Record<string, number>, optionOrder?: Record<string, number[]>) {
     const bank = getLevelBank(level)
-    const correctCount = countCorrectForLevel(level, answers)
+    const correctCount = countCorrectForLevel(level, answers, optionOrder)
     const total = bank.questions.length
     const percent = total > 0 ? Math.round((correctCount / total) * 100) : 0
     const passed = percent >= bank.passPercent
@@ -76,7 +92,8 @@ export function appendAttempt(
     level: QuizLevelCode,
     attempt: QuizLevelAttempt,
     passed: boolean,
-    answersSnapshot?: Record<string, number>
+    answersSnapshot?: Record<string, number>,
+    optionOrderSnapshot?: Record<string, number[]>
 ): QuizLevelStateStored {
     const snapshot =
         answersSnapshot && Object.keys(answersSnapshot).length > 0
@@ -84,7 +101,17 @@ export function appendAttempt(
             : state?.answers && Object.keys(state.answers).length > 0
                 ? {...state.answers}
                 : undefined
-    const attemptRecord: QuizLevelAttempt = snapshot ? {...attempt, answers: snapshot} : attempt
+    const optionOrderForSnapshot =
+        optionOrderSnapshot && Object.keys(optionOrderSnapshot).length > 0
+            ? optionOrderSnapshot
+            : state?.optionOrder && Object.keys(state.optionOrder).length > 0
+                ? state.optionOrder
+                : undefined
+    const attemptRecord: QuizLevelAttempt = {
+        ...attempt,
+        ...(snapshot ? {answers: snapshot} : {}),
+        ...(optionOrderForSnapshot ? {optionOrder: optionOrderForSnapshot} : {}),
+    }
     const attempts = [...(state?.attempts ?? []), attemptRecord]
     const passedLevels = new Set<QuizLevelCode>(state?.passedLevels ?? [])
     // Do NOT auto-unlock next level; require admin confirmation.
@@ -102,5 +129,8 @@ export function appendAttempt(
         attempts,
         passedLevels: Array.from(passedLevels),
         pendingApprovalLevel: passed ? level : null,
+        // Следующая попытка/уровень перемешивается заново при старте (GET /api/onboarding/quiz).
+        questionOrder: [],
+        optionOrder: {},
     }
 }

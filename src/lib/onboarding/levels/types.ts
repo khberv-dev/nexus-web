@@ -37,6 +37,9 @@ export type QuizLevelAttempt = {
     percent: number
     /** Снимок ответов по вопросам (questionId → индекс 0–3 или -1) на момент завершения попытки. */
     answers?: Record<string, number>
+    /** Снимок optionOrder этой попытки — нужен, чтобы верно отобразить/проверить ответы после
+     * того, как верхнеуровневый optionOrder уже перезаписан следующей попыткой. */
+    optionOrder?: Record<string, number[]>
 }
 
 export type QuizLevelStateStored = {
@@ -54,4 +57,8 @@ export type QuizLevelStateStored = {
     passedLevels: QuizLevelCode[]
     /** Level passed by specialist, awaiting admin confirmation */
     pendingApprovalLevel: QuizLevelCode | null
+    /** Порядок вопросов (id из банка) на эту попытку — перемешивается заново при старте уровня. */
+    questionOrder: number[]
+    /** questionId (строкой) → перемешанный порядок индексов опций [0..3] на эту попытку. */
+    optionOrder: Record<string, number[]>
 }
