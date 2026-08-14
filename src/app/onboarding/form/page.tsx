@@ -123,6 +123,7 @@ export default function OnboardingFormPage() {
     const [appliedIdx, setAppliedIdx] = useState<Set<number>>(new Set())
     const [loadingAI, setLoadingAI] = useState(false)
     const [aiError, setAiError] = useState<string | null>(null)
+    const [generatingAbout, setGeneratingAbout] = useState(false)
 
     // Переключение программы в поле software
     const lookupInn = async (inn: string) => {
@@ -200,6 +201,33 @@ export default function OnboardingFormPage() {
     const activeAiServices = new Set(
         (form.aiServices ?? "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
     )
+
+    // ✨ Кнопка у поля «О себе» — превращает набросок в развёрнутый официальный текст
+    const generateAbout = async () => {
+        if (!form.about?.trim() || generatingAbout) return
+        setGeneratingAbout(true)
+        try {
+            const res = await fetch("/api/ai/generate-about", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    text: form.about,
+                    fullName: form.fullName,
+                    city: form.city,
+                    experience: form.experience,
+                    specialty: form.specialty,
+                    software: form.software,
+                }),
+            })
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.error ?? "Не удалось сгенерировать текст")
+            setForm(f => ({...f, about: data.text}))
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Не удалось сгенерировать текст")
+        } finally {
+            setGeneratingAbout(false)
+        }
+    }
 
     const openDrawer = async () => {
         setDrawerOpen(true)
@@ -412,14 +440,40 @@ export default function OnboardingFormPage() {
                                                 className="onb-phone"
                                             />
                                         ) : field.type === "textarea" ? (
-                                            <textarea
-                                                rows={4}
-                                                placeholder={field.placeholder}
-                                                value={form[field.name] || ""}
-                                                onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
-                                                style={{...inputStyle, resize: "vertical"}}
-                                                required={field.required}
-                                            />
+                                            <>
+                                                <textarea
+                                                    rows={4}
+                                                    placeholder={field.placeholder}
+                                                    value={form[field.name] || ""}
+                                                    onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
+                                                    style={{...inputStyle, resize: "vertical", opacity: generatingAbout ? 0.6 : 1}}
+                                                    required={field.required}
+                                                    disabled={generatingAbout}
+                                                />
+                                                {field.name === "about" && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => void generateAbout()}
+                                                        disabled={generatingAbout || !form.about?.trim()}
+                                                        style={{
+                                                            alignSelf: "flex-start",
+                                                            marginTop: "0.5em",
+                                                            padding: "0.4em 1em",
+                                                            borderRadius: 8,
+                                                            border: "1px solid rgba(167,139,250,0.35)",
+                                                            background: "rgba(167,139,250,0.1)",
+                                                            color: "#c4b5fd",
+                                                            fontSize: "0.82rem",
+                                                            fontWeight: 500,
+                                                            cursor: generatingAbout || !form.about?.trim() ? "default" : "pointer",
+                                                            fontFamily: "inherit",
+                                                            opacity: generatingAbout || !form.about?.trim() ? 0.5 : 1,
+                                                        }}
+                                                    >
+                                                        {generatingAbout ? "Генерируем…" : "✨ Дополнить с помощью ИИ"}
+                                                    </button>
+                                                )}
+                                            </>
                                         ) : field.type === "software" ? (
                                             <>
                                                 <input
