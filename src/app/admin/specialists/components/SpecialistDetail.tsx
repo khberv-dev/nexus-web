@@ -54,6 +54,7 @@ export function SpecialistDetail({
 }) {
     const [quizResetting, setQuizResetting] = useState(false)
     const [quizApproving, setQuizApproving] = useState(false)
+    const [quizBypassing, setQuizBypassing] = useState(false)
     const specialistId = specialist?.id ?? null
 
     const handleQuizDraftReset = useCallback(async () => {
@@ -87,6 +88,30 @@ export function SpecialistDetail({
             await onRefresh()
         } finally {
             setQuizApproving(false)
+        }
+    }, [specialistId, onRefresh])
+
+    /** Закрывает шаг теста без сдачи — специалист сразу переходит к интервью. */
+    const handleQuizBypass = useCallback(async () => {
+        if (!specialistId || !onRefresh) return
+        if (!confirm("Пропустить квалификационный тест? Шаг будет отмечен пройденным без сдачи, откроется этап интервью.")) return
+        const reason = prompt("Причина пропуска теста (попадёт в историю и в уведомление специалисту):", "")
+        if (reason === null) return
+        setQuizBypassing(true)
+        try {
+            const res = await fetch(`/api/admin/specialists/${specialistId}/quiz-bypass`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({reason}),
+            })
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                alert(typeof data.error === "string" ? data.error : "Не удалось пропустить тест")
+                return
+            }
+            await onRefresh()
+        } finally {
+            setQuizBypassing(false)
         }
     }, [specialistId, onRefresh])
 
@@ -157,8 +182,10 @@ export function SpecialistDetail({
                         acting={acting}
                         quizResetting={quizResetting}
                         quizApproving={quizApproving}
+                        quizBypassing={quizBypassing}
                         handleQuizDraftReset={handleQuizDraftReset}
                         handleQuizLevelApprove={handleQuizLevelApprove}
+                        handleQuizBypass={handleQuizBypass}
                         onRefresh={onRefresh}
                         setTestModal={setTestModal}
                     />

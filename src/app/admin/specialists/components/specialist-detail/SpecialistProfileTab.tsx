@@ -21,8 +21,10 @@ export function SpecialistProfileTab({
                                          acting,
                                          quizResetting,
                                          quizApproving,
+                                         quizBypassing,
                                          handleQuizDraftReset,
                                          handleQuizLevelApprove,
+                                         handleQuizBypass,
                                          onRefresh,
                                          setTestModal,
                                      }: {
@@ -37,8 +39,10 @@ export function SpecialistProfileTab({
     acting: string | null
     quizResetting: boolean
     quizApproving: boolean
+    quizBypassing: boolean
     handleQuizDraftReset: () => void
     handleQuizLevelApprove: () => void
+    handleQuizBypass: () => void
     onRefresh?: () => Promise<void>
     setTestModal: (data: TestModalData | null) => void
 }) {
@@ -63,9 +67,11 @@ export function SpecialistProfileTab({
                 showTestAnswersBeforeAdvance={showTestAnswersBeforeAdvance}
                 quizResetting={quizResetting}
                 quizApproving={quizApproving}
+                quizBypassing={quizBypassing}
                 acting={acting}
                 handleQuizDraftReset={handleQuizDraftReset}
                 handleQuizLevelApprove={handleQuizLevelApprove}
+                handleQuizBypass={handleQuizBypass}
                 onRefresh={onRefresh}
                 setTestModal={setTestModal}
             />

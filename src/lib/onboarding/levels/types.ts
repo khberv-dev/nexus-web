@@ -42,6 +42,12 @@ export type QuizLevelAttempt = {
     optionOrder?: Record<string, number[]>
 }
 
+export type QuizAdminBypass = {
+    at: string
+    adminId: string | null
+    reason: string | null
+}
+
 export type QuizLevelStateStored = {
     version: 5
     phase: "level_in_progress" | "level_finished" | "awaiting_admin"
@@ -57,6 +63,8 @@ export type QuizLevelStateStored = {
     passedLevels: QuizLevelCode[]
     /** Level passed by specialist, awaiting admin confirmation */
     pendingApprovalLevel: QuizLevelCode | null
+    /** Проставляется, когда администратор пропустил тест без сдачи специалистом. */
+    adminBypass?: QuizAdminBypass | null
     /** Порядок вопросов (id из банка) на эту попытку — перемешивается заново при старте уровня. */
     questionOrder: number[]
     /** questionId (строкой) → перемешанный порядок индексов опций [0..3] на эту попытку. */

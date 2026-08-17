@@ -4,6 +4,8 @@ import {useEffect, useState} from "react"
 import {toast} from "sonner"
 import {EDO_PROVIDER_OPTIONS, parseEdoProviders} from "@/lib/edo-providers"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
+import {MultiSelectField} from "@/components/ui/MultiSelectField"
+import {INTERIOR_STYLE_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 
 const FIELDS = [
     {name: "fullName", label: "ФИО", placeholder: "Иван Иванов"},
@@ -11,8 +13,8 @@ const FIELDS = [
     {name: "city", label: "Город", placeholder: "Москва"},
     {name: "experience", label: "Опыт (лет)", placeholder: "3"},
     {name: "sqm", label: "Реализовано м2", placeholder: "1200"},
-    {name: "interiorStyle", label: "Интерьерный стиль", placeholder: "Минимализм, Лофт"},
-    {name: "specialty", label: "Специализация", placeholder: "Минимализм · Сканди"},
+    {name: "interiorStyle", label: "Интерьерный стиль", placeholder: "Выберите стили — можно несколько"},
+    {name: "specialty", label: "Специализация", placeholder: "Выберите специализации — можно несколько"},
     {name: "portfolio", label: "Портфолио (ссылка)", placeholder: "https://behance.net/..."},
     {name: "software", label: "Программы", placeholder: "AutoCAD, 3ds Max"},
     {name: "aiServices", label: "Нейросети", placeholder: "ChatGPT, Midjourney"},
@@ -218,6 +220,14 @@ export default function ProfileForm({
                                     lineHeight: 1,
                                 }}
                                 hintStyle={{fontSize: "0.75rem", color: "var(--dash-muted)"}}
+                            />
+                        ) : f.name === "interiorStyle" || f.name === "specialty" ? (
+                            <MultiSelectField
+                                value={form[f.name] || ""}
+                                onChange={(v) => setForm((p) => ({...p, [f.name]: v}))}
+                                options={f.name === "interiorStyle" ? INTERIOR_STYLE_OPTIONS : SPECIALTY_OPTIONS}
+                                placeholder={f.placeholder}
+                                variant="surface"
                             />
                         ) : (
                             <input type="text" placeholder={f.placeholder} value={form[f.name] || ""}

@@ -1,6 +1,7 @@
 import type {OnboardingStatus} from "@/components/app/SpecialistCard"
 import {getLevelBank} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
+import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import {getQuizMicroTick, parseQuizProgress, parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 import type {RawSpecialist, TestModalData} from "../../types"
 import {ONBOARDING_STEPS_UI} from "./constants"
@@ -17,9 +18,11 @@ export function SpecialistProfileOnboardingSection({
                                                        showTestAnswersBeforeAdvance,
                                                        quizResetting,
                                                        quizApproving,
+                                                       quizBypassing,
                                                        acting,
                                                        handleQuizDraftReset,
                                                        handleQuizLevelApprove,
+                                                       handleQuizBypass,
                                                        onRefresh,
                                                        setTestModal,
                                                    }: {
@@ -32,9 +35,11 @@ export function SpecialistProfileOnboardingSection({
     showTestAnswersBeforeAdvance: boolean
     quizResetting: boolean
     quizApproving: boolean
+    quizBypassing: boolean
     acting: string | null
     handleQuizDraftReset: () => void
     handleQuizLevelApprove: () => void
+    handleQuizBypass: () => void
     onRefresh?: () => Promise<void>
     setTestModal: (data: TestModalData | null) => void
 }) {
@@ -58,6 +63,7 @@ export function SpecialistProfileOnboardingSection({
         }
         return null
     })()
+    const adminBypass = parseQuizLevelState(testStepRecord?.comment ?? null)?.adminBypass ?? null
     const attemptsCount = (() => {
         if (!testStepRecord?.comment) return 0
         try {
@@ -112,6 +118,52 @@ export function SpecialistProfileOnboardingSection({
                     })}
                 </div>
             </div>
+
+            {status === "TEST_INVITED" && onRefresh && (
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    flexWrap: "wrap",
+                    marginBottom: 18,
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(245,158,11,0.3)",
+                    background: "rgba(245,158,11,0.08)",
+                }}>
+                    <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
+                        <i className="bx bx-fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                        Тест можно закрыть без сдачи: шаг будет отмечен пройденным, откроется этап интервью.
+                    </span>
+                    <button
+                        type="button"
+                        className="sp-btn sp-btn-ghost"
+                        style={{marginLeft: "auto"}}
+                        disabled={quizBypassing || acting !== null}
+                        onClick={handleQuizBypass}
+                    >
+                        {quizBypassing ? "Пропуск…" : "Пропустить тест"}
+                    </button>
+                </div>
+            )}
+
+            {adminBypass && (
+                <div style={{
+                    marginBottom: 18,
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(245,158,11,0.3)",
+                    background: "rgba(245,158,11,0.08)",
+                    fontSize: "0.78rem",
+                    color: "var(--adm-muted)",
+                    lineHeight: 1.45,
+                }}>
+                    <i className="bx bx-fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                    Квалификационный тест пропущен администратором
+                    {" "}({new Date(adminBypass.at).toLocaleString("ru-RU")})
+                    {adminBypass.reason ? `. Причина: ${adminBypass.reason}` : ""}
+                </div>
+            )}
 
             {(testProgressLive || pendingApprovalLevel) && (
                 <div className="sp-quiz-micro-wrap">

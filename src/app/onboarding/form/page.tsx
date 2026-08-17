@@ -7,6 +7,8 @@ import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {PhoneField} from "@/components/ui/PhoneField"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
+import {MultiSelectField} from "@/components/ui/MultiSelectField"
+import {INTERIOR_STYLE_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 
 // ─── Типы AI ─────────────────────────────────────────────────────────────────
 
@@ -28,12 +30,18 @@ const FIELDS = [
     {name: "city", label: "Город", type: "text", placeholder: "Москва", required: true},
     {name: "experience", label: "Опыт работы (лет)", type: "number", placeholder: "3", required: true},
     {name: "sqm", label: "Реализовано м²", type: "number", placeholder: "1200", required: false},
-    {name: "interiorStyle", label: "Интерьерный стиль", type: "text", placeholder: "Минимализм, Лофт", required: false},
+    {
+        name: "interiorStyle",
+        label: "Интерьерный стиль",
+        type: "multiselect",
+        placeholder: "Выберите стили — можно несколько",
+        required: false
+    },
     {
         name: "specialty",
         label: "Специализация",
-        type: "text",
-        placeholder: "Коммерческие интерьеры, офисы",
+        type: "multiselect",
+        placeholder: "Выберите специализации — можно несколько",
         required: false
     },
     {name: "portfolio", label: "Портфолио", type: "url", placeholder: "https://behance.net/...", required: false},
@@ -364,7 +372,7 @@ export default function OnboardingFormPage() {
                             }}
                         >
                             {FIELDS.map(field => {
-                                const isWide = field.type === "textarea" || field.type === "software" || field.type === "ai" || field.name === "portfolio"
+                                const isWide = field.type === "textarea" || field.type === "software" || field.type === "ai" || field.type === "multiselect" || field.name === "portfolio"
                                 return (
                                     <div
                                         key={field.name}
@@ -432,6 +440,14 @@ export default function OnboardingFormPage() {
                                             >
                                                 {form[field.name] === "true" ? "✓ Да" : "Нет"}
                                             </button>
+                                        ) : field.type === "multiselect" ? (
+                                            <MultiSelectField
+                                                value={form[field.name] || ""}
+                                                onChange={v => setForm(f => ({...f, [field.name]: v}))}
+                                                options={field.name === "interiorStyle" ? INTERIOR_STYLE_OPTIONS : SPECIALTY_OPTIONS}
+                                                placeholder={field.placeholder}
+                                                variant="dark"
+                                            />
                                         ) : field.type === "phone" ? (
                                             <PhoneField
                                                 value={form[field.name] || ""}

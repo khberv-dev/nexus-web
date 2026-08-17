@@ -17,6 +17,8 @@ const ACTION_LABEL: Record<string, { label: string; icon: string; color: string 
     specialist_advanced: {label: "Онбординг продвинут", icon: "bx-chevron-right", color: "#22c55e"},
     specialist_rejected: {label: "Онбординг: отказ", icon: "bx-x", color: "#ef4444"},
     specialist_quiz_progress_reset: {label: "Сброс прогресса теста", icon: "bx-refresh", color: "#f59e0b"},
+    specialist_quiz_level_approved: {label: "Уровень теста подтвержден", icon: "bx-check", color: "#22c55e"},
+    specialist_quiz_bypassed: {label: "Тест пропущен администратором", icon: "bx-fast-forward", color: "#f59e0b"},
     specialist_profile_edited_by_admin: {label: "Анкета отредактирована", icon: "bx-edit", color: "#f59e0b"},
     specialist_contract_admin_signed: {label: "Договор подтвержден", icon: "bx-check-shield", color: "#22c55e"},
     framework_contract_admin_signed: {

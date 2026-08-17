@@ -1,5 +1,16 @@
 import {getLevelBank, toOriginalOptionIndex} from "./banks"
-import type {QuizLevelAttempt, QuizLevelCode, QuizLevelStateStored} from "./types"
+import type {QuizAdminBypass, QuizLevelAttempt, QuizLevelCode, QuizLevelStateStored} from "./types"
+
+function parseAdminBypass(raw: unknown): QuizAdminBypass | null {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null
+    const value = raw as Partial<QuizAdminBypass>
+    if (typeof value.at !== "string") return null
+    return {
+        at: value.at,
+        adminId: typeof value.adminId === "string" ? value.adminId : null,
+        reason: typeof value.reason === "string" ? value.reason : null,
+    }
+}
 
 export function parseQuizLevelState(comment: string | null): QuizLevelStateStored | null {
     if (!comment) return null
@@ -35,6 +46,7 @@ export function parseQuizLevelState(comment: string | null): QuizLevelStateStore
                 parsed.version === 5 && (parsed.pendingApprovalLevel === null || typeof parsed.pendingApprovalLevel === "string")
                     ? ((parsed.pendingApprovalLevel ?? null) as QuizLevelCode | null)
                     : null,
+            adminBypass: parseAdminBypass(parsed.adminBypass),
             questionOrder: Array.isArray(parsed.questionOrder) ? (parsed.questionOrder as number[]) : [],
             optionOrder:
                 parsed.optionOrder && typeof parsed.optionOrder === "object" && !Array.isArray(parsed.optionOrder)
