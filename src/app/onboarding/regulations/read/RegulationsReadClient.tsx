@@ -4,16 +4,16 @@ import {useMemo, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
-import {REGULATION_SECTIONS} from "../regulations-content"
+import {Markdown} from "@/components/ui/Markdown"
 
-export default function RegulationsReadClient() {
+export default function RegulationsReadClient({title, content}: { title: string; content: string }) {
     const router = useRouter()
     const [confirmed, setConfirmed] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const wrapRef = useRef<HTMLDivElement | null>(null)
     const [scrolledToEnd, setScrolledToEnd] = useState(false)
 
-    const totalChars = useMemo(() => REGULATION_SECTIONS.reduce((s, x) => s + x.body.length, 0), [])
+    const pages = useMemo(() => Math.max(1, Math.round(content.length / 1800)), [content])
 
     const onScroll = () => {
         const el = wrapRef.current
@@ -50,7 +50,7 @@ export default function RegulationsReadClient() {
                         ознакомление.
                     </p>
                     <p style={{color: "rgba(255,255,255,0.35)", marginTop: "0.4em", fontSize: "0.8rem"}}>
-                        Объём: ~{Math.max(1, Math.round(totalChars / 1800))} стр.
+                        {title} · объём: ~{pages} стр.
                     </p>
                 </div>
 
@@ -63,23 +63,15 @@ export default function RegulationsReadClient() {
                             overflow: "auto",
                             paddingRight: 8,
                             scrollBehavior: "smooth",
+                            color: "rgba(255,255,255,0.72)",
                         }}
                     >
-                        {REGULATION_SECTIONS.map((s, idx) => (
-                            <div key={idx} style={{marginBottom: 18}}>
-                                <h2 style={{color: "#f4f4f4", fontSize: "1rem", fontWeight: 600, margin: "0 0 8px"}}>
-                                    {s.title}
-                                </h2>
-                                <div style={{
-                                    color: "rgba(255,255,255,0.72)",
-                                    fontSize: "0.88rem",
-                                    lineHeight: 1.65,
-                                    whiteSpace: "pre-wrap"
-                                }}>
-                                    {s.body}
-                                </div>
-                            </div>
-                        ))}
+                        <Markdown content={content} className="reg-read-md"/>
+                        <style>{`
+                            .reg-read-md h1, .reg-read-md h2, .reg-read-md h3, .reg-read-md h4 { color: #f4f4f4; }
+                            .reg-read-md strong { color: rgba(255,255,255,0.92); }
+                            .reg-read-md a { color: #a5b4fc; }
+                        `}</style>
                     </div>
 
                     <div style={{marginTop: 14, borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 14}}>
@@ -141,4 +133,3 @@ export default function RegulationsReadClient() {
         </OnboardingShell>
     )
 }
-

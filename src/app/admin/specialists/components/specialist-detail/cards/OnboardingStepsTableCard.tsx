@@ -3,7 +3,7 @@
 import {useMemo, useState} from "react"
 import {Modal} from "@/components/ui/modal"
 import {parseQuizProgress, parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
-import {QUIZ_QUESTIONS} from "@/app/onboarding/regulations/quiz-questions"
+import {QUIZ_QUESTIONS} from "@/lib/onboarding/regulations-questions"
 import {ONBOARDING_TABLE_STEP_TYPES, STEP_STATUS_RU, STEP_TYPE_RU} from "../constants"
 import type {RawSpecialist} from "../../../types"
 

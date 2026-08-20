@@ -1,6 +1,11 @@
 import {redirect} from "next/navigation"
 import {getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
+import {
+    REGULATIONS_PASS_PERCENT,
+    REGULATIONS_QUESTION_TIME_LIMIT_SEC,
+    REGULATIONS_TOTAL,
+} from "@/lib/onboarding/regulations-quiz"
 import RegulationsClient from "./RegulationsClient"
 
 export default async function OnboardingRegulationsPage() {
@@ -19,5 +24,11 @@ export default async function OnboardingRegulationsPage() {
     const readDone = passed.has("REGULATIONS_READ" as never) || passed.has("REGULATIONS" as never)
     if (!readDone) redirect("/onboarding/regulations/read")
 
-    return <RegulationsClient/>
+    return (
+        <RegulationsClient
+            total={REGULATIONS_TOTAL}
+            passPercent={REGULATIONS_PASS_PERCENT}
+            timeLimitSec={REGULATIONS_QUESTION_TIME_LIMIT_SEC}
+        />
+    )
 }

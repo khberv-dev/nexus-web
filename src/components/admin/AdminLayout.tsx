@@ -13,6 +13,7 @@ const NAV = [
     {href: "/admin/orders", label: "Заказы", icon: "bx-folder-open"},
     {href: "/admin/payments", label: "Платежи", icon: "bx-credit-card"},
     {href: "/admin/landing", label: "Лендинг", icon: "bx-globe"},
+    {href: "/admin/regulations", label: "Регламент", icon: "bx-book-open"},
     {href: "/admin/audit", label: "Аудит", icon: "bx-history"},
 ]
 

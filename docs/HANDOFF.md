@@ -140,7 +140,10 @@ docker compose exec app npm run db:deploy
 | Переменная | Описание | Пример |
 |-----------|---------|--------|
 | `RESEND_API_KEY` | API-ключ Resend | `re_xxxxxxxxxxxx` |
-| `EMAIL_FROM` | Адрес отправителя | `noreply@nexuspro.ru` |
+| `EMAIL_FROM` | Адрес отправителя (домен верифицирован в Resend) | `NEXUS <noreply@nexuspro.ru>` |
+| `RESEND_SANDBOX` | `1` — слать с `onboarding@resend.dev`, пока домен не верифицирован | `0` |
+| `AUTH_EMAIL_DEV_LOG` | `1` — писать ссылку для входа в лог сервера | `0` |
+| `SMTP_HOST` | Резервный SMTP: включается наличием хоста (остальное — `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`) | `smtp.example.com` |
 
 ### Кэш
 
@@ -178,6 +181,17 @@ DSN Sentry (для отправки ошибок в runtime) задается в
 - `RESEND_API_KEY` — ключ Resend для отправки писем
 - `EMAIL_FROM` — адрес отправителя, домен которого верифицирован в Resend
 - `NEXTAUTH_URL` — точный публичный URL приложения (без слеша в конце)
+
+Проверка канала после деплоя (под админом):
+
+```bash
+curl -s -H "Cookie: <сессия админа>" https://<домен>/api/admin/email/test          # текущая конфигурация
+curl -s -X POST -H "Content-Type: application/json" -H "Cookie: <сессия админа>" \
+     -d '{"to":"you@example.com"}' https://<домен>/api/admin/email/test            # тестовое письмо
+```
+
+Если Resend не настроен или вернул ошибку, письмо уходит резервным SMTP (`SMTP_HOST` и остальные `SMTP_*`).
+Когда не настроен ни один канал, отправка пропускается с предупреждением в логе — приложение не падает.
 
 ### 5.2. S3 — файловое хранилище
 

@@ -1,27 +1,40 @@
 import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
-import {QUIZ_QUESTIONS} from "@/app/onboarding/regulations/quiz-questions"
+import {rateLimit} from "@/lib/rate-limit"
+import {QUIZ_QUESTIONS} from "@/lib/onboarding/regulations-questions"
+import {
+    gradeRegulationsQuiz,
+    nextRegulationsQuestionIndex,
+    parseRegulationsQuizState,
+    questionPosition,
+    REGULATIONS_ANSWER_GRACE_MS,
+    REGULATIONS_QUESTION_TIME_LIMIT_SEC,
+    toOriginalOption,
+    toShownOption,
+} from "@/lib/onboarding/regulations-quiz"
 
-/** POST — сохранить один ответ квиза регламентов */
+/** POST — ответ на вопрос теста регламентов (или истёкшее время) с переходом к следующему вопросу. */
 export async function POST(req: NextRequest) {
+    const rl = rateLimit(`regulations-reveal:${req.headers.get("x-forwarded-for") ?? "unknown"}`, 60, 60_000)
+    if (!rl.ok) return NextResponse.json({error: "Too many requests"}, {status: 429})
+
     const session = await getSessionUser()
     if (!session || session.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
-    const {questionIndex, selectedIndex} = await req.json() as {
-        questionIndex: number
-        selectedIndex: number
+    const {questionIndex, selectedIndex, timedOut} = await req.json() as {
+        questionIndex?: number
+        selectedIndex?: number
+        timedOut?: boolean
     }
 
+    const isTimedOut = Boolean(timedOut)
+    if (typeof questionIndex !== "number" || !Number.isInteger(questionIndex) || questionIndex < 0 || questionIndex >= QUIZ_QUESTIONS.length) {
+        return NextResponse.json({error: "Некорректные данные"}, {status: 400})
+    }
     if (
-        typeof questionIndex !== "number" ||
-        !Number.isInteger(questionIndex) ||
-        questionIndex < 0 ||
-        questionIndex >= QUIZ_QUESTIONS.length ||
-        typeof selectedIndex !== "number" ||
-        !Number.isInteger(selectedIndex) ||
-        selectedIndex < 0 ||
-        selectedIndex > 3
+        !isTimedOut &&
+        (typeof selectedIndex !== "number" || !Number.isInteger(selectedIndex) || selectedIndex < 0 || selectedIndex > 3)
     ) {
         return NextResponse.json({error: "Некорректные данные"}, {status: 400})
     }
@@ -32,48 +45,75 @@ export async function POST(req: NextRequest) {
     })
     if (!profile) return NextResponse.json({error: "Not found"}, {status: 404})
 
+    const existing = profile.steps.find((s) => s.type === "REGULATIONS")
+    if (existing?.status === "PASSED") {
+        return NextResponse.json({error: "Тест по регламентам уже пройден"}, {status: 409})
+    }
+
+    const state = parseRegulationsQuizState(existing?.comment ?? null)
+    if (!state) {
+        return NextResponse.json(
+            {error: "Сессия теста не найдена, начните тест заново", code: "NO_SESSION"},
+            {status: 409},
+        )
+    }
+
     const q = QUIZ_QUESTIONS[questionIndex]
-    const isCorrect = selectedIndex === q.correct
+    const optionOrder = state.optionOrder[String(questionIndex)]
 
-    const existing = profile.steps.find(s => s.type === "REGULATIONS")
-
-    // Parse existing in-progress state
-    let prevData: {
-        answers?: Record<string, number>;
-        score?: number;
-        sectionScores?: Record<string, { correct: number; total: number }>
-    } = {}
-    if (existing?.status === "IN_PROGRESS" && existing.comment) {
-        try {
-            prevData = JSON.parse(existing.comment)
-        } catch { /* ignore */
-        }
+    // Повторный ответ на тот же вопрос не перезаписываем — возвращаем сохранённый результат.
+    const already = state.answers[String(questionIndex)]
+    if (already !== undefined) {
+        return NextResponse.json({
+            isCorrect: already === q.correct,
+            correctIndex: toShownOption(optionOrder, q.correct),
+            explain: q.explain,
+            savedIndex: toShownOption(optionOrder, already),
+            timedOut: already === -1,
+            progress: {
+                answeredCount: Object.keys(state.answers).length,
+                total: QUIZ_QUESTIONS.length,
+                score: gradeRegulationsQuiz(state.answers).score,
+                currentQuestionIndex: state.currentQuestionIndex,
+                currentPosition: state.currentQuestionIndex >= 0 ? questionPosition(state, state.currentQuestionIndex) : -1,
+                questionDeadlineAt: state.questionDeadlineAt,
+            },
+        })
     }
 
-    // Don't overwrite already-saved answer
-    if (prevData.answers?.[String(questionIndex)] !== undefined) {
-        return NextResponse.json({isCorrect, correctIndex: q.correct, explain: q.explain})
+    if (state.currentQuestionIndex !== questionIndex) {
+        return NextResponse.json(
+            {
+                error: "Нарушен порядок вопросов",
+                code: "QUESTION_ORDER",
+                expectedQuestionIndex: state.currentQuestionIndex,
+            },
+            {status: 409},
+        )
     }
 
-    const answers = {...(prevData.answers ?? {}), [String(questionIndex)]: selectedIndex}
-    const score = (prevData.score ?? 0) + (isCorrect ? 1 : 0)
+    const now = Date.now()
+    const deadlineMs = state.questionDeadlineAt ? new Date(state.questionDeadlineAt).getTime() : NaN
+    const deadlineExpired = Number.isFinite(deadlineMs) && now > deadlineMs
+    const withinGrace = deadlineExpired && now <= deadlineMs + REGULATIONS_ANSWER_GRACE_MS
+    // Явный timedOut — всегда просрочка; выбранный вариант в пределах grace засчитываем.
+    const effectiveTimedOut = isTimedOut || (deadlineExpired && !withinGrace)
 
-    // Update section scores
-    const sectionScores: Record<string, { correct: number; total: number }> = prevData.sectionScores ?? {}
-    if (!sectionScores[q.section]) {
-        // Initialize all sections if first answer
-        for (const question of QUIZ_QUESTIONS) {
-            if (!sectionScores[question.section]) sectionScores[question.section] = {correct: 0, total: 0}
-            sectionScores[question.section].total = QUIZ_QUESTIONS.filter(qq => qq.section === question.section).length
-        }
+    const shownIndex = effectiveTimedOut ? -1 : (selectedIndex as number)
+    const originalIndex = effectiveTimedOut ? -1 : toOriginalOption(optionOrder, shownIndex)
+
+    const answers = {...state.answers, [String(questionIndex)]: originalIndex}
+    const nextState = {
+        ...state,
+        answers,
+        currentQuestionIndex: nextRegulationsQuestionIndex({...state, answers}),
+        questionDeadlineAt: null as string | null,
     }
-    if (isCorrect) sectionScores[q.section] = {
-        ...sectionScores[q.section],
-        correct: (sectionScores[q.section]?.correct ?? 0) + 1
+    if (nextState.currentQuestionIndex >= 0) {
+        nextState.questionDeadlineAt = new Date(now + REGULATIONS_QUESTION_TIME_LIMIT_SEC * 1000).toISOString()
     }
 
-    const comment = JSON.stringify({answers, score, sectionScores})
-
+    const comment = JSON.stringify(nextState)
     if (existing) {
         await prisma.onboardingStep.update({
             where: {id: existing.id},
@@ -85,5 +125,21 @@ export async function POST(req: NextRequest) {
         })
     }
 
-    return NextResponse.json({isCorrect, correctIndex: q.correct, explain: q.explain})
+    return NextResponse.json({
+        isCorrect: originalIndex === q.correct,
+        correctIndex: toShownOption(optionOrder, q.correct),
+        explain: q.explain,
+        savedIndex: shownIndex,
+        timedOut: effectiveTimedOut,
+        progress: {
+            answeredCount: Object.keys(answers).length,
+            total: QUIZ_QUESTIONS.length,
+            score: gradeRegulationsQuiz(answers).score,
+            currentQuestionIndex: nextState.currentQuestionIndex,
+            currentPosition: nextState.currentQuestionIndex >= 0
+                ? questionPosition(nextState, nextState.currentQuestionIndex)
+                : -1,
+            questionDeadlineAt: nextState.questionDeadlineAt,
+        },
+    })
 }

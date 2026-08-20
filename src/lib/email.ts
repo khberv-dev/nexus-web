@@ -1,11 +1,13 @@
 import {Resend} from "resend";
 import {escapeHtml, renderEmailLayout, renderJsonBlock} from "@/lib/email-template";
-
-const FROM = process.env.EMAIL_FROM ?? "noreply@example.com";
-
-function getResend() {
-    return new Resend(process.env.RESEND_API_KEY ?? "re_placeholder");
-}
+import {
+    getMailProvider,
+    getResendApiKey,
+    getSmtpConfig,
+    getSmtpTransport,
+    resolveResendFrom,
+    type MailProvider,
+} from "@/lib/email-config";
 
 function getBaseAppUrl(): string {
     const primary = (process.env.NEXTAUTH_URL ?? "").trim().replace(/\/$/, "")
@@ -381,7 +383,77 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
     })
 }
 
-export async function sendEmail(trigger: EmailTrigger, to: string, data: Record<string, unknown>): Promise<void> {
+export type EmailSendResult = {
+    ok: boolean
+    /** Канал, которым письмо реально ушло ("none" — почта не настроена). */
+    provider: MailProvider
+    id?: string
+    error?: string
+}
+
+let warnedAboutDisabledMail = false
+
+/**
+ * Отправка готового письма: Resend — основной канал, SMTP (nodemailer) — резервный.
+ * Resend не бросает исключение на отказ API, а возвращает {error}, поэтому проверяем и его.
+ */
+export async function sendRawEmail({to, subject, html, context}: {
+    to: string
+    subject: string
+    html: string
+    context?: string
+}): Promise<EmailSendResult> {
+    const label = context ? `[email:${context}]` : "[email]"
+    const from = resolveResendFrom()
+    const errors: string[] = []
+
+    const resendKey = getResendApiKey()
+    if (resendKey) {
+        try {
+            const {data, error} = await new Resend(resendKey).emails.send({from, to, subject, html})
+            if (!error) return {ok: true, provider: "resend", id: data?.id}
+            errors.push(`resend: ${error.message}`)
+            console.error(`${label} Resend отклонил письмо для ${to}: ${error.message}`)
+        } catch (err) {
+            const reason = err instanceof Error ? err.message : String(err)
+            errors.push(`resend: ${reason}`)
+            console.error(`${label} Ошибка отправки через Resend для ${to}: ${reason}`)
+        }
+    }
+
+    const smtp = getSmtpConfig()
+    const transport = getSmtpTransport()
+    if (smtp && transport) {
+        try {
+            const info = await transport.sendMail({from: smtp.from, to, subject, html})
+            if (errors.length) console.warn(`${label} Письмо для ${to} ушло резервным SMTP после ошибки Resend.`)
+            return {ok: true, provider: "smtp", id: info.messageId}
+        } catch (err) {
+            const reason = err instanceof Error ? err.message : String(err)
+            errors.push(`smtp: ${reason}`)
+            console.error(`${label} Ошибка отправки через SMTP для ${to}: ${reason}`)
+        }
+    }
+
+    if (!resendKey && !smtp) {
+        if (!warnedAboutDisabledMail) {
+            warnedAboutDisabledMail = true
+            console.warn(
+                "[email] Почта не настроена: задайте RESEND_API_KEY (resend.com/api-keys) " +
+                "или SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS в .env. Письма не отправляются."
+            )
+        }
+        return {ok: false, provider: "none", error: "Почтовый сервис не настроен"}
+    }
+
+    return {ok: false, provider: getMailProvider(), error: errors.join("; ") || "Неизвестная ошибка отправки"}
+}
+
+export async function sendEmail(
+    trigger: EmailTrigger,
+    to: string,
+    data: Record<string, unknown>,
+): Promise<EmailSendResult> {
     const subject = trigger === "onboarding_status" ? resolveOnboardingSubject(data) : SUBJECTS[trigger]
     const html = renderTriggerEmail(trigger, data)
 
@@ -395,9 +467,5 @@ export async function sendEmail(trigger: EmailTrigger, to: string, data: Record<
         )
     }
 
-    try {
-        await getResend().emails.send({ from: FROM, to, subject, html });
-    } catch (err) {
-        console.error(`[email] Failed to send ${trigger} to ${to}:`, err);
-    }
+    return sendRawEmail({to, subject, html, context: trigger})
 }

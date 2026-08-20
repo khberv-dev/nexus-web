@@ -1,140 +1,245 @@
 "use client"
 
-import {useCallback, useEffect, useState} from "react"
+import {useCallback, useEffect, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
-import {QUIZ_QUESTIONS} from "./quiz-questions"
 
 const LETTERS = ["А", "Б", "В", "Г"] as const
-const TOTAL = QUIZ_QUESTIONS.length
 
-function initSectionScores() {
-    const s: Record<string, { correct: number; total: number }> = {}
-    for (const q of QUIZ_QUESTIONS) {
-        if (!s[q.section]) s[q.section] = {correct: 0, total: 0}
-        s[q.section].total++
-    }
-    return s
+type SessionQuestion = {
+    index: number
+    section: string
+    text: string
+    options: [string, string, string, string]
 }
 
-export default function RegulationsClient() {
+type QuizSession = {
+    questions: SessionQuestion[]
+    total: number
+    passPercent: number
+    timeLimitSec: number
+    answers: Record<string, number>
+    answeredCount: number
+    score: number
+    sectionScores: Record<string, { correct: number; total: number }>
+    currentQuestionIndex: number
+    currentPosition: number
+    questionDeadlineAt: string | null
+}
+
+type QuizResult = {
+    score: number
+    total: number
+    pct: number
+    passed: boolean
+    sectionScores: Record<string, { correct: number; total: number }>
+}
+
+type RevealFeedback = {
+    isCorrect: boolean
+    correctIndex: number
+    savedIndex: number
+    explain: string
+    timedOut: boolean
+}
+
+/** Сколько секунд осталось до дедлайна вопроса (сервер — источник правды по времени). */
+function secondsUntil(deadline: string | null, fallback: number): number {
+    if (!deadline) return fallback
+    const ms = new Date(deadline).getTime()
+    if (!Number.isFinite(ms)) return fallback
+    return Math.max(0, Math.ceil((ms - Date.now()) / 1000))
+}
+
+export default function RegulationsClient({
+                                              total: totalQuestions,
+                                              passPercent,
+                                              timeLimitSec,
+                                          }: {
+    total: number
+    passPercent: number
+    timeLimitSec: number
+}) {
     const router = useRouter()
     const [phase, setPhase] = useState<"loading" | "intro" | "quiz" | "result">("loading")
-    const [qIndex, setQIndex] = useState(0)
+    const [session, setSession] = useState<QuizSession | null>(null)
+    const [pos, setPos] = useState(0)
     const [score, setScore] = useState(0)
-    const [sectionScores, setSectionScores] = useState(initSectionScores)
+    const [answeredCount, setAnsweredCount] = useState(0)
+    const [deadline, setDeadline] = useState<string | null>(null)
+    const [timeLeft, setTimeLeft] = useState(timeLimitSec)
     const [picked, setPicked] = useState<number | null>(null)
-    const [revealFb, setRevealFb] = useState<{ isCorrect: boolean; correctIndex: number; explain: string } | null>(null)
+    const [revealFb, setRevealFb] = useState<RevealFeedback | null>(null)
+    const [result, setResult] = useState<QuizResult | null>(null)
+    const [lastResult, setLastResult] = useState<QuizResult | null>(null)
     const [submitting, setSubmitting] = useState(false)
-    const [allAnswers, setAllAnswers] = useState<Record<number, number>>({})
+    const [error, setError] = useState<string | null>(null)
+    const revealInFlight = useRef(false)
 
-    // Load resume on mount
+    const total = session?.total ?? totalQuestions
+    const timeLimit = session?.timeLimitSec ?? timeLimitSec
+    const q = session?.questions[pos]
+    const isAnswered = revealFb !== null
+    const isLast = pos >= (session?.questions.length ?? 0) - 1
+    const progressPct = phase === "result" ? 100 : Math.round((answeredCount / total) * 100)
+
+    const applySession = useCallback((s: QuizSession) => {
+        setSession(s)
+        setScore(s.score)
+        setAnsweredCount(s.answeredCount)
+        setDeadline(s.questionDeadlineAt)
+        setTimeLeft(secondsUntil(s.questionDeadlineAt, s.timeLimitSec))
+        setPos(s.currentPosition >= 0 ? s.currentPosition : Math.max(0, s.questions.length - 1))
+        setPicked(null)
+        setRevealFb(null)
+        setError(null)
+        setPhase("quiz")
+    }, [])
+
+    /** Завершение попытки: итог считает сервер по сохранённым ответам. */
+    const finishAttempt = useCallback(async () => {
+        setSubmitting(true)
+        try {
+            const res = await fetch("/api/onboarding/regulations-result", {method: "POST"})
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                setError(typeof data.error === "string" ? data.error : "Не удалось сохранить результат")
+                setPhase("intro")
+                return
+            }
+            setResult({
+                score: Number(data.score ?? 0),
+                total: Number(data.total ?? totalQuestions),
+                pct: Number(data.pct ?? 0),
+                passed: Boolean(data.passed),
+                sectionScores: data.sectionScores ?? {},
+            })
+            setPhase("result")
+        } finally {
+            setSubmitting(false)
+        }
+    }, [totalQuestions])
+
+    // Восстановление незавершённой попытки
     useEffect(() => {
         ;(async () => {
             try {
                 const res = await fetch("/api/onboarding/regulations-result")
                 const data = await res.json()
-                if (data.resume) {
-                    const {answers, score: savedScore, sectionScores: savedSections} = data.resume as {
-                        answers: Record<string, number>
-                        score: number
-                        sectionScores: Record<string, { correct: number; total: number }>
+                if (data?.session) {
+                    const s = data.session as QuizSession
+                    // Все вопросы отвечены, но попытка не закрыта (например, вкладку закрыли) — подводим итог.
+                    if (s.currentQuestionIndex < 0) {
+                        await finishAttempt()
+                        return
                     }
-                    const answeredIndices = Object.keys(answers).map(Number)
-                    if (answeredIndices.length > 0) {
-                        const numericAnswers: Record<number, number> = {}
-                        for (const [k, v] of Object.entries(answers)) numericAnswers[Number(k)] = v
-                        setAllAnswers(numericAnswers)
-                        setScore(savedScore)
-                        if (savedSections) setSectionScores(savedSections)
-                        // Resume at first unanswered question
-                        const nextIdx = QUIZ_QUESTIONS.findIndex((_, i) => numericAnswers[i] === undefined)
-                        const resumeIdx = nextIdx === -1 ? TOTAL - 1 : nextIdx
-                        setQIndex(resumeIdx)
-                        setPhase("quiz")
+                    applySession(s)
+                    return
+                }
+                if (data?.result) {
+                    const r = data.result as QuizResult
+                    setLastResult(r)
+                    if (r.passed) {
+                        setPhase("result")
                         return
                     }
                 }
-            } catch { /* ignore, start fresh */
+            } catch { /* стартуем с intro */
             }
             setPhase("intro")
         })()
-    }, [])
+    }, [applySession, finishAttempt])
 
-    const q = QUIZ_QUESTIONS[qIndex]
-    const isAnswered = revealFb !== null
-    const progressPct = phase === "result" ? 100 : Math.round((qIndex / TOTAL) * 100)
+    const startAttempt = useCallback(async () => {
+        if (submitting) return
+        setSubmitting(true)
+        setError(null)
+        try {
+            const res = await fetch("/api/onboarding/regulations-result/start", {method: "POST"})
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                setError(typeof data.error === "string" ? data.error : "Не удалось начать тест")
+                return
+            }
+            setResult(null)
+            applySession(data.session as QuizSession)
+        } finally {
+            setSubmitting(false)
+        }
+    }, [submitting, applySession])
 
-    const selectAnswer = useCallback(async (idx: number) => {
-        if (isAnswered || submitting) return
+    /** optionIdx === null — время вышло. */
+    const submitAnswer = useCallback(async (optionIdx: number | null) => {
+        if (!q || isAnswered || revealInFlight.current) return
+        revealInFlight.current = true
         setSubmitting(true)
         try {
             const res = await fetch("/api/onboarding/regulations-result/reveal", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({questionIndex: qIndex, selectedIndex: idx}),
+                body: JSON.stringify(
+                    optionIdx === null
+                        ? {questionIndex: q.index, timedOut: true}
+                        : {questionIndex: q.index, selectedIndex: optionIdx},
+                ),
             })
-            const data = await res.json()
-            setAllAnswers(prev => ({...prev, [qIndex]: idx}))
-            setPicked(idx)
-            if (data.isCorrect) {
-                setScore(s => s + 1)
-                setSectionScores(prev => {
-                    const sec = QUIZ_QUESTIONS[qIndex].section
-                    return {...prev, [sec]: {...prev[sec], correct: prev[sec].correct + 1}}
-                })
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                setError(
+                    data.code === "NO_SESSION" || data.code === "QUESTION_ORDER"
+                        ? "Сессия теста рассинхронизирована. Начните попытку заново."
+                        : typeof data.error === "string" ? data.error : "Ошибка проверки ответа",
+                )
+                return
             }
+            setPicked(typeof data.savedIndex === "number" ? data.savedIndex : optionIdx)
             setRevealFb({
                 isCorrect: Boolean(data.isCorrect),
                 correctIndex: Number(data.correctIndex),
-                explain: String(data.explain ?? "")
+                savedIndex: Number(data.savedIndex ?? -1),
+                explain: String(data.explain ?? ""),
+                timedOut: Boolean(data.timedOut),
             })
+            if (data.progress) {
+                setScore(Number(data.progress.score ?? score))
+                setAnsweredCount(Number(data.progress.answeredCount ?? answeredCount + 1))
+                setDeadline(data.progress.questionDeadlineAt ?? null)
+            }
         } finally {
+            revealInFlight.current = false
             setSubmitting(false)
         }
-    }, [isAnswered, submitting, qIndex])
+    }, [q, isAnswered, score, answeredCount])
+
+    // Таймер вопроса: считаем от серверного дедлайна, по нулю отправляем «время вышло».
+    useEffect(() => {
+        if (phase !== "quiz" || !q || isAnswered) return
+        setTimeLeft(secondsUntil(deadline, timeLimit))
+        const id = setInterval(() => {
+            const left = secondsUntil(deadline, timeLimit)
+            setTimeLeft(left)
+            if (left <= 0) {
+                clearInterval(id)
+                void submitAnswer(null)
+            }
+        }, 500)
+        return () => clearInterval(id)
+    }, [phase, q, isAnswered, deadline, timeLimit, submitAnswer])
 
     const goNext = useCallback(async () => {
-        if (qIndex < TOTAL - 1) {
-            setQIndex(i => i + 1)
+        if (!isAnswered) return
+        if (!isLast) {
+            setPos((i) => i + 1)
             setPicked(null)
             setRevealFb(null)
-        } else {
-            setSubmitting(true)
-            const finalAnswers = {...allAnswers}
-            const finalScore = score
-            const finalPct = Math.round((finalScore / TOTAL) * 100)
-            const finalPassed = finalPct >= 80
-            await fetch("/api/onboarding/regulations-result", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    score: finalScore,
-                    total: TOTAL,
-                    pct: finalPct,
-                    passed: finalPassed,
-                    sectionScores,
-                    answers: finalAnswers
-                }),
-            })
-            setSubmitting(false)
-            setPhase("result")
+            setTimeLeft(secondsUntil(deadline, timeLimit))
+            return
         }
-    }, [qIndex, score, allAnswers, sectionScores])
+        await finishAttempt()
+    }, [isAnswered, isLast, deadline, timeLimit, finishAttempt])
 
-    const restart = () => {
-        setPhase("intro");
-        setQIndex(0);
-        setScore(0);
-        setPicked(null)
-        setRevealFb(null);
-        setAllAnswers({});
-        setSectionScores(initSectionScores())
-    }
-
-    const pct = Math.round((score / TOTAL) * 100)
-    const passed = pct >= 80
+    const shown = result ?? lastResult
 
     return (
         <OnboardingShell title="Регламенты" backHref="/onboarding" backLabel="Онбординг" withBg>
@@ -143,6 +248,20 @@ export default function RegulationsClient() {
                 {/* ── LOADING ── */}
                 {phase === "loading" && (
                     <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.9rem"}}>Загрузка…</p>
+                )}
+
+                {error && phase !== "loading" && (
+                    <div style={{
+                        marginBottom: "1rem",
+                        padding: "0.7em 1em",
+                        borderRadius: 12,
+                        border: "1px solid rgba(248,113,113,0.35)",
+                        background: "rgba(248,113,113,0.08)",
+                        color: "#fca5a5",
+                        fontSize: "0.82rem",
+                    }}>
+                        {error}
+                    </div>
                 )}
 
                 {/* ── INTRO ── */}
@@ -158,14 +277,18 @@ export default function RegulationsClient() {
                                 Шаг 4 — Регламенты платформы
                             </h1>
                             <p style={{color: "rgba(255,255,255,0.45)", marginTop: "0.5em", fontSize: "0.9rem"}}>
-                                Тест на знание NEXUS Designer Code. Ответьте на {TOTAL} вопросов по всем разделам
-                                регламента.
+                                Тест на знание NEXUS Designer Code. Вопросы и варианты ответов перемешиваются на
+                                каждой попытке, на каждый вопрос даётся {timeLimitSec} секунд.
                             </p>
                         </div>
 
                         <div className="flex flex-wrap gap-8 mb-8"
                              style={{color: "rgba(255,255,255,0.5)", fontSize: "0.85rem"}}>
-                            {[["30", "вопросов"], ["13", "разделов"], ["80%", "проходной балл"]].map(([num, label]) => (
+                            {[
+                                [String(totalQuestions), "вопросов"],
+                                [`${timeLimitSec} сек`, "на вопрос"],
+                                [`${passPercent}%`, "проходной балл"],
+                            ].map(([num, label]) => (
                                 <div key={label}>
                                     <div style={{
                                         color: "#f4f4f4",
@@ -178,9 +301,16 @@ export default function RegulationsClient() {
                             ))}
                         </div>
 
+                        {lastResult && (
+                            <p style={{color: "rgba(255,255,255,0.45)", fontSize: "0.82rem", marginBottom: "1rem"}}>
+                                Прошлая попытка: {lastResult.score} из {lastResult.total} ({lastResult.pct}%).
+                            </p>
+                        )}
+
                         <button
                             type="button"
-                            onClick={() => setPhase("quiz")}
+                            onClick={startAttempt}
+                            disabled={submitting}
                             style={{
                                 width: "100%",
                                 padding: "0.85em 1.5em",
@@ -190,21 +320,51 @@ export default function RegulationsClient() {
                                 color: "#f4f4f4",
                                 fontWeight: 600,
                                 fontSize: "0.9rem",
-                                cursor: "pointer"
+                                cursor: submitting ? "wait" : "pointer"
                             }}
                         >
-                            Начать тест →
+                            {submitting ? "Готовим вопросы…" : "Начать тест →"}
                         </button>
                     </>
                 )}
 
                 {/* ── QUIZ ── */}
-                {phase === "quiz" && (
+                {phase === "quiz" && q && (
                     <>
-                        <div className="mb-4 flex justify-between items-center" style={{fontSize: "0.82rem"}}>
-                            <span style={{color: "rgba(255,255,255,0.45)"}}>Вопрос {qIndex + 1} из {TOTAL}</span>
+                        <div className="mb-2 flex justify-between items-center" style={{fontSize: "0.82rem"}}>
+                            <span style={{color: "rgba(255,255,255,0.45)"}}>Вопрос {pos + 1} из {total}</span>
                             <span style={{color: "rgba(255,255,255,0.65)", fontWeight: 600}}>{score} верных</span>
                         </div>
+
+                        <div style={{
+                            color: !isAnswered && timeLeft <= 5 ? "#fca5a5" : "rgba(255,255,255,0.55)",
+                            fontSize: "0.8rem",
+                            marginBottom: "0.5rem",
+                            fontWeight: !isAnswered && timeLeft <= 5 ? 700 : 500,
+                            letterSpacing: !isAnswered && timeLeft <= 5 ? "0.03em" : "normal",
+                        }}>
+                            {isAnswered
+                                ? "Ответ засчитан"
+                                : `${timeLeft <= 5 ? "Срочно: " : "Время на вопрос: "}00:${String(timeLeft).padStart(2, "0")}`}
+                        </div>
+                        <div style={{
+                            height: 4,
+                            borderRadius: 999,
+                            background: "rgba(255,255,255,0.08)",
+                            overflow: "hidden",
+                            marginBottom: "0.65rem"
+                        }}>
+                            <div style={{
+                                height: "100%",
+                                width: `${isAnswered ? 0 : Math.round((timeLeft / timeLimit) * 100)}%`,
+                                borderRadius: 999,
+                                background: timeLeft <= 5
+                                    ? "linear-gradient(90deg, rgba(248,113,113,0.9), rgba(252,165,165,0.85))"
+                                    : "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(129,140,248,0.85))",
+                                transition: "width 0.5s linear"
+                            }}/>
+                        </div>
+
                         <div style={{
                             height: 6,
                             borderRadius: 999,
@@ -221,7 +381,7 @@ export default function RegulationsClient() {
                             }}/>
                         </div>
 
-                        <AppCard key={qIndex}>
+                        <AppCard key={q.index}>
                             <div style={{
                                 display: "inline-block",
                                 fontSize: "0.72rem",
@@ -241,7 +401,7 @@ export default function RegulationsClient() {
                                 letterSpacing: "0.08em",
                                 margin: "0 0 0.5rem"
                             }}>
-                                ВОПРОС {qIndex + 1}
+                                ВОПРОС {pos + 1}
                             </p>
                             <p style={{
                                 color: "#f4f4f4",
@@ -269,7 +429,7 @@ export default function RegulationsClient() {
                                     }
                                     return (
                                         <button key={i} type="button" disabled={isAnswered || submitting}
-                                                onClick={() => selectAnswer(i)}
+                                                onClick={() => submitAnswer(i)}
                                                 style={{
                                                     display: "flex",
                                                     alignItems: "flex-start",
@@ -319,7 +479,9 @@ export default function RegulationsClient() {
                                     color: "rgba(255,255,255,0.75)"
                                 }}>
                                     <strong style={{color: revealFb.isCorrect ? "#6ee7b7" : "#fca5a5"}}>
-                                        {revealFb.isCorrect ? "✓ Верно." : "✗ Неверно."}
+                                        {revealFb.isCorrect
+                                            ? "✓ Верно."
+                                            : revealFb.timedOut ? "⏱ Время вышло." : "✗ Неверно."}
                                     </strong>{" "}{revealFb.explain}
                                 </div>
                             )}
@@ -337,7 +499,7 @@ export default function RegulationsClient() {
                                                 fontSize: "0.85rem",
                                                 cursor: submitting ? "wait" : "pointer"
                                             }}>
-                                        {submitting ? "Сохранение…" : qIndex < TOTAL - 1 ? "Следующий вопрос →" : "Завершить тест →"}
+                                        {submitting ? "Сохранение…" : !isLast ? "Следующий вопрос →" : "Завершить тест →"}
                                     </button>
                                 </div>
                             )}
@@ -346,22 +508,23 @@ export default function RegulationsClient() {
                 )}
 
                 {/* ── RESULT ── */}
-                {phase === "result" && (
+                {phase === "result" && shown && (
                     <>
                         <AppCard style={{
-                            border: passed ? "1px solid rgba(52,211,153,0.25)" : "1px solid rgba(248,113,113,0.25)",
-                            background: passed ? "rgba(52,211,153,0.06)" : "rgba(248,113,113,0.06)"
+                            border: shown.passed ? "1px solid rgba(52,211,153,0.25)" : "1px solid rgba(248,113,113,0.25)",
+                            background: shown.passed ? "rgba(52,211,153,0.06)" : "rgba(248,113,113,0.06)"
                         }}>
                             <h2 style={{
-                                color: passed ? "#6ee7b7" : "#fca5a5",
+                                color: shown.passed ? "#6ee7b7" : "#fca5a5",
                                 fontSize: "1.1rem",
                                 margin: "0 0 0.5rem"
                             }}>
-                                {passed ? "Тест пройден!" : "Тест не пройден"}
+                                {shown.passed ? "Тест пройден!" : "Тест не пройден"}
                             </h2>
                             <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", margin: "0 0 1rem"}}>
-                                Результат: <strong style={{color: "#f4f4f4"}}>{score}</strong> из {TOTAL} ({pct}%).
-                                {passed ? " Регламент принят." : " Рекомендуем повторно изучить NEXUS Designer Code."}
+                                Результат: <strong
+                                style={{color: "#f4f4f4"}}>{shown.score}</strong> из {shown.total} ({shown.pct}%).
+                                {shown.passed ? " Регламент принят." : " Рекомендуем повторно изучить NEXUS Designer Code."}
                             </p>
 
                             <div style={{
@@ -371,8 +534,8 @@ export default function RegulationsClient() {
                                 flexDirection: "column",
                                 gap: 6
                             }}>
-                                {Object.entries(sectionScores).map(([sec, v]) => {
-                                    const sp = Math.round((v.correct / v.total) * 100)
+                                {Object.entries(shown.sectionScores).map(([sec, v]) => {
+                                    const sp = v.total > 0 ? Math.round((v.correct / v.total) * 100) : 0
                                     const shortSec = sec.replace(/Раздел \d+[–—-]?\s*/i, "")
                                     return (
                                         <div key={sec} style={{
@@ -392,21 +555,23 @@ export default function RegulationsClient() {
                         </AppCard>
 
                         <div className="flex flex-col gap-3 mt-2">
-                            <button type="button" onClick={restart}
-                                    style={{
-                                        width: "100%",
-                                        padding: "0.85em 1.5em",
-                                        borderRadius: 999,
-                                        border: "1px solid rgba(255,255,255,0.2)",
-                                        background: "rgba(255,255,255,0.06)",
-                                        color: "#f4f4f4",
-                                        fontWeight: 500,
-                                        fontSize: "0.85rem",
-                                        cursor: "pointer"
-                                    }}>
-                                Пройти заново
-                            </button>
-                            {passed && (
+                            {!shown.passed && (
+                                <button type="button" onClick={startAttempt} disabled={submitting}
+                                        style={{
+                                            width: "100%",
+                                            padding: "0.85em 1.5em",
+                                            borderRadius: 999,
+                                            border: "1px solid rgba(255,255,255,0.2)",
+                                            background: "rgba(255,255,255,0.06)",
+                                            color: "#f4f4f4",
+                                            fontWeight: 500,
+                                            fontSize: "0.85rem",
+                                            cursor: submitting ? "wait" : "pointer"
+                                        }}>
+                                    {submitting ? "Готовим вопросы…" : "Пройти заново"}
+                                </button>
+                            )}
+                            {shown.passed && (
                                 <button type="button" onClick={() => router.push("/onboarding")}
                                         style={{
                                             width: "100%",

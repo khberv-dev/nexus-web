@@ -1,8 +1,14 @@
-import {NextRequest, NextResponse} from "next/server"
+import {NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
+import {
+    buildRegulationsSessionPayload,
+    gradeRegulationsQuiz,
+    parseRegulationsQuizState,
+    REGULATIONS_TOTAL,
+} from "@/lib/onboarding/regulations-quiz"
 
-/** GET — вернуть текущий прогресс (resume) квиза регламентов */
+/** GET — активная сессия теста регламентов (перемешанные вопросы + дедлайн) и последний результат. */
 export async function GET() {
     const session = await getSessionUser()
     if (!session || session.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
@@ -13,38 +19,37 @@ export async function GET() {
     })
     if (!profile) return NextResponse.json({error: "Not found"}, {status: 404})
 
-    const step = profile.steps.find(s => s.type === "REGULATIONS")
-    if (!step?.comment) return NextResponse.json({resume: null})
+    const step = profile.steps.find((s) => s.type === "REGULATIONS")
+    if (!step?.comment) return NextResponse.json({session: null, result: null})
 
+    const state = parseRegulationsQuizState(step.comment)
+    if (state && step.status === "IN_PROGRESS") {
+        return NextResponse.json({session: buildRegulationsSessionPayload(state), result: null})
+    }
+
+    let result: unknown = null
     try {
-        const data = JSON.parse(step.comment)
-        // Only return resume if quiz is in progress (not yet finished)
-        if (step.status === "IN_PROGRESS" && data.answers) {
-            return NextResponse.json({
-                resume: {
-                    answers: data.answers,
-                    score: data.score ?? 0,
-                    sectionScores: data.sectionScores ?? {}
-                }
-            })
+        const parsed = JSON.parse(step.comment) as Record<string, unknown>
+        if (parsed?.finishedAt) {
+            result = {
+                score: Number(parsed.score ?? 0),
+                total: Number(parsed.total ?? REGULATIONS_TOTAL),
+                pct: Number(parsed.pct ?? 0),
+                passed: Boolean(parsed.passed),
+                sectionScores: parsed.sectionScores ?? {},
+                finishedAt: parsed.finishedAt,
+            }
         }
     } catch { /* ignore */
     }
 
-    return NextResponse.json({resume: null})
+    return NextResponse.json({session: null, result})
 }
 
-/** POST — сохранить результаты квиза регламентов в comment шага REGULATIONS */
-export async function POST(req: NextRequest) {
+/** POST — завершение попытки: результат считается на сервере по сохранённым ответам. */
+export async function POST() {
     const session = await getSessionUser()
     if (!session || session.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
-
-    const {score, total, pct, sectionScores, answers} = await req.json() as {
-        score: number; total: number; pct: number; passed: boolean
-        sectionScores: Record<string, { correct: number; total: number }>
-        answers: Record<string, number>
-    }
-    const passed = total > 0 && Math.round((score / total) * 100) >= 80
 
     const profile = await prisma.specialistProfile.findUnique({
         where: {userId: session.id},
@@ -52,27 +57,41 @@ export async function POST(req: NextRequest) {
     })
     if (!profile) return NextResponse.json({error: "Not found"}, {status: 404})
 
+    const existing = profile.steps.find((s) => s.type === "REGULATIONS")
+    const state = parseRegulationsQuizState(existing?.comment ?? null)
+    if (!state) {
+        return NextResponse.json({error: "Активная попытка не найдена, начните тест заново"}, {status: 409})
+    }
+
+    const grade = gradeRegulationsQuiz(state.answers)
     const comment = JSON.stringify({
-        score,
-        total,
-        pct,
-        passed,
-        sectionScores,
-        answers,
-        finishedAt: new Date().toISOString()
+        score: grade.score,
+        total: grade.total,
+        pct: grade.pct,
+        passed: grade.passed,
+        sectionScores: grade.sectionScores,
+        answers: state.answers,
+        questionOrder: state.questionOrder,
+        optionOrder: state.optionOrder,
+        startedAt: state.startedAt,
+        finishedAt: new Date().toISOString(),
     })
 
-    const existing = profile.steps.find(s => s.type === "REGULATIONS")
     if (existing) {
         await prisma.onboardingStep.update({
             where: {id: existing.id},
-            data: {status: passed ? "PASSED" : "IN_PROGRESS", comment},
+            data: {status: grade.passed ? "PASSED" : "IN_PROGRESS", comment},
         })
     } else {
         await prisma.onboardingStep.create({
-            data: {profileId: profile.id, type: "REGULATIONS", status: passed ? "PASSED" : "IN_PROGRESS", comment},
+            data: {
+                profileId: profile.id,
+                type: "REGULATIONS",
+                status: grade.passed ? "PASSED" : "IN_PROGRESS",
+                comment,
+            },
         })
     }
 
-    return NextResponse.json({ok: true})
+    return NextResponse.json({ok: true, ...grade})
 }

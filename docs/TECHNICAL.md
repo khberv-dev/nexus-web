@@ -135,6 +135,19 @@ crm/
 | `type` | Enum | `FORM`, `TEST`, `INTERVIEW`, `REGULATIONS_READ`, `REGULATIONS`, `CONTRACT` |
 | `status` | Enum | `PENDING`, `IN_PROGRESS`, `PASSED`, `FAILED` |
 
+### RegulationDocument
+
+Редактируемый администратором текст шага «Ознакомление с регламентом» (`/admin/regulations`, API `GET|PUT /api/admin/regulations`). Хранится в markdown и рендерится через `react-markdown`.
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `slug` | String | Уникальный ключ документа, сейчас единственный — `onboarding` |
+| `title` | String | Заголовок документа |
+| `content` | String | Текст в markdown |
+| `updatedById` | String? | FK → User (админ, сохранивший версию) |
+
+Пока записи в таблице нет, специалисту показывается текст по умолчанию из `src/lib/onboarding/regulations-default.ts` (`getRegulationsDocument()` в `src/lib/regulations.ts`).
+
 ### ClientProfile
 
 Профиль заказчика, 1:1 с `User`.
