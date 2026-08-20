@@ -143,7 +143,7 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
             onChange={e => set("objAddress", e.target.value)}/></Field>
         <Field label="Стадия объекта" required hint="На какой стадии находится помещение сейчас"><Select
             value={d.objStage ?? ""} options={OBJ_STAGES} onChange={v => set("objStage", v)}/></Field>
-        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+        <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
             <Field label="Площадь, м²" required hint="Общая площадь всех помещений"><input type="number"
                                                                                            style={inputStyle}
                                                                                            placeholder="150"
@@ -243,7 +243,7 @@ function StepBudget({d, set}: { d: D; set: (k: string, v: string) => void }) {
             value={d.sqmBudget ?? ""} options={SQM_BUDGET} onChange={v => set("sqmBudget", v)}/></Field>
         <Field label="Гибкость бюджета" hint="Насколько возможно отклонение от заявленного бюджета"><Select
             value={d.budgetFlex ?? ""} options={BUDGET_FLEX} onChange={v => set("budgetFlex", v)}/></Field>
-        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+        <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
             <Field label="Срок дизайн-проекта" hint="Когда нужен готовый проект"><input type="date" style={inputStyle}
                                                                                         value={d.deadlineDesign ?? ""}
                                                                                         onChange={e => set("deadlineDesign", e.target.value)}/></Field>

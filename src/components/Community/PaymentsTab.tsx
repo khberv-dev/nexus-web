@@ -179,6 +179,7 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
             <Section title="Реквизиты" icon="bx-building">
                 {hasReqs ? (
                     <div
+                        className="rwd-grid-2"
                         style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px", fontSize: "0.78rem"}}>
                         {reqRows.map(r => r.value ? (
                             <div key={r.label}><span style={{color: "var(--dash-muted)"}}>{r.label}: </span>{r.value}

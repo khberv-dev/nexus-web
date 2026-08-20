@@ -125,7 +125,7 @@ export function PaymentsTab({
                         </button>
                     </div>
                 ) : (
-                    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px"}}>
+                    <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px"}}>
                         {reqRows.map(r =>
                             r.value ? (
                                 <div key={r.label} style={{fontSize: "0.78rem"}}>

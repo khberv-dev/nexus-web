@@ -178,7 +178,7 @@ export default function ProfileForm({
                     <i className="bx bx-time" style={{marginRight: 6}}/>{reqPending}
                 </div>
             )}
-            <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem"}}>
+            <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem"}}>
                 {FIELDS.map((f) => (
                     <div key={f.name} style={f.name === "portfolio" ? {gridColumn: "1 / -1"} : undefined}>
                         <label style={{
@@ -335,7 +335,7 @@ export default function ProfileForm({
                         ))}
                     </div>
                     {(form.taxStatus === "IP" || form.taxStatus === "SZ" || form.taxStatus === "OOO") && (
-                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem"}}>
+                        <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem"}}>
                             <div>
                                 <label style={{
                                     display: "block",

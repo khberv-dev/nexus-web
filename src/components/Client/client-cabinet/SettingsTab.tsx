@@ -205,7 +205,7 @@ export function SettingsTab({name, email, formData}: {
             </DashSettingsSection>
 
             <form onSubmit={handleSave} noValidate>
-                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16}}>
+                <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16}}>
                     <DashSettingsSection title="Контактные данные" iconClass="bx bx-user"
                                          className="dash-surface-card--pad-md">
                         <F label="ФИО">
@@ -330,7 +330,7 @@ export function SettingsTab({name, email, formData}: {
                                     />
                                 </F>
                                 {isLegal && (
-                                    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
+                                    <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
                                         <F label="КПП" required>
                                             <input
                                                 type="text"
@@ -384,7 +384,7 @@ export function SettingsTab({name, email, formData}: {
                                         maxLength={20}
                                     />
                                 </F>
-                                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
+                                <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 0.75rem"}}>
                                     <F label="Банк" required>
                                         <input
                                             type="text"

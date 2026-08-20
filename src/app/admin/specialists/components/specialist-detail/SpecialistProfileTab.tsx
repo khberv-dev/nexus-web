@@ -78,7 +78,7 @@ export function SpecialistProfileTab({
 
             <RequisiteChangesCard userId={sp.id}/>
 
-            <div style={{display: "grid", gridTemplateColumns: "1fr 280px", gap: 20, alignItems: "start"}}>
+            <div className="rwd-sidebar" style={{display: "grid", gridTemplateColumns: "1fr 280px", gap: 20, alignItems: "start"}}>
                 {/* Left: accordions */}
                 <div style={{display: "flex", flexDirection: "column", gap: 0}}>
                     <AdminAccordion icon="bx-cog" title="Системная информация" defaultOpen>
@@ -126,7 +126,7 @@ export function SpecialistProfileTab({
                 </div>
 
                 {/* Right: audit timeline */}
-                <div style={{
+                <div className="rwd-sidebar__aside" style={{
                     position: "sticky",
                     top: 24,
                     border: "1px solid var(--adm-sidebar-border, rgba(0,0,0,0.08))",

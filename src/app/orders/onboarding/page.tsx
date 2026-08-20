@@ -185,7 +185,7 @@ export default function ClientOnboardingPage() {
                             <input type="text" required placeholder="Иван Иванов" value={form.fullName || ""}
                                    onChange={e => setForm(f => ({...f, fullName: e.target.value}))} style={inputStyle}/>
                         </Field>
-                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+                        <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
                             <Field label="Email" required>
                                 <input type="email" required placeholder="ivan@example.com" value={form.email || ""}
                                        onChange={e => setForm(f => ({...f, email: e.target.value}))}
@@ -310,7 +310,7 @@ export default function ClientOnboardingPage() {
                                            onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
                                            style={inputStyle} maxLength={20}/>
                                 </Field>
-                                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+                                <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
                                     <Field label="Банк" required>
                                         <input type="text" required placeholder="АО «Т-Банк»"
                                                value={form.bankName || ""}

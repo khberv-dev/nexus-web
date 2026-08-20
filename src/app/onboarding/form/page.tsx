@@ -652,7 +652,7 @@ export default function OnboardingFormPage() {
                             )}
 
                             {(form.taxStatus === "IP" || form.taxStatus === "SZ" || form.taxStatus === "OOO") && (
-                                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem"}}>
+                                <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem"}}>
                                     <div className="flex flex-col gap-1.5">
                                         <label style={{
                                             color: "rgba(255,255,255,0.5)",

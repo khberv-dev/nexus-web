@@ -178,7 +178,7 @@ export default function CommunityPage({
             >
                 {/* Hero */}
                 <DashHeroFrame>
-                    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "stretch"}}>
+                    <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "stretch"}}>
 
                         {/* LEFT — identity */}
                         <div style={{

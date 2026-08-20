@@ -450,13 +450,20 @@
 .dash-crop-panel__body {
     padding: 20px;
     display: flex;
-    justify-content: center;
+    /* Колонка: под кадром идёт блок AI-вариантов, в строку они не помещались. */
+    flex-direction: column;
+    align-items: center;
     max-height: 60vh;
     overflow-y: auto;
 }
 
+.dash-crop-panel__body > * {
+    max-width: 100%;
+}
+
 .dash-crop-panel__ft {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     padding: 16px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);

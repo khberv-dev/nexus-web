@@ -163,3 +163,25 @@
     box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
 }
+
+/* ── Адаптив форм ────────────────────────────────────────────────────────
+   Двухколоночные сетки полей задаются инлайновым style (gridTemplateColumns),
+   поэтому перебить их из CSS можно только !important — отсюда утилиты-классы,
+   а не обычные responsive-правила. */
+@media (max-width: 640px) {
+    .rwd-grid-2 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Контент + боковая колонка (история/сайдбар): на планшете и уже — друг под другом. */
+@media (max-width: 1100px) {
+    .rwd-sidebar {
+        grid-template-columns: 1fr !important;
+    }
+
+    .rwd-sidebar > .rwd-sidebar__aside {
+        position: static !important;
+        max-height: none !important;
+    }
+}
