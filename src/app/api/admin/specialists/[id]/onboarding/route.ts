@@ -3,8 +3,7 @@ import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {OnboardingStatus, SpecialistContractStatus} from "@prisma/client"
 import {audit} from "@/lib/audit"
-import {sendEmail} from "@/lib/email"
-import {notify} from "@/lib/notifications"
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
 
 const NEXT_STATUS: Record<string, OnboardingStatus> = {
     PENDING: "TEST_INVITED",
@@ -160,6 +159,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         }
     }
 
+    // Шаг закрыт как раз тем действием, что мы обрабатываем: письмо идёт на КАЖДОЕ действие админа,
+    // даже если он не оставил комментарий — дефолтный текст берём по исходному статусу.
     let emailComment = comment ?? undefined
     if (action === "advance" && profile.onboardingStatus === "PENDING") {
         emailComment = "Благодарим за анкету. Приглашаем пройти квалификационный тест NEXUS."
@@ -179,19 +180,33 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     if (action === "reject_no_experience") {
         emailComment = "К сожалению, минимальный практический опыт в разработке дизайн-проектов должен составлять 8 лет."
     }
-    if (updated.user.email) {
-        void sendEmail("onboarding_status", updated.user.email, {
-            status: newStatus,
-            comment: emailComment,
-            reason: isRejectAction ? action : undefined,
-            paymentUrl: action === "advance" && profile.onboardingStatus === "PENDING"
-                ? "/onboarding/test"
-                : undefined,
-        })
+    // Автоактивация выше могла перевести профиль в ACTIVE — письмо должно сообщать реальный статус,
+    // иначе последний шаг уходит дизайнеру как «CONTRACT».
+    const finalStatus = updated.onboardingStatus as string
+    const STATUS_URL: Record<string, string> = {
+        TEST_INVITED: "/onboarding/test",
+        INTERVIEW_INVITED: "/onboarding/interview",
+        REGULATIONS: "/onboarding/regulations",
+        CONTRACT: "/onboarding/contract",
+        ACTIVE: "/work",
     }
-    if (emailComment) {
-        void notify(updated.userId, "onboarding_status", "Обновление статуса онбординга", emailComment, "/onboarding")
+    const STATUS_TITLE: Record<string, string> = {
+        TEST_INVITED: "Приглашение на квалификационный тест",
+        INTERVIEW_INVITED: "Приглашение на интервью",
+        REGULATIONS: "Изучение регламентов",
+        CONTRACT: "Подписание договора",
+        ACTIVE: "Добро пожаловать на платформу!",
+        REJECTED: "Заявка отклонена",
     }
+    await notifySpecialistStep({
+        userId: updated.userId,
+        email: updated.user.email,
+        status: finalStatus,
+        title: STATUS_TITLE[finalStatus] ?? "Обновление статуса онбординга",
+        message: emailComment ?? "Статус вашего онбординга изменён администратором.",
+        url: STATUS_URL[finalStatus] ?? "/onboarding",
+        extra: isRejectAction ? {reason: action} : undefined,
+    })
 
     const dbUser = await prisma.user.findUnique({where: {email: user.email}, select: {id: true}})
     await audit(dbUser?.id ?? null, isRejectAction ? "specialist_rejected" : "specialist_advanced", "User", id, {

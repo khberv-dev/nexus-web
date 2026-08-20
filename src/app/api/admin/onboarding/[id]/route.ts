@@ -1,8 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import {getServerSessionWithDevBypass} from "@/lib/session";
 import {prisma} from "@/lib/db/prisma";
-import {sendEmail} from "@/lib/email";
-import {notify} from "@/lib/notifications";
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step";
 
 const ONBOARDING_LABELS: Record<string, string> = {
     TEST_INVITED: "Приглашение на квалификационный тест",
@@ -66,12 +65,22 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         include: {user: true},
     });
 
-    if (profile.user.email) {
-        void sendEmail("onboarding_status", profile.user.email, {status: onboardingStatus, comment});
-    }
-
+    const ONBOARDING_URLS: Record<string, string> = {
+        TEST_INVITED: "/onboarding/test",
+        INTERVIEW_INVITED: "/onboarding/interview",
+        REGULATIONS: "/onboarding/regulations",
+        CONTRACT: "/onboarding/contract",
+        ACTIVE: "/work",
+    };
     const title = ONBOARDING_LABELS[onboardingStatus] ?? `Статус: ${onboardingStatus}`;
-    void notify(profile.userId, "onboarding_status", title, comment ?? undefined, "/onboarding");
+    await notifySpecialistStep({
+        userId: profile.userId,
+        email: profile.user.email,
+        status: onboardingStatus,
+        title,
+        message: comment?.trim() || title,
+        url: ONBOARDING_URLS[onboardingStatus] ?? "/onboarding",
+    });
 
     return NextResponse.json(profile);
 }

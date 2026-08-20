@@ -2,10 +2,9 @@ import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {audit} from "@/lib/audit"
-import {notify} from "@/lib/notifications"
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
-import {sendEmail} from "@/lib/email"
 
 /** Подтверждение админом пройденного уровня теста (L1–L4). */
 export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -57,26 +56,12 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
     })
 
     // If all levels confirmed — unlock interview stage.
-    if (allPassed && profile.onboardingStatus === "TEST_INVITED") {
+    const unlockedInterview = allPassed && profile.onboardingStatus === "TEST_INVITED"
+    if (unlockedInterview) {
         await prisma.specialistProfile.update({
             where: {userId},
             data: {onboardingStatus: "INTERVIEW_INVITED"},
         })
-        void notify(
-            userId,
-            "onboarding_status",
-            "Интервью доступно",
-            "Квалификационный тест полностью подтвержден администратором. Этап интервью открыт.",
-            "/onboarding/interview"
-        )
-        const user = await prisma.user.findUnique({where: {id: userId}, select: {email: true}})
-        if (user?.email) {
-            void sendEmail("onboarding_status", user.email, {
-                status: "INTERVIEW_INVITED",
-                comment: "Квалификационный тест подтвержден. Приглашаем перейти к интервью.",
-                paymentUrl: "/onboarding/interview",
-            })
-        }
     }
 
     const dbAdmin = await prisma.user.findUnique({where: {email: admin.email}, select: {id: true}})
@@ -86,11 +71,26 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
         allPassed: {to: allPassed},
     })
 
-    const msg = allPassed
-        ? "Администратор подтвердил прохождение теста. Квалификационный тест завершён."
-        : `Администратор подтвердил уровень ${pending}. Следующий уровень теста открыт.`
-
-    void notify(userId, "onboarding_status", "Тест подтвержден", msg, "/onboarding/test")
+    if (unlockedInterview) {
+        await notifySpecialistStep({
+            userId,
+            status: "INTERVIEW_INVITED",
+            title: "Интервью доступно",
+            message: "Квалификационный тест полностью подтверждён администратором. Этап интервью открыт.",
+            url: "/onboarding/interview",
+        })
+    } else {
+        await notifySpecialistStep({
+            userId,
+            status: allPassed ? "INTERVIEW_INVITED" : "LEVEL_APPROVED",
+            title: "Тест подтверждён",
+            message: allPassed
+                ? "Администратор подтвердил прохождение теста. Квалификационный тест завершён."
+                : `Администратор подтвердил уровень ${pending}. Следующий уровень теста открыт.`,
+            url: allPassed ? "/onboarding/interview" : "/onboarding/test",
+            extra: {level: pending},
+        })
+    }
 
     return NextResponse.json({ok: true, approvedLevel: pending, allPassed})
 }

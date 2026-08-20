@@ -35,7 +35,9 @@ jest.mock("@/lib/db/prisma", () => ({
     },
   },
 }));
-jest.mock("@/lib/email", () => ({ sendEmail: jest.fn() }));
+jest.mock("@/lib/email", () => ({ sendEmail: jest.fn().mockResolvedValue({ ok: true, provider: "resend" }) }));
+// Без этого notify() поднимает реальный ioredis-клиент: запрос виснет, а jest не завершается.
+jest.mock("@/lib/notifications", () => ({ notify: jest.fn() }));
 
 import { getSessionUser, getServerSessionWithDevBypass } from "@/lib/session";
 import { prisma } from "@/lib/db/prisma";
@@ -116,6 +118,11 @@ describe("Onboarding flow", () => {
 
     test("ADMIN can approve specialist (PENDING → TEST_INVITED)", async () => {
       mockGetServerSessionWithDevBypass.mockResolvedValue(SESSION_ADMIN);
+      // Гард последовательности: TEST_INVITED требует пройденный шаг FORM.
+      (mockPrisma.specialistProfile.findUnique as jest.Mock).mockResolvedValue({
+        ...fakeProfile,
+        steps: [{ type: "FORM", status: "PASSED" }],
+      });
       (mockPrisma.specialistProfile.update as jest.Mock).mockResolvedValue({
         ...fakeProfile,
         onboardingStatus: "TEST_INVITED",
@@ -132,6 +139,14 @@ describe("Onboarding flow", () => {
 
     test("sends email notification after status change", async () => {
       mockGetServerSessionWithDevBypass.mockResolvedValue(SESSION_ADMIN);
+      // INTERVIEW_INVITED требует пройденные FORM и TEST.
+      (mockPrisma.specialistProfile.findUnique as jest.Mock).mockResolvedValue({
+        ...fakeProfile,
+        steps: [
+          { type: "FORM", status: "PASSED" },
+          { type: "TEST", status: "PASSED" },
+        ],
+      });
       (mockPrisma.specialistProfile.update as jest.Mock).mockResolvedValue({
         ...fakeProfile,
         onboardingStatus: "INTERVIEW_INVITED",
@@ -145,7 +160,6 @@ describe("Onboarding flow", () => {
         params,
       );
 
-      // Email is called with void — wait for microtask queue
       await new Promise(r => setTimeout(r, 0));
       expect(mockSendEmail).toHaveBeenCalledWith(
         "onboarding_status",

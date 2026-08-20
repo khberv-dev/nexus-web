@@ -140,6 +140,16 @@ function resolveOnboardingSubject(data: Record<string, unknown>): string {
         return "Результат квалификационного теста NEXUS"
     }
     if (s === "LEVEL_RETRY") return "Результат квалификационного теста NEXUS"
+    if (s === "LEVEL_APPROVED") {
+        const level = data.level as string | undefined
+        return level
+            ? `Уровень ${level} квалификационного теста подтверждён`
+            : "Уровень квалификационного теста подтверждён"
+    }
+    if (s === "TEST_BYPASSED") return "Квалификационный тест закрыт администратором"
+    if (s === "TEST_RESET") return "Прогресс квалификационного теста сброшен"
+    if (s === "CONTRACT_READY") return "Договор с платформой NEXUS готов к подписанию"
+    if (s === "CONTRACT_CONFIRMED") return "Договор с платформой NEXUS подтверждён"
     if (s === "INTERVIEW_INVITED") return "Приглашение на интервью NEXUS"
     if (s === "REGULATIONS") return "Изучение регламентов платформы NEXUS"
     if (s === "CONTRACT") return "Подписание договора NEXUS"
@@ -315,6 +325,85 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
         <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте.</p>
         <p class="text-body" style="text-align:left">К сожалению, на текущий момент результаты не позволяют начать сотрудничество, поскольку они не полностью соответствуют высоким стандартам наших проектов. Мы заинтересованы в Вашем потенциале и предлагаем пройти обучение для повышения квалификации у наших партнёров — это поможет укрепить навыки и вернуться к нам с новой силой.</p>
         <p class="text-body" style="text-align:left">Список рекомендуемых программ и контактов партнёров направим Вам отдельным письмом в ближайшее время. Будем рады рассмотреть Вашу обновлённую кандидатуру после обучения.</p>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ подтвердил пройденный уровень теста → открыт следующий
+    if (s === "LEVEL_APPROVED") {
+        const level = typeof data.level === "string" ? data.level : ""
+        const nextUrl = appUrl || `${getBaseAppUrl()}/onboarding/test`
+        return renderEmailLayout({
+            preheader: "Уровень квалификационного теста подтверждён",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор проверил результаты${level ? ` уровня <strong>${escapeHtml(level)}</strong>` : ""} квалификационного теста и подтвердил их.</p>
+        <p class="text-body" style="text-align:left">Следующий уровень уже доступен в личном кабинете — продолжайте, когда будет удобно.</p>
+        <a href="${escapeHtml(nextUrl)}" class="activation-link">Продолжить тест →</a>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ закрыл тест без сдачи → сразу интервью
+    if (s === "TEST_BYPASSED") {
+        const interviewUrl = appUrl || `${getBaseAppUrl()}/onboarding/interview`
+        const comment = typeof data.comment === "string" && data.comment.trim() ? data.comment.trim() : null
+        return renderEmailLayout({
+            preheader: "Квалификационный тест закрыт администратором",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор закрыл этап квалификационного тестирования по Вашей кандидатуре — проходить тест не требуется.</p>
+        ${comment ? `<p class="text-body" style="text-align:left">${escapeHtml(comment)}</p>` : ""}
+        <p class="text-body" style="text-align:left">Следующий шаг — персональное интервью по видеосвязи. Представитель команды свяжется с Вами и согласует дату и время.</p>
+        <a href="${escapeHtml(interviewUrl)}" class="activation-link">Перейти к интервью →</a>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ сбросил незавершённый прогресс теста
+    if (s === "TEST_RESET") {
+        const testUrl = appUrl || `${getBaseAppUrl()}/onboarding/test`
+        return renderEmailLayout({
+            preheader: "Прогресс квалификационного теста сброшен",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор сбросил сохранённый прогресс квалификационного теста. Незавершённая попытка удалена — тест начнётся с первого вопроса.</p>
+        <p class="text-body" style="text-align:left">Напоминаем: вопросы и варианты ответов перемешиваются на каждой попытке, на каждый вопрос даётся 30 секунд.</p>
+        <a href="${escapeHtml(testUrl)}" class="activation-link">Начать тест заново →</a>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ загрузил договор → ждём подписи специалиста
+    if (s === "CONTRACT_READY") {
+        const contractUrl = appUrl || `${getBaseAppUrl()}/onboarding/contract`
+        const number = typeof data.contractNumber === "string" ? data.contractNumber : ""
+        return renderEmailLayout({
+            preheader: "Договор с платформой готов к подписанию",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор подготовил договор с платформой NEXUS${number ? ` № ${escapeHtml(number)}` : ""} — он доступен в личном кабинете.</p>
+        <p class="text-body" style="text-align:left">Скачайте PDF, подпишите, загрузите скан обратно и нажмите «Подписан». После проверки администратором этап будет закрыт.</p>
+        <a href="${escapeHtml(contractUrl)}" class="activation-link">Открыть договор →</a>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ подтвердил подписанный договор
+    if (s === "CONTRACT_CONFIRMED") {
+        const cabinet = appUrl || `${getBaseAppUrl()}/work`
+        return renderEmailLayout({
+            preheader: "Договор подтверждён",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор проверил и подтвердил подписанный Вами договор с платформой NEXUS. Этап подписания закрыт.</p>
+        <p class="text-body" style="text-align:left">Спасибо за оперативность — все документы в порядке.</p>
+        <a href="${escapeHtml(cabinet)}" class="activation-link">Перейти в кабинет →</a>
         <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
       `,
         })

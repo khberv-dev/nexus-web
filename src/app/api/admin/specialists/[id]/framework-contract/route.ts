@@ -3,6 +3,7 @@ import {getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl, isStorageConfigured, putObject, validateFile} from "@/lib/s3"
 import {SpecialistContractStatus} from "@prisma/client"
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
 
 /** Админ: загрузить PDF договора с платформой для специалиста */
 export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -47,6 +48,16 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
             specialistSignedContractS3Key: null,
             specialistSignedContractUploadedAt: null,
         } as never,
+    })
+
+    await notifySpecialistStep({
+        userId: specialistUserId,
+        email: db.email,
+        status: "CONTRACT_READY",
+        title: "Договор готов к подписанию",
+        message: `Администратор загрузил договор с платформой № ${number}. Скачайте PDF, подпишите и загрузите скан в кабинете.`,
+        url: "/onboarding/contract",
+        extra: {contractNumber: number},
     })
 
     return NextResponse.json({ok: true, number})

@@ -3,7 +3,7 @@ import {getSessionDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {SpecialistContractStatus} from "@prisma/client"
 import {audit} from "@/lib/audit"
-import {notify} from "@/lib/notifications"
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
 
 /**
  * Админ фиксирует договор после того, как специалист нажал «Подписан» в онбординге.
@@ -61,7 +61,8 @@ export async function POST(_req: Request, {params}: { params: Promise<{ id: stri
         return passedTypes.has(t as never)
     }
     const allPassed = ["FORM", "TEST", "INTERVIEW", "REGULATIONS_READ", "REGULATIONS", "CONTRACT"].every(has)
-    if (allPassed && profile.onboardingStatus !== "ACTIVE") {
+    const activated = allPassed && profile.onboardingStatus !== "ACTIVE"
+    if (activated) {
         await prisma.specialistProfile.update({
             where: {id: profile.id},
             data: {onboardingStatus: "ACTIVE"},
@@ -72,7 +73,25 @@ export async function POST(_req: Request, {params}: { params: Promise<{ id: stri
         specialistContractStatus: {to: "SIGNED_BY_ADMIN"},
     })
 
-    await notify(specialistUserId, "contract_confirmed", "Договор подтвержден", "Администратор подтвердил ваш договор. Добро пожаловать на платформу!", "/work/community")
+    await notifySpecialistStep({
+        userId: specialistUserId,
+        status: "CONTRACT_CONFIRMED",
+        notificationType: "contract_confirmed",
+        title: "Договор подтверждён",
+        message: "Администратор подтвердил ваш договор с платформой. Этап подписания закрыт.",
+        url: "/work/community",
+    })
+
+    // Последний шаг закрыт — отдельным письмом приветствуем на платформе.
+    if (activated) {
+        await notifySpecialistStep({
+            userId: specialistUserId,
+            status: "ACTIVE",
+            title: "Добро пожаловать на платформу!",
+            message: "Онбординг завершён — вы можете приступать к работе с заказами.",
+            url: "/work",
+        })
+    }
 
     return NextResponse.json({ok: true})
 }

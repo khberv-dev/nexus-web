@@ -2,8 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {audit} from "@/lib/audit"
-import {notify} from "@/lib/notifications"
-import {sendEmail} from "@/lib/email"
+import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
 import {getLevelBank} from "@/lib/onboarding/levels/banks"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import type {QuizLevelCode, QuizLevelStateStored} from "@/lib/onboarding/levels/types"
@@ -94,14 +93,14 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         ? `Администратор пропустил квалификационный тест: ${reason}. Этап интервью открыт.`
         : "Администратор пропустил квалификационный тест. Этап интервью открыт."
 
-    void notify(userId, "onboarding_status", "Тест пропущен администратором", message, "/onboarding/interview")
-    if (profile.user.email) {
-        void sendEmail("onboarding_status", profile.user.email, {
-            status: "INTERVIEW_INVITED",
-            comment: message,
-            paymentUrl: "/onboarding/interview",
-        })
-    }
+    await notifySpecialistStep({
+        userId,
+        email: profile.user.email,
+        status: "TEST_BYPASSED",
+        title: "Тест пропущен администратором",
+        message,
+        url: "/onboarding/interview",
+    })
 
     return NextResponse.json({ok: true, status: "INTERVIEW_INVITED", bypassed: true})
 }
