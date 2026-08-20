@@ -24,19 +24,49 @@ describe("stage-machine pure functions", () => {
     test("CLIENT: CLIENT_REVIEW → APPROVED via clientApprove", () => {
       expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientApprove", Role.CLIENT)).toBe(StageStatus.APPROVED);
     });
-    test("CLIENT: CLIENT_REVIEW → CLIENT_REVISION when clientRound < MAX_FREE (0,1,2)", () => {
-      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 0)).toBe(StageStatus.CLIENT_REVISION);
-      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 1)).toBe(StageStatus.CLIENT_REVISION);
-      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 2)).toBe(StageStatus.CLIENT_REVISION);
+    // Правки от клиента идут не напрямую специалисту: сначала их смотрит модератор
+    // (docs/TECHNICAL.md, граф переходов).
+    test("CLIENT: CLIENT_REVIEW → MOD_REVIEW when clientRound < MAX_FREE (0,1,2)", () => {
+      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 0)).toBe(StageStatus.MOD_REVIEW);
+      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 1)).toBe(StageStatus.MOD_REVIEW);
+      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 2)).toBe(StageStatus.MOD_REVIEW);
     });
     test("CLIENT: CLIENT_REVIEW → EXTRA_PAYMENT when clientRound >= MAX_FREE (3)", () => {
       expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 3)).toBe(StageStatus.EXTRA_PAYMENT);
     });
-    test("SPECIALIST: CLIENT_REVISION → CLIENT_REVIEW via resubmitClient", () => {
-      expect(getNextStatus(StageStatus.CLIENT_REVISION, "resubmitClient", Role.SPECIALIST)).toBe(StageStatus.CLIENT_REVIEW);
+    test("ADMIN: MOD_REVIEW → EXTRA_PAYMENT when modRound >= 1", () => {
+      expect(getNextStatus(StageStatus.MOD_REVIEW, "modRevision", Role.ADMIN, 0, 1)).toBe(StageStatus.EXTRA_PAYMENT);
+    });
+    // После правок этап снова проходит модерацию, а не возвращается сразу клиенту.
+    test("SPECIALIST: CLIENT_REVISION → MOD_REVIEW via resubmitClient", () => {
+      expect(getNextStatus(StageStatus.CLIENT_REVISION, "resubmitClient", Role.SPECIALIST)).toBe(StageStatus.MOD_REVIEW);
+    });
+    test("ADMIN: CLIENT_REVISION → MOD_REVIEW via resubmitClient", () => {
+      expect(getNextStatus(StageStatus.CLIENT_REVISION, "resubmitClient", Role.ADMIN)).toBe(StageStatus.MOD_REVIEW);
     });
     test("ADMIN: EXTRA_PAYMENT → CLIENT_REVISION via paymentConfirmed", () => {
       expect(getNextStatus(StageStatus.EXTRA_PAYMENT, "paymentConfirmed", Role.ADMIN)).toBe(StageStatus.CLIENT_REVISION);
+    });
+  });
+
+  // Лимиты бесплатных правок считаются только когда включены оплаты этапов.
+  // Флаг читается из process.env на каждый вызов, поэтому фиксируем его явно —
+  // иначе значение SKIP_STAGE_PAYMENTS из окружения молча меняет смысл проверок выше.
+  describe("SKIP_STAGE_PAYMENTS=true — доплата за правки отключена", () => {
+    const original = process.env.SKIP_STAGE_PAYMENTS;
+    beforeEach(() => {
+      process.env.SKIP_STAGE_PAYMENTS = "true";
+    });
+    afterAll(() => {
+      if (original === undefined) delete process.env.SKIP_STAGE_PAYMENTS;
+      else process.env.SKIP_STAGE_PAYMENTS = original;
+    });
+
+    test("CLIENT_REVIEW → MOD_REVIEW даже после исчерпания бесплатных раундов", () => {
+      expect(getNextStatus(StageStatus.CLIENT_REVIEW, "clientRevision", Role.CLIENT, 99)).toBe(StageStatus.MOD_REVIEW);
+    });
+    test("MOD_REVIEW → MOD_REVISION даже после первого раунда модератора", () => {
+      expect(getNextStatus(StageStatus.MOD_REVIEW, "modRevision", Role.ADMIN, 0, 99)).toBe(StageStatus.MOD_REVISION);
     });
   });
 
