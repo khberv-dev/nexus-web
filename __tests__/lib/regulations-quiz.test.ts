@@ -153,3 +153,35 @@ describe("regulations quiz session", () => {
         });
     });
 });
+
+describe("dev answer hint", () => {
+    test("devAnswers points at the correct option in the shuffled order", () => {
+        const state = buildRegulationsQuizState();
+        const payload = buildRegulationsSessionPayload(state) as ReturnType<typeof buildRegulationsSessionPayload> & {
+            devAnswers?: Record<string, number>
+        };
+
+        // В dev-окружении jest подсказка включена — иначе проверять нечего.
+        expect(payload.devAnswers).toBeDefined();
+
+        payload.questions.forEach(q => {
+            const shown = payload.devAnswers![String(q.index)];
+            // Подсказка указывает на тот же текст, что помечен верным в банке вопросов.
+            expect(q.options[shown]).toBe(QUIZ_QUESTIONS[q.index].options[QUIZ_QUESTIONS[q.index].correct]);
+        });
+    });
+
+    test("hint is withheld when the flag is off", () => {
+        const original = process.env.DEV_QUIZ_ANSWERS;
+        process.env.DEV_QUIZ_ANSWERS = "false";
+        try {
+            const payload = buildRegulationsSessionPayload(buildRegulationsQuizState()) as {
+                devAnswers?: Record<string, number>
+            };
+            expect(payload.devAnswers).toBeUndefined();
+        } finally {
+            if (original === undefined) delete process.env.DEV_QUIZ_ANSWERS;
+            else process.env.DEV_QUIZ_ANSWERS = original;
+        }
+    });
+});

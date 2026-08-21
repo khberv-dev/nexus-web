@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {type DecodedQuizQuestion, decodeQuizQuestionWire, type NexusQuizQuestionWire,} from "@/lib/onboarding/quiz-wire"
+import {logQuizAnswerHint} from "@/lib/dev-quiz-hint"
 import type {QuizLevelCode, QuizLevelMeta} from "@/lib/onboarding/levels/types"
 
 const LETTERS = ["А", "Б", "В", "Г"]
@@ -40,6 +41,8 @@ type QuizPayload = {
     /** Wire (base64) для data-* в DOM; текст вопроса в сети не дублируем открытым видом. */
     questionsWire: NexusQuizQuestionWire[]
     resume: QuizResume | null
+    /** Только dev: questionId → индекс правильного варианта (в показанном порядке). */
+    devAnswers?: Record<string, number>
 }
 
 export default function OnboardingTestPage() {
@@ -121,6 +124,7 @@ export default function OnboardingTestPage() {
                 questions,
                 questionsWire: wire,
                 resume: data.resume ?? null,
+                devAnswers: (data.devAnswers as Record<string, number> | undefined) ?? undefined,
             })
             setGate("ok")
         })()
@@ -254,6 +258,19 @@ export default function OnboardingTestPage() {
         stopQuestionTimer()
         await submitReveal(optionIdx)
     }
+
+    // Dev: правильный вариант текущего вопроса — в консоль браузера.
+    useEffect(() => {
+        if (phase !== "quiz" || !current) return
+        logQuizAnswerHint({
+            quiz: `Квалификационный тест ${payload?.level ?? ""}`.trim(),
+            position: qIndex + 1,
+            total,
+            question: current.text,
+            options: current.options,
+            correctIndex: payload?.devAnswers?.[String(current.id)],
+        })
+    }, [phase, current, qIndex, total, payload])
 
     useEffect(() => {
         if (phase !== "quiz" || !current || revealed || submitting) return

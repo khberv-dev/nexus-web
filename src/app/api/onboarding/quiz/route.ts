@@ -10,8 +10,10 @@ import {
     getPublicLevelQuestionsOrdered,
     QUIZ_LEVEL_META,
     QUIZ_LEVEL_ORDER,
+    toShownOptionIndex,
 } from "@/lib/onboarding/levels/banks"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
+import {isQuizAnswerHintEnabled} from "@/lib/dev-quiz-answers"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
 
 export async function GET(req: NextRequest) {
@@ -189,7 +191,19 @@ export async function GET(req: NextRequest) {
     }
     const activeMeta = QUIZ_LEVEL_META.find((m) => m.code === resolvedLevel)
 
+    // Dev-подсказка: questionId → индекс правильного варианта в том порядке, в каком
+    // варианты показаны на экране (после перемешивания этой попытки).
+    const devAnswers = isQuizAnswerHintEnabled()
+        ? Object.fromEntries(
+            getLevelBank(resolvedLevel).questions.map((q) => [
+                String(q.id),
+                toShownOptionIndex(state?.optionOrder?.[String(q.id)], q.correct),
+            ]),
+        )
+        : undefined
+
     return NextResponse.json({
+        ...(devAnswers ? {devAnswers} : {}),
         level: resolvedLevel,
         levelTitle: activeMeta?.title ?? resolvedLevel,
         levels: QUIZ_LEVEL_META,

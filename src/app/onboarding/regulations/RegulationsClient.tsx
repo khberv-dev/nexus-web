@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {logQuizAnswerHint} from "@/lib/dev-quiz-hint"
 
 const LETTERS = ["А", "Б", "В", "Г"] as const
 
@@ -26,6 +27,8 @@ type QuizSession = {
     currentQuestionIndex: number
     currentPosition: number
     questionDeadlineAt: string | null
+    /** Только dev: индекс вопроса → индекс правильного варианта (в показанном порядке). */
+    devAnswers?: Record<string, number>
 }
 
 type QuizResult = {
@@ -211,6 +214,19 @@ export default function RegulationsClient({
             setSubmitting(false)
         }
     }, [q, isAnswered, score, answeredCount])
+
+    // Dev: правильный вариант текущего вопроса — в консоль браузера.
+    useEffect(() => {
+        if (phase !== "quiz" || !q) return
+        logQuizAnswerHint({
+            quiz: "Тест по регламентам",
+            position: pos + 1,
+            total,
+            question: q.text,
+            options: q.options,
+            correctIndex: session?.devAnswers?.[String(q.index)],
+        })
+    }, [phase, q, pos, total, session])
 
     // Таймер вопроса: считаем от серверного дедлайна, по нулю отправляем «время вышло».
     useEffect(() => {

@@ -1,4 +1,5 @@
 import {QUIZ_QUESTIONS} from "./regulations-questions"
+import {isQuizAnswerHintEnabled} from "@/lib/dev-quiz-answers"
 
 /**
  * Сессия теста по регламентам: порядок вопросов и вариантов перемешивается на каждую попытку,
@@ -183,10 +184,22 @@ export function getPublicRegulationsQuestions(state: RegulationsQuizState): Publ
     })
 }
 
+/** Dev-подсказка: индекс вопроса → правильный вариант в показанной (перемешанной) нумерации. */
+function devAnswersFor(state: RegulationsQuizState): Record<string, number> | undefined {
+    if (!isQuizAnswerHintEnabled()) return undefined
+    const result: Record<string, number> = {}
+    for (const index of state.questionOrder) {
+        result[String(index)] = toShownOption(state.optionOrder[String(index)], QUIZ_QUESTIONS[index].correct)
+    }
+    return result
+}
+
 /** То, что видит клиент: вопросы без правильных ответов + прогресс и дедлайн текущего вопроса. */
 export function buildRegulationsSessionPayload(state: RegulationsQuizState) {
     const grade = gradeRegulationsQuiz(state.answers)
+    const devAnswers = devAnswersFor(state)
     return {
+        ...(devAnswers ? {devAnswers} : {}),
         questions: getPublicRegulationsQuestions(state),
         total: REGULATIONS_TOTAL,
         passPercent: REGULATIONS_PASS_PERCENT,
