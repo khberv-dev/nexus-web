@@ -1,7 +1,8 @@
 import {NextRequest, NextResponse} from "next/server";
-import {getServerSessionWithDevBypass} from "@/lib/session";
+import {getServerSessionWithDevBypass, getSessionDbUser, getSessionUser} from "@/lib/session";
 import {prisma} from "@/lib/db/prisma";
 import {notifySpecialistStep} from "@/lib/onboarding/notify-step";
+import {audit} from "@/lib/audit";
 
 const ONBOARDING_LABELS: Record<string, string> = {
     TEST_INVITED: "Приглашение на квалификационный тест",
@@ -22,22 +23,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     const {id} = await params;
     const {onboardingStatus, comment} = await req.json() as { onboardingStatus: string; comment?: string };
 
-    // Guard: ACTIVE only when all 5 onboarding steps are PASSED
-    if (onboardingStatus === "ACTIVE") {
-        const existing = await prisma.specialistProfile.findUnique({where: {id}, include: {steps: true}});
-        if (!existing) return NextResponse.json({error: "Not found"}, {status: 404});
-        const passedTypes = new Set(existing.steps.filter(s => s.status === "PASSED").map(s => s.type));
-        const has = (t: string) => {
-            if (t === "REGULATIONS_READ") return passedTypes.has("REGULATIONS_READ" as never) || passedTypes.has("REGULATIONS" as never)
-            return passedTypes.has(t as never)
-        }
-        const allPassed = ["FORM", "TEST", "INTERVIEW", "REGULATIONS_READ", "REGULATIONS", "CONTRACT"].every(has);
-        if (!allPassed) {
-            return NextResponse.json({error: "Нельзя активировать: не все шаги онбординга пройдены"}, {status: 409});
-        }
-    }
-
-    // Guard: sequential onboarding — cannot skip steps
+    // Админ может поставить любой статус, даже если дизайнер не закрыл предыдущие шаги:
+    // непройденное не блокирует, а попадает в аудит как forcedSteps.
     const REQUIRED_STEPS_BEFORE: Record<string, string[]> = {
         TEST_INVITED: ["FORM"],
         INTERVIEW_INVITED: ["FORM", "TEST"],
@@ -45,18 +32,17 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         CONTRACT: ["FORM", "TEST", "INTERVIEW", "REGULATIONS_READ", "REGULATIONS"],
         ACTIVE: ["FORM", "TEST", "INTERVIEW", "REGULATIONS_READ", "REGULATIONS", "CONTRACT"],
     };
-    const requiredBefore = REQUIRED_STEPS_BEFORE[onboardingStatus];
-    if (requiredBefore && onboardingStatus !== "ACTIVE") {
+    const requiredBefore = REQUIRED_STEPS_BEFORE[onboardingStatus] ?? [];
+    let forcedSteps: string[] = [];
+    if (requiredBefore.length > 0) {
         const existing = await prisma.specialistProfile.findUnique({where: {id}, include: {steps: true}});
         if (!existing) return NextResponse.json({error: "Not found"}, {status: 404});
         const passedTypes = new Set(existing.steps.filter(s => s.status === "PASSED").map(s => s.type));
-        const missing = requiredBefore.filter(t => !passedTypes.has(t as never));
-        if (missing.length > 0) {
-            return NextResponse.json(
-                {error: `Нельзя перейти к ${onboardingStatus}: не пройдены шаги ${missing.join(", ")}`},
-                {status: 409},
-            );
+        const has = (t: string) => {
+            if (t === "REGULATIONS_READ") return passedTypes.has("REGULATIONS_READ" as never) || passedTypes.has("REGULATIONS" as never)
+            return passedTypes.has(t as never)
         }
+        forcedSteps = requiredBefore.filter(t => !has(t));
     }
 
     const profile = await prisma.specialistProfile.update({
@@ -82,5 +68,16 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         url: ONBOARDING_URLS[onboardingStatus] ?? "/onboarding",
     });
 
-    return NextResponse.json(profile);
+    // Принудительное продвижение фиксируем в истории — иначе непройденные шаги
+    // выглядят как обычная сдача.
+    if (forcedSteps.length > 0) {
+        const sessionUser = await getSessionUser();
+        const dbAdmin = sessionUser ? await getSessionDbUser(sessionUser) : null;
+        await audit(dbAdmin?.id ?? null, "specialist_advanced", "User", profile.userId, {
+            onboardingStatus: {to: onboardingStatus},
+            forcedSteps: {to: forcedSteps.join(", ")},
+        });
+    }
+
+    return NextResponse.json({...profile, forcedSteps});
 }

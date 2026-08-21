@@ -79,6 +79,16 @@ function SpecialistsPageInner() {
 
     useRegisterAdminRefresh(refreshAll)
 
+    const STEP_LABEL_RU: Record<string, string> = {
+        FORM: "анкета",
+        TEST: "квалификационный тест",
+        INTERVIEW: "интервью",
+        REGULATIONS_READ: "ознакомление с регламентом",
+        REGULATIONS: "тест по регламентам",
+        CONTRACT: "договор",
+        CONTRACT_SIGNATURE: "подпись договора",
+    }
+
     const act = async (userId: string, action: SpecialistOnboardingAdminAction) => {
         setActing(userId + action)
         try {
@@ -87,10 +97,19 @@ function SpecialistsPageInner() {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({action}),
             })
-            if (!res.ok) throw new Error(String(res.status))
+            const data = await res.json().catch(() => ({})) as { error?: string; forcedSteps?: string[] }
+            if (!res.ok) throw new Error(typeof data.error === "string" ? data.error : String(res.status))
+            // Шаг закрыт админом без прохождения — говорим об этом прямо, чтобы это не выглядело
+            // как обычная сдача (в аудите он тоже помечен).
+            const forced = data.forcedSteps ?? []
+            if (forced.length > 0) {
+                toast.warning(
+                    `Этап закрыт без прохождения: ${forced.map(f => STEP_LABEL_RU[f] ?? f).join(", ")}. Отмечено в истории.`,
+                )
+            }
             await load()
-        } catch {
-            toast.error("Не удалось выполнить действие. Попробуйте ещё раз.")
+        } catch (e) {
+            toast.error(e instanceof Error ? e.message : "Не удалось выполнить действие. Попробуйте ещё раз.")
         } finally {
             setActing(null)
         }

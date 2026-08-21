@@ -32,18 +32,17 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         return NextResponse.json({error: "Некорректное действие"}, {status: 400})
     }
 
+    // Админ вправе закрыть любой шаг, даже если дизайнер его не прошёл: платформа
+    // работает с людьми (перевод из другой площадки, интервью в офисе, договор на бумаге).
+    // Незавершённые шаги не блокируют действие — они помечаются как закрытые админом
+    // и попадают в аудит с признаком forced, чтобы это не выглядело как обычная сдача.
+    const forcedSteps: string[] = []
     if (
         !isRejectAction &&
         profile.onboardingStatus === "CONTRACT" &&
         profile.specialistContractStatus !== SpecialistContractStatus.SIGNED_BY_ADMIN
     ) {
-        return NextResponse.json(
-            {
-                error:
-                    "Сначала в карточке специалиста подтвердите подписание договора (кнопка после того, как дизайнер подписал в онбординге).",
-            },
-            {status: 409},
-        )
+        forcedSteps.push("CONTRACT_SIGNATURE")
     }
 
     const nextFromMap = NEXT_STATUS[profile.onboardingStatus]
@@ -51,9 +50,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         return NextResponse.json({error: "Невозможно продвинуть из текущего статуса"}, {status: 409})
     }
 
-    // Sequential guard: the step being completed must actually exist as PASSED or IN_PROGRESS
-    // before admin can advance past it. PENDING → TEST_INVITED не требует FORM в БД: приглашение на тест
-    // — действие админа после ручной проверки анкеты; FORM тогда помечается ниже как PASSED.
+    // Шаг, который закрывается этим действием: если дизайнер его не прошёл, отмечаем как
+    // закрытый администратором (раньше здесь возвращалась 409 и админ упирался в тупик).
     if (!isRejectAction) {
         const REQUIRED_STEP: Record<string, string> = {
             TEST_INVITED: "TEST",
@@ -65,19 +63,7 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
             const step = await prisma.onboardingStep.findFirst({
                 where: {profileId: profile.id, type: requiredStep as never},
             })
-            // REGULATIONS must be PASSED by the specialist (quiz completed); other steps allow IN_PROGRESS
-            const allowInProgress = requiredStep !== "REGULATIONS"
-            const ok = step && (step.status === "PASSED" || (allowInProgress && step.status === "IN_PROGRESS"))
-            if (!ok) {
-                return NextResponse.json(
-                    {
-                        error: requiredStep === "REGULATIONS"
-                            ? "Нельзя подтвердить: специалист ещё не завершил тест регламентов"
-                            : `Нельзя продвинуть: шаг «${requiredStep}» ещё не пройден специалистом`
-                    },
-                    {status: 409},
-                )
-            }
+            if (!step || step.status !== "PASSED") forcedSteps.push(requiredStep)
         }
     }
 
@@ -213,8 +199,11 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         onboardingStatus: {
             from: profile.onboardingStatus,
             to: newStatus
-        }, action: {to: action}
+        },
+        action: {to: action},
+        // Шаги, закрытые волей администратора, а не сдачей дизайнера.
+        ...(forcedSteps.length ? {forcedSteps: {to: forcedSteps.join(", ")}} : {}),
     })
 
-    return NextResponse.json({ok: true, status: newStatus})
+    return NextResponse.json({ok: true, status: newStatus, forcedSteps})
 }
