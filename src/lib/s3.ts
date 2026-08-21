@@ -3,6 +3,7 @@ import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
 import type {StageType} from "@prisma/client";
 import {Readable} from "stream";
 import {
+    buildLocalPublicUrl,
     buildLocalSignedUrl,
     localDeleteObject,
     localGetObjectBuffer,
@@ -101,7 +102,8 @@ export async function putObject(
 export const uploadToS3 = putObject;
 
 export async function getDownloadUrl(key: string): Promise<{ url: string; expiresAt: Date }> {
-    if (isLocalStorageDriver()) return buildLocalSignedUrl("get", key);
+    // Локальный драйвер отдаёт файлы статикой из uploads/, без подписи и срока жизни.
+    if (isLocalStorageDriver()) return buildLocalPublicUrl(key);
     const url = await getSignedUrl(s3, new GetObjectCommand({Bucket: BUCKET, Key: key}), {expiresIn: TTL});
     return {url: toPublicUrl(url), expiresAt: new Date(Date.now() + TTL * 1000)};
 }

@@ -89,8 +89,31 @@ export function verifyStorageToken(token: string): { key: string } | null {
 
 export function buildLocalSignedUrl(kind: "put" | "get", key: string): { url: string; expiresAt: Date } {
     const {token, expiresAt} = signStorageToken(key);
-    const base = (process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(/\/$/, "");
+    const base = appBaseUrl();
     return {url: `${base}/api/storage/${kind}?token=${encodeURIComponent(token)}`, expiresAt};
+}
+
+function appBaseUrl(): string {
+    return (process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(/\/$/, "");
+}
+
+/**
+ * Прямая ссылка на файл без подписи: /uploads/<ключ>.
+ *
+ * Файл отдаётся как статика — токена и срока жизни нет, значит доступ есть у любого,
+ * кто знает или подберёт путь. Приватность держится только на случайном UUID внутри
+ * ключа; ограничения StageFile.audience на этом уровне не действуют.
+ *
+ * Тот же путь потом можно отдать nginx-ом напрямую:
+ *   location /uploads/ { alias /var/lib/nexus/uploads/; }
+ */
+export function buildLocalPublicUrl(key: string): { url: string; expiresAt: Date } {
+    const encoded = key.split("/").map(encodeURIComponent).join("/");
+    return {
+        url: `${appBaseUrl()}/uploads/${encoded}`,
+        // Ссылка бессрочная; поле оставлено ради общей сигнатуры с S3-веткой.
+        expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+    };
 }
 
 export async function localPutObject(key: string, body: Buffer | Uint8Array | string): Promise<void> {

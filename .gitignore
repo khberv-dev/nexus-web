@@ -81,4 +81,7 @@ platform/.emv
 .security-key
 logs/security/
 node_modules
-uploads/
+# Каталог загрузок в корне проекта (STORAGE_DRIVER=local).
+# Слэш в начале обязателен: без него шаблон ловит любой каталог с таким именем,
+# в том числе исходники src/app/uploads/ — и роут раздачи файлов молча не попадает в git.
+/uploads/
