@@ -185,7 +185,7 @@ export default function PortfolioProjects() {
 
     return (
         <>
-            <div className="dash-col1">
+            <div className="dash-col1" data-tour="portfolio-projects">
                 {!selectedProject ? (
                     <div className="card" style={cardShell}>
                         <div className="card-body d-flex flex-column gap-3" style={{padding: 12}}>
@@ -236,23 +236,6 @@ export default function PortfolioProjects() {
                             </div>
                             {projectsError && <small className="text-danger">{projectsError}</small>}
 
-                            <HintPanel title="Как пользоваться">
-                                <ol className="mb-0 ps-3" style={{marginTop: 6}}>
-                                    <li className="mb-1">Создайте проект слева, затем нажмите его плитку в сетке
-                                        справа.
-                                    </li>
-                                    <li className="mb-1">
-                                        <strong>К работе</strong> — плитки «Новая работа» / существующие работы: в окне
-                                        работы — название, главное фото, при желании файлы
-                                        только к этой работе (к кадру, галерее или отдельной сетке по работе).
-                                    </li>
-                                    <li className="mb-0">
-                                        <strong>К проекту целиком</strong> — блок «Материалы проекта» под плитками на
-                                        большой панели: общие PDF, спецификации и т.д. на всю
-                                        папку; работы при этом можно оставить только с фото и рендерами.
-                                    </li>
-                                </ol>
-                            </HintPanel>
                         </div>
                     </div>
                 ) : (
@@ -289,7 +272,7 @@ export default function PortfolioProjects() {
                 )}
             </div>
 
-            <div className="dash-col2" id="portfolio-uploader">
+            <div className="dash-col2" id="portfolio-uploader" data-tour="portfolio-works">
                 <div className="card" style={cardShell}>
                     <div className="card-body d-flex flex-column gap-3" style={{padding: 14}}>
                         <nav aria-label="Навигация по портфолио"

@@ -1,7 +1,7 @@
 "use client"
 
 import {usePathname, useRouter, useSearchParams} from "next/navigation"
-import {useCallback} from "react"
+import {useCallback, useMemo, useState} from "react"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashHeroFrame} from "@/components/dashboard-ui/DashHeroFrame"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
@@ -13,6 +13,8 @@ import {buildClientCabinetNavItems, SIDEBAR_TABS} from "./constants"
 import type {ClientCabinetProps} from "./types"
 import {OrdersSidebar} from "./OrdersSidebar"
 import {OrdersTab} from "./OrdersTab"
+import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
+import {buildClientHintSteps} from "@/components/app/hint-tour-steps"
 import {PaymentsTab} from "./PaymentsTab"
 import {SettingsTab} from "./SettingsTab"
 
@@ -47,8 +49,19 @@ export default function ClientCabinetPage({
 
     const needsAction = orders.filter(o => o.stages.some(s => s.status === "CLIENT_REVIEW")).length
 
+    const [hintsOpen, setHintsOpen] = useState(false)
+    const clientHintSteps = useMemo(() => buildClientHintSteps(setActiveTab), [setActiveTab])
+
     return (
         <div className="dash">
+            {/* Подсказки по кабинету: один раз при первом входе, дальше — по кнопке «?». */}
+            <HintTour
+                steps={clientHintSteps}
+                storageKey={`client:v1:${email}`}
+                open={hintsOpen || undefined}
+                onClose={() => setHintsOpen(false)}
+            />
+            <HintTourLauncher onClick={() => setHintsOpen(true)} hidden={hintsOpen}/>
             <DashTopHeader
                 email={email}
                 title="Кабинет заказчика"
@@ -145,10 +158,10 @@ export default function ClientCabinetPage({
                     <div className="dash-content">
                         {activeTab === "orders" && (
                             <>
-                                <div className="dash-col1">
+                                <div className="dash-col1" data-tour="client-orders">
                                     <OrdersTab orders={orders}/>
                                 </div>
-                                <div className="dash-col2">
+                                <div className="dash-col2" data-tour="client-stages">
                                     <OrdersSidebar orders={orders} payments={payments}/>
                                 </div>
                             </>

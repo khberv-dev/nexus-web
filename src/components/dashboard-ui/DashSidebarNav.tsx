@@ -35,6 +35,7 @@ export function DashSidebarNav({
                     <button
                         key={tab.id}
                         type="button"
+                        data-tour={`sidebar-${tab.id}`}
                         className={`dash-sidebar__icon${activeTab === tab.id ? " active" : ""}`}
                         title={tab.label}
                         onClick={() => onChange(tab.id)}
@@ -45,6 +46,7 @@ export function DashSidebarNav({
                     <Link
                         key={tab.id}
                         href={tab.href ?? "#"}
+                        data-tour={`sidebar-${tab.id}`}
                         className={`dash-sidebar__icon${activeTab === tab.id ? " active" : ""}`}
                         title={tab.label}
                     >

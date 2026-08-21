@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useCallback, useEffect, useState} from "react"
+import React, {useCallback, useEffect, useMemo, useState} from "react"
 import {useRouter, useSearchParams} from "next/navigation"
 import "./Community.css"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
@@ -13,6 +13,8 @@ import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
 import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import AvatarUpload from "./AvatarUpload"
+import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
+import {buildSpecialistHintSteps} from "@/components/app/hint-tour-steps"
 import LandingUploader from "./LandingUploader"
 import PortfolioProjects from "./PortfolioProjects"
 import {OrdersCol1, OrdersCol2} from "./OrdersTab"
@@ -98,6 +100,8 @@ export default function CommunityPage({
     }, [searchParams])
 
     const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl ?? null)
+    const [hintsOpen, setHintsOpen] = useState(false)
+    const specialistHintSteps = useMemo(() => buildSpecialistHintSteps(setActiveTab), [setActiveTab])
     const [landingReadiness, setLandingReadiness] = useState({
         portrait: false,
         work: false,
@@ -160,6 +164,15 @@ export default function CommunityPage({
 
     return (
         <div className="dash">
+            {/* Подсказки после онбординга: показываем один раз, дальше — по кнопке в шапке. */}
+            <HintTour
+                steps={specialistHintSteps}
+                storageKey={`specialist:v1:${email}`}
+                enabled={status === "ACTIVE"}
+                open={hintsOpen || undefined}
+                onClose={() => setHintsOpen(false)}
+            />
+            <HintTourLauncher onClick={() => setHintsOpen(true)} hidden={hintsOpen}/>
             <DashTopHeader
                 email={email}
                 title="Кабинет специалиста"
