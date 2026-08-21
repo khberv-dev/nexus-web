@@ -68,7 +68,7 @@ crm/
 │   │   ├── audit.ts         # Журнал аудита
 │   │   ├── payments/        # Логика платежей
 │   │   └── zitadel/         # Zitadel API клиент
-│   ├── middleware.ts         # Route guards
+│   ├── proxy.ts              # Route guards (бывший middleware.ts)
 │   └── types/               # TypeScript типы
 ├── services/
 │   └── tbank/               # Go-сервис billing-svc
@@ -374,7 +374,7 @@ In-app уведомление. Поля: `type`, `title`, `message`, `link`, `re
 
 Подключается автоматически, если заданы все три переменные: `ZITADEL_ISSUER`, `ZITADEL_CLIENT_ID`, `ZITADEL_PROJECT_ID`. Если хотя бы одна отсутствует — провайдер не регистрируется. Код провайдера: `src/lib/auth/providers.ts`, клиент Zitadel API: `src/lib/zitadel/client.ts`.
 
-### Middleware (`src/middleware.ts`)
+### Middleware (`src/proxy.ts`)
 
 Route guards по паттернам URL:
 

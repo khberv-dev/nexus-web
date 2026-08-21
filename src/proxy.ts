@@ -19,7 +19,12 @@ function devBypassEffectiveRole(): "ADMIN" | "SPECIALIST" | "CLIENT" {
     return "CLIENT";
 }
 
-export async function middleware(request: NextRequest) {
+/**
+ * Next 16 переименовал конвенцию middleware → proxy: файл должен называться proxy.ts,
+ * а обработчик экспортироваться как `proxy` (иначе шаблон Next возьмёт default и молча
+ * не найдёт функцию). Гарантии те же — грубый гейт по ролям до попадания в роут.
+ */
+export async function proxy(request: NextRequest) {
     const {pathname} = request.nextUrl;
 
     if (pathname.startsWith("/api/auth")) {

@@ -46,13 +46,13 @@ Real auth is email magic-link via Resend (NextAuth). To skip it locally, set in 
 DEV_AUTH_BYPASS=true
 DEV_MOCK_ROLE=ADMIN   # ADMIN | SPECIALIST | CLIENT
 ```
-then hit `GET /api/mock-auth/session?role=ADMIN` to create a mock session, `GET /api/mock-auth/reset` to clear it. `src/middleware.ts` checks `isDevAuthBypass()` and skips the real JWT/session check when this is on — role guards still apply, but against `DEV_MOCK_ROLE` instead of a real token.
+then hit `GET /api/mock-auth/session?role=ADMIN` to create a mock session, `GET /api/mock-auth/reset` to clear it. `src/proxy.ts` checks `isDevAuthBypass()` and skips the real JWT/session check when this is on — role guards still apply, but against `DEV_MOCK_ROLE` instead of a real token.
 
 ## Architecture
 
-Monolithic Next.js 16 App Router app (React 19), single deployable, roles separated entirely by `middleware.ts` route guards + per-role folders — not separate apps/services (except billing, see below).
+Monolithic Next.js 16 App Router app (React 19), single deployable, roles separated entirely by `proxy.ts` route guards + per-role folders — not separate apps/services (except billing, see below).
 
-### Route guards (`src/middleware.ts`)
+### Route guards (`src/proxy.ts`)
 
 | Path pattern | Allowed roles |
 |---|---|
