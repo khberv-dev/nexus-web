@@ -61,6 +61,13 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
                     <Link href="/" title="На сайт" className="adm-nav-item">
                         <i className="bx bx-globe"/>
                     </Link>
+                    <Link
+                        href="/api/auth/signout?callbackUrl=/login"
+                        title="Выйти из админки"
+                        className="adm-nav-item adm-nav-item--logout"
+                    >
+                        <i className="bx bx-power-off"/>
+                    </Link>
                 </div>
             </aside>
 
@@ -154,7 +161,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           display: flex; flex-direction: column;
           gap: 6px; padding: 8px; flex: 1;
         }
-        .adm-sidebar-bottom { padding: 8px; }
+        .adm-sidebar-bottom { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
         .adm-nav-item {
           width: 100%; display: flex;
           align-items: center; justify-content: center;
@@ -170,6 +177,11 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
         .adm-nav-item--active {
           background: var(--adm-active-bg);
           color: var(--adm-active-color);
+        }
+        .adm-nav-item--logout { color: var(--adm-danger, #ea5455); }
+        .adm-nav-item--logout:hover {
+          background: rgba(234,84,85,0.12);
+          color: var(--adm-danger, #ea5455);
         }
 
         .adm-header {

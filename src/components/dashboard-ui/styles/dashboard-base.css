@@ -624,6 +624,17 @@
     color: var(--dash-sidebar-icon-hover);
 }
 
+/* Выход прижат к низу колонки, остальные пункты остаются сверху. */
+.dash-sidebar__icon--logout {
+    margin-top: auto;
+    color: var(--dash-danger, #ea5455);
+}
+
+.dash-sidebar__icon--logout:hover {
+    color: var(--dash-danger, #ea5455);
+    background: rgba(234, 84, 85, 0.12);
+}
+
 .dash-sidebar__label {
     display: block;
     font-size: 10px;
@@ -1467,6 +1478,11 @@
         font-size: 17px;
         padding: 0 10px;
         gap: 4px;
+    }
+
+    .dash-sidebar__icon--logout {
+        margin-top: 0;
+        margin-left: auto;
     }
 
     .dash-sidebar__label {

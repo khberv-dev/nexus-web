@@ -14,11 +14,14 @@ export function DashSidebarNav({
                                    activeTab,
                                    onChange,
                                    badgeCountByTab = {},
+                                   showLogout = true,
                                }: {
     tabs: readonly SidebarTab[]
     activeTab: string
     onChange?: (tabId: string) => void
     badgeCountByTab?: Record<string, number>
+    /** Кнопка выхода внизу сайдбара; отключается там, где выход не нужен. */
+    showLogout?: boolean
 }) {
     return (
         <div className="dash-sidebar">
@@ -54,6 +57,18 @@ export function DashSidebarNav({
                     </Link>
                 )
             })}
+
+            {showLogout && (
+                <Link
+                    href="/api/auth/signout?callbackUrl=/login"
+                    className="dash-sidebar__icon dash-sidebar__icon--logout"
+                    title="Выйти из кабинета"
+                    data-tour="sidebar-logout"
+                >
+                    <i className="bx bx-power-off"/>
+                    <span className="dash-sidebar__label">Выйти</span>
+                </Link>
+            )}
         </div>
     )
 }
