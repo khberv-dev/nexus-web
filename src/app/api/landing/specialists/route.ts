@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl} from "@/lib/s3"
-import {levelFromTestStep, selectLandingCandidates} from "@/lib/landing/specialist-level"
+import {levelFromTestStep} from "@/lib/landing/specialist-level"
 
 export const dynamic = "force-dynamic"
 
@@ -12,14 +12,12 @@ export const dynamic = "force-dynamic"
  * Файлы портфолио доступны на главной лишь тогда, когда специалист явно добавил их
  * в эту сборку: напрямую собирать профиль из портфолио здесь нельзя.
  *
- * Порядок: закреплённые админом → выше квалификационный уровень → выше рейтинг.
+ * Все одобренные сборки показываются в порядке последней модерации.
  */
 
 type ProfileForSlide = {
-    rating: number | null
     formData: unknown
     landingWorkPos: string | null
-    featuredOnLanding: boolean
     steps: { comment: string | null }[]
 }
 
@@ -49,10 +47,8 @@ export async function GET() {
                     name: true,
                     specialistProfile: {
                         select: {
-                            rating: true,
                             formData: true,
                             landingWorkPos: true,
-                            featuredOnLanding: true,
                             steps: {where: {type: "TEST"}, select: {comment: true}},
                         },
                     },
@@ -63,25 +59,20 @@ export async function GET() {
         orderBy: {reviewedAt: "desc"},
     })
 
-    // «С портфолио»: нужен портрет, обложка работы и хотя бы одна работа в галерее.
-    const eligible = bundles.filter(b => b.portraitFileId && b.workFileId && b.items.length > 0)
+    // Портрет и обложка обязательны при отправке на модерацию. Проверка здесь защищает
+    // публичную страницу от старых или повреждённых записей; галерея при этом необязательна.
+    const eligible = bundles.filter(b => b.portraitFileId && b.workFileId)
 
     const candidates = [
         ...eligible.map(b => ({
             bundle: b,
             profile: b.user.specialistProfile as ProfileForSlide | null,
             level: levelFromTestStep(b.user.specialistProfile?.steps?.[0]?.comment ?? null),
-            rating: b.user.specialistProfile?.rating ?? 0,
-            featured: b.user.specialistProfile?.featuredOnLanding ?? false,
-            curated: true,
         })),
     ]
 
-    // Ранжируем одобренные сборки по признакам специалиста.
-    const selected = selectLandingCandidates(candidates)
-
     const slides = await Promise.all(
-        selected.map(async (candidate) => {
+        candidates.map(async (candidate) => {
             const {level, profile} = candidate
             const fd = (profile?.formData as Record<string, string> | null) ?? {}
             const common = {
