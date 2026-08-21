@@ -50,12 +50,22 @@ services:
       - S3_ACCESS_KEY=${S3_ACCESS_KEY}
       - S3_SECRET_KEY=${S3_SECRET_KEY}
       - S3_BUCKET=${S3_BUCKET:-nexus}
+      # "local" — файлы на диске контейнера (том uploads_data ниже) вместо S3.
+      - STORAGE_DRIVER=${STORAGE_DRIVER:-}
+      - STORAGE_URL_SECRET=${STORAGE_URL_SECRET:-}
+      # Каталог загрузок при local-драйвере; по умолчанию /app/uploads (том uploads_data).
+      - STORAGE_LOCAL_ROOT=${STORAGE_LOCAL_ROOT:-}
       - BILLING_SVC_URL=http://billing-svc:8090
       - RESEND_API_KEY=${RESEND_API_KEY}
       - EMAIL_FROM=${EMAIL_FROM}
       - TBANK_WEBHOOK_SECRET=${TBANK_WEBHOOK_SECRET}
       - REDIS_URL=redis://redis:6379
       - DEMO_ACCESS_KEY=${DEMO_ACCESS_KEY}
+    volumes:
+      # Загрузки при STORAGE_DRIVER=local. Без тома файлы живут только внутри контейнера
+      # и пропадают при каждом пересоздании (деплой, рестарт, OOM), а строки UserFile
+      # в базе остаются — ссылки начинают отдавать 404.
+      - uploads_data:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -179,3 +189,4 @@ services:
 volumes:
   postgres_data:
   minio_data:
+  uploads_data:

@@ -6,20 +6,46 @@ import {Readable} from "node:stream";
 
 /** Файловое хранилище "на своём сервере" — используется вместо S3, когда STORAGE_DRIVER=local. */
 
-const LOCAL_ROOT = path.join(process.cwd(), "uploads");
-const SIGNING_SECRET = process.env.STORAGE_URL_SECRET ?? process.env.NEXTAUTH_SECRET ?? "";
 const TTL_MS = 15 * 60 * 1000; // 15 минут — как presigned URL у S3
 
+/**
+ * Куда складывать файлы. По умолчанию `uploads/` рядом с приложением, но каталог внутри
+ * деплоя переживает не всякий деплой: пересоздание контейнера или выкладка новой копии
+ * стирает его, а строки UserFile в базе остаются, и ссылки начинают отдавать 404.
+ * STORAGE_LOCAL_ROOT позволяет вынести хранилище наружу (например, /var/lib/nexus/uploads).
+ */
+function localRoot(): string {
+    const configured = process.env.STORAGE_LOCAL_ROOT?.trim();
+    return configured ? path.resolve(configured) : path.join(process.cwd(), "uploads");
+}
+
+/**
+ * Ключ подписи ссылок. Важно: `??` не спасает от пустой строки — при STORAGE_URL_SECRET=""
+ * подпись считалась HMAC с пустым ключом, то есть валидную ссылку на ЛЮБОЙ файл мог
+ * собрать кто угодно. Пустое значение считаем незаданным и падаем, а не выдаём
+ * подделываемые ссылки.
+ */
+function signingSecret(): string {
+    const secret = process.env.STORAGE_URL_SECRET?.trim() || process.env.NEXTAUTH_SECRET?.trim() || "";
+    if (!secret) {
+        throw new Error(
+            "STORAGE_URL_SECRET (или NEXTAUTH_SECRET) не задан — подписывать ссылки на файлы нечем",
+        );
+    }
+    return secret;
+}
+
 function resolveLocalPath(key: string): string {
-    const resolved = path.resolve(LOCAL_ROOT, key);
-    if (resolved !== LOCAL_ROOT && !resolved.startsWith(LOCAL_ROOT + path.sep)) {
+    const root = localRoot();
+    const resolved = path.resolve(root, key);
+    if (resolved !== root && !resolved.startsWith(root + path.sep)) {
         throw new Error("Invalid storage key");
     }
     return resolved;
 }
 
 function sign(payload: string): string {
-    return createHmac("sha256", SIGNING_SECRET).update(payload).digest("base64url");
+    return createHmac("sha256", signingSecret()).update(payload).digest("base64url");
 }
 
 export function signStorageToken(key: string): { token: string; expiresAt: Date } {
@@ -41,7 +67,13 @@ export function verifyStorageToken(token: string): { key: string } | null {
         return null;
     }
 
-    const expectedSig = sign(payload);
+    let expectedSig: string;
+    try {
+        expectedSig = sign(payload);
+    } catch {
+        // Нечем проверять подпись — считаем ссылку недействительной.
+        return null;
+    }
     const a = Buffer.from(sig);
     const b = Buffer.from(expectedSig);
     if (a.length !== b.length || !timingSafeEqual(a, b)) return null;

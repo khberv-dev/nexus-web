@@ -30,6 +30,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 
+# STORAGE_DRIVER=local пишет в /app/uploads. Каталог создаём заранее и отдаём nextjs:
+# том, смонтированный на несуществующий путь, docker создаёт от root, и запись падает с EACCES.
+RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
+
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
