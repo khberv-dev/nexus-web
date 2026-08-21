@@ -2,7 +2,6 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {putObject} from "@/lib/s3"
-import {validateImageBuffer} from "@/lib/image-validation"
 
 // POST /api/files/[id]/upload — server-side upload to S3 (no browser CORS dependency)
 export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -17,13 +16,8 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     const body = Buffer.from(await req.arrayBuffer())
     if (!body.length) return NextResponse.json({error: "Empty file body"}, {status: 400})
 
-    if (file.mimeType?.startsWith("image/")) {
-        try {
-            await validateImageBuffer(body, file.category)
-        } catch (e) {
-            return NextResponse.json({error: (e as Error).message}, {status: 400})
-        }
-    }
+    // Требований к разрешению и ориентации у картинок нет: дизайнер грузит то, что есть,
+    // кадрирование делает CSS и выбор позиции кадра.
 
     const contentType = req.headers.get("content-type") ?? file.mimeType ?? "application/octet-stream"
     await putObject(file.s3Key, body, contentType)
