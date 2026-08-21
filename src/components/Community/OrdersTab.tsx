@@ -71,7 +71,7 @@ function ActsBlock({items, onSign}: { items: ActItem[]; onSign: (stageId: string
                             <p className="dash-acts__title">{STAGE_LABELS[stage.type]}</p>
                             <p className="dash-acts__sub">Заказ #{order.id.slice(-6).toUpperCase()}</p>
                         </div>
-                        <button className="dash-acts__action" onClick={() => onSign(stage.id)}
+                        <button className="dash-acts__action" data-tour="btn-sign-act" onClick={() => onSign(stage.id)}
                                 style={{background: "none", border: "none", cursor: "pointer", fontFamily: "inherit"}}>
                             Подписать <i className="bx bx-pen"/>
                         </button>

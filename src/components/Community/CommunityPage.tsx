@@ -167,7 +167,7 @@ export default function CommunityPage({
             {/* Подсказки после онбординга: показываем один раз, дальше — по кнопке в шапке. */}
             <HintTour
                 steps={specialistHintSteps}
-                storageKey={`specialist:v2:${email}`}
+                storageKey={`specialist:v3:${email}`}
                 enabled={status === "ACTIVE"}
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}

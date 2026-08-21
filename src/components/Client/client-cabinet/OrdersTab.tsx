@@ -15,7 +15,8 @@ export function OrdersTab({
             <DashListHeader
                 title="Мои проекты"
                 action={
-                    <Link href="/orders/new" className="dash-hero-project-btn dash-cta-new-project">
+                    <Link href="/orders/new" className="dash-hero-project-btn dash-cta-new-project"
+                          data-tour="btn-create-order">
                         <i className="bx bx-plus" aria-hidden/>
                         Создать проект
                     </Link>

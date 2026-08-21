@@ -438,6 +438,7 @@ export function SettingsTab({name, email, formData}: {
                 )}
 
                 <button
+                    data-tour="btn-save-requisites"
                     type="submit"
                     disabled={saving || saved}
                     style={{

@@ -572,6 +572,7 @@ export default function LandingUploader({
                         <div style={{marginTop: 14, display: "flex", gap: 8}}>
                             <button
                                 onClick={submitBundle}
+                                data-tour="btn-landing-submit"
                                 disabled={!selectedPortraitId || !selectedWorkId}
                                 style={{
                                     padding: "8px 18px", borderRadius: 8, border: "none", cursor: "pointer",

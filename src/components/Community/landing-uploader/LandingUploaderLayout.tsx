@@ -100,7 +100,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     {cardTitle("bx-user", "Портрет", "Лучше вертикальное фото — любой формат и размер")}
                     <div className="landing-up-row-line">
                         {!disabled && (
-                            <button type="button" className="landing-up-upload-tile"
+                            <button type="button" className="landing-up-upload-tile" data-tour="btn-landing-portrait"
                                     onClick={() => portraitRef.current?.click()}>
                                 <i className={`bx ${uploading === "portrait" ? "bx-loader-alt bx-spin" : "bx-plus"}`}/>
                                 <span>Загрузить</span>
@@ -173,6 +173,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     <div className="landing-up-row-line">
                         {!disabled && (
                             <button type="button" className="landing-up-upload-tile"
+                                    data-tour="btn-landing-video"
                                     onClick={() => videoRef.current?.click()}>
                                 <i className={`bx ${uploading === "video" ? "bx-loader-alt bx-spin" : "bx-play-circle"}`}/>
                                 <span>Загрузить</span>
@@ -245,6 +246,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     <div className="landing-up-row-line">
                         {!disabled && (
                             <button type="button" className="landing-up-upload-tile"
+                                    data-tour="btn-landing-work"
                                     onClick={() => workRef.current?.click()}>
                                 <i className={`bx ${uploading === "work" ? "bx-loader-alt bx-spin" : "bx-plus"}`}/>
                                 <span>Загрузить</span>

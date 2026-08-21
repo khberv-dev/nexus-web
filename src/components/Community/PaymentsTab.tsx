@@ -82,7 +82,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
     return (
         <div style={{display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap"}}>
             {canDownload && (
-                <button onClick={download} disabled={loading} style={{
+                <button onClick={download} disabled={loading} data-tour="btn-contract-download" style={{
                     background: "none",
                     border: "1px solid var(--dash-border)",
                     borderRadius: 6,
@@ -96,7 +96,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                 </button>
             )}
             {canSign && (
-                <button onClick={uploadSigned} disabled={loading} style={{
+                <button onClick={uploadSigned} disabled={loading} data-tour="btn-contract-sign" style={{
                     background: "rgba(91,79,207,0.1)",
                     border: "1px solid rgba(91,79,207,0.3)",
                     borderRadius: 6,

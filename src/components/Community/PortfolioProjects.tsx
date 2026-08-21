@@ -228,6 +228,7 @@ export default function PortfolioProjects() {
                                         icon="bx-folder-plus"
                                         className="btn-sm"
                                         onClick={() => void createProject()}
+                                        data-tour="btn-add-project"
                                         style={{minHeight: 32}}
                                     >
                                         Добавить проект
@@ -486,6 +487,7 @@ export default function PortfolioProjects() {
                                             <div className="pf-port-grid__cell">
                                                 <button
                                                     type="button"
+                                                    data-tour="btn-new-work"
                                                     className="pf-port-grid__add"
                                                     onClick={() => {
                                                         setEditingCard(null)

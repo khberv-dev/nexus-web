@@ -121,7 +121,8 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
     }
 
     return (
-        <section className="mt-4 pt-3" style={{borderTop: "1px solid rgba(255,255,255,0.08)"}}>
+        <section className="mt-4 pt-3" data-tour="project-materials"
+                 style={{borderTop: "1px solid rgba(255,255,255,0.08)"}}>
             <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
                 <div>
                     <h6 className="mb-0 small fw-semibold text-uppercase"

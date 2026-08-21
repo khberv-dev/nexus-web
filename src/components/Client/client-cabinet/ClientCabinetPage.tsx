@@ -57,7 +57,7 @@ export default function ClientCabinetPage({
             {/* Подсказки по кабинету: один раз при первом входе, дальше — по кнопке «?». */}
             <HintTour
                 steps={clientHintSteps}
-                storageKey={`client:v2:${email}`}
+                storageKey={`client:v3:${email}`}
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}
             />

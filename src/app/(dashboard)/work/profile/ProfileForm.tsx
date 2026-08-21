@@ -545,6 +545,7 @@ export default function ProfileForm({
 
             <button
                 type="submit"
+                data-tour="btn-save-profile"
                 disabled={loading || saved}
                 style={{
                     padding: "0.6em 1.5em",

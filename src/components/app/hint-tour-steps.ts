@@ -43,6 +43,12 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
             text: "Срочное и акты к подписанию. Оплата за этап приходит после того, как заказчик его принял.",
             before: () => goToTab("orders"),
         },
+        {
+            target: '[data-tour="btn-sign-act"]',
+            title: "Кнопка «Подписать»",
+            text: "Подписывает акт по завершённому этапу — без подписи выплата не уходит.",
+            before: () => goToTab("orders"),
+        },
 
         // ── Портфолио ───────────────────────────────────────────────────────
         {
@@ -55,6 +61,24 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
             target: '[data-tour="portfolio-projects"]',
             title: "Проекты — это папки",
             text: "Создайте проект слева и откройте его плитку, чтобы добавить внутрь работы.",
+            before: () => goToTab("portfolio"),
+        },
+        {
+            target: '[data-tour="btn-add-project"]',
+            title: "Кнопка «Добавить проект»",
+            text: "Введите название папки и нажмите её — проект появится в сетке справа.",
+            before: () => goToTab("portfolio"),
+        },
+        {
+            target: '[data-tour="btn-new-work"]',
+            title: "Плитка «Новая работа»",
+            text: "Открывает окно работы: название, главное фото и файлы, относящиеся только к ней.",
+            before: () => goToTab("portfolio"),
+        },
+        {
+            target: '[data-tour="project-materials"]',
+            title: "Материалы проекта",
+            text: "Общие файлы на всю папку: PDF, спецификации, чертежи — не привязаны к одной работе.",
             before: () => goToTab("portfolio"),
         },
         {
@@ -80,7 +104,31 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
         {
             target: '[data-tour="landing-uploader"]',
             title: "Сборка карточки",
-            text: "Загрузите материалы и отправьте сборку на проверку — после одобрения администратором вы появитесь на сайте.",
+            text: "Каждый блок — свой материал: портрет, интерьер, видео и работы для галереи.",
+            before: () => goToTab("landing"),
+        },
+        {
+            target: '[data-tour="btn-landing-portrait"]',
+            title: "Загрузить портрет",
+            text: "Вертикальное фото — им карточка показывается в карусели на главной.",
+            before: () => goToTab("landing"),
+        },
+        {
+            target: '[data-tour="btn-landing-work"]',
+            title: "Загрузить фото интерьера",
+            text: "Горизонтальный кадр работы — он раскрывается, когда карточку открывают.",
+            before: () => goToTab("landing"),
+        },
+        {
+            target: '[data-tour="btn-landing-video"]',
+            title: "Видео-визитка",
+            text: "Необязательно, но заметно повышает доверие: короткий вертикальный ролик о себе.",
+            before: () => goToTab("landing"),
+        },
+        {
+            target: '[data-tour="btn-landing-submit"]',
+            title: "Кнопка «Отправить на модерацию»",
+            text: "Становится активной, когда выбраны портрет и интерьер. После одобрения вы появляетесь на главной.",
             before: () => goToTab("landing"),
         },
 
@@ -95,6 +143,18 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
             target: '[data-tour="payments-summary"]',
             title: "Договор, акты и реквизиты",
             text: "Здесь договор с платформой и акты по этапам. Выплаты уходят на реквизиты из настроек.",
+            before: () => goToTab("payments"),
+        },
+        {
+            target: '[data-tour="btn-contract-download"]',
+            title: "Кнопка «Скачать»",
+            text: "Скачивает PDF договора, который подготовил администратор.",
+            before: () => goToTab("payments"),
+        },
+        {
+            target: '[data-tour="btn-contract-sign"]',
+            title: "Кнопка «Подписан»",
+            text: "Загрузите скан с подписью и подтвердите — администратор проверит и закроет этап.",
             before: () => goToTab("payments"),
         },
         {
@@ -114,16 +174,27 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
         {
             target: '[data-tour="settings-form"]',
             title: "Анкета и реквизиты",
-            text: "Держите актуальными: специализацию, стили и банковские данные. Изменение реквизитов проверяет администратор.",
+            text: "Держите актуальными: специализацию, стили и банковские данные.",
+            before: () => goToTab("settings"),
+        },
+        {
+            target: '[data-tour="btn-save-profile"]',
+            title: "Кнопка «Сохранить»",
+            text: "Сохраняет анкету. Изменение банковских реквизитов дополнительно проверяет администратор.",
             before: () => goToTab("settings"),
         },
 
         // ── Как вернуть подсказки ───────────────────────────────────────────
         {
             target: '[data-tour="sidebar-logout"]',
-            title: "Выход",
-            text: "Выйти из кабинета можно внизу боковой панели, а подсказки — вернуть кнопкой «?» в правом нижнем углу.",
+            title: "Кнопка выхода",
+            text: "Выйти из кабинета можно внизу боковой панели.",
             before: () => goToTab("orders"),
+        },
+        {
+            target: '[data-tour="btn-hints"]',
+            title: "Кнопка «?»",
+            text: "Открывает эти подсказки заново в любой момент.",
         },
     ]
 }
@@ -152,8 +223,14 @@ export function buildClientHintSteps(goToTab: (tab: string) => void): HintStep[]
         },
         {
             target: '[data-tour="client-orders"]',
-            title: "Проекты и бриф",
-            text: "Новый проект начинается с брифа: опишите объект и задачу — платформа подберёт дизайнера.",
+            title: "Список проектов",
+            text: "Все ваши заказы и их текущий статус.",
+            before: () => goToTab("orders"),
+        },
+        {
+            target: '[data-tour="btn-create-order"]',
+            title: "Кнопка «Создать проект»",
+            text: "Открывает бриф: опишите объект и задачу — платформа подберёт дизайнера.",
             before: () => goToTab("orders"),
         },
         {
@@ -190,13 +267,24 @@ export function buildClientHintSteps(goToTab: (tab: string) => void): HintStep[]
             text: "Заполните данные компании заранее — без них не выставить счёт на первый этап.",
             before: () => goToTab("settings"),
         },
+        {
+            target: '[data-tour="btn-save-requisites"]',
+            title: "Кнопка «Сохранить изменения»",
+            text: "Сохраняет контакты и реквизиты, по которым выставляются счета и акты.",
+            before: () => goToTab("settings"),
+        },
 
         // ── Как вернуть подсказки ───────────────────────────────────────────
         {
             target: '[data-tour="sidebar-logout"]',
-            title: "Выход",
-            text: "Выйти можно внизу боковой панели, а подсказки — вернуть кнопкой «?» в правом нижнем углу.",
+            title: "Кнопка выхода",
+            text: "Выйти из кабинета можно внизу боковой панели.",
             before: () => goToTab("orders"),
+        },
+        {
+            target: '[data-tour="btn-hints"]',
+            title: "Кнопка «?»",
+            text: "Открывает эти подсказки заново в любой момент.",
         },
     ]
 }

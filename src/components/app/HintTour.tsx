@@ -324,6 +324,7 @@ export function HintTourLauncher({onClick, hidden}: { onClick: () => void; hidde
             onClick={onClick}
             title="Показать подсказки по кабинету"
             aria-label="Показать подсказки по кабинету"
+            data-tour="btn-hints"
             style={{
                 position: "fixed",
                 right: 20,
