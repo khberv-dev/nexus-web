@@ -21,7 +21,7 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
         }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-                src={d.portrait}
+                src={d.avatar ?? d.portrait}
                 alt={d.name}
                 style={{
                     width: avatarSize,

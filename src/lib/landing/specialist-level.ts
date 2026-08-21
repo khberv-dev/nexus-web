@@ -50,10 +50,13 @@ export type LandingCandidate = {
     level: SpecialistLevel | null
     rating: number
     featured: boolean
+    /** Слайд собран админом (LandingBundle), а не автоматически из портфолио. */
+    curated?: boolean
 }
 
 /**
- * Порядок на главной: закреплённые админом → выше уровень → выше рейтинг.
+ * Порядок на главной: закреплённые админом → выше уровень → выше рейтинг →
+ * кураторская сборка выше автособранного слайда.
  * Если сильных (мастер и элита) меньше LANDING_MIN_SLIDES, показываем всех подходящих
  * в том же порядке — пустая главная хуже, чем главная с юниорами.
  */
@@ -65,7 +68,8 @@ export function selectLandingCandidates<T extends LandingCandidate>(
         if (a.featured !== b.featured) return a.featured ? -1 : 1
         const byLevel = (b.level?.rank ?? 0) - (a.level?.rank ?? 0)
         if (byLevel !== 0) return byLevel
-        return b.rating - a.rating
+        if (a.rating !== b.rating) return b.rating - a.rating
+        return Number(b.curated ?? false) - Number(a.curated ?? false)
     })
 
     const strong = ranked.filter(c => (c.level?.rank ?? 0) >= LANDING_PREFERRED_LEVEL_RANK)

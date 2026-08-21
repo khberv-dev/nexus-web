@@ -95,3 +95,21 @@ describe("landing specialist level", () => {
         });
     });
 });
+
+describe("curated vs portfolio-built slides", () => {
+    test("curated bundle wins only when level and rating tie", () => {
+        const picked = selectLandingCandidates([
+            {name: "auto", level: levelByCode("L3"), rating: 4, featured: false, curated: false},
+            {name: "curated", level: levelByCode("L3"), rating: 4, featured: false, curated: true},
+        ]);
+        expect(picked.map(c => c.name)).toEqual(["curated", "auto"]);
+    });
+
+    test("a stronger auto-built specialist still outranks a curated weaker one", () => {
+        const picked = selectLandingCandidates([
+            {name: "curated-l1", level: levelByCode("L1"), rating: 5, featured: false, curated: true},
+            {name: "auto-l4", level: levelByCode("L4"), rating: 0, featured: false, curated: false},
+        ]);
+        expect(picked.map(c => c.name)).toEqual(["auto-l4", "curated-l1"]);
+    });
+});

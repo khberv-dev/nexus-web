@@ -68,7 +68,7 @@ function ActiveDesignerContent({
         <>
             <div className="ds-designer-row">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="ds-avatar" src={slide.portrait} alt={slide.name} decoding="async"/>
+                <img className="ds-avatar" src={slide.avatar ?? slide.portrait} alt={slide.name} decoding="async"/>
                 <div>
                     <div className="ds-name">{slide.name}</div>
                     <div className="ds-specialty">
@@ -275,7 +275,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                             <div className="ds-content">
                                 <div className="ds-designer-row">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img className="ds-avatar" src={s.portrait} alt={s.name} decoding="async"/>
+                                    <img className="ds-avatar" src={s.avatar ?? s.portrait} alt={s.name} decoding="async"/>
                                     <div>
                                         <div className="ds-name">{s.name}</div>
                                         <div className="ds-specialty">
