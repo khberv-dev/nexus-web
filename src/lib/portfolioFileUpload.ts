@@ -36,7 +36,7 @@ export async function uploadUserFileToPortfolio(
     if (!saved?.id) throw new Error("Сервер не вернул id файла")
 
     const putRes = await fetch(`/api/files/${saved.id}/upload`, {
-        method: "PUT",
+        method: "POST",
         body: file,
         headers: {"Content-Type": file.type || "application/octet-stream"},
     })

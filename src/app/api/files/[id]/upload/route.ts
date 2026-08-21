@@ -4,8 +4,8 @@ import {prisma} from "@/lib/db/prisma"
 import {putObject} from "@/lib/s3"
 import {validateImageBuffer} from "@/lib/image-validation"
 
-// PUT /api/files/[id]/upload — server-side upload to S3 (no browser CORS dependency)
-export async function PUT(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
+// POST /api/files/[id]/upload — server-side upload to S3 (no browser CORS dependency)
+export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
 
@@ -30,3 +30,7 @@ export async function PUT(req: NextRequest, {params}: { params: Promise<{ id: st
 
     return NextResponse.json({ok: true})
 }
+
+/** Старый метод: клиенты грузили файлы через PUT. Оставлен, чтобы уже открытые вкладки
+ *  со старым бандлом не падали на 405. */
+export const PUT = POST

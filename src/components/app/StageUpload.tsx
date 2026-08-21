@@ -87,7 +87,7 @@ export function StageUpload({
             xhr.upload.onprogress = (e) => {
                 if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100))
             }
-            xhr.open("PUT", path)
+            xhr.open("POST", path)
             xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream")
             xhr.onload = () =>
                 xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`Ошибка загрузки (${xhr.status})`))

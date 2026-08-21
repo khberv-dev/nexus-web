@@ -595,7 +595,7 @@ export default function PortfolioUploader() {
 
             // 2. Загружаем через backend, чтобы не зависеть от CORS браузера на S3
             const putRes = await fetch(`/api/files/${saved.id}/upload`, {
-                method: "PUT",
+                method: "POST",
                 body: pendingFile,
                 headers: {"Content-Type": pendingFile.type || "application/octet-stream"},
             })

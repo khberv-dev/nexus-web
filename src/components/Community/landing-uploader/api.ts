@@ -10,7 +10,7 @@ export async function uploadFile(file: File, category: string): Promise<LandingF
     const {file: saved} = await res.json()
 
     const put = await fetch(`/api/files/${saved.id}/upload`, {
-        method: "PUT",
+        method: "POST",
         body: file,
         headers: {"Content-Type": file.type || "application/octet-stream"},
     })

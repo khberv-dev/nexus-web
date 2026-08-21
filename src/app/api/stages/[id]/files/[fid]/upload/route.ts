@@ -12,7 +12,7 @@ const UPLOAD_ALLOWED: StageStatus[] = [
 ];
 
 /** PUT тело файла на наш backend → S3 (как `/api/files/[id]/upload`, без браузерного PUT на presigned URL и без CORS на бакет). */
-export async function PUT(req: NextRequest, {params}: { params: Promise<{ id: string; fid: string }> }) {
+export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string; fid: string }> }) {
     const session = await getServerSessionWithDevBypass();
     if (!session?.user) return NextResponse.json({error: "Unauthorized"}, {status: 401});
 
@@ -61,3 +61,7 @@ export async function PUT(req: NextRequest, {params}: { params: Promise<{ id: st
 
     return NextResponse.json({ok: true});
 }
+
+/** Старый метод: клиенты грузили файлы через PUT. Оставлен, чтобы уже открытые вкладки
+ *  со старым бандлом не падали на 405. */
+export const PUT = POST

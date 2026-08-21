@@ -157,7 +157,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
 
             // Загружаем через backend, чтобы не зависеть от CORS браузера на S3
             const putRes = await fetch(`/api/files/${file.id}/upload`, {
-                method: "PUT",
+                method: "POST",
                 body: blob,
                 headers: {"Content-Type": "image/jpeg"},
             })
