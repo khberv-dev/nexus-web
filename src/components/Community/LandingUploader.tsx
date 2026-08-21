@@ -4,14 +4,8 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 import {LandingUploaderLayout} from "./landing-uploader/LandingUploaderLayout"
 import {LandingUploaderStyles} from "./landing-uploader/LandingUploaderStyles"
 import {ConfirmDialog} from "./ConfirmDialog"
-import {getImageDimensions, getPreviewUrl, uploadFile} from "./landing-uploader/api"
-import {
-    MAX_LANDING_PORTFOLIO,
-    PORTRAIT_MIN_H,
-    PORTRAIT_MIN_W,
-    WORK_MIN_H,
-    WORK_MIN_W
-} from "./landing-uploader/constants"
+import {getPreviewUrl, uploadFile} from "./landing-uploader/api"
+import {MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 
 type SelectableCategory = "LANDING_WORK" | "PORTRAIT" | "INTRO_VIDEO"
@@ -211,9 +205,6 @@ export default function LandingUploader({
         const file = e.target.files?.[0]
         if (!file || !isEditable) return
         try {
-            const {w, h} = await getImageDimensions(file)
-            if (w < PORTRAIT_MIN_W || h < PORTRAIT_MIN_H) throw new Error(`Минимум ${PORTRAIT_MIN_W}x${PORTRAIT_MIN_H}px (у вас ${w}x${h})`)
-            if (w > h) throw new Error("Нужна вертикальная фотография (высота > ширины)")
             setUploading("portrait")
             const saved = await uploadFile(file, "PORTRAIT")
             setPortraitFiles((prev) => [saved, ...prev])
@@ -232,9 +223,6 @@ export default function LandingUploader({
         const file = e.target.files?.[0]
         if (!file || !isEditable) return
         try {
-            const {w, h} = await getImageDimensions(file)
-            if (w < WORK_MIN_W || h < WORK_MIN_H) throw new Error(`Минимум ${WORK_MIN_W}x${WORK_MIN_H}px (у вас ${w}x${h})`)
-            if (h > w) throw new Error("Нужна горизонтальная фотография (ширина > высоты)")
             setUploading("work")
             const saved = await uploadFile(file, "LANDING_WORK")
             setWorkFiles((prev) => [saved, ...prev])

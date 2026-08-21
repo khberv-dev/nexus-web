@@ -5,10 +5,13 @@ import {getUploadUrl, validateFile} from "@/lib/s3"
 import {FileCategory} from "@prisma/client"
 
 const CATEGORY_LIMITS: Partial<Record<FileCategory, number>> = {
-    PORTRAIT: 10,
-    LANDING_WORK: 10,
+    PORTRAIT: 20,
+    LANDING_WORK: 20,
     INTRO_VIDEO: 5,
 }
+
+/** Категории картинок: формат не ограничиваем, лишь бы браузер показал. */
+const IMAGE_CATEGORIES: FileCategory[] = ["AVATAR", "PORTRAIT", "LANDING_WORK", "PORTFOLIO"]
 
 // GET /api/files?category=PORTFOLIO
 export async function GET(req: NextRequest) {
@@ -39,7 +42,9 @@ export async function POST(req: NextRequest) {
     if (!filename || !category) return NextResponse.json({error: "filename and category required"}, {status: 400})
 
     try {
-        validateFile(filename, size)
+        validateFile(filename, size, {
+            allowAnyImage: IMAGE_CATEGORIES.includes(category as FileCategory),
+        })
     } catch (e) {
         return NextResponse.json({error: (e as Error).message}, {status: 400})
     }

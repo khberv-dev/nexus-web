@@ -2,7 +2,7 @@
 
 import React from "react"
 import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
-import {MAX_LANDING_PORTFOLIO, PORTRAIT_MIN_H, PORTRAIT_MIN_W, POS_OPTIONS, WORK_MIN_H, WORK_MIN_W} from "./constants"
+import {MAX_LANDING_PORTFOLIO, POS_OPTIONS} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 
 interface LayoutProps {
@@ -97,7 +97,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {card(
                 <>
-                    {cardTitle("bx-user", "Портрет", `Вертикальное, мин. ${PORTRAIT_MIN_W}x${PORTRAIT_MIN_H}px`)}
+                    {cardTitle("bx-user", "Портрет", "Лучше вертикальное фото — любой формат и размер")}
                     <div className="landing-up-row-line">
                         {!disabled && (
                             <button type="button" className="landing-up-upload-tile"
@@ -162,7 +162,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                             })}
                         </DashCarousel>
                     </div>
-                    <input ref={portraitRef} type="file" accept="image/jpeg,image/png" style={{display: "none"}}
+                    <input ref={portraitRef} type="file" accept="image/*" style={{display: "none"}}
                            onChange={onPortraitChange}/>
                 </>,
             )}
@@ -241,7 +241,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {card(
                 <>
-                    {cardTitle("bx-image", "Фото интерьера", `Горизонтальное, мин. ${WORK_MIN_W}x${WORK_MIN_H}px`)}
+                    {cardTitle("bx-image", "Фото интерьера", "Лучше горизонтальное фото — любой формат и размер")}
                     <div className="landing-up-row-line">
                         {!disabled && (
                             <button type="button" className="landing-up-upload-tile"
@@ -306,7 +306,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                             })}
                         </DashCarousel>
                     </div>
-                    <input ref={workRef} type="file" accept="image/jpeg,image/png" style={{display: "none"}}
+                    <input ref={workRef} type="file" accept="image/*" style={{display: "none"}}
                            onChange={onWorkChange}/>
                     {selectedWorkId && !disabled && (
                         <div style={{display: "flex", gap: 4, flexWrap: "wrap", marginTop: 8}}>

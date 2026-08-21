@@ -1,8 +1,8 @@
-export const PORTRAIT_MIN_W = 800
-export const PORTRAIT_MIN_H = 1200
-export const WORK_MIN_W = 1920
-export const WORK_MIN_H = 1080
-export const MAX_LANDING_PORTFOLIO = 3
+/**
+ * Требований к разрешению и формату у картинок лендинга нет: дизайнер грузит то, что есть,
+ * а кадрирование делает CSS (background-size: cover) и выбор позиции кадра.
+ */
+export const MAX_LANDING_PORTFOLIO = 20
 
 export const POS_OPTIONS = [
     {label: "Центр", value: "center center"},

@@ -1,17 +1,5 @@
 import {LandingFile} from "./types"
 
-export function getImageDimensions(file: File): Promise<{ w: number; h: number }> {
-    return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.onload = () => {
-            resolve({w: img.width, h: img.height})
-            URL.revokeObjectURL(img.src)
-        }
-        img.onerror = reject
-        img.src = URL.createObjectURL(file)
-    })
-}
-
 export async function uploadFile(file: File, category: string): Promise<LandingFile> {
     const res = await fetch("/api/files", {
         method: "POST",
