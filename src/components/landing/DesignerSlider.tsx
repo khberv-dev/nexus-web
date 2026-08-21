@@ -42,6 +42,16 @@ interface DesignerSliderProps {
     onBrightnessChange?: (lightBg: boolean) => void
 }
 
+/** Подтверждённый уровень квалификации — главный аргумент подборки на главной. */
+function LevelBadge({slide}: { slide: DesignerSlide }) {
+    if (!slide.levelTitle) return null
+    return (
+        <span className={`ds-level${slide.level === "L4" ? " ds-level--elite" : ""}`}>
+            {slide.levelTitle}
+        </span>
+    )
+}
+
 
 function slideKey(s: DesignerSlide, i: number) {
     return `${s.name}-${s.portrait}-${i}`
@@ -61,7 +71,10 @@ function ActiveDesignerContent({
                 <img className="ds-avatar" src={slide.portrait} alt={slide.name} decoding="async"/>
                 <div>
                     <div className="ds-name">{slide.name}</div>
-                    <div className="ds-specialty">{slide.specialty}</div>
+                    <div className="ds-specialty">
+                        <LevelBadge slide={slide}/>
+                        {slide.specialty}
+                    </div>
                 </div>
             </div>
             <div className="ds-meta">
@@ -265,7 +278,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                     <img className="ds-avatar" src={s.portrait} alt={s.name} decoding="async"/>
                                     <div>
                                         <div className="ds-name">{s.name}</div>
-                                        <div className="ds-specialty">{s.specialty}</div>
+                                        <div className="ds-specialty">
+                                            <LevelBadge slide={s}/>
+                                            {s.specialty}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="ds-meta">
@@ -455,6 +471,26 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             1px -1px 0 rgba(0, 0, 0, 0.75),
             -1px 1px 0 rgba(0, 0, 0, 0.75),
             1px 1px 0 rgba(0, 0, 0, 0.75);
+        }
+
+        .ds-level {
+          display: inline-block;
+          margin-right: 0.5em;
+          padding: 0.15em 0.6em;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          background: rgba(255, 255, 255, 0.12);
+          font-size: 0.72em;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          vertical-align: middle;
+          white-space: nowrap;
+        }
+
+        .ds-level--elite {
+          border-color: rgba(212, 175, 55, 0.75);
+          background: rgba(212, 175, 55, 0.18);
+          color: #f0d98c;
         }
 
         .ds-specialty {

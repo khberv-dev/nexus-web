@@ -12,6 +12,10 @@ export interface Designer {
     bio?: string
     introVideoUrl?: string
     portfolioImages?: string[]
+    /** Код уровня квалификационного теста: L1…L4. */
+    level?: string | null
+    /** Подпись уровня для интерфейса: «Мастер-дизайнер», «Элита». */
+    levelTitle?: string | null
 }
 
 export type DesignerSlide = Designer

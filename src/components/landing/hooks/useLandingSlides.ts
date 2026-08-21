@@ -2,18 +2,14 @@
 
 import {useEffect, useState} from "react"
 import type {DesignerSlide} from "../designer-profile-modal/types"
-import {FALLBACK_SLIDES, OSMO_LOADER_IMAGES} from "../constants"
+import {OSMO_LOADER_IMAGES} from "../constants"
 import {preloadSlides} from "@/lib/landing/preloadMedia"
 
-function mergeSlides(data: DesignerSlide[]): DesignerSlide[] {
-    const merged = [...data]
-    let fi = 0
-    while (merged.length < 5 && fi < FALLBACK_SLIDES.length) {
-        merged.push(FALLBACK_SLIDES[fi++])
-    }
-    return merged
-}
-
+/**
+ * Слайды главной — только реальные дизайнеры платформы (/api/landing/specialists).
+ * Демо-персонажами список намеренно не добиваем: на главной должны быть живые
+ * специалисты с портфолио, пустой список честнее выдуманного.
+ */
 export function useLandingSlides() {
     const [slides, setSlides] = useState<DesignerSlide[] | null>(null)
     const [ready, setReady] = useState(false)
@@ -22,21 +18,19 @@ export function useLandingSlides() {
         let cancelled = false
 
         async function load() {
-            let merged = FALLBACK_SLIDES
+            let real: DesignerSlide[] = []
             try {
                 const res = await fetch("/api/landing/specialists")
                 const data: DesignerSlide[] = await res.json()
-                if (Array.isArray(data) && data.length > 0) {
-                    merged = mergeSlides(data)
-                }
+                if (Array.isArray(data)) real = data
             } catch {
-                /* fallback */
+                /* сеть/сервер недоступны — покажем пустую главную, а не выдуманных людей */
             }
 
-            await preloadSlides(merged, [...OSMO_LOADER_IMAGES], {includeVideos: true})
+            await preloadSlides(real, [...OSMO_LOADER_IMAGES], {includeVideos: true})
 
             if (!cancelled) {
-                setSlides(merged)
+                setSlides(real)
                 setReady(true)
             }
         }
