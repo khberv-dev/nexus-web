@@ -57,7 +57,7 @@ export default function ClientCabinetPage({
             {/* Подсказки по кабинету: один раз при первом входе, дальше — по кнопке «?». */}
             <HintTour
                 steps={clientHintSteps}
-                storageKey={`client:v1:${email}`}
+                storageKey={`client:v2:${email}`}
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}
             />
@@ -89,7 +89,7 @@ export default function ClientCabinetPage({
                 }
             >
                 <DashHeroFrame>
-                    <div className="dash-hero">
+                    <div className="dash-hero" data-tour="client-hero">
                         <div
                             style={{
                                 width: 72,
@@ -139,7 +139,7 @@ export default function ClientCabinetPage({
                 </DashHeroFrame>
 
                 {activeTab === "payments" ? (
-                    <div style={{padding: "0 1rem"}}>
+                    <div style={{padding: "0 1rem"}} data-tour="client-payments">
                         <PaymentsTab
                             payments={payments}
                             formData={formData}
@@ -151,7 +151,7 @@ export default function ClientCabinetPage({
                         />
                     </div>
                 ) : activeTab === "settings" ? (
-                    <div style={{padding: "0 1rem"}}>
+                    <div style={{padding: "0 1rem"}} data-tour="client-settings">
                         <SettingsTab name={name} email={email} formData={formData}/>
                     </div>
                 ) : (

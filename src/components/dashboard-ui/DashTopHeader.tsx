@@ -300,7 +300,9 @@ export function DashTopHeader({
                     ) : null}
                     {showNotifications ? (
                         <div className="dash-header__notif-slot">
-                            <NotificationBell/>
+                            <span data-tour="header-bell">
+                                <NotificationBell/>
+                            </span>
                         </div>
                     ) : null}
                     {orderChat?.orderId ? (

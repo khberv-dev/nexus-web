@@ -167,7 +167,7 @@ export default function CommunityPage({
             {/* Подсказки после онбординга: показываем один раз, дальше — по кнопке в шапке. */}
             <HintTour
                 steps={specialistHintSteps}
-                storageKey={`specialist:v1:${email}`}
+                storageKey={`specialist:v2:${email}`}
                 enabled={status === "ACTIVE"}
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}
@@ -194,7 +194,7 @@ export default function CommunityPage({
                     <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "stretch"}}>
 
                         {/* LEFT — identity */}
-                        <div style={{
+                        <div data-tour="hero-profile" style={{
                             display: "flex",
                             flexDirection: "column",
                             gap: 10,
@@ -386,15 +386,15 @@ export default function CommunityPage({
                 <div className="dash-content">
                     {activeTab === "orders" && (
                         <>
-                            <div className="dash-col1"><OrdersCol1 orders={orders}/></div>
-                            <div className="dash-col2"><OrdersCol2 orders={orders} urgentItems={urgentItems}
+                            <div className="dash-col1" data-tour="orders-list"><OrdersCol1 orders={orders}/></div>
+                            <div className="dash-col2" data-tour="orders-actions"><OrdersCol2 orders={orders} urgentItems={urgentItems}
                                                                    actItems={actItems} onSignAct={signAct}/></div>
                         </>
                     )}
                     {activeTab === "portfolio" && <PortfolioProjects/>}
                     {activeTab === "landing" && (
                         <>
-                            <div className="dash-col1">
+                            <div className="dash-col1" data-tour="landing-readiness">
                                 <DashEmptyState
                                     iconClass="bx-globe"
                                     message={
@@ -426,7 +426,7 @@ export default function CommunityPage({
                                     style={{paddingTop: 16}}
                                 />
                             </div>
-                            <div className="dash-col2">
+                            <div className="dash-col2" data-tour="landing-uploader">
                                 <DashSectionCard title="Карусель на лендинге">
                                     <LandingUploader
                                         featuredOnLanding={featuredOnLanding}
@@ -442,19 +442,19 @@ export default function CommunityPage({
                     )}
                     {activeTab === "payments" && (
                         <>
-                            <div className="dash-col1"><PaymentsCol1 payments={payments} formData={formData ?? null}
+                            <div className="dash-col1" data-tour="payments-summary"><PaymentsCol1 payments={payments} formData={formData ?? null}
                                                                      contracts={contracts} acts={acts}/></div>
-                            <div className="dash-col2"><PaymentsCol2 payments={payments}/></div>
+                            <div className="dash-col2" data-tour="payments-history"><PaymentsCol2 payments={payments}/></div>
                         </>
                     )}
                     {activeTab === "settings" && (
                         <>
-                            <div className="dash-col1">
+                            <div className="dash-col1" data-tour="settings-overview">
                                 <SettingsCol1 name={name} email={email} city={city} experience={experience}
                                               software={software} about={about} status={status}
                                               onboardingSteps={onboardingSteps}/>
                             </div>
-                            <div className="dash-col2">
+                            <div className="dash-col2" data-tour="settings-form">
                                 <SettingsCol2 name={name} email={email} formData={formData ?? null} status={status}
                                               onboardingSteps={onboardingSteps} featuredOnLanding={featuredOnLanding}/>
                             </div>
