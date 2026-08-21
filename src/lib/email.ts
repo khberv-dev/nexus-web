@@ -146,6 +146,10 @@ function resolveOnboardingSubject(data: Record<string, unknown>): string {
             ? `Уровень ${level} квалификационного теста подтверждён`
             : "Уровень квалификационного теста подтверждён"
     }
+    if (s === "LEVEL_GRANTED") {
+        const title = data.levelTitle as string | undefined
+        return title ? `Вам присвоен уровень «${title}»` : "Вам присвоен квалификационный уровень"
+    }
     if (s === "TEST_BYPASSED") return "Квалификационный тест закрыт администратором"
     if (s === "TEST_RESET") return "Прогресс квалификационного теста сброшен"
     if (s === "CONTRACT_READY") return "Договор с платформой NEXUS готов к подписанию"
@@ -341,6 +345,25 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
         <p class="text-body" style="text-align:left">Администратор проверил результаты${level ? ` уровня <strong>${escapeHtml(level)}</strong>` : ""} квалификационного теста и подтвердил их.</p>
         <p class="text-body" style="text-align:left">Следующий уровень уже доступен в личном кабинете — продолжайте, когда будет удобно.</p>
         <a href="${escapeHtml(nextUrl)}" class="activation-link">Продолжить тест →</a>
+        <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
+      `,
+        })
+    }
+
+    // Админ назначил уровень без сдачи теста
+    if (s === "LEVEL_GRANTED") {
+        const title = typeof data.levelTitle === "string" ? data.levelTitle : ""
+        const code = typeof data.level === "string" ? data.level : ""
+        const cabinet = appUrl || `${getBaseAppUrl()}/onboarding`
+        const comment = typeof data.comment === "string" && data.comment.trim() ? data.comment.trim() : null
+        return renderEmailLayout({
+            preheader: "Квалификационный уровень обновлён",
+            welcomeText: "Здравствуйте!",
+            bodyHtml: `
+        <p class="text-body" style="text-align:left">Администратор NEXUS присвоил вам квалификационный уровень${title ? ` <strong>«${escapeHtml(title)}»</strong>` : ""}${code ? ` (${escapeHtml(code)})` : ""}.</p>
+        ${comment ? `<p class="text-body" style="text-align:left">${escapeHtml(comment)}</p>` : ""}
+        <p class="text-body" style="text-align:left">Уровень виден в вашем профиле и учитывается при подборе дизайнеров на главной странице платформы.</p>
+        <a href="${escapeHtml(cabinet)}" class="activation-link">Открыть кабинет →</a>
         <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
       `,
         })

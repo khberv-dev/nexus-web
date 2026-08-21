@@ -55,6 +55,7 @@ export function SpecialistDetail({
     const [quizResetting, setQuizResetting] = useState(false)
     const [quizApproving, setQuizApproving] = useState(false)
     const [quizBypassing, setQuizBypassing] = useState(false)
+    const [levelSetting, setLevelSetting] = useState(false)
     const specialistId = specialist?.id ?? null
 
     const handleQuizDraftReset = useCallback(async () => {
@@ -112,6 +113,30 @@ export function SpecialistDetail({
             await onRefresh()
         } finally {
             setQuizBypassing(false)
+        }
+    }, [specialistId, onRefresh])
+
+    /** Назначение квалификационного уровня без сдачи теста (уровни кумулятивные). */
+    const handleSetLevel = useCallback(async (level: string) => {
+        if (!specialistId || !onRefresh) return
+        if (!confirm(`Назначить уровень ${level} без сдачи теста? Все уровни ниже будут отмечены пройденными, выше — сняты.`)) return
+        const reason = prompt("Причина (попадёт в историю и в письмо специалисту):", "")
+        if (reason === null) return
+        setLevelSetting(true)
+        try {
+            const res = await fetch(`/api/admin/specialists/${specialistId}/level`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({level, reason}),
+            })
+            const data = await res.json().catch(() => ({}))
+            if (!res.ok) {
+                alert(typeof data.error === "string" ? data.error : "Не удалось назначить уровень")
+                return
+            }
+            await onRefresh()
+        } finally {
+            setLevelSetting(false)
         }
     }, [specialistId, onRefresh])
 
@@ -183,9 +208,11 @@ export function SpecialistDetail({
                         quizResetting={quizResetting}
                         quizApproving={quizApproving}
                         quizBypassing={quizBypassing}
+                        levelSetting={levelSetting}
                         handleQuizDraftReset={handleQuizDraftReset}
                         handleQuizLevelApprove={handleQuizLevelApprove}
                         handleQuizBypass={handleQuizBypass}
+                        handleSetLevel={handleSetLevel}
                         onRefresh={onRefresh}
                         setTestModal={setTestModal}
                     />

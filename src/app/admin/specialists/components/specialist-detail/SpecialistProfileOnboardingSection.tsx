@@ -2,6 +2,7 @@ import type {OnboardingStatus} from "@/components/app/SpecialistCard"
 import {getLevelBank} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
+import {levelByCode} from "@/lib/landing/specialist-level"
 import {getQuizMicroTick, parseQuizProgress, parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 import type {RawSpecialist, TestModalData} from "../../types"
 import {ONBOARDING_STEPS_UI} from "./constants"
@@ -19,10 +20,12 @@ export function SpecialistProfileOnboardingSection({
                                                        quizResetting,
                                                        quizApproving,
                                                        quizBypassing,
+                                                       levelSetting,
                                                        acting,
                                                        handleQuizDraftReset,
                                                        handleQuizLevelApprove,
                                                        handleQuizBypass,
+                                                       handleSetLevel,
                                                        onRefresh,
                                                        setTestModal,
                                                    }: {
@@ -36,10 +39,12 @@ export function SpecialistProfileOnboardingSection({
     quizResetting: boolean
     quizApproving: boolean
     quizBypassing: boolean
+    levelSetting: boolean
     acting: string | null
     handleQuizDraftReset: () => void
     handleQuizLevelApprove: () => void
     handleQuizBypass: () => void
+    handleSetLevel: (level: string) => void
     onRefresh?: () => Promise<void>
     setTestModal: (data: TestModalData | null) => void
 }) {
@@ -63,7 +68,19 @@ export function SpecialistProfileOnboardingSection({
         }
         return null
     })()
-    const adminBypass = parseQuizLevelState(testStepRecord?.comment ?? null)?.adminBypass ?? null
+    const quizState = parseQuizLevelState(testStepRecord?.comment ?? null)
+    const adminBypass = quizState?.adminBypass ?? null
+    const currentLevel = (() => {
+        const passed = new Set(quizState?.passedLevels ?? [])
+        const order: QuizLevelCode[] = ["L1", "L2", "L3", "L4"]
+        for (let i = order.length - 1; i >= 0; i--) {
+            if (passed.has(order[i])) return levelByCode(order[i])
+        }
+        return null
+    })()
+    // Уровень имеет смысл после принятия анкеты и виден на лендинге, поэтому доступен
+    // на всех этапах кроме PENDING/REJECTED.
+    const canSetLevel = onRefresh && status !== "PENDING" && status !== "REJECTED"
     const attemptsCount = (() => {
         if (!testStepRecord?.comment) return 0
         try {
@@ -118,6 +135,55 @@ export function SpecialistProfileOnboardingSection({
                     })}
                 </div>
             </div>
+
+            {canSetLevel && (
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    flexWrap: "wrap",
+                    marginBottom: 18,
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    border: "1px solid var(--adm-sidebar-border)",
+                    background: "var(--adm-sidebar)",
+                }}>
+                    <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
+                        <i className="bx bx-medal" style={{marginRight: 6, color: "var(--adm-active-color)"}}/>
+                        Квалификационный уровень:{" "}
+                        <strong style={{color: "var(--adm-text)"}}>
+                            {currentLevel ? `${currentLevel.title} (${currentLevel.code})` : "не присвоен"}
+                        </strong>
+                    </span>
+                    <div style={{display: "flex", gap: 6, marginLeft: "auto", flexWrap: "wrap"}}>
+                        {(["L1", "L2", "L3", "L4"] as QuizLevelCode[]).map((code) => {
+                            const meta = levelByCode(code)
+                            const active = currentLevel?.code === code
+                            return (
+                                <button
+                                    key={code}
+                                    type="button"
+                                    className={`sp-btn ${active ? "sp-btn-primary" : "sp-btn-ghost"}`}
+                                    title={`Назначить уровень «${meta.title}» без сдачи теста`}
+                                    disabled={levelSetting || acting !== null || active}
+                                    onClick={() => handleSetLevel(code)}
+                                >
+                                    {code}
+                                </button>
+                            )
+                        })}
+                    </div>
+                    <span style={{
+                        flexBasis: "100%",
+                        fontSize: "0.72rem",
+                        color: "var(--adm-muted)",
+                        lineHeight: 1.4,
+                    }}>
+                        Уровни кумулятивные: L3 отмечает пройденными L1–L3 и снимает L4. Уровень показывается
+                        на главной странице и определяет порядок дизайнеров в подборке.
+                    </span>
+                </div>
+            )}
 
             {status === "TEST_INVITED" && onRefresh && (
                 <div style={{
