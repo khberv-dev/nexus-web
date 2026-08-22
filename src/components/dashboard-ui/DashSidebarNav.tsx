@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import {SignOutButton} from "@/components/auth/SignOutButton"
 
 type SidebarTab = {
     id: string
@@ -59,15 +60,14 @@ export function DashSidebarNav({
             })}
 
             {showLogout && (
-                <Link
-                    href="/api/auth/signout?callbackUrl=/login"
+                <SignOutButton
                     className="dash-sidebar__icon dash-sidebar__icon--logout"
                     title="Выйти из кабинета"
-                    data-tour="sidebar-logout"
+                    dataTour="sidebar-logout"
                 >
                     <i className="bx bx-power-off"/>
                     <span className="dash-sidebar__label">Выйти</span>
-                </Link>
+                </SignOutButton>
             )}
         </div>
     )

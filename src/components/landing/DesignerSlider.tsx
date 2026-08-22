@@ -354,7 +354,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
 
         /* ── Базовая карточка (маленькая, справа) ── */
         .ds-slide-item {
-          width: 20vw;
+          width: 14vw;
           height: 62vh;
           position: absolute;
           top: 50%;
@@ -370,11 +370,11 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         /* ── Позиции маленьких карточек ── */
-        .ds-slide .ds-slide-item:nth-child(3) { left: 50%; cursor: pointer; }
-        .ds-slide .ds-slide-item:nth-child(4) { left: calc(50% + 22vw); cursor: pointer; }
-        .ds-slide .ds-slide-item:nth-child(5) { left: calc(50% + 44vw); cursor: pointer; }
+        .ds-slide .ds-slide-item:nth-child(3) { left: 52%; cursor: pointer; }
+        .ds-slide .ds-slide-item:nth-child(4) { left: 67%; cursor: pointer; }
+        .ds-slide .ds-slide-item:nth-child(5) { left: 82%; cursor: pointer; }
         .ds-slide .ds-slide-item:nth-child(n + 6) {
-          left: calc(50% + 66vw);
+          left: 97%;
           opacity: 0;
           pointer-events: none;
         }
@@ -698,6 +698,14 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         @media (max-width: 768px) {
+          .ds-slide-item {
+            width: 28vw;
+          }
+
+          .ds-slide .ds-slide-item:nth-child(3) { left: 46%; }
+          .ds-slide .ds-slide-item:nth-child(4) { left: 76%; }
+          .ds-slide .ds-slide-item:nth-child(5) { left: 106%; }
+
           .ds-slide .ds-slide-item .ds-card-label {
             display: none !important;
           }

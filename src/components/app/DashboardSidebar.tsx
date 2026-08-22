@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import {usePathname} from "next/navigation"
+import {SignOutButton} from "@/components/auth/SignOutButton"
 
 export interface NavItem {
     href: string
@@ -84,10 +85,10 @@ export function DashboardSidebar({items}: { items: NavItem[] }) {
                 })}
 
                 <li className="menu-item">
-                    <Link href="/api/auth/signout?callbackUrl=/login" className="menu-link">
+                    <SignOutButton className="menu-link">
                         <i className="menu-icon tf-icons bx bx-power-off"/>
                         <div className="text-truncate">Выйти</div>
-                    </Link>
+                    </SignOutButton>
                 </li>
             </ul>
         </aside>

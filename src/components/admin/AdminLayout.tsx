@@ -5,6 +5,7 @@ import {usePathname} from "next/navigation"
 import type {ReactNode} from "react"
 import {AdminRefreshProvider, useAdminRefreshControls} from "./AdminRefreshContext"
 import NotificationBell from "@/components/Community/NotificationBell"
+import {SignOutButton} from "@/components/auth/SignOutButton"
 
 const NAV = [
     {href: "/admin", label: "Дашборд", icon: "bx-home-alt"},
@@ -61,13 +62,12 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
                     <Link href="/" title="На сайт" className="adm-nav-item">
                         <i className="bx bx-globe"/>
                     </Link>
-                    <Link
-                        href="/api/auth/signout?callbackUrl=/login"
+                    <SignOutButton
                         title="Выйти из админки"
                         className="adm-nav-item adm-nav-item--logout"
                     >
                         <i className="bx bx-power-off"/>
-                    </Link>
+                    </SignOutButton>
                 </div>
             </aside>
 

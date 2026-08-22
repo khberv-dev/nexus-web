@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react"
 import Link from "next/link"
+import {SignOutButton} from "@/components/auth/SignOutButton"
 
 export function DashboardHeader({
                                     userName,
@@ -102,9 +103,9 @@ export function DashboardHeader({
                                         <div className="dropdown-divider my-1"/>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" href="/api/auth/signout?callbackUrl=/login">
+                                        <SignOutButton className="dropdown-item" onOpen={() => setOpen(false)}>
                                             <i className="icon-base bx bx-power-off icon-md me-3"/>Выйти
-                                        </Link>
+                                        </SignOutButton>
                                     </li>
                                 </ul>
                             </>
