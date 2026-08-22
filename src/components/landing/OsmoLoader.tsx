@@ -4,6 +4,8 @@ import {useEffect, useRef} from "react"
 import {gsap} from "gsap"
 
 interface OsmoLoaderProps {
+    /** Одобренные изображения специалистов, полученные из БД. null — данные ещё загружаются. */
+    images: string[] | null
     /** Анимация логотипа завершена (ещё не уехал с экрана) */
     onAnimationEnd?: () => void
     /** Можно убирать лоадер — медиа и данные готовы */
@@ -12,16 +14,12 @@ interface OsmoLoaderProps {
     onComplete?: () => void
 }
 
-export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLoaderProps) {
+export function OsmoLoader({images, onAnimationEnd, canExit = false, onComplete}: OsmoLoaderProps) {
     const loaderRef = useRef<HTMLDivElement>(null)
     const boxRef = useRef<HTMLDivElement>(null)
     const imageWrapRef = useRef<HTMLDivElement>(null)
     const startLettersRef = useRef<HTMLDivElement>(null)
     const endLettersRef = useRef<HTMLDivElement>(null)
-    const img1Ref = useRef<HTMLImageElement>(null)
-    const img2Ref = useRef<HTMLImageElement>(null)
-    const img3Ref = useRef<HTMLImageElement>(null)
-    const imgMainRef = useRef<HTMLImageElement>(null)
     const exitStartedRef = useRef(false)
     const onAnimationEndRef = useRef(onAnimationEnd)
     const onCompleteRef = useRef(onComplete)
@@ -32,7 +30,9 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
     }, [onAnimationEnd, onComplete])
 
     useEffect(() => {
+        if (images === null) return
         const ctx = gsap.context(() => {
+            const splashImages = loaderRef.current?.querySelectorAll<HTMLImageElement>(".nexus-splash-image") ?? []
             const tl = gsap.timeline({
                 onComplete: () => onAnimationEndRef.current?.(),
             })
@@ -40,7 +40,7 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
             // Initial state
             gsap.set(boxRef.current, {width: 0})
             gsap.set(imageWrapRef.current, {width: "0%"})
-            gsap.set([img1Ref.current, img2Ref.current, img3Ref.current], {opacity: 0})
+            gsap.set(splashImages, {opacity: 0})
 
             // Step 1: box expands
             tl.to(boxRef.current, {
@@ -56,13 +56,11 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
                 "-=0.3"
             )
 
-            // Step 3: cycle through extra images
-            tl.to(img1Ref.current, {opacity: 1, duration: 0.01}, "+=0.1")
-            tl.to(img2Ref.current, {opacity: 1, duration: 0.01}, "+=0.18")
-            tl.to(img3Ref.current, {opacity: 1, duration: 0.01}, "+=0.18")
-            tl.to(img1Ref.current, {opacity: 0, duration: 0.01}, "+=0.18")
-            tl.to(img2Ref.current, {opacity: 0, duration: 0.01}, "+=0.18")
-            tl.to(img3Ref.current, {opacity: 0, duration: 0.01}, "+=0.18")
+            // Step 3: show approved specialist images one after another between X and U.
+            splashImages.forEach((image, index) => {
+                tl.to(image, {opacity: 1, duration: 0.01}, index === 0 ? "+=0.1" : "+=0.18")
+                if (index > 0) tl.to(splashImages[index - 1], {opacity: 0, duration: 0.01}, "<")
+            })
 
             // Step 4: letters slide out, box collapses
             tl.to(
@@ -83,7 +81,7 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
         }, loaderRef)
 
         return () => ctx.revert()
-    }, [])
+    }, [images])
 
     useEffect(() => {
         if (!canExit || exitStartedRef.current || !loaderRef.current) return
@@ -134,17 +132,12 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
                         ref={imageWrapRef}
                         style={{position: "absolute", inset: 0, width: "0%", overflow: "hidden"}}
                     >
-                        <img ref={img1Ref} src="/designer-1.jpg" alt=""
-                             className="absolute inset-0 w-full h-full object-cover object-top"
-                             style={{zIndex: 3, opacity: 0}}/>
-                        <img ref={img2Ref} src="/designer-3.jpg" alt=""
-                             className="absolute inset-0 w-full h-full object-cover object-top"
-                             style={{zIndex: 2, opacity: 0}}/>
-                        <img ref={img3Ref} src="/designer-5.jpg" alt=""
-                             className="absolute inset-0 w-full h-full object-cover object-top"
-                             style={{zIndex: 1, opacity: 0}}/>
-                        <img ref={imgMainRef} src="/slider-1.jpg" alt=""
-                             className="absolute inset-0 w-full h-full object-cover" style={{zIndex: 0}}/>
+                        {(images ?? []).slice(0, 6).map((src, index) => (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img key={`${src}-${index}`} src={src} alt="" aria-hidden="true"
+                                 className="nexus-splash-image absolute inset-0 w-full h-full object-cover"
+                                 style={{zIndex: index + 1, opacity: 0}}/>
+                        ))}
                     </div>
                 </div>
 

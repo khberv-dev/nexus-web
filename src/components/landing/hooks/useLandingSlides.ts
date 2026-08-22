@@ -2,7 +2,6 @@
 
 import {useEffect, useState} from "react"
 import type {DesignerSlide} from "../designer-profile-modal/types"
-import {OSMO_LOADER_IMAGES} from "../constants"
 import {preloadSlides} from "@/lib/landing/preloadMedia"
 
 /**
@@ -27,7 +26,7 @@ export function useLandingSlides() {
                 /* сеть/сервер недоступны — покажем пустую главную, а не выдуманных людей */
             }
 
-            await preloadSlides(real, [...OSMO_LOADER_IMAGES], {includeVideos: true})
+            await preloadSlides(real, [], {includeVideos: true})
 
             if (!cancelled) {
                 setSlides(real)

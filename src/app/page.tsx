@@ -13,6 +13,9 @@ export default function Home() {
     const [lightBg, setLightBg] = useState(false)
 
     const canExitLoader = animDone && mediaReady
+    const splashImages = slides === null
+        ? null
+        : slides.flatMap((slide) => [slide.work, slide.portrait, ...(slide.portfolioImages ?? [])]).filter(Boolean)
 
     const handleAnimationEnd = useCallback(() => setAnimDone(true), [])
 
@@ -24,6 +27,7 @@ export default function Home() {
         <>
             {!loaded && (
                 <OsmoLoader
+                    images={splashImages}
                     canExit={canExitLoader}
                     onAnimationEnd={handleAnimationEnd}
                 />

@@ -97,17 +97,18 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
     const [cardsVisible, setCardsVisible] = useState(true)
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
+    const activeDomIndex = slides.length === 1 ? 0 : 1
 
     const syncActiveSlide = useCallback(() => {
         const container = slideRef.current
         if (!container || !slides.length) return
-        const activeEl = container.querySelectorAll<HTMLDivElement>(".ds-slide-item")[1]
+        const activeEl = container.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex]
         if (!activeEl) return
         const idx = Number(activeEl.dataset.slideIdx)
         if (!Number.isNaN(idx) && idx >= 0 && idx < slides.length) {
             setActiveIndex(idx)
         }
-    }, [slides])
+    }, [activeDomIndex, slides])
 
     const rotateNext = useCallback(() => {
         const slide = slideRef.current
@@ -139,7 +140,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         function onSlideChange() {
             syncActiveSlide()
             if (!onBrightnessChange) return
-            const active = slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[1]
+            const active = slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex]
             if (!active) return
             const workLayer = active.querySelector<HTMLDivElement>(".ds-work-layer")
             const bg = workLayer?.style.backgroundImage ?? active.style.backgroundImage
@@ -151,7 +152,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         const observer = new MutationObserver(onSlideChange)
         observer.observe(slide, {childList: true})
         return () => observer.disconnect()
-    }, [onBrightnessChange, syncActiveSlide])
+    }, [activeDomIndex, onBrightnessChange, syncActiveSlide])
 
     useEffect(() => {
         syncActiveSlide()
@@ -164,7 +165,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         const THRESHOLD = 80
 
         function getActiveItem() {
-            return slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[1] ?? null
+            return slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex] ?? null
         }
 
         function onStart(x: number) {
@@ -227,7 +228,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             slide.removeEventListener("touchmove", onTouchMove)
             slide.removeEventListener("touchend", onTouchEnd)
         }
-    }, [])
+    }, [activeDomIndex, syncActiveSlide])
     // ─────────────────────────────────────────────────────────
 
     const handleClickItem = useCallback((el: HTMLDivElement) => {
@@ -253,7 +254,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             />
 
             <div className={`ds-wrap${cardsVisible ? "" : " ds-cards-hidden"}`}>
-                <div ref={slideRef} className="ds-slide">
+                <div ref={slideRef} className={`ds-slide${slides.length === 1 ? " ds-slide--single" : ""}`}>
                     {slides.map((s, i) => (
                         <div
                             key={slideKey(s, i)}
@@ -317,10 +318,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                     </div>
                 )}
 
-                <div className="ds-nav">
+                {slides.length > 1 && <div className="ds-nav">
                     <button className="ds-btn ds-btn-prev" onClick={handlePrev}>◁</button>
                     <button className="ds-btn ds-btn-next" onClick={handleNext}>▷</button>
-                </div>
+                </div>}
 
                 <button
                     className="ds-toggle"
@@ -437,6 +438,17 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
 
         .ds-slide .ds-slide-item:nth-child(2) .ds-content {
           display: block;
+        }
+
+        .ds-slide--single .ds-slide-item:nth-child(1) .ds-content {
+          display: block;
+        }
+
+        .ds-slide--single .ds-slide-item:nth-child(1) .ds-work-layer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,0.38);
         }
 
         .ds-designer-row {
