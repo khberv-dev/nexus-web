@@ -25,8 +25,11 @@ export function OsmoLoader({onAnimationEnd, canExit = false, onComplete}: OsmoLo
     const exitStartedRef = useRef(false)
     const onAnimationEndRef = useRef(onAnimationEnd)
     const onCompleteRef = useRef(onComplete)
-    onAnimationEndRef.current = onAnimationEnd
-    onCompleteRef.current = onComplete
+
+    useEffect(() => {
+        onAnimationEndRef.current = onAnimationEnd
+        onCompleteRef.current = onComplete
+    }, [onAnimationEnd, onComplete])
 
     useEffect(() => {
         const ctx = gsap.context(() => {

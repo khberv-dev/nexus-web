@@ -39,7 +39,10 @@ export function DashRightDrawer({
     themeVars?: React.CSSProperties
 }) {
     const onCloseRef = useRef(onClose)
-    onCloseRef.current = onClose
+
+    useEffect(() => {
+        onCloseRef.current = onClose
+    }, [onClose])
 
     useEffect(() => {
         if (!open || !closeOnEscape) return

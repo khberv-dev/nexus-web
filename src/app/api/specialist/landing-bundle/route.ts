@@ -7,6 +7,7 @@ export async function GET() {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
     const dbUser = await getOrCreateDbUser(user)
+    if (dbUser.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     const bundles = await prisma.landingBundle.findMany({
         where: {userId: dbUser.id},
@@ -22,6 +23,7 @@ export async function POST() {
         const user = await getSessionUser()
         if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
         const dbUser = await getOrCreateDbUser(user)
+        if (dbUser.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
         const existing = await prisma.landingBundle.findFirst({
             where: {userId: dbUser.id, status: {in: ["DRAFT", "PENDING_REVIEW"]}},
@@ -35,7 +37,7 @@ export async function POST() {
             data: {userId: dbUser.id},
             include: {items: true},
         })
-        return NextResponse.json(bundle)
+        return NextResponse.json(bundle, {status: 201})
     } catch (e) {
         console.error("[landing-bundle POST]", e)
         return NextResponse.json({error: (e as Error).message ?? "Internal error"}, {status: 500})

@@ -30,7 +30,7 @@ export function StageMaterialsSection({
     }) => void
 }) {
     /** Варианты сдачи по запросам правок заказчика (CLIENT + REJECTED в reviews). */
-    const revisionVariants = useMemo(() => buildClientRevisionVariants(stage), [stage.files, stage.reviews])
+    const revisionVariants = useMemo(() => buildClientRevisionVariants(stage), [stage])
     const multiRound = revisionVariants.length > 1
     const lastVariantIdx = revisionVariants.length - 1
 
@@ -699,4 +699,3 @@ export function StageMaterialsSection({
         </>
     )
 }
-

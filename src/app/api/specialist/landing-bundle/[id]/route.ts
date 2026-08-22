@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
+import {parseLandingBundlePatch, validateLandingBundleFiles} from "@/lib/landing/bundle-input"
 
 // PATCH — обновить черновик / отклоненную сборку
 export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -8,6 +9,7 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
     const {id} = await params
     const dbUser = await getOrCreateDbUser(user)
+    if (dbUser.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     const bundle = await prisma.landingBundle.findUnique({where: {id}})
     if (!bundle || bundle.userId !== dbUser.id) return NextResponse.json({error: "Not found"}, {status: 404})
@@ -15,31 +17,37 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         return NextResponse.json({error: "Сборка заблокирована для редактирования"}, {status: 403})
     }
 
-    const {portraitFileId, workFileId, workPos, videoFileId, specialty, about, portfolioFileIds} = await req.json()
+    let patch
+    try {
+        patch = parseLandingBundlePatch(await req.json())
+        await validateLandingBundleFiles(dbUser.id, patch)
+    } catch (error) {
+        return NextResponse.json({error: (error as Error).message}, {status: 400})
+    }
+    const {portraitFileId, workFileId, workPos, videoFileId, specialty, about, portfolioFileIds} = patch
 
-    await prisma.landingBundle.update({
-        where: {id},
-        data: {
-            ...(portraitFileId !== undefined && {portraitFileId}),
-            ...(workFileId !== undefined && {workFileId}),
-            ...(workPos !== undefined && {workPos}),
-            ...(videoFileId !== undefined && {videoFileId}),
-            ...(specialty !== undefined && {specialty}),
-            ...(about !== undefined && {about}),
-            ...(bundle.status === "REJECTED" && {rejectReason: null}),
-        },
-    })
-
-    if (Array.isArray(portfolioFileIds)) {
-        await prisma.landingBundleItem.deleteMany({where: {bundleId: id}})
-        if (portfolioFileIds.length > 0) {
-            await prisma.landingBundleItem.createMany({
-                data: portfolioFileIds.slice(0, 3).map((fileId: string, i: number) => ({
+    await prisma.$transaction(async (tx) => {
+        await tx.landingBundle.update({
+            where: {id},
+            data: {
+                ...(portraitFileId !== undefined && {portraitFileId}),
+                ...(workFileId !== undefined && {workFileId}),
+                ...(workPos !== undefined && {workPos}),
+                ...(videoFileId !== undefined && {videoFileId}),
+                ...(specialty !== undefined && {specialty}),
+                ...(about !== undefined && {about}),
+                ...(bundle.status === "REJECTED" && {rejectReason: null, status: "DRAFT"}),
+            },
+        })
+        if (portfolioFileIds) {
+            await tx.landingBundleItem.deleteMany({where: {bundleId: id}})
+            if (portfolioFileIds.length) await tx.landingBundleItem.createMany({
+                data: portfolioFileIds.map((fileId, i) => ({
                     bundleId: id, fileId, position: i,
                 })),
             })
         }
-    }
+    })
 
     const updated = await prisma.landingBundle.findUnique({
         where: {id},
@@ -54,6 +62,7 @@ export async function DELETE(_req: NextRequest, {params}: { params: Promise<{ id
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
     const {id} = await params
     const dbUser = await getOrCreateDbUser(user)
+    if (dbUser.role !== "SPECIALIST") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     const bundle = await prisma.landingBundle.findUnique({where: {id}})
     if (!bundle || bundle.userId !== dbUser.id) return NextResponse.json({error: "Not found"}, {status: 404})

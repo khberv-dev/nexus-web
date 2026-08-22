@@ -1,4 +1,5 @@
 export interface Designer {
+    id?: string
     name: string
     specialty: string
     portrait: string

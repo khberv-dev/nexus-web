@@ -11,11 +11,23 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     if (dbUser.role !== "ADMIN") return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     const {id} = await params
-    const {action, reason} = (await req.json()) as { action: "approve" | "reject"; reason?: string }
+    let body: unknown
+    try {
+        body = await req.json()
+    } catch {
+        return NextResponse.json({error: "Некорректное тело запроса"}, {status: 400})
+    }
+    const {action, reason} = body as { action?: unknown; reason?: unknown }
+    if (action !== "approve" && action !== "reject") {
+        return NextResponse.json({error: "Неизвестное действие"}, {status: 400})
+    }
 
     const bundle = await prisma.landingBundle.findUnique({where: {id}})
     if (!bundle || bundle.status !== "PENDING_REVIEW") {
         return NextResponse.json({error: "Сборка не найдена или не на модерации"}, {status: 404})
+    }
+    if (action === "approve" && (!bundle.portraitFileId || !bundle.workFileId)) {
+        return NextResponse.json({error: "Портрет и фото интерьера обязательны"}, {status: 400})
     }
 
     if (action === "approve") {
@@ -35,7 +47,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         })
         await notify(bundle.userId, "landing_bundle_approved", "Сборка одобрена", "Ваш профиль теперь на главной странице", "/work/community?tab=landing")
     } else {
-        if (!reason?.trim()) return NextResponse.json({error: "Укажите причину отказа"}, {status: 400})
+        if (typeof reason !== "string" || !reason.trim()) return NextResponse.json({error: "Укажите причину отказа"}, {status: 400})
         await prisma.landingBundle.update({
             where: {id},
             data: {status: "REJECTED", rejectReason: reason.trim(), reviewedBy: dbUser.id, reviewedAt: new Date()},

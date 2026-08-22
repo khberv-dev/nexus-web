@@ -25,8 +25,13 @@ async function fileUrl(fileId: string | null): Promise<string | null> {
     if (!fileId) return null
     const file = await prisma.userFile.findUnique({where: {id: fileId}, select: {s3Key: true}})
     if (!file) return null
-    const {url} = await getDownloadUrl(file.s3Key)
-    return url
+    try {
+        const {url} = await getDownloadUrl(file.s3Key)
+        return url
+    } catch (error) {
+        console.error("[landing/specialists] Failed to sign file", fileId, error)
+        return null
+    }
 }
 
 export async function GET() {
@@ -93,6 +98,7 @@ export async function GET() {
                 ...b.items.map(item => fileUrl(item.fileId)),
             ])
             return {
+                id: b.id,
                 ...common,
                 portrait,
                 avatar: portrait,
@@ -107,5 +113,7 @@ export async function GET() {
         }),
     )
 
-    return NextResponse.json(slides.filter(Boolean))
+    return NextResponse.json(slides.filter((slide) => slide.portrait && slide.work), {
+        headers: {"Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=300"},
+    })
 }

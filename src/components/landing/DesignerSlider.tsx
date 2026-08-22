@@ -54,7 +54,7 @@ function LevelBadge({slide}: { slide: DesignerSlide }) {
 
 
 function slideKey(s: DesignerSlide, i: number) {
-    return `${s.name}-${s.portrait}-${i}`
+    return s.id ?? `${s.name}-${s.portrait}-${i}`
 }
 
 function ActiveDesignerContent({

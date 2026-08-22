@@ -52,9 +52,7 @@ export function OrderStagesTab({
     const [activeStageId, setActiveStageId] = useState<string | null>(null)
     const [rulesModalStageId, setRulesModalStageId] = useState<string | null>(null)
 
-    if (orderedStages.length === 0) return null
-
-    const activeStage = orderedStages.find((s) => s.id === activeStageId) ?? orderedStages[0]!
+    const activeStage = orderedStages.find((s) => s.id === activeStageId) ?? orderedStages[0]
     const rulesModalStage = orderedStages.find((s) => s.id === rulesModalStageId) ?? null
 
     const setStageInUrl = (stageId: string) => {
@@ -81,8 +79,10 @@ export function OrderStagesTab({
             }
         }
         // Default: first stage
-        setActiveStageId(orderedStages[0]!.id)
-    }, [])
+        setActiveStageId(orderedStages[0]?.id ?? null)
+    }, [orderedStages])
+
+    if (!activeStage) return null
 
     return (
         <div className="sp-card">
@@ -218,4 +218,3 @@ export function OrderStagesTab({
         </div>
     )
 }
-
