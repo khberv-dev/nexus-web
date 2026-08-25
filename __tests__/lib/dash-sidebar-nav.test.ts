@@ -22,12 +22,12 @@ const TABS = [
 describe("DashSidebarNav", () => {
     afterEach(cleanup);
 
-    test("renders a logout link at the bottom by default", () => {
+    test("renders a logout button at the bottom by default", () => {
         render(createElement(DashSidebarNav, {tabs: TABS, activeTab: "orders", onChange: jest.fn()}));
 
-        const logout = screen.getByText("Выйти").closest("a");
+        const logout = screen.getByText("Выйти").closest("button");
         expect(logout).not.toBeNull();
-        expect(logout!.getAttribute("href")).toBe("/api/auth/signout?callbackUrl=/login");
+        expect(logout!.getAttribute("type")).toBe("button");
         expect(logout!.className).toContain("dash-sidebar__icon--logout");
     });
 

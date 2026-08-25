@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {type AttachmentCreateSpec, validateAttachmentSpecsForNewCard} from "@/lib/portfolioCreateAttachments"
+import {isPortfolioVideo} from "@/lib/portfolio-video"
 
 async function checkProject(projectId: string, userId: string) {
     return prisma.portfolioProject.findFirst({
@@ -92,12 +93,20 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ proje
 
     const fileIds = [body.mainFileId, ...(attachmentSpecs?.map((s) => s.fileId) ?? [])].filter(Boolean) as string[]
     if (fileIds.length > 0) {
-        const owned = await prisma.userFile.count({
+        const owned = await prisma.userFile.findMany({
             where: {id: {in: fileIds}, userId: dbUser.id},
+            select: {id: true, filename: true, mimeType: true},
         })
-        if (owned !== new Set(fileIds).size) {
+        if (owned.length !== new Set(fileIds).size) {
             return NextResponse.json({error: "Invalid file ownership"}, {status: 400})
         }
+        const attachmentIds = new Set(attachmentSpecs?.map((spec) => spec.fileId) ?? [])
+        const hasRequiredVideo = owned.some((file) => attachmentIds.has(file.id) && isPortfolioVideo(file))
+        if (!hasRequiredVideo) {
+            return NextResponse.json({error: "Добавьте видео работы (MP4, WebM или MOV)"}, {status: 400})
+        }
+    } else {
+        return NextResponse.json({error: "Добавьте видео работы (MP4, WebM или MOV)"}, {status: 400})
     }
 
     if (attachmentSpecs?.length) {

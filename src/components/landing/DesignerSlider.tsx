@@ -80,7 +80,7 @@ function ActiveDesignerContent({
             <div className="ds-meta">
                 <span>{slide.experience} лет опыта</span>
                 {slide.has3d && <span>3D</span>}
-                {slide.hasRd && <span>РД</span>}
+                {slide.hasRd && <span>Чертежи</span>}
             </div>
             <div className="ds-meta" style={{marginBottom: 4}}>
                 <span>Реализовано {slide.sqm} м²</span>
@@ -93,158 +93,68 @@ function ActiveDesignerContent({
 }
 
 export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps) {
-    const slideRef = useRef<HTMLDivElement>(null)
     const [cardsVisible, setCardsVisible] = useState(true)
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
-    const activeDomIndex = slides.length === 1 ? 0 : 1
+    const activeSlide = slides[activeIndex] ?? slides[0]
+    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
+        const index = (activeIndex + offset + 1) % slides.length
+        return {slide: slides[index], index}
+    })
 
-    const syncActiveSlide = useCallback(() => {
-        const container = slideRef.current
-        if (!container || !slides.length) return
-        const activeEl = container.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex]
-        if (!activeEl) return
-        const idx = Number(activeEl.dataset.slideIdx)
-        if (!Number.isNaN(idx) && idx >= 0 && idx < slides.length) {
-            setActiveIndex(idx)
-        }
-    }, [activeDomIndex, slides])
+    const handleNext = useCallback(() => {
+        setActiveIndex((current) => (current + 1) % slides.length)
+    }, [slides.length])
 
-    const rotateNext = useCallback(() => {
-        const slide = slideRef.current
-        if (!slide) return
-        const items = slide.querySelectorAll<HTMLDivElement>(".ds-slide-item")
-        if (items.length) slide.appendChild(items[0])
-        syncActiveSlide()
-    }, [syncActiveSlide])
-
-    const rotatePrev = useCallback(() => {
-        const slide = slideRef.current
-        if (!slide) return
-        const items = slide.querySelectorAll<HTMLDivElement>(".ds-slide-item")
-        if (items.length) slide.prepend(items[items.length - 1])
-        syncActiveSlide()
-    }, [syncActiveSlide])
-
-    const handleNext = rotateNext
-    const handlePrev = rotatePrev
+    const handlePrev = useCallback(() => {
+        setActiveIndex((current) => (current - 1 + slides.length) % slides.length)
+    }, [slides.length])
 
     // ── Drag / swipe ──────────────────────────────────────────
     const dragRef = useRef({active: false, startX: 0})
 
-    // Синхронизация активного слайда + яркость шапки
     useEffect(() => {
-        const slide = slideRef.current
-        if (!slide) return
-
-        function onSlideChange() {
-            syncActiveSlide()
-            if (!onBrightnessChange) return
-            const active = slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex]
-            if (!active) return
-            const workLayer = active.querySelector<HTMLDivElement>(".ds-work-layer")
-            const bg = workLayer?.style.backgroundImage ?? active.style.backgroundImage
-            const match = bg.match(/url\(['"]?([^'"]+)['"]?\)/)
-            if (match) sampleBrightness(match[1], onBrightnessChange)
-        }
-
-        onSlideChange()
-        const observer = new MutationObserver(onSlideChange)
-        observer.observe(slide, {childList: true})
-        return () => observer.disconnect()
-    }, [activeDomIndex, onBrightnessChange, syncActiveSlide])
+        if (activeSlide?.work && onBrightnessChange) sampleBrightness(activeSlide.work, onBrightnessChange)
+    }, [activeSlide?.work, onBrightnessChange])
 
     useEffect(() => {
-        syncActiveSlide()
-    }, [slides, syncActiveSlide])
-
-    useEffect(() => {
-        const slide = slideRef.current
-        if (!slide) return
-
         const THRESHOLD = 80
-
-        function getActiveItem() {
-            return slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")[activeDomIndex] ?? null
-        }
 
         function onStart(x: number) {
             dragRef.current = {active: true, startX: x}
-            const active = getActiveItem()
-            if (active) active.style.transition = "none"
-        }
-
-        function onMove(x: number) {
-            if (!dragRef.current.active) return
-            const dx = x - dragRef.current.startX
-            const active = getActiveItem()
-            if (active) active.style.transform = `translateX(${dx}px)`
         }
 
         function onEnd(x: number) {
             if (!dragRef.current.active) return
             dragRef.current.active = false
             const dx = x - dragRef.current.startX
-            const active = getActiveItem()
-
-            if (active) {
-                active.style.transition = ""
-                active.style.transform = ""
-            }
-
-            if (dx < -THRESHOLD) {
-                const items = slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")
-                slide!.appendChild(items[0])
-                syncActiveSlide()
-            } else if (dx > THRESHOLD) {
-                const items = slide!.querySelectorAll<HTMLDivElement>(".ds-slide-item")
-                slide!.prepend(items[items.length - 1])
-                syncActiveSlide()
-            }
+            if (dx < -THRESHOLD) handleNext()
+            else if (dx > THRESHOLD) handlePrev()
         }
 
         // Mouse
         const onMouseDown = (e: MouseEvent) => onStart(e.clientX)
-        const onMouseMove = (e: MouseEvent) => onMove(e.clientX)
         const onMouseUp = (e: MouseEvent) => onEnd(e.clientX)
 
         // Touch
         const onTouchStart = (e: TouchEvent) => onStart(e.touches[0].clientX)
-        const onTouchMove = (e: TouchEvent) => onMove(e.touches[0].clientX)
         const onTouchEnd = (e: TouchEvent) => onEnd(e.changedTouches[0].clientX)
 
-        slide.addEventListener("mousedown", onMouseDown)
-        window.addEventListener("mousemove", onMouseMove)
+        const target = document.querySelector<HTMLElement>(".ds-wrap")
+        if (!target) return
+        target.addEventListener("mousedown", onMouseDown)
         window.addEventListener("mouseup", onMouseUp)
-        slide.addEventListener("touchstart", onTouchStart, {passive: true})
-        slide.addEventListener("touchmove", onTouchMove, {passive: true})
-        slide.addEventListener("touchend", onTouchEnd)
+        target.addEventListener("touchstart", onTouchStart, {passive: true})
+        target.addEventListener("touchend", onTouchEnd)
 
         return () => {
-            slide.removeEventListener("mousedown", onMouseDown)
-            window.removeEventListener("mousemove", onMouseMove)
+            target.removeEventListener("mousedown", onMouseDown)
             window.removeEventListener("mouseup", onMouseUp)
-            slide.removeEventListener("touchstart", onTouchStart)
-            slide.removeEventListener("touchmove", onTouchMove)
-            slide.removeEventListener("touchend", onTouchEnd)
+            target.removeEventListener("touchstart", onTouchStart)
+            target.removeEventListener("touchend", onTouchEnd)
         }
-    }, [activeDomIndex, syncActiveSlide])
+    }, [handleNext, handlePrev])
     // ─────────────────────────────────────────────────────────
-
-    const handleClickItem = useCallback((el: HTMLDivElement) => {
-        const slide = slideRef.current
-        if (!slide) return
-        const items = Array.from(slide.querySelectorAll<HTMLDivElement>(".ds-slide-item"))
-        const idx = items.indexOf(el)
-        // idx === 1 — уже активна, idx === 0 — предыдущая (не трогаем маленькие)
-        if (idx <= 1) return
-        // двигаем items[0] в конец (idx - 1) раз, чтобы el стала nth-child(2)
-        for (let i = 0; i < idx - 1; i++) {
-            const current = slide.querySelectorAll<HTMLDivElement>(".ds-slide-item")
-            slide.appendChild(current[0])
-        }
-        syncActiveSlide()
-    }, [syncActiveSlide])
 
     return (
         <>
@@ -254,58 +164,63 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             />
 
             <div className={`ds-wrap${cardsVisible ? "" : " ds-cards-hidden"}`}>
-                <div ref={slideRef} className={`ds-slide${slides.length === 1 ? " ds-slide--single" : ""}`}>
-                    {slides.map((s, i) => (
+                <div className="ds-slide">
+                    {activeSlide && (
                         <div
-                            key={slideKey(s, i)}
-                            data-slide-idx={i}
-                            className="ds-slide-item"
-                            style={{backgroundImage: `url('${s.portrait}')`}}
-                            onClick={(e) => handleClickItem(e.currentTarget)}
+                            key={`active-${slideKey(activeSlide, activeIndex)}`}
+                            className="ds-slide-item ds-slide-item--active"
                         >
-                            {/* Работа — видна только когда карточка активна (full screen) */}
                             <div
                                 className="ds-work-layer"
                                 style={{
-                                    backgroundImage: `url('${s.work}')`,
-                                    backgroundPosition: s.workPos,
+                                    backgroundImage: `url('${activeSlide.work}')`,
+                                    backgroundPosition: activeSlide.workPos,
                                 }}
                             />
-
-                            {/* Контент на активной карточке */}
                             <div className="ds-content">
                                 <div className="ds-designer-row">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img className="ds-avatar" src={s.avatar ?? s.portrait} alt={s.name} decoding="async"/>
+                                    <img className="ds-avatar" src={activeSlide.avatar ?? activeSlide.portrait}
+                                         alt={activeSlide.name} decoding="async"/>
                                     <div>
-                                        <div className="ds-name">{s.name}</div>
+                                        <div className="ds-name">{activeSlide.name}</div>
                                         <div className="ds-specialty">
-                                            <LevelBadge slide={s}/>
-                                            {s.specialty}
+                                            <LevelBadge slide={activeSlide}/>
+                                            {activeSlide.specialty}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="ds-meta">
-                                    <span>{s.experience} лет опыта</span>
-                                    {s.has3d && <span>3D</span>}
-                                    {s.hasRd && <span>РД</span>}
+                                    <span>{activeSlide.experience} лет опыта</span>
+                                    {activeSlide.has3d && <span>3D</span>}
+                                    {activeSlide.hasRd && <span>РД</span>}
                                 </div>
                                 <div className="ds-meta" style={{marginBottom: 4}}>
-                                    <span>Реализовано {s.sqm} м²</span>
+                                    <span>Реализовано {activeSlide.sqm} м²</span>
                                 </div>
                                 <button className="ds-see-more" onClick={e => {
                                     e.stopPropagation();
-                                    setActiveDesigner(s)
+                                    setActiveDesigner(activeSlide)
                                 }}>Открыть профиль
                                 </button>
                             </div>
-
-                            {/* Подпись на маленькой карточке */}
-                            <div className="ds-card-label">
-                                <div className="ds-card-name">{s.name}</div>
-                                <div className="ds-card-spec">{s.specialty.split(" · ")[0]}</div>
-                            </div>
                         </div>
+                    )}
+
+                    {previewSlides.map(({slide: preview, index}, position) => (
+                        <button
+                            type="button"
+                            key={`preview-${slideKey(preview, index)}`}
+                            className={`ds-slide-item ds-slide-item--preview ds-slide-item--preview-${position + 1}`}
+                            style={{backgroundImage: `url('${preview.portrait}')`}}
+                            onClick={() => setActiveIndex(index)}
+                            aria-label={`Показать специалиста ${preview.name}`}
+                        >
+                            <div className="ds-card-label">
+                                <div className="ds-card-name">{preview.name}</div>
+                                <div className="ds-card-spec">{preview.specialty.split(" · ")[0]}</div>
+                            </div>
+                        </button>
                     ))}
                 </div>
 
@@ -692,6 +607,66 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           pointer-events: none;
         }
 
+        /* Explicit state-driven layout: one active specialist + up to three previews. */
+        .ds-slide .ds-slide-item--active {
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          transform: none;
+          border-radius: 0;
+          cursor: grab;
+        }
+
+        .ds-slide .ds-slide-item--active .ds-work-layer {
+          opacity: 1;
+        }
+
+        .ds-slide .ds-slide-item--active .ds-work-layer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,0.38);
+        }
+
+        .ds-slide .ds-slide-item--active .ds-content {
+          display: block;
+        }
+
+        .ds-slide .ds-slide-item--active .ds-card-label {
+          display: none;
+        }
+
+        .ds-slide .ds-slide-item--preview {
+          top: 50%;
+          width: 14vw;
+          height: 62vh;
+          transform: translateY(-50%);
+          border-radius: 20px;
+          cursor: pointer;
+          appearance: none;
+          padding: 0;
+          border: 0;
+          text-align: left;
+          z-index: 4;
+        }
+
+        .ds-slide .ds-slide-item--preview-1 { left: 52%; }
+        .ds-slide .ds-slide-item--preview-2 { left: 67%; }
+        .ds-slide .ds-slide-item--preview-3 { left: 82%; }
+        .ds-slide .ds-slide-item--preview .ds-card-label { display: block; }
+
+        .ds-slide .ds-slide-item--preview:hover {
+          transform: translateY(-53%);
+          box-shadow: 0 40px 60px #303030;
+        }
+
+        .ds-cards-hidden .ds-slide-item--preview {
+          transform: translate(120%, -50%);
+          opacity: 0;
+          pointer-events: none;
+        }
+
         /* ── Оверлей активного дизайнера (только мобильный) ── */
         .ds-active-overlay {
           display: none;
@@ -705,6 +680,13 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           .ds-slide .ds-slide-item:nth-child(3) { left: 46%; }
           .ds-slide .ds-slide-item:nth-child(4) { left: 76%; }
           .ds-slide .ds-slide-item:nth-child(5) { left: 106%; }
+
+          .ds-slide .ds-slide-item--preview {
+            width: 28vw;
+          }
+          .ds-slide .ds-slide-item--preview-1 { left: 46%; }
+          .ds-slide .ds-slide-item--preview-2 { left: 76%; }
+          .ds-slide .ds-slide-item--preview-3 { left: 106%; }
 
           .ds-slide .ds-slide-item .ds-card-label {
             display: none !important;

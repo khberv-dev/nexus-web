@@ -6,6 +6,7 @@ import {ActionButton, AppModal} from "@/components/app/AppCard"
 import {isPortfolioVisualFile} from "@/lib/portfolioVisualFile"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioLocalFilePreview, PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
+import {isPortfolioVideo} from "@/lib/portfolio-video"
 
 function DashSectionLabel({children}: { children: ReactNode }) {
     return (
@@ -101,8 +102,6 @@ export function PortfolioCardEditorModal({
     const [error, setError] = useState<string | null>(null)
     const [localMain, setLocalMain] = useState<CardFile | null>(null)
     const [localAttachments, setLocalAttachments] = useState<CardAttachment[]>([])
-    /** Только режим «Создать»: показывать блок материалов и загружать вложения */
-    const [addMaterialsOnCreate, setAddMaterialsOnCreate] = useState(true)
 
     const mainInputRef = useRef<HTMLInputElement>(null)
     const extraInputRef = useRef<HTMLInputElement>(null)
@@ -128,7 +127,6 @@ export function PortfolioCardEditorModal({
             setDescription("")
             setLocalMain(null)
             setLocalAttachments([])
-            setAddMaterialsOnCreate(true)
         }
     }, [open, mode, card])
 
@@ -223,6 +221,15 @@ export function PortfolioCardEditorModal({
             setError("Укажите название работы")
             return
         }
+        const hasExistingVideo = localAttachments.some((attachment) => isPortfolioVideo(attachment.file))
+        const hasPendingVideo = extraDrafts.some((row) => isPortfolioVideo({
+            mimeType: row.file.type,
+            filename: row.file.name,
+        }))
+        if (!hasExistingVideo && !hasPendingVideo) {
+            setError("Добавьте обязательное видео работы (MP4, WebM или MOV)")
+            return
+        }
         setSaving(true)
         setError(null)
         try {
@@ -235,17 +242,14 @@ export function PortfolioCardEditorModal({
                 newMainFileId = up.id
             }
 
-            const uploadExtras = mode === "edit" || addMaterialsOnCreate
             const uploadedExtraIds: string[] = []
-            if (uploadExtras) {
-                for (const row of extraDrafts) {
-                    const cat = fileCategoryForAttachment(row.file)
-                    const up = await uploadUserFileToPortfolio(row.file, cat, {
-                        title: row.file.name.replace(/\.[^.]+$/, ""),
-                        description: null,
-                    })
-                    uploadedExtraIds.push(up.id)
-                }
+            for (const row of extraDrafts) {
+                const cat = fileCategoryForAttachment(row.file)
+                const up = await uploadUserFileToPortfolio(row.file, cat, {
+                    title: row.file.name.replace(/\.[^.]+$/, ""),
+                    description: null,
+                })
+                uploadedExtraIds.push(up.id)
             }
 
             const mainIdForLinks = newMainFileId ?? (mode === "edit" ? localMain?.id ?? null : null)
@@ -322,7 +326,6 @@ export function PortfolioCardEditorModal({
         mode === "create"
             ? "Здесь — только вложения к этой работе (блок файлов включается чекбоксом ниже). Общие файлы на всю папку — на экране проекта, «Материалы проекта» под плитками работ."
             : "Вложения ниже относятся к этой работе. Общие материалы на весь проект — на экране папки, под сеткой работ."
-    const showMaterialsSection = mode === "edit" || addMaterialsOnCreate
 
     return (
         <AppModal open={open} onClose={handleClose} maxWidth={640} variant="dark">
@@ -453,34 +456,21 @@ export function PortfolioCardEditorModal({
                     </div>
 
                     {mode === "create" && (
-                        <div className="form-check mb-3">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                id="portfolio-add-materials-create"
-                                checked={addMaterialsOnCreate}
-                                onChange={(e) => {
-                                    const on = e.target.checked
-                                    setAddMaterialsOnCreate(on)
-                                    if (!on) setExtraDrafts([])
-                                }}
-                                disabled={saving}
-                            />
-                            <label
-                                className="form-check-label small"
-                                htmlFor="portfolio-add-materials-create"
-                                style={{color: "rgba(255,255,255,0.82)", cursor: "pointer"}}
-                            >
-                                Добавить материалы и вложения (PDF, видео, доп. кадры и привязка к фото)
-                            </label>
+                        <div className="alert py-2 px-3 mb-3" role="note" style={{
+                            background: "rgba(115,103,240,0.1)",
+                            border: "1px solid rgba(115,103,240,0.3)",
+                            color: "rgba(255,255,255,0.82)",
+                            fontSize: "0.8rem",
+                        }}>
+                            <strong>Видео обязательно.</strong> Добавьте MP4, WebM или MOV в материалы работы.
                         </div>
                     )}
 
-                    {showMaterialsSection && (
-                        <>
-                            <DashSectionLabel>Материалы и видео</DashSectionLabel>
+                    <>
+                            <DashSectionLabel>Материалы и видео *</DashSectionLabel>
                             <p className="small mb-2" style={{marginTop: -6, color: "rgba(255,255,255,0.5)"}}>
-                                PDF, MP4, ZIP, RAR, DWG, DXF и доп. изображения. Два варианта: привязать файл к главному
+                                Видео MP4, WebM или MOV обязательно. Также можно добавить PDF, ZIP, RAR, DWG, DXF и
+                                доп. изображения. Два варианта: привязать файл к главному
                                 фото или к ранее добавленному кадру (изображение),
                                 либо оставить «отдельная сетка материалов» без привязки к кадру.
                             </p>
@@ -489,7 +479,7 @@ export function PortfolioCardEditorModal({
                                     ref={extraInputRef}
                                     type="file"
                                     multiple
-                                    accept=".pdf,.zip,.rar,.mp4,.dwg,.dxf,.jpg,.jpeg,.png,image/*,video/mp4,application/pdf"
+                                    accept=".pdf,.zip,.rar,.mp4,.webm,.mov,.dwg,.dxf,.jpg,.jpeg,.png,image/*,video/mp4,video/webm,video/quicktime,application/pdf"
                                     className="d-none"
                                     onChange={(e) => {
                                         const list = e.target.files ? Array.from(e.target.files) : []
@@ -646,8 +636,7 @@ export function PortfolioCardEditorModal({
                                     </div>
                                 </>
                             )}
-                        </>
-                    )}
+                    </>
                 </div>
 
                 <div
