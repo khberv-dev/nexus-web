@@ -93,14 +93,9 @@ function ActiveDesignerContent({
 }
 
 export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps) {
-    const [cardsVisible, setCardsVisible] = useState(true)
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const activeSlide = slides[activeIndex] ?? slides[0]
-    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
-        const index = (activeIndex + offset + 1) % slides.length
-        return {slide: slides[index], index}
-    })
 
     const handleNext = useCallback(() => {
         setActiveIndex((current) => (current + 1) % slides.length)
@@ -163,7 +158,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                 onClose={() => setActiveDesigner(null)}
             />
 
-            <div className={`ds-wrap${cardsVisible ? "" : " ds-cards-hidden"}`}>
+            <div className="ds-wrap">
                 <div className="ds-slide">
                     {activeSlide && (
                         <div
@@ -207,21 +202,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                         </div>
                     )}
 
-                    {previewSlides.map(({slide: preview, index}, position) => (
-                        <button
-                            type="button"
-                            key={`preview-${slideKey(preview, index)}`}
-                            className={`ds-slide-item ds-slide-item--preview ds-slide-item--preview-${position + 1}`}
-                            style={{backgroundImage: `url('${preview.portrait}')`}}
-                            onClick={() => setActiveIndex(index)}
-                            aria-label={`Показать специалиста ${preview.name}`}
-                        >
-                            <div className="ds-card-label">
-                                <div className="ds-card-name">{preview.name}</div>
-                                <div className="ds-card-spec">{preview.specialty.split(" · ")[0]}</div>
-                            </div>
-                        </button>
-                    ))}
                 </div>
 
                 {slides[activeIndex] && (
@@ -238,20 +218,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                     <button className="ds-btn ds-btn-next" onClick={handleNext}>▷</button>
                 </div>}
 
-                <button
-                    className="ds-toggle"
-                    onClick={() => setCardsVisible(v => !v)}
-                    title={cardsVisible ? "Скрыть дизайнеров" : "Показать дизайнеров"}
-                >
-          <span className={`ds-toggle-icon${cardsVisible ? "" : " ds-toggle-icon--hidden"}`}>
-            {/* двойная стрелка вправо / влево */}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
-                   strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="13 17 18 12 13 7"/>
-              <polyline points="6 17 11 12 6 7"/>
-            </svg>
-          </span>
-                </button>
             </div>
 
             <style>{`
