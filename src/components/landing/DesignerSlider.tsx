@@ -96,8 +96,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const activeSlide = slides[activeIndex] ?? slides[0]
-    const previewSlides = Array.from({length: Math.min(3, slides.length)}, (_, offset) => {
-        const index = (activeIndex + offset) % slides.length
+    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
+        const index = (activeIndex + offset + 1) % slides.length
         return {slide: slides[index], index}
     })
 
@@ -212,7 +212,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 <button
                                     type="button"
                                     key={`preview-${slideKey(preview, index)}`}
-                                    className={`ds-slide-item ds-slide-item--preview${index === activeIndex ? " is-active" : ""}`}
+                                    className="ds-slide-item ds-slide-item--preview"
                                     style={{backgroundImage: `url('${preview.portrait}')`}}
                                     onClick={() => setActiveIndex(index)}
                                     aria-label={`Показать специалиста ${preview.name}`}
@@ -530,11 +530,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         .ds-slide .ds-slide-item--preview .ds-card-label { display: block; }
-
-        .ds-slide .ds-slide-item--preview.is-active {
-          border: 2px solid rgba(255,255,255,0.95);
-          box-shadow: 0 0 0 3px rgba(0,0,0,0.22), 0 30px 50px rgba(0,0,0,0.4);
-        }
 
         .ds-slide .ds-slide-item--preview:hover {
           transform: translateY(-53%);
