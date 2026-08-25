@@ -96,6 +96,10 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const activeSlide = slides[activeIndex] ?? slides[0]
+    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
+        const index = (activeIndex + offset + 1) % slides.length
+        return {slide: slides[index], index}
+    })
 
     const handleNext = useCallback(() => {
         setActiveIndex((current) => (current + 1) % slides.length)
@@ -199,6 +203,26 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 }}>Открыть профиль
                                 </button>
                             </div>
+                        </div>
+                    )}
+
+                    {previewSlides.length > 0 && (
+                        <div className="ds-preview-rail" aria-label="Выбор специалиста">
+                            {previewSlides.map(({slide: preview, index}) => (
+                                <button
+                                    type="button"
+                                    key={`preview-${slideKey(preview, index)}`}
+                                    className="ds-slide-item ds-slide-item--preview"
+                                    style={{backgroundImage: `url('${preview.portrait}')`}}
+                                    onClick={() => setActiveIndex(index)}
+                                    aria-label={`Показать специалиста ${preview.name}`}
+                                >
+                                    <div className="ds-card-label">
+                                        <div className="ds-card-name">{preview.name}</div>
+                                        <div className="ds-card-spec">{preview.specialty.split(" · ")[0]}</div>
+                                    </div>
+                                </button>
+                            ))}
                         </div>
                     )}
 
@@ -627,6 +651,31 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           box-shadow: 0 40px 60px #303030;
         }
 
+        .ds-preview-rail {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          z-index: 4;
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+          gap: 1vw;
+          transform: translateY(-50%);
+        }
+
+        .ds-slide .ds-preview-rail .ds-slide-item--preview {
+          position: relative;
+          inset: auto;
+          flex: 0 0 14vw;
+          width: 14vw;
+          transform: none;
+          margin: 0;
+        }
+
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:hover {
+          transform: translateY(-3%);
+        }
+
         .ds-cards-hidden .ds-slide-item--preview {
           transform: translate(120%, -50%);
           opacity: 0;
@@ -653,6 +702,15 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           .ds-slide .ds-slide-item--preview-1 { left: 46%; }
           .ds-slide .ds-slide-item--preview-2 { left: 76%; }
           .ds-slide .ds-slide-item--preview-3 { left: 106%; }
+
+          .ds-preview-rail {
+            gap: 8px;
+          }
+
+          .ds-slide .ds-preview-rail .ds-slide-item--preview {
+            flex-basis: 28vw;
+            width: 28vw;
+          }
 
           .ds-slide .ds-slide-item .ds-card-label {
             display: none !important;
