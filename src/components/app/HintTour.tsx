@@ -1,6 +1,6 @@
 "use client"
 
-import {useCallback, useEffect, useMemo, useState} from "react"
+import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 
 export type HintStep = {
@@ -14,6 +14,7 @@ export type HintStep = {
 }
 
 type Rect = { top: number; left: number; width: number; height: number }
+type Viewport = {top: number; left: number; width: number; height: number}
 
 /** Отступ подсветки вокруг элемента. */
 const PAD = 8
@@ -22,13 +23,28 @@ const CARD_GAP = 14
 /** Пауза после before(): даём React отрисовать вкладку, прежде чем мерить элемент. */
 const BEFORE_DELAY_MS = 220
 
+function readViewport(): Viewport {
+    const vv = window.visualViewport
+    return vv
+        ? {top: vv.offsetTop, left: vv.offsetLeft, width: vv.width, height: vv.height}
+        : {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight}
+}
+
 function readRect(selector: string): Rect | null {
     if (typeof document === "undefined") return null
-    const el = document.querySelector(selector)
+    const el = document.querySelector<HTMLElement>(selector)
     if (!el) return null
+    const style = window.getComputedStyle(el)
+    if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") return null
     const r = el.getBoundingClientRect()
-    if (r.width === 0 && r.height === 0) return null
-    return {top: r.top - PAD, left: r.left - PAD, width: r.width + PAD * 2, height: r.height + PAD * 2}
+    if (r.width <= 0 || r.height <= 0 || el.getClientRects().length === 0) return null
+    const viewport = readViewport()
+    const right = Math.min(r.right + PAD, viewport.left + viewport.width)
+    const bottom = Math.min(r.bottom + PAD, viewport.top + viewport.height)
+    const left = Math.max(r.left - PAD, viewport.left)
+    const top = Math.max(r.top - PAD, viewport.top)
+    if (right <= left || bottom <= top) return null
+    return {top, left, width: right - left, height: bottom - top}
 }
 
 function seenKey(storageKey: string): string {
@@ -85,6 +101,9 @@ export function HintTour({
     const [active, setActive] = useState(false)
     const [index, setIndex] = useState(0)
     const [rect, setRect] = useState<Rect | null>(null)
+    const [viewport, setViewport] = useState<Viewport | null>(null)
+    const [cardHeight, setCardHeight] = useState(180)
+    const cardRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => setMounted(true), [])
 
@@ -125,6 +144,7 @@ export function HintTour({
         if (!step) return
         let cancelled = false
         let raf = 0
+        let resizeObserver: ResizeObserver | null = null
 
         step.before?.()
 
@@ -132,18 +152,31 @@ export function HintTour({
             if (cancelled) return
             const next = readRect(step.target)
             setRect(next)
+            setViewport(readViewport())
         }
 
         const timer = window.setTimeout(() => {
             if (cancelled) return
-            const el = document.querySelector(step.target)
+            const el = document.querySelector<HTMLElement>(step.target)
             if (!el) {
                 // Цели нет (вкладка пустая, блок не отрисован) — шаг пропускаем.
                 goTo(index + 1)
                 return
             }
-            el.scrollIntoView({block: "center", behavior: "smooth"})
-            raf = window.requestAnimationFrame(() => window.setTimeout(measure, 260))
+            const targetStyle = window.getComputedStyle(el)
+            if (targetStyle.display === "none" || targetStyle.visibility === "hidden" || targetStyle.opacity === "0") {
+                goTo(index + 1)
+                return
+            }
+            // Instant scrolling avoids measuring halfway through a smooth nested-container scroll.
+            el.scrollIntoView({block: "center", inline: "nearest", behavior: "auto"})
+            if (typeof ResizeObserver !== "undefined") {
+                resizeObserver = new ResizeObserver(measure)
+                resizeObserver.observe(el)
+            }
+            raf = window.requestAnimationFrame(() => {
+                raf = window.requestAnimationFrame(measure)
+            })
         }, step.before ? BEFORE_DELAY_MS : 0)
 
         const onViewportChange = () => {
@@ -152,13 +185,18 @@ export function HintTour({
         }
         window.addEventListener("resize", onViewportChange)
         window.addEventListener("scroll", onViewportChange, true)
+        window.visualViewport?.addEventListener("resize", onViewportChange)
+        window.visualViewport?.addEventListener("scroll", onViewportChange)
 
         return () => {
             cancelled = true
             window.clearTimeout(timer)
             window.cancelAnimationFrame(raf)
+            resizeObserver?.disconnect()
             window.removeEventListener("resize", onViewportChange)
             window.removeEventListener("scroll", onViewportChange, true)
+            window.visualViewport?.removeEventListener("resize", onViewportChange)
+            window.visualViewport?.removeEventListener("scroll", onViewportChange)
         }
     }, [step, index, goTo])
 
@@ -173,19 +211,51 @@ export function HintTour({
         return () => document.removeEventListener("keydown", onKey)
     }, [active, index, goTo, finish])
 
+    useLayoutEffect(() => {
+        if (!cardRef.current) return
+        const update = () => setCardHeight(cardRef.current?.getBoundingClientRect().height ?? 180)
+        update()
+        if (typeof ResizeObserver === "undefined") return
+        const observer = new ResizeObserver(update)
+        observer.observe(cardRef.current)
+        return () => observer.disconnect()
+    }, [step])
+
     const cardPosition = useMemo(() => {
-        if (typeof window === "undefined") return {top: 0, left: 0}
-        const vw = window.innerWidth
-        const vh = window.innerHeight
+        const vp = viewport
+        if (!vp) return {top: 24, left: 16}
+        const minLeft = vp.left + 16
+        const maxLeft = Math.max(minLeft, vp.left + vp.width - CARD_WIDTH - 16)
+        const minTop = vp.top + 16
+        const maxTop = Math.max(minTop, vp.top + vp.height - cardHeight - 16)
         if (!rect) {
-            return {top: Math.max(24, vh / 2 - 90), left: Math.max(16, vw / 2 - CARD_WIDTH / 2)}
+            return {
+                top: Math.min(maxTop, Math.max(minTop, vp.top + (vp.height - cardHeight) / 2)),
+                left: Math.min(maxLeft, Math.max(minLeft, vp.left + (vp.width - CARD_WIDTH) / 2)),
+            }
         }
-        const below = rect.top + rect.height + CARD_GAP
-        const fitsBelow = below + 180 < vh
-        const top = fitsBelow ? below : Math.max(16, rect.top - 180 - CARD_GAP)
-        const left = Math.min(Math.max(16, rect.left), vw - CARD_WIDTH - 16)
-        return {top, left}
-    }, [rect])
+        const candidates = [
+            {top: rect.top + rect.height + CARD_GAP, left: rect.left},
+            {top: rect.top - cardHeight - CARD_GAP, left: rect.left},
+            {top: rect.top, left: rect.left + rect.width + CARD_GAP},
+            {top: rect.top, left: rect.left - CARD_WIDTH - CARD_GAP},
+        ]
+        const fits = candidates.find(({top, left}) =>
+            top >= minTop && top <= maxTop && left >= minLeft && left <= maxLeft,
+        )
+        const chosen = fits ?? candidates
+            .map((candidate) => ({
+                ...candidate,
+                penalty:
+                    Math.abs(candidate.top - Math.min(maxTop, Math.max(minTop, candidate.top))) +
+                    Math.abs(candidate.left - Math.min(maxLeft, Math.max(minLeft, candidate.left))),
+            }))
+            .sort((a, b) => a.penalty - b.penalty)[0]
+        return {
+            top: Math.min(maxTop, Math.max(minTop, chosen.top)),
+            left: Math.min(maxLeft, Math.max(minLeft, chosen.left)),
+        }
+    }, [rect, viewport, cardHeight])
 
     if (!mounted || !active || !step) return null
 
@@ -227,6 +297,7 @@ export function HintTour({
             )}
 
             <div
+                ref={cardRef}
                 style={{
                     position: "fixed",
                     top: cardPosition.top,

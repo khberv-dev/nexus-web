@@ -103,7 +103,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
         setCrop(centerAspectCrop(width, height))
     }, [])
 
-    /** «AI generative» — три альтернативы по текущему кадру; оригинал остаётся первым вариантом. */
+    /** Три стилизованных AI-варианта по текущему кадру; оригинал остаётся первым вариантом. */
     const handleGenerate = async () => {
         if (!imgRef.current || !completedCrop || generating) return
         setGenerating(true)
@@ -244,7 +244,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     }}
                 >
                     <i className={`bx ${generating ? "bx-loader-alt bx-spin" : "bx-magic-wand"}`}/>
-                    {generating ? "Генерируем варианты…" : hasVariants ? "Сгенерировать заново" : "AI generative"}
+                    {generating ? "Генерируем варианты…" : hasVariants ? "Сгенерировать заново" : "AI-варианты аватара"}
                 </button>
 
                 {aiError && (
