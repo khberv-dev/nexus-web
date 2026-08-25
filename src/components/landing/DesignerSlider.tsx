@@ -96,8 +96,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
     const activeSlide = slides[activeIndex] ?? slides[0]
-    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
-        const index = (activeIndex + offset + 1) % slides.length
+    const previewSlides = Array.from({length: Math.min(3, slides.length)}, (_, offset) => {
+        const index = (activeIndex + offset) % slides.length
         return {slide: slides[index], index}
     })
 
@@ -212,7 +212,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 <button
                                     type="button"
                                     key={`preview-${slideKey(preview, index)}`}
-                                    className="ds-slide-item ds-slide-item--preview"
+                                    className={`ds-slide-item ds-slide-item--preview${index === activeIndex ? " is-active" : ""}`}
                                     style={{backgroundImage: `url('${preview.portrait}')`}}
                                     onClick={() => setActiveIndex(index)}
                                     aria-label={`Показать специалиста ${preview.name}`}
@@ -274,40 +274,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           overflow: hidden;
         }
 
-        /* ── Позиции маленьких карточек ── */
-        .ds-slide .ds-slide-item:nth-child(3) { left: 52%; cursor: pointer; }
-        .ds-slide .ds-slide-item:nth-child(4) { left: 67%; cursor: pointer; }
-        .ds-slide .ds-slide-item:nth-child(5) { left: 82%; cursor: pointer; }
-        .ds-slide .ds-slide-item:nth-child(n + 6) {
-          left: 97%;
-          opacity: 0;
-          pointer-events: none;
-        }
-
-        .ds-slide .ds-slide-item:nth-child(3):hover,
-        .ds-slide .ds-slide-item:nth-child(4):hover,
-        .ds-slide .ds-slide-item:nth-child(5):hover {
-          transform: translate(0, -53%);
-          box-shadow: 0 40px 60px #303030;
-        }
-
-        /* ── Активная карточка (full screen) ── */
-        .ds-slide .ds-slide-item:nth-child(1),
-        .ds-slide .ds-slide-item:nth-child(2) {
-          top: 0;
-          left: 0;
-          transform: translate(0, 0);
-          border-radius: 0;
-          width: 100%;
-          height: 100%;
-          transition: all 0.5s;
-          cursor: grab;
-        }
-
-        .ds-slide .ds-slide-item:nth-child(2):active {
-          cursor: grabbing;
-        }
-
         /* ── Слой с работой (показывается только на full screen) ── */
         .ds-work-layer {
           position: absolute;
@@ -315,19 +281,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           background-size: cover;
           opacity: 0;
           transition: opacity 0.5s;
-        }
-
-        .ds-slide .ds-slide-item:nth-child(1) .ds-work-layer,
-        .ds-slide .ds-slide-item:nth-child(2) .ds-work-layer {
-          opacity: 1;
-        }
-
-        /* темный оверлей для читаемости текста */
-        .ds-slide .ds-slide-item:nth-child(2) .ds-work-layer::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: rgba(0,0,0,0.38);
         }
 
         /* ── Контент активной карточки ── */
@@ -339,21 +292,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           color: #eee;
           display: none;
           z-index: 2;
-        }
-
-        .ds-slide .ds-slide-item:nth-child(2) .ds-content {
-          display: block;
-        }
-
-        .ds-slide--single .ds-slide-item:nth-child(1) .ds-content {
-          display: block;
-        }
-
-        .ds-slide--single .ds-slide-item:nth-child(1) .ds-work-layer::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: rgba(0,0,0,0.38);
         }
 
         .ds-designer-row {
@@ -466,11 +404,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           display: block;
         }
 
-        .ds-slide .ds-slide-item:nth-child(1) .ds-card-label,
-        .ds-slide .ds-slide-item:nth-child(2) .ds-card-label {
-          display: none;
-        }
-
         .ds-card-name {
           font-size: 0.85rem;
           font-weight: 600;
@@ -551,52 +484,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         .ds-btn-next { padding: 0 0 0 3px; }
         .ds-btn-prev { padding: 0 3px 0 0; }
 
-        /* ── Кнопка показать/скрыть карточки ── */
-        .ds-toggle {
-          position: absolute;
-          top: 50%;
-          right: 0;
-          transform: translateY(-50%);
-          width: 28px;
-          height: 56px;
-          border: none;
-          border-radius: 10px 0 0 10px;
-          background: rgba(255,255,255,0.15);
-          backdrop-filter: blur(8px);
-          color: #fff;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          pointer-events: auto;
-          z-index: 10;
-          transition: background 0.3s, width 0.3s;
-        }
-
-        .ds-toggle:hover {
-          background: rgba(255,255,255,0.28);
-          width: 34px;
-        }
-
-        .ds-toggle-icon {
-          display: flex;
-          transition: transform 0.4s ease;
-        }
-
-        .ds-toggle-icon--hidden {
-          transform: rotate(180deg);
-        }
-
-        /* ── Скрытие карточек ── */
-        .ds-cards-hidden .ds-slide-item:nth-child(3),
-        .ds-cards-hidden .ds-slide-item:nth-child(4),
-        .ds-cards-hidden .ds-slide-item:nth-child(5),
-        .ds-cards-hidden .ds-slide-item:nth-child(n+6) {
-          transform: translate(120%, -50%);
-          opacity: 0;
-          pointer-events: none;
-        }
-
         /* Explicit state-driven layout: one active specialist + up to three previews. */
         .ds-slide .ds-slide-item--active {
           top: 0;
@@ -606,6 +493,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           transform: none;
           border-radius: 0;
           cursor: grab;
+          animation: ds-active-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
         .ds-slide .ds-slide-item--active .ds-work-layer {
@@ -641,10 +529,12 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           z-index: 4;
         }
 
-        .ds-slide .ds-slide-item--preview-1 { left: 52%; }
-        .ds-slide .ds-slide-item--preview-2 { left: 67%; }
-        .ds-slide .ds-slide-item--preview-3 { left: 82%; }
         .ds-slide .ds-slide-item--preview .ds-card-label { display: block; }
+
+        .ds-slide .ds-slide-item--preview.is-active {
+          border: 2px solid rgba(255,255,255,0.95);
+          box-shadow: 0 0 0 3px rgba(0,0,0,0.22), 0 30px 50px rgba(0,0,0,0.4);
+        }
 
         .ds-slide .ds-slide-item--preview:hover {
           transform: translateY(-53%);
@@ -654,32 +544,45 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         .ds-preview-rail {
           position: absolute;
           top: 50%;
-          right: 0;
+          right: 0 !important;
+          left: auto !important;
           z-index: 4;
           display: flex;
           flex-direction: row-reverse;
           align-items: center;
           gap: 1vw;
           transform: translateY(-50%);
+          margin: 0;
+          padding: 0;
+          width: max-content;
         }
 
         .ds-slide .ds-preview-rail .ds-slide-item--preview {
-          position: relative;
-          inset: auto;
+          position: relative !important;
+          inset: auto !important;
           flex: 0 0 14vw;
           width: 14vw;
           transform: none;
           margin: 0;
+          animation: ds-preview-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2) {
+          animation-delay: 0.08s;
         }
 
         .ds-slide .ds-preview-rail .ds-slide-item--preview:hover {
           transform: translateY(-3%);
         }
 
-        .ds-cards-hidden .ds-slide-item--preview {
-          transform: translate(120%, -50%);
-          opacity: 0;
-          pointer-events: none;
+        @keyframes ds-active-in {
+          from { opacity: 0; transform: scale(1.035); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes ds-preview-in {
+          from { opacity: 0; transform: translateX(48px) scale(0.96); }
+          to { opacity: 1; transform: translateX(0) scale(1); }
         }
 
         /* ── Оверлей активного дизайнера (только мобильный) ── */
@@ -692,16 +595,9 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             width: 28vw;
           }
 
-          .ds-slide .ds-slide-item:nth-child(3) { left: 46%; }
-          .ds-slide .ds-slide-item:nth-child(4) { left: 76%; }
-          .ds-slide .ds-slide-item:nth-child(5) { left: 106%; }
-
           .ds-slide .ds-slide-item--preview {
             width: 28vw;
           }
-          .ds-slide .ds-slide-item--preview-1 { left: 46%; }
-          .ds-slide .ds-slide-item--preview-2 { left: 76%; }
-          .ds-slide .ds-slide-item--preview-3 { left: 106%; }
 
           .ds-preview-rail {
             gap: 8px;
