@@ -71,10 +71,7 @@ function ActiveDesignerContent({
                 <img className="ds-avatar" src={slide.avatar ?? slide.portrait} alt={slide.name} decoding="async"/>
                 <div>
                     <div className="ds-name">{slide.name}</div>
-                    <div className="ds-specialty">
-                        <LevelBadge slide={slide}/>
-                        {slide.specialty}
-                    </div>
+                    {slide.levelTitle && <div className="ds-specialty"><LevelBadge slide={slide}/></div>}
                 </div>
             </div>
             <div className="ds-meta">
@@ -183,10 +180,9 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                          alt={activeSlide.name} decoding="async"/>
                                     <div>
                                         <div className="ds-name">{activeSlide.name}</div>
-                                        <div className="ds-specialty">
-                                            <LevelBadge slide={activeSlide}/>
-                                            {activeSlide.specialty}
-                                        </div>
+                                        {activeSlide.levelTitle && (
+                                            <div className="ds-specialty"><LevelBadge slide={activeSlide}/></div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="ds-meta">
@@ -219,7 +215,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                 >
                                     <div className="ds-card-label">
                                         <div className="ds-card-name">{preview.name}</div>
-                                        <div className="ds-card-spec">{preview.specialty.split(" · ")[0]}</div>
                                     </div>
                                 </button>
                             ))}
@@ -415,13 +410,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             0 1px 2px rgba(0, 0, 0, 0.8),
             -1px 0 0 rgba(0, 0, 0, 0.6),
             1px 0 0 rgba(0, 0, 0, 0.6);
-        }
-
-        .ds-card-spec {
-          font-size: 0.72rem;
-          color: rgba(255, 255, 255, 0.88);
-          margin-top: 2px;
-          text-shadow: 0 0 1px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.7);
         }
 
         /* ── Анимация контента ── */
