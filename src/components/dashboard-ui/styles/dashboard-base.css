@@ -931,6 +931,11 @@
     align-items: start;
 }
 
+/* Payments: 420px is exactly 50% wider than the standard 280px left column. */
+.dash-content--payments {
+    grid-template-columns: 420px minmax(0, 1fr);
+}
+
 .dash-projects-panel {
     display: flex;
     flex-direction: column;
@@ -1504,6 +1509,10 @@
     .dash-content {
         grid-template-columns: 1fr;
         gap: 16px;
+    }
+
+    .dash-content--payments {
+        grid-template-columns: 1fr;
     }
 
     .order-work-stage-col2 {

@@ -383,7 +383,7 @@ export default function CommunityPage({
                 </DashHeroFrame>
 
                 {/* Tab content */}
-                <div className="dash-content">
+                <div className={`dash-content${activeTab === "payments" ? " dash-content--payments" : ""}`}>
                     {activeTab === "orders" && (
                         <>
                             <div className="dash-col1" data-tour="orders-list"><OrdersCol1 orders={orders}/></div>

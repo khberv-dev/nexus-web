@@ -1,6 +1,6 @@
 "use client"
 
-import {type ReactNode, useEffect, useMemo, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import {ActionButton} from "@/components/app/AppCard"
 import {PortfolioCardBrowseModal} from "./PortfolioCardBrowseModal"
 import {type CardFile, type PortfolioCard, PortfolioCardEditorModal} from "./PortfolioCardEditorModal"
@@ -11,33 +11,6 @@ const cardShell: React.CSSProperties = {
     border: "1px solid rgba(255,255,255,0.08)",
     background: "rgba(20,25,40,0.22)",
     boxShadow: "none",
-}
-
-const hintMuted: React.CSSProperties = {
-    fontSize: 12,
-    lineHeight: 1.55,
-    color: "rgba(255,255,255,0.62)",
-}
-
-function HintPanel({title, children}: { title: string; children: ReactNode }) {
-    return (
-        <div
-            style={{
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 10,
-                background: "rgba(12,16,30,0.35)",
-                padding: "10px 12px",
-            }}
-        >
-            <div className="d-flex align-items-center gap-2 mb-2">
-                <i className="bx bx-info-circle" style={{fontSize: 16, color: "rgba(115,103,240,0.95)"}}/>
-                <span className="fw-semibold" style={{fontSize: 12, color: "var(--dash-text, #f4f4f4)"}}>
-          {title}
-        </span>
-            </div>
-            <div style={hintMuted}>{children}</div>
-        </div>
-    )
 }
 
 interface Project {
@@ -256,18 +229,6 @@ export default function PortfolioProjects() {
                                 Все проекты
                             </ActionButton>
 
-                            <HintPanel title="Работы и материалы">
-                                <ul className="mb-0 ps-3" style={{marginTop: 6}}>
-                                    <li className="mb-2">
-                                        <strong>Плитки</strong> — это работы. Просмотр по клику; «Изменить» — вложения и
-                                        фото <em>только у этой работы</em>.
-                                    </li>
-                                    <li className="mb-0">
-                                        <strong>Ниже плиток</strong> (на широкой колонке) — «Материалы проекта»:
-                                        файлы <em>на всю папку</em>, не привязанные к одной работе.
-                                    </li>
-                                </ul>
-                            </HintPanel>
                         </div>
                     </div>
                 )}
