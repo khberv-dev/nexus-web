@@ -67,7 +67,7 @@ export function validateFile(filename: string, size?: number, options?: Validate
     const ext = filename.split(".").pop()?.toLowerCase() ?? "";
     const allowed =
         ALLOWED_TYPES.has(ext) ||
-        (options?.allowAnyImage && IMAGE_TYPES.has(ext)) ||
+        ((options?.allowAnyImage || options?.stageType === "CONCEPT") && IMAGE_TYPES.has(ext)) ||
         (options?.stageType === "SPECIFICATION" && SPECIFICATION_EXTRA_TYPES.has(ext));
     if (!allowed) throw new Error(`File type .${ext} not allowed`);
     if (size !== undefined && size > MAX_SIZE) throw new Error("File exceeds 500 MB limit");

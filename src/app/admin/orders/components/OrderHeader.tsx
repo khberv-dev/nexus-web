@@ -11,12 +11,16 @@ export function OrderHeader({
                                 acting,
                                 onResolveHelp,
                                 onOpenChat,
+                                unreadChatCount,
+                                chatOpen,
                             }: {
     order: Order
     title: string
     acting: string | null
     onResolveHelp: (orderId: string) => void
     onOpenChat: () => void
+    unreadChatCount: number
+    chatOpen: boolean
 }) {
     return (
         <div style={{marginBottom: 20}}>
@@ -32,6 +36,27 @@ export function OrderHeader({
                 >
                     <i className="bx bx-message-dots" aria-hidden/>
                     Чат
+                    {!chatOpen && unreadChatCount > 0 && (
+                        <span
+                            title={`Непрочитанные: ${unreadChatCount}`}
+                            style={{
+                                minWidth: 18,
+                                height: 18,
+                                padding: "0 6px",
+                                borderRadius: 999,
+                                background: "#ef4444",
+                                color: "#fff",
+                                fontSize: "0.68rem",
+                                fontWeight: 800,
+                                lineHeight: "18px",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            {unreadChatCount > 99 ? "99+" : unreadChatCount}
+                        </span>
+                    )}
                 </button>
             </div>
             <small style={{color: "var(--adm-muted)"}}>
@@ -92,4 +117,3 @@ export function OrderHeader({
         </div>
     )
 }
-

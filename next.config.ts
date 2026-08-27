@@ -18,6 +18,7 @@ const s3Wildcard = s3WildcardOrigin(process.env.S3_ENDPOINT || process.env.S3_PU
 const nextConfig: NextConfig = {
     output: "standalone",
     poweredByHeader: false,
+    allowedDevOrigins: ["nexus-demo.pointer.uz"],
     /** Иначе Edge middleware не видит значение из .env (редирект на /login при DEV_AUTH_BYPASS). */
     env: {
         DEV_AUTH_BYPASS: process.env.DEV_AUTH_BYPASS ?? "",
@@ -64,7 +65,3 @@ export default withSentryConfig(nextConfig, {
     authToken: process.env.SENTRY_AUTH_TOKEN,
     telemetry: false,
 });
-
-module.exports = {
-    allowedDevOrigins: ['nexus-demo.pointer.uz'],
-}

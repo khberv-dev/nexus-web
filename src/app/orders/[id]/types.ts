@@ -106,7 +106,29 @@ export interface OrderData {
     createdAt: string
     briefData: Record<string, string> | null
     briefHelpRequested: boolean
-    specialist: { name: string | null; email: string; avatarUrl: string | null } | null
+    specialist: {
+        name: string | null
+        email: string
+        avatarUrl: string | null
+        profile?: {
+            name: string
+            specialty: string
+            portrait: string
+            avatar: string | null
+            work: string
+            workPos: string
+            experience: number
+            sqm: number
+            style: string
+            has3d: boolean
+            hasRd: boolean
+            bio: string
+            introVideoUrl?: string
+            portfolioImages: string[]
+            level: string | null
+            levelTitle: string | null
+        } | null
+    } | null
     stages: OrderStage[]
     payments: { id: string; amount: number; status: string }[]
     contracts: Contract[]

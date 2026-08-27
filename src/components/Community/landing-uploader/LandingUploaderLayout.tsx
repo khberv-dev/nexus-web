@@ -366,25 +366,29 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                             height: "100%",
                                             objectFit: "cover"
                                         }}/>}
-                                        {selected && (
-                                            <div style={{
+                                        <div
+                                            aria-hidden="true"
+                                            style={{
                                                 position: "absolute",
-                                                top: 4,
-                                                right: 4,
+                                                top: 6,
+                                                right: 6,
                                                 width: 20,
                                                 height: 20,
+                                                boxSizing: "border-box",
+                                                border: selected ? "2px solid #5b4fcf" : "2px solid #fff",
                                                 borderRadius: "50%",
-                                                background: "#5b4fcf",
+                                                background: selected ? "#5b4fcf" : "rgba(12, 14, 22, 0.45)",
                                                 color: "#fff",
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "center",
                                                 fontSize: "0.65rem",
                                                 fontWeight: 700,
-                                            }}>
-                                                {Array.from(selectedIds).indexOf(f.id) + 1}
-                                            </div>
-                                        )}
+                                                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
+                                            }}
+                                        >
+                                            {selected ? Array.from(selectedIds).indexOf(f.id) + 1 : null}
+                                        </div>
                                     </div>
                                 )
                             })}

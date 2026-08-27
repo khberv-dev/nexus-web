@@ -29,12 +29,17 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ws ./node_modules/ws
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/jose ./node_modules/jose
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/chat-ws-server.mjs ./scripts/chat-ws-server.mjs
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/start-production.mjs ./scripts/start-production.mjs
 
 # STORAGE_DRIVER=local пишет в /app/uploads. Каталог создаём заранее и отдаём nextjs:
 # том, смонтированный на несуществующий путь, docker создаёт от root, и запись падает с EACCES.
 RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
 
 USER nextjs
-EXPOSE 3000
+EXPOSE 3000 3001
 ENV PORT=3000
-CMD ["node", "server.js"]
+ENV CHAT_WS_PORT=3001
+CMD ["node", "scripts/start-production.mjs"]

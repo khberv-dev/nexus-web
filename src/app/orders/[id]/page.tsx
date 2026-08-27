@@ -5,6 +5,7 @@ import {getDownloadUrl} from "@/lib/s3"
 import OrderDetailClient from "./OrderDetailClient"
 import {sortStages} from "@/lib/stage-order"
 import {filterStageFilesVisibleToClient} from "@/lib/client-stage-file-visibility"
+import {levelFromTestStep} from "@/lib/landing/specialist-level"
 
 export default async function OrderDetailPage({params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
@@ -22,8 +23,23 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
             specialist: {
                 select: {
                     name: true, email: true,
-                    specialistProfile: {select: {formData: true}},
+                    specialistProfile: {
+                        select: {
+                            formData: true,
+                            steps: {where: {type: "TEST"}, select: {comment: true}, take: 1},
+                        },
+                    },
                     files: {where: {category: "AVATAR"}, orderBy: {createdAt: "desc"}, take: 1, select: {s3Key: true}},
+                    landingBundles: {
+                        where: {status: "APPROVED"},
+                        orderBy: {reviewedAt: "desc"},
+                        take: 1,
+                        select: {
+                            portraitFileId: true, workFileId: true, videoFileId: true,
+                            workPos: true, specialty: true, about: true,
+                            items: {orderBy: {position: "asc"}, select: {fileId: true}},
+                        },
+                    },
                 },
             },
             stages: {
@@ -81,6 +97,22 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
     const stagesSorted = sortStages(o.stages)
     const specAvatarKey = o.specialist?.files?.[0]?.s3Key
     const specialistAvatarUrl = specAvatarKey ? (await getDownloadUrl(specAvatarKey)).url : null
+    const specialistBundle = o.specialist?.landingBundles?.[0]
+    const bundleFileIds = specialistBundle
+        ? [specialistBundle.portraitFileId, specialistBundle.workFileId, specialistBundle.videoFileId,
+            ...specialistBundle.items.map((item) => item.fileId)].filter((fileId): fileId is string => Boolean(fileId))
+        : []
+    const bundleFiles = bundleFileIds.length > 0
+        ? await prisma.userFile.findMany({where: {id: {in: bundleFileIds}}, select: {id: true, s3Key: true}})
+        : []
+    const bundleUrls = new Map(await Promise.all(bundleFiles.map(async (file) => {
+        const {url} = await getDownloadUrl(file.s3Key)
+        return [file.id, url] as const
+    })))
+    const specialistForm = (o.specialist?.specialistProfile?.formData as Record<string, string> | null) ?? {}
+    const specialistLevel = levelFromTestStep(o.specialist?.specialistProfile?.steps?.[0]?.comment ?? null)
+    const portraitUrl = specialistBundle?.portraitFileId ? bundleUrls.get(specialistBundle.portraitFileId) : undefined
+    const workUrl = specialistBundle?.workFileId ? bundleUrls.get(specialistBundle.workFileId) : undefined
 
     return (
         <OrderDetailClient
@@ -95,6 +127,28 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                     name: (o.specialist.specialistProfile?.formData as Record<string, string> | null)?.fullName ?? o.specialist.name,
                     email: o.specialist.email ?? "",
                     avatarUrl: specialistAvatarUrl,
+                    profile: specialistBundle && portraitUrl && workUrl ? {
+                        name: specialistForm.fullName ?? o.specialist.name ?? "Специалист",
+                        specialty: specialistBundle.specialty ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
+                        portrait: portraitUrl,
+                        avatar: specialistAvatarUrl ?? portraitUrl,
+                        work: workUrl,
+                        workPos: specialistBundle.workPos ?? "center center",
+                        experience: parseInt(specialistForm.experience ?? "0") || 0,
+                        sqm: parseInt(specialistForm.sqm ?? "0") || 0,
+                        style: specialistForm.interiorStyle ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
+                        has3d: specialistForm.has3d === "true",
+                        hasRd: specialistForm.hasRd === "true",
+                        bio: specialistBundle.about ?? specialistForm.about ?? "",
+                        introVideoUrl: specialistBundle.videoFileId
+                            ? bundleUrls.get(specialistBundle.videoFileId)
+                            : undefined,
+                        portfolioImages: specialistBundle.items
+                            .map((item) => bundleUrls.get(item.fileId))
+                            .filter((url): url is string => Boolean(url)),
+                        level: specialistLevel?.code ?? null,
+                        levelTitle: specialistLevel?.title ?? null,
+                    } : null,
                 } : null,
                 stages: stagesSorted.map(s => ({
                     id: s.id,

@@ -30,6 +30,7 @@ services:
     mem_reservation: 1g
     ports:
       - "${HOST_APP_BIND:-0.0.0.0}:${HOST_APP_PORT:-3000}:3000"
+      - "${HOST_CHAT_WS_BIND:-127.0.0.1}:${HOST_CHAT_WS_PORT:-3001}:3001"
     environment:
       - NODE_OPTIONS=--max-old-space-size=1024 --heapsnapshot-near-heap-limit=2
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/platform
@@ -60,6 +61,7 @@ services:
       - EMAIL_FROM=${EMAIL_FROM}
       - TBANK_WEBHOOK_SECRET=${TBANK_WEBHOOK_SECRET}
       - REDIS_URL=redis://redis:6379
+      - CHAT_WS_SECRET=${CHAT_WS_SECRET:-}
       - DEMO_ACCESS_KEY=${DEMO_ACCESS_KEY}
     volumes:
       # Загрузки при STORAGE_DRIVER=local. Без тома файлы живут только внутри контейнера

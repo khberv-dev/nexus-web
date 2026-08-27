@@ -10,7 +10,8 @@ type UploadFile = {
     status: "pending" | "uploading" | "error" | "done"
 }
 
-const BASE_ACCEPT = ".pdf,.dwg,.dxf,.jpg,.jpeg,.png,.zip,.mp4";
+const BASE_ACCEPT = ".pdf,.dwg,.dxf,.jpg,.jpeg,.png,.zip,.mp4,.webm,.mov";
+const CONCEPT_ACCEPT_EXTRA = ",.webp,.avif,.gif";
 const SPEC_ACCEPT_EXTRA = ",.xlsx,.xls,.doc,.docx";
 
 export function StageUpload({
@@ -27,6 +28,7 @@ export function StageUpload({
 }) {
     const router = useRouter()
     const inputRef = useRef<HTMLInputElement>(null)
+    const photoRef = useRef<HTMLInputElement>(null)
     const videoRef = useRef<HTMLInputElement>(null)
     const [files, setFiles] = useState<UploadFile[]>([])
     const [video, setVideo] = useState<File | null>(null)
@@ -38,11 +40,16 @@ export function StageUpload({
     const [dragOver, setDragOver] = useState(false)
 
     const fileAccept = useMemo(
-        () => (stageType === "SPECIFICATION" ? BASE_ACCEPT + SPEC_ACCEPT_EXTRA : BASE_ACCEPT),
+        () => stageType === "SPECIFICATION"
+            ? BASE_ACCEPT + SPEC_ACCEPT_EXTRA
+            : stageType === "CONCEPT"
+                ? BASE_ACCEPT + CONCEPT_ACCEPT_EXTRA
+                : BASE_ACCEPT,
         [stageType],
     );
     const formatsHint = useMemo(() => {
-        const base = "PDF, DWG, DXF, JPG, PNG, ZIP, MP4 — до 500 МБ";
+        const base = "PDF, DWG, DXF, JPG, PNG, ZIP, MP4, WEBM, MOV — до 500 МБ";
+        if (stageType === "CONCEPT") return `${base}; фото также WEBP, AVIF, GIF`;
         return stageType === "SPECIFICATION"
             ? `${base}; для спецификации также XLSX, XLS, DOC, DOCX`
             : base;
@@ -206,11 +213,32 @@ export function StageUpload({
     return (
         <div>
             <input ref={inputRef} type="file" multiple className="d-none" onChange={handleFiles} accept={fileAccept}/>
-            <input ref={videoRef} type="file" className="d-none" accept="video/mp4,.mp4" onChange={e => {
+            {stageType === "CONCEPT" && (
+                <input ref={photoRef} type="file" multiple className="d-none"
+                       accept="image/jpeg,image/png,image/webp,image/avif,image/gif,.jpg,.jpeg,.png,.webp,.avif,.gif"
+                       onChange={handleFiles}/>
+            )}
+            <input ref={videoRef} type="file" className="d-none"
+                   accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" onChange={e => {
                 const f = e.target.files?.[0];
                 if (f) setVideo(f);
                 e.target.value = ""
             }}/>
+
+            {stageType === "CONCEPT" && (
+                <div className="d-flex gap-2 flex-wrap mb-3">
+                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                            onClick={() => photoRef.current?.click()}>
+                        <i className="bx bx-image-add"/>
+                        Добавить фото
+                    </button>
+                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                            onClick={() => videoRef.current?.click()}>
+                        <i className="bx bx-video-plus"/>
+                        Добавить видео
+                    </button>
+                </div>
+            )}
 
             {/* Drop zone */}
             <div
@@ -306,13 +334,13 @@ export function StageUpload({
                         <button className="btn btn-sm btn-text-secondary" onClick={() => setVideo(null)}><i
                             className="bx bx-x"/></button>
                     </div>
-                ) : (
-                    <button className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                ) : stageType !== "CONCEPT" ? (
+                    <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                             onClick={() => videoRef.current?.click()}>
                         <i className="bx bx-video"/>
-                        Прикрепить видео-пояснение (MP4, до 500 МБ)
+                        Прикрепить видео-пояснение (MP4, WEBM, MOV, до 500 МБ)
                     </button>
-                )}
+                ) : null}
             </div>
 
             {(files.length > 0 || video) && !uploaded && (

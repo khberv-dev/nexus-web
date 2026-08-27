@@ -2,7 +2,6 @@
 
 import {type ChangeEvent, useRef, useState} from "react"
 import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
-import {CONTRACT_STATUS_LABEL} from "@/app/orders/[id]/types"
 
 interface Props {
     contract: Contract | null
@@ -13,7 +12,7 @@ interface Props {
 
 const STATUS_ACTIONS: Record<ContractStatus, { label: string; icon: string }> = {
     DRAFT: {label: "Не создан", icon: "bx bx-file-blank"},
-    SENT_TO_SPECIALIST: {label: "Требует вашей подписи", icon: "bx bx-edit"},
+    SENT_TO_SPECIALIST: {label: "Ожидает подписи дизайнера", icon: "bx bx-hourglass"},
     SPECIALIST_SIGNED: {label: "Ожидает подписи заказчика", icon: "bx bx-hourglass"},
     SENT_TO_CLIENT: {label: "Требует вашей подписи", icon: "bx bx-edit"},
     CLIENT_SIGNED: {label: "Ожидает подтверждения", icon: "bx bx-check-circle"},
@@ -214,8 +213,10 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
         )
     }
 
-    const statusLabel = CONTRACT_STATUS_LABEL[contract.status] ?? contract.status
-    const {label, icon} = STATUS_ACTIONS[contract.status]
+    const statusAction = STATUS_ACTIONS[contract.status]
+    const {label, icon} = userRole === "SPECIALIST" && contract.status === "SENT_TO_SPECIALIST"
+        ? {label: "Требует вашей подписи", icon: "bx bx-edit"}
+        : statusAction
 
     // Может ли пользователь загрузить подписанный договор
     const canUpload = userRole === "SPECIALIST" && contract.status === "SENT_TO_SPECIALIST"

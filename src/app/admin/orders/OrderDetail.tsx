@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useRef, useState} from "react"
 import {BriefEditor} from "@/components/admin/BriefEditor"
 import {Modal} from "@/components/ui/modal"
 import {STAGE_ORDER} from "@/lib/stage-constants"
@@ -17,6 +17,7 @@ import {OrderAuditSidebar} from "./components/OrderAuditSidebar"
 import {FilePreviewModal} from "./components/FilePreviewModal"
 import {OrderChatPanel} from "@/components/dashboard-ui/OrderChatPanel"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
+import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 
 interface Props {
     order: Order | null
@@ -58,6 +59,59 @@ export function OrderDetail({
     const [previewFileId, setPreviewFileId] = useState<string | null>(null)
     const [previewStageId, setPreviewStageId] = useState<string | null>(null)
     const [chatDrawerOpen, setChatDrawerOpen] = useState(false)
+    const [unreadChatCount, setUnreadChatCount] = useState(0)
+    const chatDrawerOpenRef = useRef(false)
+    const orderId = order?.id
+
+    const fetchUnreadChatCount = useCallback(async () => {
+        if (!orderId) {
+            setUnreadChatCount(0)
+            return
+        }
+        try {
+            const res = await fetch(`/api/orders/${orderId}/chat/unread?channel=ALL`, {cache: "no-store"})
+            const json = (await res.json().catch(() => ({}))) as { unread?: unknown }
+            if (!res.ok) return
+            const raw = json.unread
+            const count = typeof raw === "number" ? raw : typeof raw === "string" ? Number.parseInt(raw, 10) : 0
+            setUnreadChatCount(chatDrawerOpenRef.current ? 0 : (Number.isFinite(count) && count > 0 ? count : 0))
+        } catch {
+            // A temporary chat failure must not affect the order page.
+        }
+    }, [orderId])
+
+    useEffect(() => {
+        void fetchUnreadChatCount()
+        const intervalId = window.setInterval(() => {
+            if (document.visibilityState === "visible") void fetchUnreadChatCount()
+        }, 12000)
+        return () => window.clearInterval(intervalId)
+    }, [fetchUnreadChatCount])
+
+    useEffect(() => {
+        if (!chatDrawerOpen) void fetchUnreadChatCount()
+    }, [chatDrawerOpen, fetchUnreadChatCount])
+
+    const openChat = useCallback(() => {
+        chatDrawerOpenRef.current = true
+        setChatDrawerOpen(true)
+        setUnreadChatCount(0)
+        if (!orderId) return
+        void fetch(`/api/orders/${orderId}/chat/read?channel=ALL`, {method: "POST"})
+            .finally(() => void fetchUnreadChatCount())
+    }, [orderId, fetchUnreadChatCount])
+
+    useEffect(() => {
+        if (!orderId) return
+        return subscribeToOrderChat(orderId, (event) => {
+            if (event.type === "chat.message" && chatDrawerOpenRef.current) {
+                setUnreadChatCount(0)
+                void fetch(`/api/orders/${orderId}/chat/read?channel=ALL`, {method: "POST"})
+            } else {
+                void fetchUnreadChatCount()
+            }
+        })
+    }, [orderId, fetchUnreadChatCount])
 
     const dashVarsForAdmin: React.CSSProperties = {
         // Drawer panel background: match admin page outer background.
@@ -185,7 +239,9 @@ export function OrderDetail({
                     title={title}
                     acting={acting}
                     onResolveHelp={onResolveHelp}
-                    onOpenChat={() => setChatDrawerOpen(true)}
+                    onOpenChat={openChat}
+                    unreadChatCount={unreadChatCount}
+                    chatOpen={chatDrawerOpen}
                 />
 
                 {/* Two-column: content + timeline */}
@@ -223,7 +279,11 @@ export function OrderDetail({
 
             <DashRightDrawer
                 open={chatDrawerOpen}
-                onClose={() => setChatDrawerOpen(false)}
+                onClose={() => {
+                    chatDrawerOpenRef.current = false
+                    setChatDrawerOpen(false)
+                    void fetchUnreadChatCount()
+                }}
                 title={"Чат"}
                 titleIcon={<i className="bx bx-message-dots" aria-hidden/>}
                 panelWidth="min(460px, min(100vw - 24px, 520px))"
@@ -233,17 +293,15 @@ export function OrderDetail({
                 scrollableBody={false}
                 themeVars={dashVarsForAdmin}
             >
-                {order ? (
-                    <>
-                        <OrderChatPanel
-                            orderId={order.id}
-                            viewerRole="ADMIN"
-                            channel="ALL"
-                            inDrawer
-                            composerMinRows={1}
-                            composerMaxRows={4}
-                        />
-                    </>
+                {chatDrawerOpen && order ? (
+                    <OrderChatPanel
+                        orderId={order.id}
+                        viewerRole="ADMIN"
+                        channel="ALL"
+                        inDrawer
+                        composerMinRows={1}
+                        composerMaxRows={4}
+                    />
                 ) : null}
             </DashRightDrawer>
 

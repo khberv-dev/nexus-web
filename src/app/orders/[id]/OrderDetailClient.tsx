@@ -244,7 +244,7 @@ export default function OrderDetailClient({
                         </div>
 
                         {/* Alerts */}
-                        {(order.status === "BRIEFING" || order.status === "BRIEF_REVIEW") && (
+                        {!order.specialist && (order.status === "BRIEFING" || order.status === "BRIEF_REVIEW") && (
                             <div style={{
                                 background: "var(--dash-accent-bg)",
                                 border: "1px solid var(--dash-accent-border)",

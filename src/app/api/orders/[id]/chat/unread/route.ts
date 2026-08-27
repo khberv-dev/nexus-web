@@ -2,8 +2,8 @@ import {NextRequest, NextResponse} from "next/server"
 import {Role} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionDbUser, getSessionUser} from "@/lib/session"
+import {type OrderChatChannel, visibleOrderChatChannels} from "@/lib/order-chat-realtime"
 
-type OrderChatChannel = "ADMIN_CLIENT" | "ADMIN_SPECIALIST"
 
 function isMissingOrderChatRelation(error: unknown): boolean {
     const m = error instanceof Error ? error.message : String(error)
@@ -43,16 +43,6 @@ function parseChannel(req: NextRequest): OrderChatChannel | "ALL" {
     return "ALL"
 }
 
-function visibleChannelsFor(role: Role, requested: OrderChatChannel | "ALL"): OrderChatChannel[] {
-    if (role === Role.ADMIN) {
-        if (requested === "ALL") return ["ADMIN_CLIENT", "ADMIN_SPECIALIST"]
-        return [requested]
-    }
-    if (role === Role.CLIENT) return ["ADMIN_CLIENT"]
-    if (role === Role.SPECIALIST) return ["ADMIN_SPECIALIST"]
-    return []
-}
-
 export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
@@ -66,7 +56,7 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
 
     const {id: orderId} = await params
     const requested = parseChannel(_req)
-    const channels = visibleChannelsFor(user.role as Role, requested)
+    const channels = visibleOrderChatChannels(user.role, requested)
     if (channels.length === 0) return NextResponse.json({error: "Forbidden"}, {status: 403})
     const order = await loadOrderForChat(orderId)
     if (!order || order.deletedAt) return NextResponse.json({error: "Not found"}, {status: 404})
@@ -108,4 +98,3 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
         return NextResponse.json({error: "Не удалось получить счётчик"}, {status: 500})
     }
 }
-

@@ -41,4 +41,16 @@ describe("validateFile", () => {
             expect(() => validateFile("fine.webp", 400 * 1024 * 1024, {allowAnyImage: true})).not.toThrow();
         });
     });
+
+    describe("фото этапа концепции", () => {
+        test("разрешает дополнительные растровые форматы в концепции", () => {
+            for (const name of ["concept.webp", "concept.avif", "concept.gif"]) {
+                expect(() => validateFile(name, 1024, {stageType: "CONCEPT"})).not.toThrow()
+            }
+        })
+
+        test("не расширяет форматы остальных этапов", () => {
+            expect(() => validateFile("render.webp", 1024, {stageType: "VISUALIZATION"})).toThrow(/not allowed/)
+        })
+    })
 });

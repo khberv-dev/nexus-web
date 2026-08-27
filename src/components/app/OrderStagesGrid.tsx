@@ -6,7 +6,7 @@ import type {OrderStage, StageType} from "@/app/orders/[id]/types"
 import {STAGE_LABEL, STAGE_ORDER} from "@/app/orders/[id]/types"
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {CheckCircle2, ChevronRight, CircleDot, Lock} from "lucide-react"
-import {stageStatusLabelForViewer, type StageStatusViewerRole} from "@/lib/stage-status-ui"
+import {stageStartOwnerHint, stageStatusLabelForViewer, type StageStatusViewerRole} from "@/lib/stage-status-ui"
 
 type MiniBadge = { key: string; label: string; variant: "default" | "secondary" | "destructive" | "outline" }
 
@@ -185,6 +185,7 @@ export function OrderStagesGrid({
                     if (hideLockedStages && locked) return null
 
                     const statusLabel = stageStatusLabelForUI(viewerRole, type, stage.status)
+                    const startOwnerHint = stageStartOwnerHint(locked ? "BLOCKED" : stage.status, prevStage?.status)
                     const isDone = stage.status === "APPROVED"
                     const isActive = stage.status !== "PENDING" && stage.status !== "BLOCKED" && stage.status !== "APPROVED"
                     const activity = showActivityFooter ? bestActivity(stage) : ({kind: "none"} as const)
@@ -238,7 +239,7 @@ export function OrderStagesGrid({
                                                 </Badge>
                                             </div>
                                             <p className="mt-auto text-left text-xs leading-relaxed text-muted-foreground [overflow-wrap:anywhere]">
-                                                Сначала примите предыдущий этап — затем откроется этот.
+                                                {startOwnerHint}
                                             </p>
                                         </div>
                                     </div>
@@ -288,6 +289,11 @@ export function OrderStagesGrid({
                                                             </Badge>
                                                         ))}
                                                     </div>
+                                                ) : null}
+                                                {startOwnerHint ? (
+                                                    <p className="text-xs leading-relaxed text-muted-foreground [overflow-wrap:anywhere]">
+                                                        {startOwnerHint}
+                                                    </p>
                                                 ) : null}
                                             </div>
                                         </div>

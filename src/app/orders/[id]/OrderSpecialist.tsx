@@ -1,8 +1,16 @@
+"use client"
+
+import {useState} from "react"
+import {DesignerProfileModal} from "@/components/landing/designer-profile-modal/DesignerProfileModal"
+import type {OrderData} from "./types"
+
 export function OrderSpecialist({specialist}: {
-    specialist: { name: string | null; email: string; avatarUrl: string | null }
+    specialist: NonNullable<OrderData["specialist"]>
 }) {
+    const [showProfile, setShowProfile] = useState(false)
     const displayName = specialist.name ?? "Дизайнер"
     return (
+        <>
         <div style={{
             background: "var(--dash-surface)",
             borderRadius: 14,
@@ -10,6 +18,7 @@ export function OrderSpecialist({specialist}: {
             marginBottom: "1.5rem",
             border: "1px solid var(--dash-border)",
             display: "flex",
+            flexWrap: "wrap",
             alignItems: "center",
             gap: "1rem"
         }}>
@@ -55,6 +64,55 @@ export function OrderSpecialist({specialist}: {
             }}>
                 <i className="bx bx-check-circle"/>Назначен
             </div>
+            {specialist.profile && (
+                <>
+                    <div style={{
+                        width: "100%",
+                        paddingTop: 12,
+                        borderTop: "1px solid var(--dash-border)",
+                        display: "grid",
+                        gap: 8,
+                    }}>
+                        {(specialist.profile.levelTitle || specialist.profile.specialty) && (
+                            <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.8rem", lineHeight: 1.45}}>
+                                {[specialist.profile.levelTitle, specialist.profile.specialty].filter(Boolean).join(" · ")}
+                            </p>
+                        )}
+                        <div style={{display: "flex", flexWrap: "wrap", gap: "6px 14px"}}>
+                            <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
+                                <i className="bx bx-briefcase" style={{marginRight: 5}}/>
+                                {specialist.profile.experience} лет опыта
+                            </span>
+                            <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
+                                <i className="bx bx-area" style={{marginRight: 5}}/>
+                                {specialist.profile.sqm} м² реализовано
+                            </span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setShowProfile(true)}
+                        style={{
+                            border: "1px solid var(--dash-border)",
+                            borderRadius: 8,
+                            padding: "7px 12px",
+                            background: "transparent",
+                            color: "var(--dash-text)",
+                            font: "inherit",
+                            fontSize: "0.78rem",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            width: "100%",
+                        }}
+                    >
+                        Профиль и портфолио
+                    </button>
+                </>
+            )}
         </div>
+        {showProfile && specialist.profile && (
+            <DesignerProfileModal designer={specialist.profile} onClose={() => setShowProfile(false)}/>
+        )}
+        </>
     )
 }

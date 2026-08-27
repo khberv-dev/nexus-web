@@ -7,6 +7,7 @@ import {usePathname} from "next/navigation"
 import NotificationBell from "@/components/Community/NotificationBell"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {OrderChatPanel, type OrderChatPanelHandle} from "@/components/dashboard-ui/OrderChatPanel"
+import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 
 export type DashHeaderNavItem = {
     href: string
@@ -63,6 +64,7 @@ export function DashTopHeader({
     const [chatEmphasizeSignal, setChatEmphasizeSignal] = useState(0)
     const [unread, setUnread] = useState<number>(0)
     const chatPanelRef = useRef<OrderChatPanelHandle>(null)
+    const chatOpenRef = useRef(false)
 
     const effectiveChatChannel: "ADMIN_CLIENT" | "ADMIN_SPECIALIST" | null =
         orderChat?.viewerRole === "CLIENT"
@@ -93,13 +95,15 @@ export function DashTopHeader({
                 }
                 // for client/specialist, ignore: channel is derived from role
             }
+            chatOpenRef.current = true
+            setUnread(0)
             setChatOpen(true)
             setChatEmphasizeSignal((n) => n + 1)
             if (ce.detail?.focus) window.setTimeout(() => chatPanelRef.current?.focusComposer(), 350)
         }
         window.addEventListener("order-chat:open", onOpen as EventListener)
         return () => window.removeEventListener("order-chat:open", onOpen as EventListener)
-    }, [orderChat?.orderId])
+    }, [orderChat?.orderId, orderChat?.viewerRole])
 
     const fetchUnread = useCallback(async () => {
         if (!orderChat?.orderId || !effectiveChatChannel) return
@@ -117,7 +121,7 @@ export function DashTopHeader({
                     : typeof nRaw === "string"
                         ? Number.parseInt(nRaw, 10)
                         : 0
-            setUnread(Number.isFinite(n) && n > 0 ? n : 0)
+            setUnread(chatOpenRef.current ? 0 : (Number.isFinite(n) && n > 0 ? n : 0))
         } catch {
             // ignore
         }
@@ -148,10 +152,17 @@ export function DashTopHeader({
     }, [orderChat?.orderId, fetchUnread])
 
     useEffect(() => {
-        // Для клиента/дизайнера канал теперь переключаемый внутри панели — не помечаем прочитанным при открытии шторки.
         if (!chatOpen) return
-        if (orderChat?.viewerRole === "ADMIN") void markRead()
-    }, [chatOpen, markRead, orderChat?.viewerRole])
+        void markRead()
+    }, [chatOpen, markRead])
+
+    useEffect(() => {
+        if (!orderChat?.orderId) return
+        return subscribeToOrderChat(orderChat.orderId, (event) => {
+            if (event.type === "chat.message" && chatOpenRef.current) void markRead()
+            else if (event.type === "chat.message" || event.type === "chat.read") void fetchUnread()
+        })
+    }, [orderChat?.orderId, markRead, fetchUnread])
 
     useEffect(() => {
         if (!drawerOpen) return
@@ -309,7 +320,11 @@ export function DashTopHeader({
                         <button
                             type="button"
                             className="dash-header__btn dash-header__btn--accent"
-                            onClick={() => setChatOpen(true)}
+                            onClick={() => {
+                                chatOpenRef.current = true
+                                setUnread(0)
+                                setChatOpen(true)
+                            }}
                             aria-haspopup="dialog"
                             aria-expanded={chatOpen}
                             aria-controls={chatOpen ? "order-chat-drawer" : undefined}
@@ -317,7 +332,7 @@ export function DashTopHeader({
                         >
                             <i className="bx bx-message-dots" aria-hidden/>
                             Чат
-                            {unread > 0 ? (
+                            {!chatOpen && unread > 0 ? (
                                 <span
                                     title={`Непрочитанные: ${unread}`}
                                     style={{
@@ -370,7 +385,11 @@ export function DashTopHeader({
             {orderChat?.orderId ? (
                 <DashRightDrawer
                     open={chatOpen}
-                    onClose={() => setChatOpen(false)}
+                    onClose={() => {
+                        chatOpenRef.current = false
+                        setChatOpen(false)
+                        void fetchUnread()
+                    }}
                     title={orderChat.viewerRole === "CLIENT" ? "Чат с администратором" : "Чат"}
                     titleIcon={<i className="bx bx-message-dots" aria-hidden/>}
                     panelWidth="min(460px, min(100vw - 24px, 520px))"
@@ -379,7 +398,7 @@ export function DashTopHeader({
                     panelId="order-chat-drawer"
                     scrollableBody={false}
                 >
-                    {effectiveChatChannel ? (
+                    {chatOpen && effectiveChatChannel ? (
                         <OrderChatPanel
                             ref={chatPanelRef}
                             emphasizeSignal={chatEmphasizeSignal}

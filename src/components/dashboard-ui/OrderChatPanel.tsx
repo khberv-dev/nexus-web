@@ -1,6 +1,7 @@
 "use client"
 
 import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from "react"
+import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -213,12 +214,13 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
     }
 
     const markRead = useCallback(async () => {
+        const readChannel = viewerRole === "ADMIN" && channel === "ALL" ? "ALL" : effectiveViewChannel
         try {
-            await fetch(`/api/orders/${orderId}/chat/read?channel=${encodeURIComponent(effectiveViewChannel)}`, {method: "POST"})
+            await fetch(`/api/orders/${orderId}/chat/read?channel=${encodeURIComponent(readChannel)}`, {method: "POST"})
         } catch {
             // ignore
         }
-    }, [orderId, effectiveViewChannel])
+    }, [orderId, viewerRole, channel, effectiveViewChannel])
 
     const fetchUnreadBadges = useCallback(async () => {
         const channels: Array<"ADMIN_CLIENT" | "ADMIN_SPECIALIST"> =
@@ -260,9 +262,23 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
     }, [viewerRole, channel, fetchUnreadBadges])
 
     useEffect(() => {
-        void markRead()
-        void fetchUnreadBadges()
+        void (async () => {
+            await markRead()
+            await fetchUnreadBadges()
+        })()
     }, [markRead, fetchUnreadBadges])
+
+    useEffect(() => subscribeToOrderChat(orderId, (event) => {
+        if (event.type === "chat.message") {
+            void (async () => {
+                await load()
+                await markRead()
+                await fetchUnreadBadges()
+            })()
+        } else if (event.type === "chat.read") {
+            void fetchUnreadBadges()
+        }
+    }), [orderId, load, markRead, fetchUnreadBadges])
 
     const labelFor = (m: ChatMessage) => {
         if (viewerId && m.sender.id === viewerId) return "Вы"
@@ -551,4 +567,3 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
 })
 
 OrderChatPanel.displayName = "OrderChatPanel"
-

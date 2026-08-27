@@ -8,6 +8,7 @@ import {notify} from "@/lib/notifications"
 import {isStagePaymentsDisabled} from "@/lib/payments/flags"
 import {syncStageSequentialLocks} from "@/lib/stage-sequencing"
 import {parseJsonBody} from "@/lib/validate"
+import {OrderStatus} from "@prisma/client"
 
 const assignSchema = z.object({specialistId: z.string().min(1)})
 
@@ -28,9 +29,12 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
 
     const order = await prisma.order.update({
         where: {id},
-        // Назначение специалиста НЕ активирует заказ.
-        // Активировать заказ можно только после подтверждения договора администратором.
-        data: {specialistId},
+        // Назначение переводит отправленный бриф на проверку, но не активирует проект:
+        // ACTIVE по-прежнему доступен только после подтверждения договора администратором.
+        data: {
+            specialistId,
+            status: before.status === OrderStatus.BRIEFING ? OrderStatus.BRIEF_REVIEW : before.status,
+        },
         include: {
             specialist: {select: {email: true}},
             client: {select: {email: true}},

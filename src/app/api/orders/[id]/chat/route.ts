@@ -3,7 +3,11 @@ import {randomUUID} from "crypto"
 import {Role} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionDbUser, getSessionUser} from "@/lib/session"
-import {notify} from "@/lib/notifications"
+import {
+    publishOrderChatEvent,
+    type OrderChatChannel,
+    visibleOrderChatChannels,
+} from "@/lib/order-chat-realtime"
 
 const MAX_BODY = 8000
 
@@ -29,8 +33,6 @@ async function loadOrderForChat(orderId: string) {
     })
 }
 
-type OrderChatChannel = "ADMIN_CLIENT" | "ADMIN_SPECIALIST"
-
 function parseChannel(req: NextRequest): "ALL" | OrderChatChannel {
     const raw = req.nextUrl.searchParams.get("channel")
     if (raw === "ALL") return "ALL"
@@ -38,17 +40,6 @@ function parseChannel(req: NextRequest): "ALL" | OrderChatChannel {
     if (raw === "ADMIN_SPECIALIST") return "ADMIN_SPECIALIST"
     // default: for backward compat
     return "ADMIN_CLIENT"
-}
-
-function visibleChannelsFor(role: Role, requested: "ALL" | OrderChatChannel): OrderChatChannel[] {
-    if (role === Role.ADMIN) {
-        if (requested === "ALL") return ["ADMIN_CLIENT", "ADMIN_SPECIALIST"]
-        return [requested]
-    }
-    // Клиент/дизайнер видят только свой приватный канал с админом.
-    if (role === Role.CLIENT) return ["ADMIN_CLIENT"]
-    if (role === Role.SPECIALIST) return ["ADMIN_SPECIALIST"]
-    return []
 }
 
 function canAccess(order: NonNullable<Awaited<ReturnType<typeof loadOrderForChat>>>, dbUserId: string, role: Role): boolean {
@@ -89,7 +80,7 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
     if (!canAccess(order, dbUser.id, user.role as Role)) return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     const requested = parseChannel(_req)
-    const channels = visibleChannelsFor(user.role as Role, requested)
+    const channels = visibleOrderChatChannels(user.role, requested)
     if (channels.length === 0) return NextResponse.json({error: "Forbidden"}, {status: 403})
 
     let rows: MessageRow[]
@@ -216,22 +207,13 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     const row = inserted[0]
     if (!row) return NextResponse.json({error: "Не удалось сохранить сообщение"}, {status: 500})
 
-    const shortOrder = order.id.slice(-6).toUpperCase()
-    const preview = trimmed.length > 140 ? `${trimmed.slice(0, 140).trimEnd()}…` : trimmed
-
-    try {
-        const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
-
-        if (channelToSend === "ADMIN_CLIENT") {
-            if (role === Role.CLIENT) for (const a of admins) await notify(a.id, "order_chat", `Сообщение от заказчика #${shortOrder}`, `«${preview}»`, `/admin/orders?order=${order.id}`)
-            if (role === Role.ADMIN) await notify(order.clientId, "order_chat", `Сообщение от администратора #${shortOrder}`, `«${preview}»`, `/orders/${order.id}`)
-        } else if (channelToSend === "ADMIN_SPECIALIST") {
-            if (role === Role.SPECIALIST) for (const a of admins) await notify(a.id, "order_chat", `Сообщение от дизайнера #${shortOrder}`, `«${preview}»`, `/admin/orders?order=${order.id}`)
-            if (role === Role.ADMIN && order.specialistId) await notify(order.specialistId, "order_chat", `Сообщение от администратора #${shortOrder}`, `«${preview}»`, `/work/${order.id}`)
-        }
-    } catch (e) {
-        console.error("[order_chat] notify failed:", e)
-    }
+    void publishOrderChatEvent({
+        type: "chat.message",
+        orderId,
+        channel: row.channel,
+        senderId: dbUser.id,
+        messageId: row.id,
+    })
 
     return NextResponse.json({
         message: {
@@ -242,4 +224,3 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         },
     })
 }
-
