@@ -2,6 +2,7 @@
 
 import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from "react"
 import {StageChatAiAssist} from "./StageChatAiAssist"
+import {ChatEmojiPicker} from "./ChatEmojiPicker"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -62,6 +63,17 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
     const bottomRef = useRef<HTMLDivElement>(null)
     const messagesScrollRef = useRef<HTMLDivElement>(null)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+    const insertEmoji = useCallback((emoji: string) => {
+        const textarea = textareaRef.current
+        const start = textarea?.selectionStart ?? draft.length
+        const end = textarea?.selectionEnd ?? draft.length
+        setDraft(`${draft.slice(0, start)}${emoji}${draft.slice(end)}`)
+        window.requestAnimationFrame(() => {
+            textarea?.focus()
+            textarea?.setSelectionRange(start + emoji.length, start + emoji.length)
+        })
+    }, [draft])
 
     useImperativeHandle(ref, () => ({
         focusComposer: () => {
@@ -304,6 +316,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                     background: inDrawer ? "var(--dash-surface)" : undefined,
                 }}
             >
+                <div style={{display: "flex", alignItems: "flex-end", gap: 8, width: "100%", minWidth: 0}}>
         <textarea
             ref={textareaRef}
             value={draft}
@@ -313,6 +326,8 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
             disabled={sending}
             style={{
                 width: "100%",
+                flex: 1,
+                minWidth: 0,
                 maxWidth: "100%",
                 boxSizing: "border-box",
                 resize: inDrawer ? "none" : "vertical",
@@ -333,18 +348,41 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                 }
             }}
         />
-                <div
-                    style={{
-                        display: "flex",
-                        flexWrap: inDrawer ? "nowrap" : "wrap",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 8,
-                        width: "100%",
-                        minWidth: 0,
-                    }}
-                >
-                    {viewerRole === "CLIENT" && aiAssist ? (
+                <ChatEmojiPicker disabled={sending} onSelect={insertEmoji}/>
+                    <button
+                        type="button"
+                        aria-label="Отправить сообщение"
+                        title="Отправить сообщение"
+                        onClick={() => void send()}
+                        disabled={sending || !draft.trim()}
+                        style={{
+                            width: 34,
+                            height: 34,
+                            padding: 0,
+                            borderRadius: 8,
+                            border: "none",
+                            background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
+                            color: "#fff",
+                            cursor: draft.trim() && !sending ? "pointer" : "default",
+                            opacity: sending ? 0.75 : 1,
+                            flexShrink: 0,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <i className={sending ? "bx bx-loader-alt bx-spin" : "bx bx-send"} style={{fontSize: "1.15rem"}} aria-hidden/>
+                    </button>
+                </div>
+                {viewerRole === "CLIENT" && aiAssist ? (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            minWidth: 0,
+                        }}
+                    >
                         <div style={{minWidth: 0, flex: inDrawer ? "1 1 auto" : undefined}}>
                             <StageChatAiAssist
                                 orderId={aiAssist.orderId}
@@ -358,39 +396,8 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                                 }
                             />
                         </div>
-                    ) : (
-                        <span style={{minWidth: 0, flex: 1}}/>
-                    )}
-                    <button
-                        type="button"
-                        onClick={() => void send()}
-                        disabled={sending || !draft.trim()}
-                        style={{
-                            padding: "8px 16px",
-                            borderRadius: 8,
-                            border: "none",
-                            background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
-                            color: "#fff",
-                            fontWeight: 600,
-                            fontSize: "0.8rem",
-                            cursor: draft.trim() && !sending ? "pointer" : "default",
-                            fontFamily: "inherit",
-                            opacity: sending ? 0.75 : 1,
-                            flexShrink: 0,
-                            marginLeft: "auto",
-                        }}
-                    >
-                        {sending ? "Отправка…" : "Отправить"}
-                    </button>
-                </div>
-                <span style={{
-                    fontSize: "0.65rem",
-                    color: "var(--dash-muted)",
-                    paddingBottom: inDrawer ? 2 : 0,
-                    display: "block"
-                }}>
-          Ctrl+Enter — отправить
-        </span>
+                    </div>
+                ) : null}
             </div>
         </div>
     )

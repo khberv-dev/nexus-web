@@ -2,6 +2,7 @@
 
 import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from "react"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
+import {ChatEmojiPicker} from "@/components/dashboard-ui/ChatEmojiPicker"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -78,6 +79,17 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
     const bottomRef = useRef<HTMLDivElement>(null)
     const messagesScrollRef = useRef<HTMLDivElement>(null)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+    const insertEmoji = useCallback((emoji: string) => {
+        const textarea = textareaRef.current
+        const start = textarea?.selectionStart ?? draft.length
+        const end = textarea?.selectionEnd ?? draft.length
+        setDraft(`${draft.slice(0, start)}${emoji}${draft.slice(end)}`)
+        window.requestAnimationFrame(() => {
+            textarea?.focus()
+            textarea?.setSelectionRange(start + emoji.length, start + emoji.length)
+        })
+    }, [draft])
 
     const resizeComposer = useCallback(() => {
         const ta = textareaRef.current
@@ -493,6 +505,7 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                     background: inDrawer ? "var(--dash-surface)" : undefined,
                 }}
             >
+                <div style={{display: "flex", alignItems: "flex-end", gap: 8, width: "100%", minWidth: 0}}>
         <textarea
             ref={textareaRef}
             value={draft}
@@ -502,6 +515,8 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
             disabled={sending}
             style={{
                 width: "100%",
+                flex: 1,
+                minWidth: 0,
                 maxWidth: "100%",
                 boxSizing: "border-box",
                 resize: inDrawer ? "none" : "vertical",
@@ -522,21 +537,17 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                 }
             }}
         />
-                <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 8,
-                    width: "100%",
-                    minWidth: 0
-                }}>
-                    <span style={{minWidth: 0, flex: 1}}/>
+                <ChatEmojiPicker disabled={sending} onSelect={insertEmoji}/>
                     <button
                         type="button"
+                        aria-label="Отправить сообщение"
+                        title="Отправить сообщение"
                         onClick={() => void send()}
                         disabled={sending || !draft.trim()}
                         style={{
-                            padding: "8px 16px",
+                            width: 34,
+                            height: 34,
+                            padding: 0,
                             borderRadius: 8,
                             border: "none",
                             background: draft.trim() ? "var(--dash-accent)" : "var(--dash-border)",
@@ -547,20 +558,14 @@ export const OrderChatPanel = forwardRef<OrderChatPanelHandle, OrderChatPanelPro
                             fontFamily: "inherit",
                             opacity: sending ? 0.75 : 1,
                             flexShrink: 0,
-                            marginLeft: "auto",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        {sending ? "Отправка…" : "Отправить"}
+                        <i className={sending ? "bx bx-loader-alt bx-spin" : "bx bx-send"} style={{fontSize: "1.15rem"}} aria-hidden/>
                     </button>
                 </div>
-                <span style={{
-                    fontSize: "0.65rem",
-                    color: "var(--dash-muted)",
-                    paddingBottom: inDrawer ? 2 : 0,
-                    display: "block"
-                }}>
-          Ctrl+Enter — отправить
-        </span>
             </div>
         </div>
     )
