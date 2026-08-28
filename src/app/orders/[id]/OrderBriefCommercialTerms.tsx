@@ -10,7 +10,10 @@ import type {OrderData} from "./types"
 import {STAGE_LABEL} from "./types"
 
 /** Блок под брифом: правила правок, счета по проекту, оплата доп. правок, ссылка в раздел «Оплата». */
-export function OrderBriefCommercialTerms({order}: { order: OrderData }) {
+export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
+    order: OrderData
+    highlightPayment?: boolean
+}) {
     const skipPayments = isStagePaymentsDisabledPublic()
     const [payingStageId, setPayingStageId] = useState<string | null>(null)
 
@@ -62,7 +65,9 @@ export function OrderBriefCommercialTerms({order}: { order: OrderData }) {
                 background: "var(--dash-surface)",
                 borderRadius: 10,
                 padding: "14px 16px",
-                border: "1px solid var(--dash-border)",
+                border: `1px solid ${highlightPayment ? "var(--dash-accent)" : "var(--dash-border)"}`,
+                boxShadow: highlightPayment ? "0 0 0 3px var(--dash-accent-bg), 0 0 24px var(--dash-accent-bg)" : undefined,
+                transition: "border-color 0.25s ease, box-shadow 0.25s ease",
             }}
         >
             <div className="dash-list-heading-wrap" style={{marginBottom: 10}}>

@@ -8,7 +8,8 @@ import {CLIENT_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {DashBriefCard} from "@/components/dashboard-ui/DashBriefCard"
 import {DashProgressCard} from "@/components/dashboard-ui/DashProgressCard"
-import {ClientContractPanel} from "@/components/Client/ClientContractPanel"
+import {ClientContractFlow} from "@/components/Client/ClientContractFlow"
+import {isFrameworkContractEffectiveSigned} from "@/lib/framework-contract"
 import {ClientActSection} from "@/components/Client/ClientActSection"
 import {BRIEF_PLACEHOLDERS, ORDER_STATUS, OrderData, OrderStatus} from "./types"
 import {getOrderBriefDisplayLabels, getOrderBriefDisplayPlaceholders} from "@/lib/order-brief-display"
@@ -136,6 +137,15 @@ export default function OrderDetailClient({
     const isEditable = order.status === "DRAFT"
     const canSubmit = isEditable && Object.keys(briefData).some(k => briefData[k])
     const hasActiveStages = order.status === "ACTIVE" || order.status === "DONE"
+    const projectContract = order.contracts[0] ?? null
+    const frameworkContract = order.frameworkContract ?? {
+        status: "NONE",
+        number: null,
+        hasFile: false,
+        hasSignedFile: false,
+    }
+    const contractsComplete = isFrameworkContractEffectiveSigned(frameworkContract.status)
+        && (projectContract?.status === "CLIENT_SIGNED" || projectContract?.status === "CONFIRMED")
 
     const submitBrief = async () => {
         setSubmitting(true);
@@ -296,20 +306,22 @@ export default function OrderDetailClient({
 
                             {/* ── LEFT: brief (compact) ── */}
                             <div className="dash-col1">
-                                {order.status !== "DRAFT" ? <OrderBriefCommercialTerms order={order}/> : null}
+                                {order.status !== "DRAFT" ? (
+                                    <OrderBriefCommercialTerms order={order} highlightPayment={contractsComplete}/>
+                                ) : null}
 
                                 {/* Contract */}
-                                {order.status !== "DRAFT" && order.contracts && order.contracts.length > 0 && (
-                                    <div id="order-contract"
-                                         style={{marginTop: 16, marginBottom: 16, scrollMarginTop: 88}}>
-                                        <ClientContractPanel
-                                            contract={order.contracts[0]}
-                                            orderId={order.id}
-                                            userRole="CLIENT"
-                                            onUploadSigned={handleUploadSignedContract}
-                                        />
-                                    </div>
-                                )}
+                                {order.status !== "DRAFT" ? (
+                                    <ClientContractFlow
+                                        frameworkContract={frameworkContract}
+                                        projectContract={projectContract}
+                                        orderId={order.id}
+                                        onUploadProjectContract={handleUploadSignedContract}
+                                        onFrameworkContractChange={frameworkContract =>
+                                            setOrder(prev => ({...prev, frameworkContract}))
+                                        }
+                                    />
+                                ) : null}
 
                                 {/* Acts */}
                                 {order.stages

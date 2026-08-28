@@ -38,15 +38,23 @@ export async function POST(req: NextRequest) {
 
     const parsed = await parseJsonBody(req, clientApplySchema);
     if (!parsed.ok) return parsed.response;
-    const formData = parsed.data as Record<string, unknown>;
+    const formData = {...(parsed.data as Record<string, unknown>)}
+    const lockProfileIdentity = req.nextUrl.searchParams.get("source") === "onboarding"
+    const existingUser = await prisma.user.findUnique({
+        where: {id: session.id},
+        select: {phone: true, name: true, email: true},
+    })
+    if (lockProfileIdentity && existingUser?.name?.trim()) formData.fullName = existingUser.name.trim()
+    if (lockProfileIdentity && existingUser?.email?.trim()) formData.email = existingUser.email.trim()
     const reqErr = validateClientRequisitesForm(formData);
     if (reqErr) return NextResponse.json({error: reqErr}, {status: 400});
     const fullName = formData?.fullName || formData?.name || null;
     const phoneFromBody = typeof formData?.phone === "string" && formData.phone.trim() ? formData.phone.trim() : null;
     const email = typeof formData?.email === "string" && formData.email.trim() ? formData.email.trim() : undefined;
-    const {phone: _ignoredPhone, email: _ignoredEmail, ...formDataRest} = formData;
+    const formDataRest = {...formData}
+    delete formDataRest.phone
+    delete formDataRest.email
 
-    const existingUser = await prisma.user.findUnique({where: {id: session.id}, select: {phone: true}})
     const phone = phoneFromBody ?? existingUser?.phone ?? null
 
     const user = await prisma.user.update({
@@ -121,7 +129,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ok: true});
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     const session = await getSessionUser();
     if (!session) return NextResponse.json(null);
     if (session.role !== "CLIENT") return NextResponse.json(null);
@@ -151,9 +159,17 @@ export async function GET() {
 
     const fn = typeof merged.fullName === "string" ? merged.fullName.trim() : "";
     if (!fn && user.name?.trim()) merged.fullName = user.name.trim();
+    const lockProfileIdentity = req.nextUrl.searchParams.get("source") === "onboarding"
+    if (lockProfileIdentity && user.name?.trim()) merged.fullName = user.name.trim()
     return NextResponse.json({
         ...merged,
         phone: user.phone ?? "",
         email: user.email ?? "",
+        ...(lockProfileIdentity ? {
+            _profileLocks: {
+                fullName: Boolean(user.name?.trim()),
+                email: Boolean(user.email?.trim()),
+            },
+        } : {}),
     });
 }

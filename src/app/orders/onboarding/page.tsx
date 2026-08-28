@@ -67,12 +67,27 @@ export default function ClientOnboardingPage() {
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dadataLoading, setDadataLoading] = useState(false)
+    const [profileLocks, setProfileLocks] = useState({fullName: false, email: false})
 
     useEffect(() => {
-        fetch("/api/mock-client/apply")
+        fetch("/api/mock-client/apply?source=onboarding")
             .then(r => r.json())
             .then(data => {
-                if (data && typeof data === "object") setForm(data as Record<string, string>)
+                if (!data || typeof data !== "object") return
+                const payload = data as Record<string, unknown>
+                const locks = payload._profileLocks
+                if (locks && typeof locks === "object") {
+                    const lockRecord = locks as Record<string, unknown>
+                    setProfileLocks({
+                        fullName: lockRecord.fullName === true,
+                        email: lockRecord.email === true,
+                    })
+                }
+                const {_profileLocks: _ignoredLocks, ...fields} = payload
+                void _ignoredLocks
+                setForm(Object.fromEntries(
+                    Object.entries(fields).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+                ))
             })
             .catch(() => {
             })
@@ -149,7 +164,7 @@ export default function ClientOnboardingPage() {
         }
         setLoading(true)
         try {
-            const res = await fetch("/api/mock-client/apply", {
+            const res = await fetch("/api/mock-client/apply?source=onboarding", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(form)
@@ -183,13 +198,30 @@ export default function ClientOnboardingPage() {
                     <form onSubmit={handleSubmit} noValidate>
                         <Field label="ФИО" required>
                             <input type="text" required placeholder="Иван Иванов" value={form.fullName || ""}
-                                   onChange={e => setForm(f => ({...f, fullName: e.target.value}))} style={inputStyle}/>
+                                   onChange={e => setForm(f => ({...f, fullName: e.target.value}))}
+                                   disabled={profileLocks.fullName}
+                                   aria-readonly={profileLocks.fullName}
+                                   title={profileLocks.fullName ? "Значение получено из профиля" : undefined}
+                                   style={profileLocks.fullName ? {
+                                       ...inputStyle,
+                                       cursor: "not-allowed",
+                                       opacity: 0.65,
+                                       background: "rgba(255,255,255,0.025)",
+                                   } : inputStyle}/>
                         </Field>
                         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
                             <Field label="Email" required>
                                 <input type="email" required placeholder="ivan@example.com" value={form.email || ""}
                                        onChange={e => setForm(f => ({...f, email: e.target.value}))}
-                                       style={inputStyle}/>
+                                       disabled={profileLocks.email}
+                                       aria-readonly={profileLocks.email}
+                                       title={profileLocks.email ? "Значение получено из профиля" : undefined}
+                                       style={profileLocks.email ? {
+                                           ...inputStyle,
+                                           cursor: "not-allowed",
+                                           opacity: 0.65,
+                                           background: "rgba(255,255,255,0.025)",
+                                       } : inputStyle}/>
                             </Field>
                             <Field label="Сайт компании">
                                 <input type="url" placeholder="https://example.com" value={form.website || ""}

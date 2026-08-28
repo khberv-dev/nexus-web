@@ -132,6 +132,12 @@ export interface OrderData {
     stages: OrderStage[]
     payments: { id: string; amount: number; status: string }[]
     contracts: Contract[]
+    frameworkContract?: {
+        status: string
+        number: string | null
+        hasFile: boolean
+        hasSignedFile: boolean
+    }
     invoices: OrderInvoiceBrief[]
 }
 

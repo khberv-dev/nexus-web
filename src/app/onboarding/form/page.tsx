@@ -123,6 +123,7 @@ export default function OnboardingFormPage() {
     const [loading, setLoading] = useState(false)
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [profileLocks, setProfileLocks] = useState({fullName: false, email: false})
 
     // AI drawer
     const [drawerOpen, setDrawerOpen] = useState(false)
@@ -262,7 +263,9 @@ export default function OnboardingFormPage() {
     const closeDrawer = () => setDrawerOpen(false)
 
     const applyAI = (idx: number, field: string | null, example: string) => {
-        if (field) setForm(f => ({...f, [field]: example}))
+        if (field && !profileLocks[field as keyof typeof profileLocks]) {
+            setForm(f => ({...f, [field]: example}))
+        }
         setAppliedIdx(prev => new Set(prev).add(idx))
     }
 
@@ -270,7 +273,21 @@ export default function OnboardingFormPage() {
         fetch("/api/onboarding/apply")
             .then(r => r.json())
             .then(data => {
-                if (data && typeof data === "object") setForm(data as Record<string, string>)
+                if (!data || typeof data !== "object") return
+                const payload = data as Record<string, unknown>
+                const locks = payload._profileLocks
+                if (locks && typeof locks === "object") {
+                    const lockRecord = locks as Record<string, unknown>
+                    setProfileLocks({
+                        fullName: lockRecord.fullName === true,
+                        email: lockRecord.email === true,
+                    })
+                }
+                const {_profileLocks: _ignoredLocks, ...fields} = payload
+                void _ignoredLocks
+                setForm(Object.fromEntries(
+                    Object.entries(fields).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+                ))
             })
             .catch(() => {
             })
@@ -373,6 +390,9 @@ export default function OnboardingFormPage() {
                         >
                             {FIELDS.map(field => {
                                 const isWide = field.type === "textarea" || field.type === "software" || field.type === "ai" || field.type === "multiselect" || field.name === "portfolio"
+                                const lockedFromProfile = field.name === "fullName"
+                                    ? profileLocks.fullName
+                                    : field.name === "email" && profileLocks.email
                                 return (
                                     <div
                                         key={field.name}
@@ -385,6 +405,9 @@ export default function OnboardingFormPage() {
                                             fontWeight: 500
                                         }}>
                                             {field.label}
+                                            {lockedFromProfile ? (
+                                                <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
+                                            ) : null}
                                         </label>
 
                                         {field.name === "portfolio" ? (
@@ -588,9 +611,21 @@ export default function OnboardingFormPage() {
                                                 placeholder={field.placeholder}
                                                 value={form[field.name] || ""}
                                                 onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
-                                                style={inputStyle}
-                                                onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                                                disabled={lockedFromProfile}
+                                                aria-readonly={lockedFromProfile}
+                                                title={lockedFromProfile ? "Значение получено из профиля" : undefined}
+                                                style={lockedFromProfile ? {
+                                                    ...inputStyle,
+                                                    cursor: "not-allowed",
+                                                    opacity: 0.65,
+                                                    background: "rgba(255,255,255,0.025)",
+                                                } : inputStyle}
+                                                onFocus={e => {
+                                                    if (!lockedFromProfile) e.target.style.borderColor = "rgba(255,255,255,0.35)"
+                                                }}
+                                                onBlur={e => {
+                                                    if (!lockedFromProfile) e.target.style.borderColor = "rgba(255,255,255,0.1)"
+                                                }}
                                                 required={field.required}
                                             />
                                         )}
@@ -720,9 +755,9 @@ export default function OnboardingFormPage() {
                                                     fontSize: "0.8rem",
                                                     fontWeight: 500
                                                 }}>Дата регистрации ИП</label>
-                                                <input type="text" value={form.ipRegDate || ""}
+                                                <input type="date" value={form.ipRegDate || ""}
                                                        onChange={e => setForm(f => ({...f, ipRegDate: e.target.value}))}
-                                                       style={inputStyle} placeholder="01.01.2020"
+                                                       style={{...inputStyle, colorScheme: "dark"}}
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
                                                        onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
                                             </div>

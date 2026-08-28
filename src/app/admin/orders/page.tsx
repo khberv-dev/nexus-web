@@ -5,11 +5,26 @@ import {AdminLayout} from "@/components/admin/AdminLayout"
 import {useRegisterAdminRefresh} from "@/components/admin/AdminRefreshContext"
 import {Modal} from "@/components/ui/modal"
 import type {Order, OrderStatus, SpecialistForAssignment} from "./types"
+import {ORDER_LABEL, STAGE_STATUS_LABEL} from "./types"
 import {OrderList} from "./OrderList"
 import {OrderDetail} from "./OrderDetail"
 import "./orders.css"
 
 const URL_FILTERS = ["ALL", "DRAFT", "BRIEFING", "BRIEF_REVIEW", "ACTIVE", "DONE", "CANCELLED"] as const
+
+const ORDER_STATUS_EFFECT: Record<OrderStatus, string> = {
+    DRAFT: "Заказ вернётся в черновик и перестанет участвовать в рабочем процессе.",
+    BRIEFING: "Заказчик увидит статус брифа и сможет продолжить работу с анкетой проекта.",
+    BRIEF_REVIEW: "Бриф перейдёт на проверку; заказчик получит уведомление.",
+    ACTIVE: "Проект станет активным и откроется рабочий процесс по этапам.",
+    DONE: "Проект будет отмечен завершённым; заказчик и дизайнер получат уведомления.",
+    CANCELLED: "Заказ будет отменён; заказчик и назначенный дизайнер получат уведомления.",
+}
+
+type ChangePrompt =
+    | { kind: "order"; orderId: string; from: OrderStatus; to: OrderStatus }
+    | { kind: "stageApprove"; stageId: string; stageName: string }
+    | { kind: "clientRevisionAccept"; stageId: string; stageName: string }
 
 function readInitialFilter(): OrderStatus | "ALL" {
     if (typeof window === "undefined") return "ALL"
@@ -81,6 +96,7 @@ export default function OrdersAdminPage() {
     const [extraReason, setExtraReason] = useState("")
     const [briefRejectModal, setBriefRejectModal] = useState<{ orderId: string } | null>(null)
     const [briefRejectComment, setBriefRejectComment] = useState("")
+    const [changePrompt, setChangePrompt] = useState<ChangePrompt | null>(null)
 
     const setUrlParams = useCallback((next: Record<string, string | null | undefined>, mode: "push" | "replace" = "replace") => {
         if (typeof window === "undefined") return
@@ -161,14 +177,7 @@ export default function OrdersAdminPage() {
             setRevisionModal({stageId, stageName});
             return
         }
-        setActing(stageId)
-        await fetch(`/api/admin/stages/${stageId}/review`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({action})
-        })
-        await load();
-        setActing(null)
+        setChangePrompt({kind: "stageApprove", stageId, stageName})
     }
 
     const clientRevision = async (stageId: string, action: "accept" | "reject", stageName: string) => {
@@ -177,14 +186,7 @@ export default function OrdersAdminPage() {
             setClientRevModal({stageId, stageName, action})
             return
         }
-        setActing(stageId)
-        await fetch(`/api/admin/stages/${stageId}/client-revision`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({action: "accept"}),
-        })
-        await load()
-        setActing(null)
+        setChangePrompt({kind: "clientRevisionAccept", stageId, stageName})
     }
 
     const submitClientRevReject = async () => {
@@ -234,13 +236,44 @@ export default function OrdersAdminPage() {
         setActing(null)
     }
 
-    const changeStatus = async (orderId: string, status: OrderStatus) => {
-        await fetch(`/api/admin/orders/${orderId}/status`, {
+    const changeStatus = (orderId: string, status: OrderStatus) => {
+        const current = orders.find(item => item.id === orderId)?.status
+        if (!current || current === status) return
+        setChangePrompt({kind: "order", orderId, from: current, to: status})
+    }
+
+    const confirmChange = async () => {
+        const prompt = changePrompt
+        if (!prompt) return
+        setChangePrompt(null)
+        if (prompt.kind === "order") {
+            setActing(`order-${prompt.orderId}`)
+            await fetch(`/api/admin/orders/${prompt.orderId}/status`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({status})
+                body: JSON.stringify({status: prompt.to})
         })
         await load()
+            setActing(null)
+            return
+        }
+
+        setActing(prompt.stageId)
+        if (prompt.kind === "stageApprove") {
+            await fetch(`/api/admin/stages/${prompt.stageId}/review`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action: "modApprove"}),
+            })
+        } else {
+            await fetch(`/api/admin/stages/${prompt.stageId}/client-revision`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action: "accept"}),
+            })
+        }
+        await load()
+        setActing(null)
     }
 
     const briefApprove = async (orderId: string) => {
@@ -366,6 +399,62 @@ export default function OrdersAdminPage() {
 
     return (
         <AdminLayout noPadding>
+            <Modal open={!!changePrompt} onClose={() => setChangePrompt(null)} maxWidth={520}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 8px"}}>
+                        {changePrompt?.kind === "order" ? "Изменить статус заказа?" : "Изменить состояние этапа?"}
+                    </h5>
+                    {changePrompt ? (
+                        <>
+                            <div style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr auto 1fr",
+                                alignItems: "center",
+                                gap: 10,
+                                padding: "12px 14px",
+                                marginBottom: 12,
+                                borderRadius: 10,
+                                border: "1px solid var(--adm-border)",
+                                background: "var(--adm-surface-2)",
+                                fontSize: "0.82rem",
+                            }}>
+                                <span style={{color: "var(--adm-muted)"}}>
+                                    {changePrompt.kind === "order"
+                                        ? ORDER_LABEL[changePrompt.from]
+                                        : STAGE_STATUS_LABEL[changePrompt.kind === "stageApprove" ? "MOD_REVIEW" : "CLIENT_REVISION"]}
+                                </span>
+                                <i className="bx bx-right-arrow-alt" aria-hidden style={{fontSize: "1.2rem"}}/>
+                                <strong style={{color: "var(--adm-text)"}}>
+                                    {changePrompt.kind === "order"
+                                        ? ORDER_LABEL[changePrompt.to]
+                                        : changePrompt.kind === "stageApprove"
+                                            ? STAGE_STATUS_LABEL.CLIENT_REVIEW
+                                            : "Правки приняты администратором"}
+                                </strong>
+                            </div>
+                            <p style={{color: "var(--adm-muted)", fontSize: "0.84rem", lineHeight: 1.5, margin: "0 0 18px"}}>
+                                {changePrompt.kind === "order"
+                                    ? ORDER_STATUS_EFFECT[changePrompt.to]
+                                    : changePrompt.kind === "stageApprove"
+                                        ? `${changePrompt.stageName}: материалы станут доступны заказчику, этап перейдёт на клиентскую проверку, заказчик получит уведомление.`
+                                        : `${changePrompt.stageName}: запрос правок останется активным, а дизайнер получит уведомление, что администратор принял замечания клиента.`}
+                            </p>
+                        </>
+                    ) : null}
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setChangePrompt(null)}>Отмена</button>
+                        <button
+                            className={changePrompt?.kind === "order" && changePrompt.to === "CANCELLED"
+                                ? "sp-btn sp-btn-danger"
+                                : "sp-btn sp-btn-primary"}
+                            onClick={() => void confirmChange()}
+                        >
+                            Подтвердить изменение
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
             {/* Revision modal */}
             <Modal open={!!revisionModal} onClose={() => setRevisionModal(null)} maxWidth={480}>
                 <div style={{padding: "24px 24px 20px"}}>
@@ -374,7 +463,7 @@ export default function OrdersAdminPage() {
                         color: "var(--adm-muted)",
                         fontSize: "0.875rem",
                         margin: "0 0 16px"
-                    }}>{revisionModal?.stageName}</p>
+                    }}>{revisionModal?.stageName}: статус изменится с «На модерации» на «На доработке». Дизайнер получит замечания и уведомление.</p>
                     <textarea className="sp-textarea" rows={4} placeholder="Замечания…" value={revisionComment}
                               onChange={e => setRevisionComment(e.target.value)} autoFocus/>
                     <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
@@ -392,7 +481,7 @@ export default function OrdersAdminPage() {
                         color: "var(--adm-muted)",
                         fontSize: "0.875rem",
                         margin: "0 0 16px"
-                    }}>{clientRevModal?.stageName}</p>
+                    }}>{clientRevModal?.stageName}: этап вернётся из «Правки клиента» в «У заказчика», а заказчик получит причину отказа.</p>
                     <textarea
                         className="sp-textarea"
                         rows={4}

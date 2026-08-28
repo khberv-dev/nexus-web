@@ -93,6 +93,16 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
 
     if (!order) redirect("/orders")
 
+    const clientProfile = await prisma.clientProfile.findUnique({
+        where: {userId: dbUser.id},
+        select: {
+            frameworkContractStatus: true,
+            frameworkContractNumber: true,
+            frameworkContractS3Key: true,
+            signedContractS3Key: true,
+        },
+    })
+
     const o = order!
     const stagesSorted = sortStages(o.stages)
     const specAvatarKey = o.specialist?.files?.[0]?.s3Key
@@ -213,6 +223,12 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                     clientSignedAt: c.clientSignedAt?.toISOString() ?? null,
                     confirmedAt: c.confirmedAt?.toISOString() ?? null,
                 })),
+                frameworkContract: {
+                    status: clientProfile?.frameworkContractStatus ?? "NONE",
+                    number: clientProfile?.frameworkContractNumber ?? null,
+                    hasFile: Boolean(clientProfile?.frameworkContractS3Key),
+                    hasSignedFile: Boolean(clientProfile?.signedContractS3Key),
+                },
                 invoices: o.invoices.map((inv) => ({
                     id: inv.id,
                     number: inv.number,

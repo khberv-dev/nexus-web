@@ -8,6 +8,7 @@ interface Props {
     orderId: string
     userRole: "CLIENT" | "SPECIALIST"
     onUploadSigned?: (file: File) => Promise<{ success: boolean; error?: string }>
+    title?: string
 }
 
 const STATUS_ACTIONS: Record<ContractStatus, { label: string; icon: string }> = {
@@ -187,7 +188,7 @@ function ContractFileLink({contractId, s3Key, label}: { contractId: string; s3Ke
 }
 
 // Основной компонент для клиента и специалиста
-export function ClientContractPanel({contract, orderId, userRole, onUploadSigned}: Props) {
+export function ClientContractPanel({contract, orderId, userRole, onUploadSigned, title = "Договор"}: Props) {
     const [uploadModalOpen, setUploadModalOpen] = useState(false)
 
     if (!contract) {
@@ -204,7 +205,7 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                     color: "var(--dash-muted)",
                     textTransform: "uppercase",
                     marginBottom: 8
-                }}>Договор
+                }}>{title}
                 </div>
                 <p style={{margin: 0, color: "var(--dash-text2)", fontSize: "0.85rem"}}>
                     {userRole === "CLIENT" ? "Дождитесь, пока администратор сгенерирует договор." : "Дождитесь, пока администратор отправит вам договор."}
@@ -239,7 +240,7 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-                <span>Договор</span>
+                <span>{title}</span>
                 <span style={{fontWeight: 500, color: "var(--dash-text2)"}}>{contract.number}</span>
             </div>
 

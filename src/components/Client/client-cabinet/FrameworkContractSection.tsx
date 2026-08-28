@@ -8,10 +8,16 @@ import {FrameworkContractClientGuide} from "./FrameworkContractClientGuide"
 
 export function FrameworkContractSection({
                                              initial,
+                                             title = "Договор оказания услуг",
+                                             onStatusChange,
+                                             compact = false,
                                          }: {
     initial: { status: string; number: string | null; hasFile: boolean; hasSignedFile?: boolean }
+    title?: string
+    onStatusChange?: (next: { status: string; number: string | null; hasFile: boolean; hasSignedFile: boolean }) => void
+    compact?: boolean
 }) {
-    const [state, setState] = useState(initial)
+    const [state, setState] = useState({...initial, hasSignedFile: Boolean(initial.hasSignedFile)})
     const [busy, setBusy] = useState(false)
     const [uploadingFile, setUploadingFile] = useState(false)
     const fileRef = useRef<HTMLInputElement>(null)
@@ -26,7 +32,10 @@ export function FrameworkContractSection({
             hasFile: boolean;
             hasSignedFile?: boolean
         }
-        setState({status: j.status, number: j.number, hasFile: j.hasFile, hasSignedFile: j.hasSignedFile})
+        const next = {status: j.status, number: j.number, hasFile: j.hasFile, hasSignedFile: Boolean(j.hasSignedFile)}
+        setState(next)
+        onStatusChange?.(next)
+        return next
     }
 
     const download = async () => {
@@ -67,8 +76,7 @@ export function FrameworkContractSection({
                 body: JSON.stringify({action: action === "sign" ? "sign" : "decline"}),
             })
             if (r.ok) {
-                await refresh();
-                window.location.reload()
+                await refresh()
             }
         } finally {
             setBusy(false)
@@ -76,8 +84,8 @@ export function FrameworkContractSection({
     }
 
     return (
-        <DocSection title="Договор оказания услуг" icon="bx-file-blank">
-            <FrameworkContractClientGuide contractStatus={state.status}/>
+        <DocSection title={title} icon="bx-file-blank">
+            {!compact ? <FrameworkContractClientGuide contractStatus={state.status}/> : null}
             <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png" style={{display: "none"}}
                    onChange={e => {
                        const f = e.target.files?.[0];
@@ -90,14 +98,14 @@ export function FrameworkContractSection({
                 {state.number && <span style={{fontSize: "0.8rem", color: "var(--dash-muted)"}}>№ {state.number}</span>}
             </div>
 
-            {state.status === "NONE" && !state.hasFile && (
+            {!compact && state.status === "NONE" && !state.hasFile && (
                 <p style={{fontSize: "0.8rem", color: "var(--dash-muted)", margin: 0, lineHeight: 1.45}}>
                     Администратор разместит договор в вашей карточке. После подписания вы сможете отправлять брифы на
                     рассмотрение.
                 </p>
             )}
 
-            {state.status === "AWAITING_SIGNATURE" && state.hasFile && (
+            {!compact && state.status === "AWAITING_SIGNATURE" && state.hasFile && (
                 <p style={{fontSize: "0.82rem", color: "var(--dash-text2)", margin: "0 0 12px", lineHeight: 1.5}}>
                     Договор размещён: скачайте PDF, при необходимости загрузите скан с подписью и нажмите «Подписан»
                     (или «Отказать», если не согласны — с вами свяжется менеджер).
@@ -149,18 +157,18 @@ export function FrameworkContractSection({
                 </div>
             )}
 
-            {state.hasSignedFile && (
+            {!compact && state.hasSignedFile && (
                 <p style={{fontSize: "0.75rem", color: "var(--dash-success)", margin: "8px 0 0"}}>
                     ✓ Подписанный скан загружен
                 </p>
             )}
 
-            {state.status === "SIGNED_BY_ADMIN" && (
+            {!compact && state.status === "SIGNED_BY_ADMIN" && (
                 <p style={{fontSize: "0.78rem", color: "var(--dash-muted)", margin: "8px 0 0", lineHeight: 1.45}}>
                     Подписание договора зафиксировано менеджером. Вы можете отправлять брифы.
                 </p>
             )}
-            {state.status === "DECLINED_BY_CLIENT" && (
+            {!compact && state.status === "DECLINED_BY_CLIENT" && (
                 <p style={{fontSize: "0.78rem", color: "var(--dash-warn)", margin: "8px 0 0"}}>
                     Свяжитесь с менеджером или дождитесь новой версии договора.
                 </p>

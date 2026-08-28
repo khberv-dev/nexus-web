@@ -29,8 +29,11 @@ export async function POST(req: NextRequest) {
     if (!phone) {
         return NextResponse.json({error: "Укажите телефон."}, {status: 400});
     }
-    const {phone: _ignoredPhone, ...formDataWithoutPhone} = (formData ?? {}) as Record<string, unknown>;
+    const formDataWithoutPhone = {...((formData ?? {}) as Record<string, unknown>)}
+    delete formDataWithoutPhone.phone
     const normalizedFormData = {...formDataWithoutPhone} as Record<string, unknown>
+    if (user.name?.trim()) normalizedFormData.fullName = user.name.trim()
+    if (user.email?.trim()) normalizedFormData.email = user.email.trim()
     const specialtyRaw =
         typeof normalizedFormData.specialty === "string" ? normalizedFormData.specialty :
             typeof normalizedFormData.specialization === "string" ? normalizedFormData.specialization :
@@ -81,9 +84,16 @@ export async function GET() {
     if (!user) return NextResponse.json(null);
 
     const formData = (user.specialistProfile?.formData ?? null) as Record<string, unknown> | null;
-    return NextResponse.json(
-        formData
-            ? {...formData, phone: user.phone ?? "", email: user.email ?? ""}
-            : {phone: user.phone ?? "", email: user.email ?? ""}
-    );
+    const profileName = user.name?.trim() ?? ""
+    const profileEmail = user.email?.trim() ?? ""
+    return NextResponse.json({
+        ...(formData ?? {}),
+        phone: user.phone ?? "",
+        fullName: profileName || (typeof formData?.fullName === "string" ? formData.fullName : ""),
+        email: profileEmail || (typeof formData?.email === "string" ? formData.email : ""),
+        _profileLocks: {
+            fullName: Boolean(profileName),
+            email: Boolean(profileEmail),
+        },
+    });
 }
