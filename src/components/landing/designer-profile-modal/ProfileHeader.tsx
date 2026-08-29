@@ -19,19 +19,41 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
             gap: compact ? 14 : 16,
             marginBottom: compact ? 20 : 0
         }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-                src={d.avatar ?? d.portrait}
-                alt={d.name}
-                style={{
+            {d.avatar || d.portrait ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                    src={d.avatar ?? d.portrait}
+                    alt={d.name}
+                    style={{
                     width: avatarSize,
                     height: avatarSize,
                     borderRadius: "50%",
                     border: compact ? "2px solid rgba(255,255,255,0.35)" : "3px solid rgba(255,255,255,0.5)",
                     objectFit: "cover",
                     flexShrink: 0,
-                }}
-            />
+                    }}
+                />
+            ) : (
+                <div
+                    aria-hidden
+                    style={{
+                        width: avatarSize,
+                        height: avatarSize,
+                        borderRadius: "50%",
+                        border: compact ? "2px solid rgba(255,255,255,0.35)" : "3px solid rgba(255,255,255,0.5)",
+                        background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontSize: compact ? "1.1rem" : "1.35rem",
+                        fontWeight: 700,
+                        flexShrink: 0,
+                    }}
+                >
+                    {d.name.trim().charAt(0).toUpperCase() || "Д"}
+                </div>
+            )}
             <div style={{minWidth: 0}}>
                 <h2
                     style={{

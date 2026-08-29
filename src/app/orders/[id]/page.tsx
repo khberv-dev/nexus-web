@@ -137,23 +137,23 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                     name: (o.specialist.specialistProfile?.formData as Record<string, string> | null)?.fullName ?? o.specialist.name,
                     email: o.specialist.email ?? "",
                     avatarUrl: specialistAvatarUrl,
-                    profile: specialistBundle && portraitUrl && workUrl ? {
+                    profile: o.specialist.specialistProfile ? {
                         name: specialistForm.fullName ?? o.specialist.name ?? "Специалист",
-                        specialty: specialistBundle.specialty ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
-                        portrait: portraitUrl,
-                        avatar: specialistAvatarUrl ?? portraitUrl,
-                        work: workUrl,
-                        workPos: specialistBundle.workPos ?? "center center",
+                        specialty: specialistBundle?.specialty ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
+                        portrait: portraitUrl ?? specialistAvatarUrl ?? "",
+                        avatar: specialistAvatarUrl ?? portraitUrl ?? null,
+                        work: workUrl ?? portraitUrl ?? specialistAvatarUrl ?? "",
+                        workPos: specialistBundle?.workPos ?? "center center",
                         experience: parseInt(specialistForm.experience ?? "0") || 0,
                         sqm: parseInt(specialistForm.sqm ?? "0") || 0,
                         style: specialistForm.interiorStyle ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
                         has3d: specialistForm.has3d === "true",
                         hasRd: specialistForm.hasRd === "true",
-                        bio: specialistBundle.about ?? specialistForm.about ?? "",
-                        introVideoUrl: specialistBundle.videoFileId
+                        bio: specialistBundle?.about ?? specialistForm.about ?? "",
+                        introVideoUrl: specialistBundle?.videoFileId
                             ? bundleUrls.get(specialistBundle.videoFileId)
                             : undefined,
-                        portfolioImages: specialistBundle.items
+                        portfolioImages: (specialistBundle?.items ?? [])
                             .map((item) => bundleUrls.get(item.fileId))
                             .filter((url): url is string => Boolean(url)),
                         level: specialistLevel?.code ?? null,

@@ -30,7 +30,7 @@ export default function OnboardingInterviewPage() {
                     className="app-planerka-embed"
                     data-planerka-embed="default"
                     data-planerka-url="https://planerka.app/meet"
-                    data-planerka-user="neksus-z6c2ii"
+                    data-planerka-user="asror-8ubeqz"
                     data-planerka-event="30min"
                     data-planerka-bg="transparent"
                     data-planerka-border="#2f4156"
