@@ -11,7 +11,7 @@
  */
 import {NextRequest, NextResponse} from "next/server"
 import {getSessionUser} from "@/lib/session"
-import {cfAiAsk, stripJsonFences} from "@/lib/cf-ai"
+import {aiAsk, stripJsonFences} from "@/lib/ai-provider"
 import {rateLimit} from "@/lib/rate-limit"
 
 const SYSTEM = `Ты — опытный менеджер проектов в дизайн-студии. Анализируешь бриф клиента и готовишь краткое резюме для администратора платформы NEXUS.
@@ -77,7 +77,7 @@ ${briefText || "Бриф пустой"}
 - specialistNote: специализация, опыт или стиль который важен для этого заказа`
 
     try {
-        const raw = await cfAiAsk(SYSTEM, userPrompt, 800)
+        const raw = await aiAsk(SYSTEM, userPrompt, 800)
         const summary = JSON.parse(stripJsonFences(raw))
         return NextResponse.json({summary})
     } catch (err) {

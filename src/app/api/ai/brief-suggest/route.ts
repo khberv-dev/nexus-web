@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server"
-import {cfAiAsk, stripJsonFences} from "@/lib/cf-ai"
+import {aiAsk, stripJsonFences} from "@/lib/ai-provider"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 
@@ -61,7 +61,7 @@ ${filled || "Пока ничего не заполнено"}
 [{"field":"vision","tip":"...","reason":"...","example":"..."}]`
 
     try {
-        const raw = await cfAiAsk(SYSTEM, userPrompt, 1024)
+        const raw = await aiAsk(SYSTEM, userPrompt, 1024)
         const suggestions = JSON.parse(stripJsonFences(raw))
         return NextResponse.json({suggestions})
     } catch (err) {

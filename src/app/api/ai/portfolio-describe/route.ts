@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server"
-import {cfAiAsk} from "@/lib/cf-ai"
+import {aiAsk} from "@/lib/ai-provider"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 
@@ -31,7 +31,7 @@ ${current
 - На русском языке`
 
     try {
-        const text = await cfAiAsk(SYSTEM, userPrompt, 300)
+        const text = await aiAsk(SYSTEM, userPrompt, 300)
         return NextResponse.json({text})
     } catch (err) {
         console.error("[ai/portfolio-describe]", err)

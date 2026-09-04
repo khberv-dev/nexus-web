@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server"
-import {geminiGenerate} from "@/lib/gemini-ai"
+import {aiAsk} from "@/lib/ai-provider"
 import {getClientIp, rateLimit} from "@/lib/rate-limit"
 
 const SYSTEM = `Ты — редактор платформы NEXUS для дизайнеров интерьера.
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const userPrompt = `${context ? `Контекст анкеты:\n${context}\n\n` : ""}Черновик раздела «О себе»:\n${draft}\n\nПерепиши это в развёрнутый профессиональный текст для анкеты дизайнера интерьера.`
 
     try {
-        const text = await geminiGenerate(SYSTEM, userPrompt, 500)
+        const text = await aiAsk(SYSTEM, userPrompt, 500)
         return NextResponse.json({text})
     } catch (err) {
         console.error("[ai/generate-about]", err)

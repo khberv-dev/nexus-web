@@ -12,7 +12,7 @@ import {
     STYLES,
     TASKS,
 } from "@/app/orders/new/briefConfig"
-import {cfAiAsk, isCloudflareAiConfigured, stripJsonFences} from "@/lib/cf-ai"
+import {aiAsk, isAiConfigured, stripJsonFences} from "@/lib/ai-provider"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 
@@ -99,11 +99,11 @@ export async function POST(req: NextRequest) {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
 
-    if (!isCloudflareAiConfigured()) {
+    if (!isAiConfigured()) {
         return NextResponse.json(
             {
                 error:
-                    "ИИ не настроен: в .env задайте CF_ACCOUNT_ID и CF_API_KEY (или CF_API_TOKEN), без кавычек и лишних пробелов. Перезапустите dev-сервер.",
+                    "ИИ не настроен: проверьте AI_PROVIDER и ключ выбранного провайдера в .env. Перезапустите dev-сервер.",
             },
             {status: 503},
         )
@@ -159,7 +159,7 @@ ${listsBlock}
 Поле field: один из ключей ${focus.join(", ")}, либо null для общей подсказки по шагу.`
 
     try {
-        const raw = await cfAiAsk(SYSTEM, userPrompt, 1400)
+        const raw = await aiAsk(SYSTEM, userPrompt, 1400)
         const parsed = parseSuggestionsJson(raw)
         const allowedFields = new Set(focus)
         const suggestions = parsed
@@ -179,19 +179,16 @@ ${listsBlock}
     } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
         console.error("[ai/brief-wizard-suggest]", err)
-        if (msg === "CF_AI_NOT_CONFIGURED") {
+        if (msg === "GEMINI_NOT_CONFIGURED" || msg === "YANDEX_AI_NOT_CONFIGURED" || msg.startsWith("INVALID_AI_PROVIDER:")) {
             return NextResponse.json(
-                {error: "ИИ не настроен: CF_ACCOUNT_ID и CF_API_KEY (или CF_API_TOKEN) в .env."},
+                {error: "ИИ не настроен: проверьте AI_PROVIDER и переменные выбранного провайдера в .env."},
                 {status: 503},
             )
         }
-        if (msg.startsWith("CF_AI_HTTP_401:")) {
+        if (msg.startsWith("YANDEX_AI_HTTP_401:") || msg.startsWith("YANDEX_AI_HTTP_403:")) {
             return NextResponse.json(
-                {
-                    error:
-                        "Cloudflare отклонил токен (401). Создайте токен в дашборде: Workers AI → «Use REST API» → Create Workers AI API Token. CF_ACCOUNT_ID должен быть ID того же аккаунта. Удалите кавычки вокруг значений в .env и перезапустите сервер.",
-                },
-                {status: 401},
+                {error: "Yandex Cloud отклонил ключ. Проверьте ключ, folder ID и права AI Studio."},
+                {status: 403},
             )
         }
         if (msg === "AI_JSON_PARSE") {
@@ -200,7 +197,7 @@ ${listsBlock}
                 {status: 502},
             )
         }
-        if (msg.startsWith("Cloudflare AI")) {
+        if (msg.startsWith("YANDEX_AI_HTTP_")) {
             return NextResponse.json(
                 {error: "Сервис ИИ временно недоступен. Попробуйте позже."},
                 {status: 502},

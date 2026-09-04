@@ -15,7 +15,7 @@
  */
 import {NextRequest, NextResponse} from "next/server"
 import {getSessionUser} from "@/lib/session"
-import {cfAiAsk, stripJsonFences} from "@/lib/cf-ai"
+import {aiAsk, stripJsonFences} from "@/lib/ai-provider"
 import {rateLimit} from "@/lib/rate-limit"
 
 const STAGE_NAMES: Record<string, string> = {
@@ -73,7 +73,7 @@ ${files?.length ? `Загруженные файлы: ${files.join(", ")}` : ""}
 - На русском языке`
 
     try {
-        const raw = await cfAiAsk(SYSTEM, userPrompt, 600)
+        const raw = await aiAsk(SYSTEM, userPrompt, 600)
         const result = JSON.parse(stripJsonFences(raw))
         return NextResponse.json({result})
     } catch (err) {

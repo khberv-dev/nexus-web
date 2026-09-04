@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from "next/server"
 import {Role} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
-import {cfAiAsk, isCloudflareAiConfigured, stripJsonFences} from "@/lib/cf-ai"
+import {aiAsk, isAiConfigured, stripJsonFences} from "@/lib/ai-provider"
 import {getSessionDbUser, getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 import type {StageType} from "@/app/orders/[id]/types"
@@ -52,11 +52,11 @@ export async function POST(req: NextRequest) {
     const dbUser = await getSessionDbUser(user)
     if (!dbUser) return NextResponse.json({error: "User not found"}, {status: 404})
 
-    if (!isCloudflareAiConfigured()) {
+    if (!isAiConfigured()) {
         return NextResponse.json(
             {
                 error:
-                    "ИИ не настроен: в .env задайте CF_ACCOUNT_ID и CF_API_KEY (или CF_API_TOKEN). Перезапустите dev-сервер.",
+                    "ИИ не настроен: проверьте AI_PROVIDER и ключ выбранного провайдера в .env. Перезапустите dev-сервер.",
             },
             {status: 503},
         )
@@ -101,7 +101,7 @@ ${briefLines || "нет данных"}
 Верни JSON-массив из трёх элементов в указанном формате.`
 
     try {
-        const raw = await cfAiAsk(SYSTEM, userPrompt, 1400)
+        const raw = await aiAsk(SYSTEM, userPrompt, 1400)
         const rows = parseSuggestionsJson(raw)
         const suggestions = rows.map((row, i) => {
             const o = row && typeof row === "object" ? (row as Record<string, unknown>) : {}

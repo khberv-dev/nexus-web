@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server"
-import {cfAiChat, CfMessage} from "@/lib/cf-ai"
+import {aiChat, type AiMessage} from "@/lib/ai-provider"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
 
@@ -33,7 +33,7 @@ ${context ? `\nКонтекст:\n${context}\n` : ""}
 
 Пиши только по-русски.`
 
-    const chatMessages: CfMessage[] = [
+    const chatMessages: AiMessage[] = [
         {role: "system", content: systemContent},
         ...(messages.length > 0
                 ? messages
@@ -42,7 +42,7 @@ ${context ? `\nКонтекст:\n${context}\n` : ""}
     ]
 
     try {
-        const reply = await cfAiChat(chatMessages, 600)
+        const reply = await aiChat(chatMessages, 600)
         return NextResponse.json({reply})
     } catch (err) {
         console.error("[ai/portfolio-chat]", err)

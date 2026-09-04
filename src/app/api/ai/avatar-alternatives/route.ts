@@ -1,7 +1,10 @@
 import {NextRequest, NextResponse} from "next/server"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
-import {geminiEditImage, GeminiImageError, isGeminiConfigured} from "@/lib/gemini-ai"
+import {aiGenerateAvatar, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
+import {GeminiImageError} from "@/lib/gemini-ai"
+
+export const maxDuration = 180
 
 /** Общая часть промта: важнее всего — узнаваемость человека, это аватар, а не новый персонаж. */
 const BASE_RULES = `Это фотография для аватара профиля дизайнера интерьеров на профессиональной платформе.
@@ -48,9 +51,9 @@ export async function POST(req: NextRequest) {
     const user = await getSessionUser()
     if (!user) return NextResponse.json({error: "Unauthorized"}, {status: 401})
 
-    if (!isGeminiConfigured()) {
+    if (!isAiConfigured()) {
         return NextResponse.json(
-            {error: "Генерация недоступна: не задан GEMINI_API_KEY", code: "NOT_CONFIGURED"},
+            {error: `Генерация недоступна: не настроен провайдер ${getAiProvider()}`, code: "NOT_CONFIGURED"},
             {status: 503},
         )
     }
@@ -71,7 +74,7 @@ export async function POST(req: NextRequest) {
     }
 
     const results = await Promise.allSettled(
-        AVATAR_VARIANTS.map((variant) => geminiEditImage(variant.prompt, image)),
+        AVATAR_VARIANTS.map((variant) => aiGenerateAvatar(variant.prompt, image)),
     )
 
     const images = results.flatMap((result, i) =>
@@ -84,7 +87,7 @@ export async function POST(req: NextRequest) {
         const first = results.find((r) => r.status === "rejected") as PromiseRejectedResult | undefined
         const err = first?.reason
         const code = err instanceof GeminiImageError ? err.code : "FAILED"
-        const message = err instanceof GeminiImageError ? err.message : "Не удалось сгенерировать варианты"
+        const message = err instanceof Error ? err.message : "Не удалось сгенерировать варианты"
         console.error("[ai/avatar-alternatives]", code, message)
         return NextResponse.json({error: message, code}, {status: code === "QUOTA" ? 429 : 502})
     }
