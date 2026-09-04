@@ -53,7 +53,14 @@ type YandexOperation = {
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 
-/** YandexART is text-to-image; the source image is used only as prompt context by callers. */
+const YANDEX_ART_PROMPT_LIMIT = 500
+
+function imagePrompt(prompt: string): string {
+    const compact = prompt.replace(/\s+/g, " ").trim()
+    return Array.from(compact).slice(0, YANDEX_ART_PROMPT_LIMIT).join("").trim()
+}
+
+/** YandexART accepts a positive text prompt of at most 500 characters. */
 export async function yandexGenerateImage(prompt: string): Promise<{dataUrl: string; mimeType: string}> {
     requireConfig()
     const modelUri = env("YANDEX_ART_MODEL_URI") || `art://${folderId()}/yandex-art/latest`
@@ -62,7 +69,7 @@ export async function yandexGenerateImage(prompt: string): Promise<{dataUrl: str
         headers: authHeaders(),
         body: JSON.stringify({
             modelUri,
-            messages: [{text: prompt, weight: "1"}],
+            messages: [{text: imagePrompt(prompt), weight: "1"}],
             generationOptions: {mimeType: "image/jpeg", aspectRatio: {widthRatio: "1", heightRatio: "1"}},
         }),
     })
