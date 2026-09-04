@@ -20,6 +20,8 @@ export async function POST(req: NextRequest) {
         form.fullName && `Имя: ${form.fullName}`,
         form.city && `Город: ${form.city}`,
         form.experience && `Опыт: ${form.experience} лет`,
+        form.specialty && `Специализация: ${form.specialty}`,
+        form.methods && `Методы работы: ${form.methods}`,
         form.software && `Программы: ${form.software}`,
         form.portfolio && `Портфолио: ${form.portfolio}`,
         form.about && `О себе: ${form.about}`,

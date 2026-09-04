@@ -43,6 +43,7 @@ export function QuestionnaireCard({
                             icon: "bx-target-lock",
                             color: "#f97316"
                         },
+                        {label: "Методы", value: fd.methods, icon: "bx-list-check", color: "#06b6d4"},
                         {label: "Программы", value: fd.software, icon: "bx-wrench", color: "#22c55e"},
                         {label: "Нейросети", value: fd.aiServices, icon: "bx-bot", color: "#a855f7"},
                         {label: "3D моделирование", value: boolRu(fd.has3d) || "—", icon: "bx-cube", color: "#8b5cf6"},

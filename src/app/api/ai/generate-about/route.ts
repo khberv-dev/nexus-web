@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
         city?: string
         experience?: string
         specialty?: string
+        methods?: string
         software?: string
     }
     const draft = typeof body.text === "string" ? body.text.trim() : ""
@@ -29,6 +30,7 @@ export async function POST(req: NextRequest) {
         body.city && `Город: ${body.city}`,
         body.experience && `Опыт: ${body.experience} лет`,
         body.specialty && `Специализация: ${body.specialty}`,
+        body.methods && `Методы работы: ${body.methods}`,
         body.software && `Программы: ${body.software}`,
     ].filter(Boolean).join("\n")
 

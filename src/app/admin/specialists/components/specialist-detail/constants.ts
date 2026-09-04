@@ -2,7 +2,7 @@ import type {OnboardingStatus} from "@/components/app/SpecialistCard"
 
 /** Поля анкеты из ProfileForm — остальные показываем в «Прочее». */
 export const SPECIALIST_FORMDATA_KNOWN = new Set([
-    "fullName", "phone", "city", "experience", "sqm", "interiorStyle", "specialty", "specialization", "portfolio", "software",
+    "fullName", "phone", "city", "experience", "sqm", "interiorStyle", "specialty", "specialization", "methods", "portfolio", "software",
     "aiServices", "has3d", "hasRd", "about", "taxStatus", "inn", "ogrnip", "ogrn", "kpp", "ipName", "companyName", "legalAddress",
     "corrAccount", "bankAccount", "bankName", "bankBik", "edoProviders",
     "edoOperator",

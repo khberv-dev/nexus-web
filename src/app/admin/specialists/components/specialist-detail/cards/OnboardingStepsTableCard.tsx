@@ -19,6 +19,7 @@ const FORM_LABELS: Record<string, string> = {
     interiorStyle: "Интерьерный стиль",
     specialty: "Специализация",
     specialization: "Специализация",
+    methods: "Методы",
     portfolio: "Портфолио",
     software: "Программы",
     aiServices: "Нейросети",

@@ -8,7 +8,7 @@ import {AppCard} from "@/components/app/AppCard"
 import {PhoneField} from "@/components/ui/PhoneField"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {MultiSelectField} from "@/components/ui/MultiSelectField"
-import {INTERIOR_STYLE_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
+import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 
 // ─── Типы AI ─────────────────────────────────────────────────────────────────
 
@@ -42,6 +42,13 @@ const FIELDS = [
         label: "Специализация",
         type: "multiselect",
         placeholder: "Выберите специализации — можно несколько",
+        required: false
+    },
+    {
+        name: "methods",
+        label: "Методы",
+        type: "multiselect",
+        placeholder: "Выберите методы работы — можно несколько",
         required: false
     },
     {name: "portfolio", label: "Портфолио", type: "url", placeholder: "https://behance.net/...", required: false},
@@ -225,6 +232,7 @@ export default function OnboardingFormPage() {
                     city: form.city,
                     experience: form.experience,
                     specialty: form.specialty,
+                    methods: form.methods,
                     software: form.software,
                 }),
             })
@@ -467,7 +475,11 @@ export default function OnboardingFormPage() {
                                             <MultiSelectField
                                                 value={form[field.name] || ""}
                                                 onChange={v => setForm(f => ({...f, [field.name]: v}))}
-                                                options={field.name === "interiorStyle" ? INTERIOR_STYLE_OPTIONS : SPECIALTY_OPTIONS}
+                                                options={field.name === "interiorStyle"
+                                                    ? INTERIOR_STYLE_OPTIONS
+                                                    : field.name === "methods"
+                                                        ? METHOD_OPTIONS
+                                                        : SPECIALTY_OPTIONS}
                                                 placeholder={field.placeholder}
                                                 variant="dark"
                                             />
