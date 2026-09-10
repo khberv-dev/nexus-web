@@ -15,11 +15,11 @@ import {
     SpecialistRatingLandingTab,
 } from "./specialist-detail/SpecialistSectionTabPages"
 
-export type SpecialistOnboardingAdminAction =
-    | "advance"
-    | "reject"
-    | "reject_no_education"
-    | "reject_no_experience"
+// Тип живёт рядом с текстами подтверждений (обычный .ts — его видят тесты),
+// но реэкспортируется отсюда: на него уже ссылаются соседние компоненты.
+import type {SpecialistOnboardingAdminAction} from "../onboarding-confirm"
+
+export type {SpecialistOnboardingAdminAction}
 
 export function SpecialistDetail({
                                      specialist,

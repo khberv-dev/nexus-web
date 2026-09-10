@@ -30,7 +30,8 @@ export async function GET(req: NextRequest) {
     try {
         const logs = await prisma.auditLog.findMany({
             where,
-            orderBy: {createdAt: "desc"},
+            // id desc — доводчик для записей с одинаковым createdAt, см. ../route.ts
+            orderBy: [{createdAt: "desc"}, {id: "desc"}],
             include: {
                 user: {
                     select: {

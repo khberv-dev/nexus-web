@@ -22,8 +22,10 @@ export function StageSummaryCards({
     order: Order
     stage: Stage
 }) {
-    const reviewsChrono = [...(stage.reviews ?? [])].sort(
-        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    // «История решений» читается сверху вниз как лента: свежее решение — первое.
+    // Порядок совпадает с журналом действий и таймлайном аудита, где тоже новое сверху.
+    const reviewsNewestFirst = [...(stage.reviews ?? [])].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
     const modReleases = (stage.reviews ?? []).filter((r) => r.reviewerRole === "MODERATOR" && r.verdict === "APPROVED")
     const lastModRelease = modReleases.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
@@ -137,7 +139,7 @@ export function StageSummaryCards({
                 />
             </div>
 
-            {reviewsChrono.length > 0 && (
+            {reviewsNewestFirst.length > 0 && (
                 <div
                     style={{
                         padding: "8px 10px",
@@ -152,7 +154,7 @@ export function StageSummaryCards({
                         textTransform: "uppercase",
                         marginBottom: 6
                     }}>
-                        История решений ({reviewsChrono.length})
+                        История решений ({reviewsNewestFirst.length})
                     </div>
                     <div
                         style={{
@@ -163,7 +165,7 @@ export function StageSummaryCards({
                             overflowY: "auto",
                         }}
                     >
-                        {reviewsChrono.map((r) => (
+                        {reviewsNewestFirst.map((r) => (
                             <div key={r.id} style={{fontSize: "0.78rem", color: "var(--adm-text)"}}>
                                 <span style={{fontWeight: 600}}>{formatReviewLabel(r)}</span>
                                 <span style={{color: "var(--adm-muted)"}}> · {formatStageDt(r.createdAt)}</span>

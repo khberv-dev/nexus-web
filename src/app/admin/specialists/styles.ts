@@ -386,6 +386,36 @@ export const SPECIALISTS_STYLES = `
     margin-bottom: 12px;
   }
 
+  /* Красное подтверждение ручных действий над онбордингом (OnboardingActionConfirmModal). */
+  .sp-danger-modal__head {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 16px 20px;
+    background: rgba(239,68,68,0.12);
+    border-bottom: 1px solid rgba(239,68,68,0.35);
+  }
+  .sp-danger-modal__icon { color: #ef4444; font-size: 1.5rem; line-height: 1.2; flex-shrink: 0; }
+  .sp-danger-modal__title { margin: 0; color: #ef4444; font-size: 0.98rem; font-weight: 700; line-height: 1.35; }
+  .sp-danger-modal__sub { margin: 5px 0 0; font-size: 0.78rem; color: var(--adm-muted); line-height: 1.45; }
+  .sp-danger-modal__body { padding: 16px 20px; }
+  .sp-danger-modal__who { margin: 0 0 6px; font-size: 0.78rem; font-weight: 600; color: var(--adm-muted); }
+  .sp-danger-modal__q { margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--adm-text); }
+  .sp-danger-modal__forced {
+    margin-top: 12px; padding: 10px 12px;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.28);
+    border-radius: 8px;
+    font-size: 0.8rem; color: #ef4444; line-height: 1.45;
+  }
+  .sp-danger-modal__forced ul { margin: 6px 0 0; padding-left: 18px; }
+  .sp-danger-modal__note { margin: 12px 0 0; font-size: 0.78rem; color: var(--adm-muted); }
+  .sp-danger-modal__foot {
+    display: flex; gap: 8px; justify-content: flex-end;
+    padding: 14px 20px;
+    border-top: 1px solid var(--adm-sidebar-border);
+  }
+  .sp-btn-danger-solid { background: #ef4444; color: #fff; border-color: #ef4444; }
+  .sp-btn-danger-solid:hover:not(:disabled) { background: #dc2626; border-color: #dc2626; }
+
   .sp-modal-body { padding: 4px 0; }
   .sp-modal-title { margin: 0 0 16px; font-size: 1rem; font-weight: 600; }
   .sp-modal-empty { text-align: center; padding: 24px; color: var(--adm-muted); }

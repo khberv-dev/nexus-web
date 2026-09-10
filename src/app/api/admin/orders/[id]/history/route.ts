@@ -9,7 +9,8 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
     const {id} = await params
     const logs = await prisma.auditLog.findMany({
         where: {entity: "Order", entityId: id},
-        orderBy: {createdAt: "desc"},
+        // id desc — доводчик для записей с одинаковым createdAt, см. ../../../audit/route.ts
+        orderBy: [{createdAt: "desc"}, {id: "desc"}],
         include: {user: {select: {name: true, email: true, role: true}}},
         take: 50,
     })

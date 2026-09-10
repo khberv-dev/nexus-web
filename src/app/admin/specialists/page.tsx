@@ -12,7 +12,9 @@ import {
     type OnboardingStatus,
 } from "@/components/app/SpecialistCard"
 import {TestAnswersModal} from "./components/TestAnswersModal"
-import {SpecialistDetail, type SpecialistOnboardingAdminAction} from "./components/SpecialistDetail"
+import {SpecialistDetail} from "./components/SpecialistDetail"
+import {OnboardingActionConfirmModal} from "./components/OnboardingActionConfirmModal"
+import type {OnboardingConfirmInput, SpecialistOnboardingAdminAction} from "./onboarding-confirm"
 import {formatEdoProvidersLabel} from "@/lib/edo-providers"
 import type {RawSpecialist, SpecialistDetailTab, SpecialistOrder, TestModalData} from "./types"
 import {SPECIALISTS_STYLES} from "./styles"
@@ -29,6 +31,10 @@ function SpecialistsPageInner() {
     const [ratingUpdating, setRatingUpdating] = useState(false)
     const [detailTab, setDetailTab] = useState<SpecialistDetailTab>("main")
     const [testModal, setTestModal] = useState<TestModalData | null>(null)
+    /** Действие, ожидающее красного подтверждения; null — модалка закрыта. */
+    const [pendingAction, setPendingAction] = useState<
+        (OnboardingConfirmInput & { userId: string; specialistName: string }) | null
+    >(null)
     const [specOrders, setSpecOrders] = useState<SpecialistOrder[]>([])
     const [ordersLoading, setOrdersLoading] = useState(false)
     const [avatarUrls, setAvatarUrls] = useState<Record<string, string>>({})
@@ -89,7 +95,25 @@ function SpecialistsPageInner() {
         CONTRACT_SIGNATURE: "подпись договора",
     }
 
-    const act = async (userId: string, action: SpecialistOnboardingAdminAction) => {
+    /**
+     * Кнопки онбординга ничего не отправляют сами — сначала красное подтверждение.
+     * Это единственная точка входа для всех четырёх действий (перевод шага и отказы),
+     * поэтому диалог живёт здесь, а не в разметке каждой кнопки.
+     */
+    const act = (userId: string, action: SpecialistOnboardingAdminAction) => {
+        const sp = specialists.find((s) => s.id === userId)
+        const profile = sp?.specialistProfile
+        setPendingAction({
+            userId,
+            action,
+            specialistName: sp?.name?.trim() || sp?.email || "Специалист",
+            status: profile?.onboardingStatus ?? null,
+            steps: profile?.steps,
+            contractStatus: profile?.specialistContractStatus ?? null,
+        })
+    }
+
+    const runAct = async (userId: string, action: SpecialistOnboardingAdminAction) => {
         setActing(userId + action)
         try {
             const res = await fetch(`/api/admin/specialists/${userId}/onboarding`, {
@@ -212,6 +236,16 @@ function SpecialistsPageInner() {
     return (
         <AdminLayout noPadding>
             <TestAnswersModal testModal={testModal} onClose={() => setTestModal(null)}/>
+            <OnboardingActionConfirmModal
+                request={pendingAction}
+                onCancel={() => setPendingAction(null)}
+                onConfirm={() => {
+                    if (!pendingAction) return
+                    const {userId, action} = pendingAction
+                    setPendingAction(null)
+                    void runAct(userId, action)
+                }}
+            />
 
             <div className="sp-wrap">
                 <aside className="sp-list">
