@@ -11,7 +11,7 @@ import {DashSectionCard} from "@/components/dashboard-ui/DashSectionCard"
 import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
-import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
+import {SPECIALIST_CABINET_HOME_HREF, SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import AvatarUpload from "./AvatarUpload"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildSpecialistHintSteps} from "@/components/app/hint-tour-steps"
@@ -52,6 +52,9 @@ interface CommunityProps {
 }
 
 const SIDEBAR_TABS = [
+    // «Главная» уводит на /work, поэтому у неё href — DashSidebarNav отрисует ссылку,
+    // а не кнопку переключения вкладки. Остальные пункты — вкладки этой же страницы.
+    {id: "home", icon: "bx-home", label: "Главная", href: SPECIALIST_CABINET_HOME_HREF},
     {id: "orders", icon: "bx-folder", label: "Проекты"},
     {id: "portfolio", icon: "bx-image-alt", label: "Портфолио"},
     {id: "landing", icon: "bx-globe", label: "Лендинг"},
@@ -59,7 +62,8 @@ const SIDEBAR_TABS = [
     {id: "settings", icon: "bx-cog", label: "Настройки"},
 ]
 
-const VALID_TABS = new Set(SIDEBAR_TABS.map(t => t.id))
+/** Только вкладки самой страницы: «Главная» — внешний роут, ?tab=home не существует. */
+const VALID_TABS = new Set(SIDEBAR_TABS.filter(t => !t.href).map(t => t.id))
 
 export default function CommunityPage({
                                           name,
@@ -172,7 +176,7 @@ export default function CommunityPage({
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}
             />
-            <HintTourLauncher onClick={() => setHintsOpen(true)} hidden={hintsOpen}/>
+            <HintTourLauncher onClick={() => setHintsOpen(true)}/>
             <DashTopHeader
                 email={email}
                 title="Кабинет специалиста"

@@ -1,7 +1,9 @@
 import type {DashHeaderNavItem} from "@/components/dashboard-ui/DashTopHeader"
-import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
+import {SPECIALIST_CABINET_HOME_HREF, SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 
 export const SPECIALIST_ROUTE_TABS = [
+    // «Главная» — первым пунктом: это стартовый экран после входа.
+    {id: "home", icon: "bx-home", label: "Главная", href: SPECIALIST_CABINET_HOME_HREF},
     {id: "orders", icon: "bx-folder", label: "Проекты", href: SPECIALIST_CABINET_LOGO_HREF},
     {id: "portfolio", icon: "bx-image-alt", label: "Портфолио", href: `${SPECIALIST_CABINET_LOGO_HREF}?tab=portfolio`},
     {id: "landing", icon: "bx-globe", label: "Лендинг", href: `${SPECIALIST_CABINET_LOGO_HREF}?tab=landing`},

@@ -61,7 +61,7 @@ export default function ClientCabinetPage({
                 open={hintsOpen || undefined}
                 onClose={() => setHintsOpen(false)}
             />
-            <HintTourLauncher onClick={() => setHintsOpen(true)} hidden={hintsOpen}/>
+            <HintTourLauncher onClick={() => setHintsOpen(true)}/>
             <DashTopHeader
                 email={email}
                 title="Кабинет заказчика"

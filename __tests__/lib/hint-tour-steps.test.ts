@@ -1,37 +1,64 @@
 /**
- * Шаги экскурсии ссылаются на реальные якоря data-tour в разметке.
- * Селекторы написаны руками, опечатку в них видно только в браузере — этот тест ловит её раньше.
+ * Каждая экскурсия подсвечивает только те элементы, которые есть на её собственной странице.
+ *
+ * Якоря собираются не по всему src, а по графу импортов конкретного роута: иначе шаг,
+ * указывающий на элемент соседней страницы (например, дашбордный `dash-hero` в экскурсии
+ * по /work/community), тихо проходил бы проверку — селектор в src существует, но на этой
+ * странице его нет, и HintTour молча пропустит шаг.
  */
 
-import {readdirSync, readFileSync, statSync} from "node:fs";
-import {join} from "node:path";
-import {buildClientHintSteps, buildSpecialistHintSteps} from "@/components/app/hint-tour-steps";
+import {existsSync, readFileSync, statSync} from "node:fs";
+import {dirname, join, resolve} from "node:path";
+import {
+    buildClientHintSteps,
+    buildSpecialistDashboardHintSteps,
+    buildSpecialistHintSteps,
+} from "@/components/app/hint-tour-steps";
 
-function collectAnchors(dir: string, found = new Set<string>()): Set<string> {
-    for (const entry of readdirSync(dir)) {
-        const full = join(dir, entry);
-        if (statSync(full).isDirectory()) {
-            collectAnchors(full, found);
-            continue;
-        }
-        // Только разметка: если сканировать и .ts, файл со списком шагов подтвердит сам себя
-        // своими же селекторами, и тест перестанет ловить опечатки.
-        if (!entry.endsWith(".tsx")) continue;
-        const src = readFileSync(full, "utf8");
-        // data-tour="x" и data-tour={`sidebar-${tab.id}`}
-        for (const m of src.matchAll(/data-tour=\{?["`]([^"`$]+)/g)) found.add(m[1]);
+/** `@/x` → src/x, `./x` — от файла. Внешние пакеты пропускаем. */
+function resolveImport(spec: string, fromFile: string): string | null {
+    let base: string;
+    if (spec.startsWith("@/")) base = join(process.cwd(), "src", spec.slice(2));
+    else if (spec.startsWith(".")) base = resolve(dirname(fromFile), spec);
+    else return null;
+
+    for (const candidate of [`${base}.tsx`, `${base}.ts`, join(base, "index.tsx"), join(base, "index.ts")]) {
+        if (existsSync(candidate) && statSync(candidate).isFile()) return candidate;
     }
-    return found;
+    return null;
 }
 
-const anchors = collectAnchors(join(process.cwd(), "src"));
-const SIDEBAR_TAB_IDS = ["orders", "portfolio", "landing", "payments", "settings", "logout"];
+/** Якоря data-tour во всех модулях, достижимых со страницы по импортам. */
+function pageAnchors(entry: string): Set<string> {
+    const anchors = new Set<string>();
+    const seen = new Set<string>();
+    const stack = [entry];
 
-/** sidebar-* якоря строятся динамически из id вкладки — раскрываем их вручную. */
-function anchorExists(name: string): boolean {
+    while (stack.length > 0) {
+        const file = stack.pop()!;
+        if (seen.has(file)) continue;
+        seen.add(file);
+
+        const src = readFileSync(file, "utf8");
+        // data-tour="x", data-tour={`sidebar-${id}`} и проброс через проп dataTour="x".
+        for (const m of src.matchAll(/data-?[tT]our=\{?["`]([^"`$]+)/g)) anchors.add(m[1]);
+        for (const m of src.matchAll(/from\s+["']([^"']+)["']/g)) {
+            const next = resolveImport(m[1], file);
+            if (next) stack.push(next);
+        }
+    }
+    return anchors;
+}
+
+const page = (p: string) => join(process.cwd(), p);
+
+const SIDEBAR_TAB_IDS = ["home", "orders", "portfolio", "landing", "payments", "settings"];
+
+/** `data-tour={`sidebar-${tab.id}`}` собирается в рантайме — раскрываем префикс вручную. */
+function anchorExists(anchors: Set<string>, name: string): boolean {
     if (anchors.has(name)) return true;
-    if (name.startsWith("sidebar-")) {
-        return anchors.has("sidebar-") && SIDEBAR_TAB_IDS.includes(name.slice("sidebar-".length));
+    if (name.startsWith("sidebar-") && anchors.has("sidebar-")) {
+        return SIDEBAR_TAB_IDS.includes(name.slice("sidebar-".length));
     }
     return false;
 }
@@ -39,28 +66,57 @@ function anchorExists(name: string): boolean {
 const noop = () => {
 };
 
-describe("hint tour steps", () => {
-    const suites = [
-        ["specialist", buildSpecialistHintSteps(noop)],
-        ["client", buildClientHintSteps(noop)],
-    ] as const;
+const suites = [
+    [
+        "specialist cabinet (/work/community)",
+        buildSpecialistHintSteps(noop),
+        pageAnchors(page("src/app/(dashboard)/work/community/page.tsx")),
+    ],
+    [
+        "specialist dashboard (/work)",
+        buildSpecialistDashboardHintSteps(),
+        pageAnchors(page("src/app/(dashboard)/work/page.tsx")),
+    ],
+    [
+        "client cabinet (/orders)",
+        buildClientHintSteps(noop),
+        pageAnchors(page("src/app/orders/(cabinet)/page.tsx")),
+    ],
+] as const;
 
-    test.each(suites)("%s steps point at existing anchors", (_role, steps) => {
+describe("hint tour steps", () => {
+    test.each(suites)("%s — every step points at an anchor rendered on that page", (_name, steps, anchors) => {
         for (const step of steps) {
             const m = /^\[data-tour="([^"]+)"\]$/.exec(step.target);
             expect(m).not.toBeNull();
-            expect({step: step.title, anchor: m![1], exists: anchorExists(m![1])})
-                .toEqual({step: step.title, anchor: m![1], exists: true});
+            expect({step: step.title, anchor: m![1], onThisPage: anchorExists(anchors, m![1])})
+                .toEqual({step: step.title, anchor: m![1], onThisPage: true});
         }
     });
 
-    test.each(suites)("%s steps carry short, non-empty copy", (_role, steps) => {
+    test.each(suites)("%s — steps carry short, non-empty copy", (_name, steps) => {
         for (const step of steps) {
             expect(step.title.trim().length).toBeGreaterThan(0);
             expect(step.text.trim().length).toBeGreaterThan(0);
             // Подсветка объясняет «где», текст — «зачем»: длинные простыни возвращают нас к панели-инструкции.
             expect(step.text.length).toBeLessThanOrEqual(180);
         }
+    });
+
+    test.each(suites)("%s — steps do not repeat the same anchor twice in a row", (_name, steps) => {
+        const targets = steps.map(s => s.target);
+        for (let i = 1; i < targets.length; i++) {
+            expect(targets[i]).not.toBe(targets[i - 1]);
+        }
+    });
+
+    test("экскурсия по /work не тянет якоря кабинета и наоборот", () => {
+        const dashboard = buildSpecialistDashboardHintSteps().map(s => s.target);
+        const cabinet = buildSpecialistHintSteps(noop).map(s => s.target);
+
+        // Пересекаться могут только элементы общей оболочки (шапка, сайдбар, кнопка «?»).
+        const shared = dashboard.filter(t => cabinet.includes(t));
+        expect(shared).toEqual(['[data-tour="header-bell"]', '[data-tour="btn-hints"]']);
     });
 
     test("every cabinet section is covered", () => {
@@ -74,13 +130,31 @@ describe("hint tour steps", () => {
             expect(client).toContain(`[data-tour="sidebar-${tab}"]`);
         }
     });
+});
 
-    test("steps do not repeat the same anchor twice in a row", () => {
-        for (const [, steps] of suites) {
-            const targets = steps.map(s => s.target);
-            for (let i = 1; i < targets.length; i++) {
-                expect(targets[i]).not.toBe(targets[i - 1]);
-            }
+describe("экскурсия по стартовому экрану /work", () => {
+    const steps = buildSpecialistDashboardHintSteps();
+
+    test("остаётся короткой: разделы и навигация, а не каждая кнопка", () => {
+        expect(steps.length).toBeLessThanOrEqual(10);
+    });
+
+    test("покрывает разделы страницы, боковую навигацию и уведомления", () => {
+        const targets = steps.map(s => s.target);
+        for (const anchor of [
+            "dash-hero",
+            "dash-stats",
+            "dash-urgent",
+            "dash-orders",
+            "dash-quick-links",
+            "sidebar",
+            "header-bell",
+        ]) {
+            expect(targets).toContain(`[data-tour="${anchor}"]`);
         }
+    });
+
+    test("не переключает вкладки: на /work их нет, в отличие от /work/community", () => {
+        expect(steps.filter(s => s.before !== undefined)).toEqual([]);
     });
 });

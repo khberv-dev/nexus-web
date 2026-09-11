@@ -1,6 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import {useMemo, useState} from "react"
+import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
+import {buildSpecialistDashboardHintSteps} from "@/components/app/hint-tour-steps"
 import "./specialist-dashboard.css"
 
 interface UrgentStage {
@@ -59,6 +62,8 @@ export default function SpecialistDashboard({
                                                 onboardingStatus,
                                             }: SpecialistDashboardProps) {
     const initials = name[0]?.toUpperCase() ?? "?"
+    const [hintsOpen, setHintsOpen] = useState(false)
+    const hintSteps = useMemo(() => buildSpecialistDashboardHintSteps(), [])
     const getOrderTitle = (briefData: unknown) => {
         if (briefData && typeof briefData === "object" && !Array.isArray(briefData)) {
             const value = (briefData as Record<string, unknown>).objectType
@@ -69,8 +74,22 @@ export default function SpecialistDashboard({
 
     return (
         <div className="spec-dashboard">
+            {/*
+              Экскурсия по кабинету при первом входе на /work: запускается сама,
+              отметка о просмотре — в localStorage по email, дальше только по кнопке «?».
+              Ключ свой, не общий с экскурсией по вкладкам в /work/community.
+            */}
+            <HintTour
+                steps={hintSteps}
+                storageKey={`specialist-dashboard:v1:${email}`}
+                enabled={onboardingStatus === "ACTIVE"}
+                open={hintsOpen || undefined}
+                onClose={() => setHintsOpen(false)}
+            />
+            <HintTourLauncher onClick={() => setHintsOpen(true)}/>
+
             {/* Hero Section */}
-            <div className="spec-dashboard__hero">
+            <div className="spec-dashboard__hero" data-tour="dash-hero">
                 <div className="spec-dashboard__greeting">
                     <div className="spec-dashboard__avatar">{initials}</div>
                     <div>
@@ -81,7 +100,7 @@ export default function SpecialistDashboard({
             </div>
 
             {/* Stats Grid */}
-            <div className="spec-dashboard__stats-grid">
+            <div className="spec-dashboard__stats-grid" data-tour="dash-stats">
                 <div className="spec-dashboard__stat-card">
                     <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(41, 205, 130, 0.1)"}}>
                         <i className="bx bx-folder" style={{color: "var(--dash-success)"}}/>
@@ -127,7 +146,7 @@ export default function SpecialistDashboard({
             <div className="spec-dashboard__main">
                 {/* Urgent Section */}
                 {urgentStages.length > 0 && (
-                    <div className="spec-dashboard__section">
+                    <div className="spec-dashboard__section" data-tour="dash-urgent">
                         <div className="spec-dashboard__section-header">
                             <h2 className="spec-dashboard__section-title">
                                 <i className="bx bx-bell"/> Требует внимания
@@ -162,7 +181,7 @@ export default function SpecialistDashboard({
                 )}
 
                 {/* Recent Orders */}
-                <div className="spec-dashboard__section">
+                <div className="spec-dashboard__section" data-tour="dash-orders">
                     <div className="spec-dashboard__section-header">
                         <h2 className="spec-dashboard__section-title">
                             <i className="bx bx-folder-open"/> Последние проекты
@@ -226,7 +245,7 @@ export default function SpecialistDashboard({
                 </div>
 
                 {/* Quick Links */}
-                <div className="spec-dashboard__section">
+                <div className="spec-dashboard__section" data-tour="dash-quick-links">
                     <div className="spec-dashboard__section-header">
                         <h2 className="spec-dashboard__section-title">
                             <i className="bx bx-link"/> Быстрый доступ

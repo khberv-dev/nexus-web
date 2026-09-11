@@ -6,6 +6,7 @@ import Link from "next/link"
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell"
 
 const STATUS_HINT: Record<string, { title: string; detail: string }> = {
     NONE: {
@@ -348,7 +349,7 @@ export default function OnboardingContractPage() {
 
                         {state.status === "SIGNED_BY_ADMIN" && (
                             <Link
-                                href="/work/community"
+                                href={SPECIALIST_CABINET_HOME_HREF}
                                 style={{
                                     display: "inline-flex",
                                     alignItems: "center",

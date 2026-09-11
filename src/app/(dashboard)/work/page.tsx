@@ -88,14 +88,14 @@ export default async function WorkDashboard() {
                 email={user.email}
                 title="Кабинет специалиста"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
-                navItems={buildSpecialistCabinetNavItems("")}
+                navItems={buildSpecialistCabinetNavItems("home")}
                 primaryAction={{
                     href: SPECIALIST_CABINET_LOGO_HREF,
                     label: "Профиль",
                     iconClassName: "bx bx-user-circle"
                 }}
             />
-            <DashMainLayout sidebar={<DashSidebarNav tabs={SPECIALIST_ROUTE_TABS} activeTab=""/>}>
+            <DashMainLayout sidebar={<DashSidebarNav tabs={SPECIALIST_ROUTE_TABS} activeTab="home"/>}>
                 <SpecialistDashboard
                     name={user.name ?? user.email}
                     email={user.email}

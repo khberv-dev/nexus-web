@@ -13,6 +13,8 @@ jest.mock("next/link", () => ({
 }));
 
 import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav";
+import {SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs";
+import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell";
 
 const TABS = [
     {id: "orders", icon: "bx-folder", label: "Проекты"},
@@ -57,5 +59,39 @@ describe("DashSidebarNav", () => {
 
         expect(screen.getByText("Проекты")).toBeTruthy();
         expect(screen.getByText("Настройки")).toBeTruthy();
+    });
+
+    test("пункт с href — ссылка, даже когда страница переключает вкладки через onChange", () => {
+        // «Главная» уводит на другой роут: кликом по ней нельзя просто сменить вкладку.
+        const onChange = jest.fn();
+        const {container} = render(createElement(DashSidebarNav, {
+            tabs: [{id: "home", icon: "bx-home", label: "Главная", href: "/work"}, ...TABS],
+            activeTab: "orders",
+            onChange,
+        }));
+
+        const home = screen.getByText("Главная").closest("a");
+        expect(home).not.toBeNull();
+        expect(home!.getAttribute("href")).toBe("/work");
+        // Вкладки без href остались кнопками.
+        expect(screen.getByText("Проекты").closest("button")).not.toBeNull();
+        expect(container.querySelectorAll(".dash-sidebar > *")[0].textContent).toContain("Главная");
+    });
+});
+
+describe("навигация специалиста", () => {
+    test("«Главная» — первый пункт и ведёт на стартовый экран", () => {
+        expect(SPECIALIST_ROUTE_TABS[0]).toMatchObject({
+            id: "home",
+            label: "Главная",
+            href: SPECIALIST_CABINET_HOME_HREF,
+        });
+        expect(SPECIALIST_CABINET_HOME_HREF).toBe("/work");
+    });
+
+    test("остальные разделы идут после «Главной» в прежнем порядке", () => {
+        expect(SPECIALIST_ROUTE_TABS.map(t => t.id)).toEqual([
+            "home", "orders", "portfolio", "landing", "payments", "settings",
+        ]);
     });
 });

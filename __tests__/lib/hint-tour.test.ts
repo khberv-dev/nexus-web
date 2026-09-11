@@ -7,7 +7,14 @@
 
 import {createElement} from "react";
 import {act, cleanup, fireEvent, render, screen} from "@testing-library/react";
-import {HintTour, hasSeenHintTour, markHintTourSeen, resetHintTour, type HintStep} from "@/components/app/HintTour";
+import {
+    HintTour,
+    HintTourLauncher,
+    hasSeenHintTour,
+    markHintTourSeen,
+    resetHintTour,
+    type HintStep,
+} from "@/components/app/HintTour";
 
 const KEY = "test:v1:user@example.com";
 
@@ -146,6 +153,22 @@ describe("HintTour", () => {
         await settle();
 
         expect(screen.getByText("Повтор")).toBeTruthy();
+    });
+
+    test("кнопка «?» остаётся в DOM во время тура — иначе последний шаг про неё пропадает", async () => {
+        render(createElement(HintTourLauncher, {onClick: () => {
+        }}));
+        markHintTourSeen(KEY);
+        // Ручной перезапуск: раньше лаунчер размонтировался на время тура (hidden),
+        // цель последнего шага исчезала, и HintTour молча его пропускал.
+        renderTour(
+            [{target: '[data-tour="btn-hints"]', title: "Кнопка «?»", text: "Открывает подсказки заново."}],
+            {open: true},
+        );
+        await settle();
+
+        expect(document.querySelector('[data-tour="btn-hints"]')).not.toBeNull();
+        expect(screen.getByText("Кнопка «?»")).toBeTruthy();
     });
 
     test("resetHintTour clears the seen flag", () => {

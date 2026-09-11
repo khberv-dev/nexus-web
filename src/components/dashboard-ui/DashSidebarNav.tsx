@@ -25,7 +25,7 @@ export function DashSidebarNav({
     showLogout?: boolean
 }) {
     return (
-        <div className="dash-sidebar">
+        <div className="dash-sidebar" data-tour="sidebar">
             {tabs.map(tab => {
                 const badgeCount = badgeCountByTab[tab.id] ?? 0
                 const inner = (
@@ -35,27 +35,30 @@ export function DashSidebarNav({
                         {badgeCount > 0 && <span className="dash-sidebar__badge">{badgeCount}</span>}
                     </>
                 )
-                return onChange ? (
-                    <button
-                        key={tab.id}
-                        type="button"
-                        data-tour={`sidebar-${tab.id}`}
-                        className={`dash-sidebar__icon${activeTab === tab.id ? " active" : ""}`}
-                        title={tab.label}
-                        onClick={() => onChange(tab.id)}
-                    >
-                        {inner}
-                    </button>
-                ) : (
+                // href — переход на другой роут, поэтому ссылка выигрывает у onChange:
+                // на страницах с вкладками (кабинет специалиста, кабинет заказчика) так
+                // живёт пункт «Главная», который ведёт наружу, а не переключает вкладку.
+                return tab.href ? (
                     <Link
                         key={tab.id}
-                        href={tab.href ?? "#"}
+                        href={tab.href}
                         data-tour={`sidebar-${tab.id}`}
                         className={`dash-sidebar__icon${activeTab === tab.id ? " active" : ""}`}
                         title={tab.label}
                     >
                         {inner}
                     </Link>
+                ) : (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        data-tour={`sidebar-${tab.id}`}
+                        className={`dash-sidebar__icon${activeTab === tab.id ? " active" : ""}`}
+                        title={tab.label}
+                        onClick={() => onChange?.(tab.id)}
+                    >
+                        {inner}
+                    </button>
                 )
             })}
 
