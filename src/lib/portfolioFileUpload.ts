@@ -1,5 +1,7 @@
 /** Загрузка файла в UserFile (S3 через API), для портфолио-карточек. */
 
+import {uploadWithProgress, type UploadProgress} from "@/lib/upload-progress"
+
 export interface MinimalUserFile {
     id: string
     filename: string
@@ -11,6 +13,7 @@ export async function uploadUserFileToPortfolio(
     file: File,
     category: "PORTFOLIO" | "DOCUMENT",
     meta?: { title?: string; description?: string | null },
+    onProgress?: (progress: UploadProgress) => void,
 ): Promise<MinimalUserFile> {
     const res = await fetch("/api/files", {
         method: "POST",
@@ -35,10 +38,9 @@ export async function uploadUserFileToPortfolio(
     const saved = data.file
     if (!saved?.id) throw new Error("Сервер не вернул id файла")
 
-    const putRes = await fetch(`/api/files/${saved.id}/upload`, {
-        method: "POST",
-        body: file,
+    const putRes = await uploadWithProgress(`/api/files/${saved.id}/upload`, file, {
         headers: {"Content-Type": file.type || "application/octet-stream"},
+        onProgress,
     })
     if (!putRes.ok) throw new Error(`Ошибка загрузки в хранилище (${putRes.status})`)
     return saved

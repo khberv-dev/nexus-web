@@ -7,6 +7,7 @@ import {isPortfolioVisualFile} from "@/lib/portfolioVisualFile"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioLocalFilePreview, PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {isPortfolioVideo} from "@/lib/portfolio-video"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
 function DashSectionLabel({children}: { children: ReactNode }) {
     return (
@@ -99,6 +100,7 @@ export function PortfolioCardEditorModal({
     const [mainPick, setMainPick] = useState<File | null>(null)
     const [extraDrafts, setExtraDrafts] = useState<Array<{ file: File; link: ExtraLink }>>([])
     const [saving, setSaving] = useState(false)
+    const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
     const [error, setError] = useState<string | null>(null)
     const [localMain, setLocalMain] = useState<CardFile | null>(null)
     const [localAttachments, setLocalAttachments] = useState<CardAttachment[]>([])
@@ -232,23 +234,48 @@ export function PortfolioCardEditorModal({
         }
         setSaving(true)
         setError(null)
+        const stamp = Date.now()
+        const queue: { id: string; file: File }[] = [
+            ...(mainPick ? [{id: `${stamp}-main`, file: mainPick}] : []),
+            ...extraDrafts.map((row, i) => ({id: `${stamp}-extra-${i}`, file: row.file})),
+        ]
+        setUploadItems(queue.map(({id, file}) => ({
+            id,
+            name: file.name,
+            size: file.size,
+            mimeType: file.type,
+            progress: 0,
+            status: "pending",
+        })))
+        const patchCard = (id: string, patch: Partial<UploadItem>) =>
+            setUploadItems((prev) => prev.map((item) => (item.id === id ? {...item, ...patch} : item)))
         try {
             let newMainFileId: string | null | undefined
             if (mainPick) {
-                const up = await uploadUserFileToPortfolio(mainPick, "PORTFOLIO", {
-                    title: t,
-                    description: description.trim() || null,
-                })
+                const cardId = `${stamp}-main`
+                patchCard(cardId, {status: "uploading"})
+                const up = await uploadUserFileToPortfolio(
+                    mainPick,
+                    "PORTFOLIO",
+                    {title: t, description: description.trim() || null},
+                    ({percent}) => patchCard(cardId, {progress: percent}),
+                )
+                patchCard(cardId, {progress: 100, status: "done"})
                 newMainFileId = up.id
             }
 
             const uploadedExtraIds: string[] = []
-            for (const row of extraDrafts) {
+            for (const [i, row] of extraDrafts.entries()) {
+                const cardId = `${stamp}-extra-${i}`
+                patchCard(cardId, {status: "uploading"})
                 const cat = fileCategoryForAttachment(row.file)
-                const up = await uploadUserFileToPortfolio(row.file, cat, {
-                    title: row.file.name.replace(/\.[^.]+$/, ""),
-                    description: null,
-                })
+                const up = await uploadUserFileToPortfolio(
+                    row.file,
+                    cat,
+                    {title: row.file.name.replace(/\.[^.]+$/, ""), description: null},
+                    ({percent}) => patchCard(cardId, {progress: percent}),
+                )
+                patchCard(cardId, {progress: 100, status: "done"})
                 uploadedExtraIds.push(up.id)
             }
 
@@ -310,10 +337,16 @@ export function PortfolioCardEditorModal({
                 }
             }
 
+            setUploadItems([])
             onSuccess()
             onClose()
         } catch (e) {
-            setError((e as Error).message)
+            const message = (e as Error).message
+            setError(message)
+            setUploadItems((prev) => prev.map((item) =>
+                item.status === "uploading" || item.status === "pending"
+                    ? {...item, status: "error", error: message}
+                    : item))
         } finally {
             setSaving(false)
         }
@@ -355,6 +388,11 @@ export function PortfolioCardEditorModal({
                 </div>
 
                 <div style={{overflowY: "auto", flex: 1, padding: "16px 20px"}}>
+                    {uploadItems.length > 0 && (
+                        <div className="mb-3">
+                            <UploadingCards items={uploadItems} title="Загрузка файлов работы"/>
+                        </div>
+                    )}
                     {error && (
                         <div
                             className="py-2 small mb-3 rounded-2 px-2"

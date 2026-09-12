@@ -8,6 +8,8 @@ import {Badge} from "@/components/ui/badge"
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
 import type {Order, Stage} from "../types"
 import {STAGE_LABEL} from "../types"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 type Props = {
     open: boolean
@@ -41,6 +43,7 @@ function humanError(x: unknown) {
 
 export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged}: Props) {
     const [busy, setBusy] = useState(false)
+    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
     const [sending, setSending] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [notice, setNotice] = useState<string | null>(null)
@@ -134,26 +137,33 @@ export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged
         setBusy(true)
         setError(null)
         setNotice(null)
+        setUploadItem({
+            id: "rules", name: file.name, size: file.size,
+            mimeType: file.type, progress: 0, status: "uploading",
+        })
+        const patchCard = (patch: Partial<UploadItem>) =>
+            setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
         try {
             const fd = new FormData()
             fd.append("file", file)
-            const r = await fetch(`/api/admin/stages/${stage.id}/rules`, {method: "POST", body: fd})
-            if (!r.ok) {
-                let body: unknown = null
+            const r = await uploadWithProgress(`/api/admin/stages/${stage.id}/rules`, fd, {
+                onProgress: ({percent}) => patchCard({progress: percent}),
+            })
+            const parse = (): unknown => {
                 try {
-                    body = await r.json()
+                    return JSON.parse(r.text || "null")
                 } catch {
-                    body = null
+                    return null
                 }
-                setError(humanError(body))
+            }
+            if (!r.ok) {
+                const message = humanError(parse())
+                setError(message)
+                patchCard({status: "error", error: message})
                 return
             }
-            let body: unknown = null
-            try {
-                body = await r.json()
-            } catch {
-                body = null
-            }
+            patchCard({progress: 100, status: "done"})
+            const body: unknown = parse()
             const payload = body && typeof body === "object" ? (body as {
                 s3Key?: unknown;
                 replacedS3Key?: unknown
@@ -169,8 +179,10 @@ export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged
                 // keep sentAt/sentKey as-is; UI will show “старая версия”
             }
             onChanged?.()
+            setUploadItem(null)
         } catch {
             setError("Не удалось загрузить файл")
+            patchCard({status: "error", error: "Не удалось загрузить файл"})
         } finally {
             setBusy(false)
         }
@@ -319,6 +331,11 @@ export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged
                                     Выбрать файл
                                 </Button>
                             </div>
+                            {uploadItem && (
+                                <div className="mt-3">
+                                    <UploadingCards items={[uploadItem]}/>
+                                </div>
+                            )}
                         </CardContent>
                         <CardFooter className="justify-between gap-3">
                             <div className="text-sm text-muted-foreground">

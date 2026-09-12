@@ -1,9 +1,11 @@
 "use client"
 
-import {useId} from "react"
+import {useId, useState} from "react"
 import type {OrderStage, StageAct} from "../types"
 import {ACT_STATUS_LABEL} from "../types"
 import {actWaitingMessage} from "./actWaitingMessage"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 export function StageActSection({
                                     stage,
@@ -27,6 +29,7 @@ export function StageActSection({
     onActUploaded: (act: StageAct) => void
 }) {
     const inputId = useId()
+    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
 
     return (
         <div
@@ -140,26 +143,46 @@ export function StageActSection({
 
                             setActUploadError(null)
                             setActUploading(true)
+                            setUploadItem({
+                                id: "act", name: file.name, size: file.size,
+                                mimeType: file.type, progress: 0, status: "uploading",
+                            })
+                            const patchCard = (patch: Partial<UploadItem>) =>
+                                setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
 
                             const fd = new FormData()
                             fd.append("file", file)
-                            const res = await fetch(`/api/stages/${stage.id}/act/client-sign`, {
-                                method: "POST",
-                                body: fd
-                            })
-
-                            setActUploading(false)
-                            if (!res.ok) {
-                                const body = await res.json().catch(() => ({}))
-                                setActUploadError(
-                                    typeof (body as { error?: string }).error === "string"
-                                        ? (body as { error: string }).error
-                                        : "Не удалось загрузить файл",
-                                )
+                            let res
+                            try {
+                                res = await uploadWithProgress(`/api/stages/${stage.id}/act/client-sign`, fd, {
+                                    onProgress: ({percent}) => patchCard({progress: percent}),
+                                })
+                            } catch {
+                                setActUploading(false)
+                                setActUploadError("Ошибка сети при загрузке файла")
+                                patchCard({status: "error", error: "Ошибка сети"})
                                 return
                             }
-                            const body = (await res.json()) as { act?: StageAct }
-                            if (body.act) onActUploaded(body.act)
+
+                            setActUploading(false)
+                            const parsed = (() => {
+                                try {
+                                    return JSON.parse(res.text || "null") as { act?: StageAct; error?: string } | null
+                                } catch {
+                                    return null
+                                }
+                            })()
+                            if (!res.ok) {
+                                const message = typeof parsed?.error === "string"
+                                    ? parsed.error
+                                    : "Не удалось загрузить файл"
+                                setActUploadError(message)
+                                patchCard({status: "error", error: message})
+                                return
+                            }
+                            patchCard({progress: 100, status: "done"})
+                            setUploadItem(null)
+                            if (parsed?.act) onActUploaded(parsed.act)
                         }}
                     />
                     <label
@@ -182,6 +205,11 @@ export function StageActSection({
                         <i className="bx bx-upload"/>
                         {actUploading ? "Загрузка…" : "Загрузить подписанный акт (PDF)"}
                     </label>
+                    {uploadItem ? (
+                        <div style={{marginTop: 10}}>
+                            <UploadingCards items={[uploadItem]}/>
+                        </div>
+                    ) : null}
                     {actUploadError ? (
                         <p style={{
                             fontSize: "0.78rem",

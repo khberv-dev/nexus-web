@@ -10,7 +10,7 @@ jest.mock("@/lib/yandex-ai", () => ({
     yandexGenerateImage: jest.fn(),
 }))
 
-import {aiAsk, aiChat, aiGenerateAvatar, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
+import {aiAsk, aiChat, aiEditImage, aiSupportsImageEditing, getAiProvider, isAiConfigured} from "@/lib/ai-provider"
 import {geminiEditImage, geminiGenerate, isGeminiConfigured} from "@/lib/gemini-ai"
 import {isYandexAiConfigured, yandexChat, yandexGenerateImage} from "@/lib/yandex-ai"
 
@@ -39,6 +39,7 @@ describe("AI provider", () => {
         expect(getAiProvider()).toBe("gemini")
         expect(isAiConfigured()).toBe(true)
         expect(mockedGeminiGenerate).toHaveBeenCalledWith("system", "User: question", 100)
+        expect(aiSupportsImageEditing()).toBe(true)
     })
 
     it("routes chat and images to Yandex", async () => {
@@ -50,7 +51,7 @@ describe("AI provider", () => {
         mockedYandexImage.mockResolvedValue({dataUrl: "data:image/jpeg;base64,abc", mimeType: "image/jpeg"})
 
         await expect(aiChat(messages, 200)).resolves.toBe("yandex reply")
-        await expect(aiGenerateAvatar("portrait", image)).resolves.toEqual({
+        await expect(aiEditImage("portrait", image)).resolves.toEqual({
             dataUrl: "data:image/jpeg;base64,abc",
             mimeType: "image/jpeg",
         })
@@ -58,6 +59,8 @@ describe("AI provider", () => {
         expect(mockedYandexChat).toHaveBeenCalledWith(messages, 200)
         expect(mockedYandexImage).toHaveBeenCalledWith("portrait")
         expect(mockedGeminiEditImage).not.toHaveBeenCalled()
+        // YandexART — text-to-image: исходный кадр в генерацию не уходит.
+        expect(aiSupportsImageEditing()).toBe(false)
     })
 
     it("rejects unknown providers", () => {

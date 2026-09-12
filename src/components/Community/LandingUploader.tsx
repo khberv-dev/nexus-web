@@ -4,7 +4,9 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 import {LandingUploaderLayout} from "./landing-uploader/LandingUploaderLayout"
 import {LandingUploaderStyles} from "./landing-uploader/LandingUploaderStyles"
 import {ConfirmDialog} from "./ConfirmDialog"
-import {getPreviewUrl, uploadFile} from "./landing-uploader/api"
+import {dataUrlToFile, getPreviewUrl, uploadFile} from "./landing-uploader/api"
+import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
+import type {UploadItem} from "@/components/app/UploadingCard"
 import {MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 
@@ -78,6 +80,9 @@ export default function LandingUploader({
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
 
     const [uploading, setUploading] = useState<string | null>(null)
+    const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
+    /** Портрет, открытый в диалоге с ИИ. */
+    const [aiPortrait, setAiPortrait] = useState<{ fileId: string; previewUrl: string } | null>(null)
     const [toast, setToast] = useState<string | null>(null)
     const [confirmDeleteBundleId, setConfirmDeleteBundleId] = useState<string | null>(null)
     const [confirmDeleteFileId, setConfirmDeleteFileId] = useState<string | null>(null)
@@ -200,13 +205,38 @@ export default function LandingUploader({
         }
     }
 
+    /** Общая обёртка над загрузкой: ведёт карточку прогресса и убирает её после успеха. */
+    const runUpload = async (file: File, category: string, previewUrl?: string | null): Promise<LandingFile> => {
+        const cardId = `${category}-${Date.now()}`
+        setUploadItems((prev) => [...prev, {
+            id: cardId,
+            name: file.name,
+            size: file.size,
+            mimeType: file.type,
+            progress: 0,
+            status: "uploading",
+            previewUrl: previewUrl ?? (file.type.startsWith("image/") ? URL.createObjectURL(file) : null),
+        }])
+        const patchCard = (patch: Partial<UploadItem>) =>
+            setUploadItems((prev) => prev.map((item) => (item.id === cardId ? {...item, ...patch} : item)))
+        try {
+            const saved = await uploadFile(file, category, ({percent}) => patchCard({progress: percent}))
+            patchCard({progress: 100, status: "done"})
+            window.setTimeout(() => setUploadItems((prev) => prev.filter((item) => item.id !== cardId)), 1400)
+            return saved
+        } catch (err) {
+            patchCard({status: "error", error: err instanceof Error ? err.message : "Ошибка загрузки"})
+            throw err
+        }
+    }
+
     // --- file handlers (upload + patch bundle) ---
     const handlePortrait = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file || !isEditable) return
         try {
             setUploading("portrait")
-            const saved = await uploadFile(file, "PORTRAIT")
+            const saved = await runUpload(file, "PORTRAIT")
             setPortraitFiles((prev) => [saved, ...prev])
             setPortraitUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
             setSelectedPortraitId(saved.id)
@@ -224,7 +254,7 @@ export default function LandingUploader({
         if (!file || !isEditable) return
         try {
             setUploading("work")
-            const saved = await uploadFile(file, "LANDING_WORK")
+            const saved = await runUpload(file, "LANDING_WORK")
             setWorkFiles((prev) => [saved, ...prev])
             setWorkUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
             setSelectedWorkId(saved.id)
@@ -244,7 +274,7 @@ export default function LandingUploader({
             if (!file.type.startsWith("video/")) throw new Error("Нужен видеофайл")
             if (file.size > 100 * 1024 * 1024) throw new Error("Максимум 100 МБ")
             setUploading("video")
-            const saved = await uploadFile(file, "INTRO_VIDEO")
+            const saved = await runUpload(file, "INTRO_VIDEO")
             setIntroVideoFiles((prev) => [saved, ...prev])
             setIntroVideoUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
             setSelectedVideoId(saved.id)
@@ -277,6 +307,26 @@ export default function LandingUploader({
         if (!isEditable) return;
         setSelectedWorkId(id);
         await patchBundle({workFileId: id})
+    }
+
+    /** Открыть диалог с ИИ для конкретного портрета. */
+    const openPortraitAi = (id: string) => {
+        const url = portraitUrls[id]
+        if (!url || !isEditable) return
+        setAiPortrait({fileId: id, previewUrl: url})
+    }
+
+    /** Результат ИИ сохраняем отдельным файлом-портретом и сразу делаем его выбранным. */
+    const applyAiPortrait = async (result: AiImageResult) => {
+        const ext = result.mimeType === "image/png" ? "png" : "jpg"
+        const file = dataUrlToFile(result.dataUrl, `portrait-ai-${Date.now()}.${ext}`)
+        const saved = await runUpload(file, "PORTRAIT", result.dataUrl)
+        setPortraitFiles((prev) => [saved, ...prev])
+        setPortraitUrls((prev) => ({...prev, [saved.id]: result.dataUrl}))
+        setSelectedPortraitId(saved.id)
+        await patchBundle({portraitFileId: saved.id})
+        setAiPortrait(null)
+        showToast("Портрет от ИИ добавлен и выбран")
     }
 
     const togglePortfolio = async (id: string) => {
@@ -503,6 +553,8 @@ export default function LandingUploader({
                         onTogglePortfolio={togglePortfolio}
                         onSetPreview={setPreview}
                         onDeleteFile={(id) => setConfirmDeleteFileId(id)}
+                        onEditPortraitWithAi={openPortraitAi}
+                        uploadItems={uploadItems}
                         disabled={!isEditable}
                     />
 
@@ -597,6 +649,18 @@ export default function LandingUploader({
                         </div>
                     )}
                 </div>
+            )}
+
+            {aiPortrait && (
+                <AiImageStudio
+                    open
+                    source={{fileId: aiPortrait.fileId, previewUrl: aiPortrait.previewUrl}}
+                    context="portrait"
+                    title="Портрет с ИИ"
+                    applyLabel="Сохранить как портрет"
+                    onApply={applyAiPortrait}
+                    onClose={() => setAiPortrait(null)}
+                />
             )}
 
             <LandingUploaderStyles/>

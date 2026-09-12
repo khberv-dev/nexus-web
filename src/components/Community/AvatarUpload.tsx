@@ -3,6 +3,9 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import ReactCrop, {centerCrop, Crop, makeAspectCrop, PixelCrop} from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
+import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadJsonWithProgress} from "@/lib/upload-progress"
 
 interface AvatarUploadProps {
     initials: string
@@ -59,8 +62,6 @@ function dataUrlToAvatarBlob(dataUrl: string): Promise<Blob> {
     })
 }
 
-type AiVariant = { id: string; label: string; dataUrl: string }
-
 export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode}: AvatarUploadProps) {
     const [srcUrl, setSrcUrl] = useState<string | null>(null)
     const [crop, setCrop] = useState<Crop>()
@@ -68,13 +69,11 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
     const [uploading, setUploading] = useState(false)
     const [avatarUrl, setAvatarUrl] = useState<string | null>(currentUrl ?? null)
     const [mounted, setMounted] = useState(false)
-    // AI-варианты: null в selectedVariant = выбран оригинальный кадр.
-    const [aiVariants, setAiVariants] = useState<AiVariant[]>([])
-    /** Кадр, который ушёл в генерацию — он же превью плитки «Оригинал». */
-    const [originalPreview, setOriginalPreview] = useState<string | null>(null)
-    const [selectedVariant, setSelectedVariant] = useState<string | null>(null)
-    const [generating, setGenerating] = useState(false)
+    // Диалог с ИИ: кадр уходит в студию, оттуда возвращается готовая картинка.
+    const [studioSource, setStudioSource] = useState<string | null>(null)
+    const [aiResult, setAiResult] = useState<AiImageResult | null>(null)
     const [aiError, setAiError] = useState<string | null>(null)
+    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
     const imgRef = useRef<HTMLImageElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -83,10 +82,9 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
     }, [])
 
     const resetAi = useCallback(() => {
-        setAiVariants([])
-        setSelectedVariant(null)
+        setStudioSource(null)
+        setAiResult(null)
         setAiError(null)
-        setOriginalPreview(null)
     }, [])
 
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,42 +101,37 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
         setCrop(centerAspectCrop(width, height))
     }, [])
 
-    /** Три стилизованных AI-варианта по текущему кадру; оригинал остаётся первым вариантом. */
-    const handleGenerate = async () => {
-        if (!imgRef.current || !completedCrop || generating) return
-        setGenerating(true)
+    /** Открывает диалог с ИИ по текущему кадру кроппера. */
+    const openStudio = async () => {
+        if (!imgRef.current || !completedCrop) return
         setAiError(null)
         try {
             const blob = await getCroppedBlob(imgRef.current, completedCrop)
-            const croppedDataUrl = await blobToDataUrl(blob)
-            setOriginalPreview(croppedDataUrl)
-            const res = await fetch("/api/ai/avatar-alternatives", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({image: croppedDataUrl}),
-            })
-            const data = await res.json().catch(() => ({})) as { images?: AiVariant[]; error?: string }
-            if (!res.ok) throw new Error(data.error ?? "Не удалось сгенерировать варианты")
-            const images = data.images ?? []
-            if (images.length === 0) throw new Error("Модель не вернула ни одного варианта")
-            setAiVariants(images)
-            setSelectedVariant(null)
+            setStudioSource(await blobToDataUrl(blob))
         } catch (e) {
-            setAiError(e instanceof Error ? e.message : "Не удалось сгенерировать варианты")
-        } finally {
-            setGenerating(false)
+            setAiError(e instanceof Error ? e.message : "Не удалось подготовить кадр")
         }
     }
 
     const handleApply = async () => {
         if (!imgRef.current || !completedCrop) return
         setUploading(true)
+        setAiError(null)
+        const filename = "avatar.jpg"
         try {
-            const picked = selectedVariant ? aiVariants.find(v => v.id === selectedVariant) : null
-            const blob = picked
-                ? await dataUrlToAvatarBlob(picked.dataUrl)
+            const blob = aiResult
+                ? await dataUrlToAvatarBlob(aiResult.dataUrl)
                 : await getCroppedBlob(imgRef.current, completedCrop)
-            const filename = "avatar.jpg"
+
+            setUploadItem({
+                id: "avatar",
+                name: filename,
+                size: blob.size,
+                mimeType: "image/jpeg",
+                progress: 0,
+                status: "uploading",
+                previewUrl: aiResult?.dataUrl ?? null,
+            })
 
             // Получаем presigned URL
             const res = await fetch("/api/files", {
@@ -156,12 +149,13 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             const {file} = await res.json()
 
             // Загружаем через backend, чтобы не зависеть от CORS браузера на S3
-            const putRes = await fetch(`/api/files/${file.id}/upload`, {
-                method: "POST",
-                body: blob,
+            await uploadJsonWithProgress(`/api/files/${file.id}/upload`, blob, {
                 headers: {"Content-Type": "image/jpeg"},
+                fallbackError: "Не удалось загрузить аватар",
+                onProgress: ({percent}) =>
+                    setUploadItem((prev) => (prev ? {...prev, progress: percent} : prev)),
             })
-            if (!putRes.ok) throw new Error((await putRes.json()).error ?? "Upload failed")
+            setUploadItem((prev) => (prev ? {...prev, progress: 100, status: "done"} : prev))
 
             // Получаем URL для отображения
             const urlRes = await fetch(`/api/files/${file.id}/url`)
@@ -171,81 +165,76 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             onUploaded?.(url)
             setSrcUrl(null)
             resetAi()
+            setUploadItem(null)
             if (inputRef.current) inputRef.current.value = ""
         } catch (e) {
-            alert((e as Error).message)
+            const message = e instanceof Error ? e.message : "Не удалось загрузить аватар"
+            setAiError(message)
+            setUploadItem((prev) => (prev ? {...prev, status: "error", error: message} : prev))
         } finally {
             setUploading(false)
         }
     }
 
-    const hasVariants = aiVariants.length > 0
-
-    /** Кнопка «AI generative» + плитки выбора. Одна разметка на модалку и на инлайн-режим. */
+    /** Кнопка запуска диалога с ИИ + состояние выбранного результата. Одна разметка на модалку и инлайн. */
     const renderAiBlock = (variant: "modal" | "inline") => {
         const muted = variant === "modal" ? "rgba(255,255,255,0.55)" : "var(--bs-secondary-color, #6c757d)"
-        const tile = (key: string, src: string | null, label: string, active: boolean, onClick: () => void) => (
-            <button
-                key={key}
-                type="button"
-                onClick={onClick}
-                title={label}
-                style={{
-                    display: "block",
-                    padding: 0,
-                    borderRadius: 10,
-                    overflow: "hidden",
-                    cursor: "pointer",
-                    background: "transparent",
-                    border: active ? "2px solid #5b4fcf" : "2px solid rgba(127,127,127,0.35)",
-                    boxShadow: active ? "0 0 0 3px rgba(91,79,207,0.25)" : "none",
-                    width: 84,
-                    fontFamily: "inherit",
-                }}
-            >
-                <div style={{width: 80, height: 80, background: "rgba(127,127,127,0.15)"}}>
-                    {src && (
-                        /* eslint-disable-next-line @next/next/no-img-element */
-                        <img src={src} alt={label} style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-                    )}
-                </div>
-                <div style={{
-                    fontSize: "0.68rem",
-                    padding: "3px 2px",
-                    textAlign: "center",
-                    color: active ? "#5b4fcf" : muted,
-                    fontWeight: active ? 600 : 400,
-                }}>
-                    {label}
-                </div>
-            </button>
-        )
 
         return (
             <div style={{marginTop: 12}}>
-                <button
-                    type="button"
-                    onClick={handleGenerate}
-                    disabled={generating || uploading || !completedCrop}
-                    style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 6,
-                        padding: "0.45em 0.9em",
-                        borderRadius: 8,
-                        border: "1px solid rgba(167,139,250,0.45)",
-                        background: "rgba(167,139,250,0.12)",
-                        color: "#a78bfa",
-                        fontSize: "0.82rem",
-                        fontWeight: 500,
-                        fontFamily: "inherit",
-                        cursor: generating || !completedCrop ? "default" : "pointer",
-                        opacity: generating || !completedCrop ? 0.6 : 1,
-                    }}
-                >
-                    <i className={`bx ${generating ? "bx-loader-alt bx-spin" : "bx-magic-wand"}`}/>
-                    {generating ? "Генерируем варианты…" : hasVariants ? "Сгенерировать заново" : "AI-варианты аватара"}
-                </button>
+                <div style={{display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
+                    <button
+                        type="button"
+                        onClick={() => void openStudio()}
+                        disabled={uploading || !completedCrop}
+                        style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "0.45em 0.9em",
+                            borderRadius: 8,
+                            border: "1px solid rgba(167,139,250,0.45)",
+                            background: "rgba(167,139,250,0.12)",
+                            color: "#a78bfa",
+                            fontSize: "0.82rem",
+                            fontWeight: 500,
+                            fontFamily: "inherit",
+                            cursor: uploading || !completedCrop ? "default" : "pointer",
+                            opacity: uploading || !completedCrop ? 0.6 : 1,
+                        }}
+                    >
+                        <i className="bx bx-magic-wand"/>
+                        {aiResult ? "Изменить запрос к ИИ" : "Редактировать с ИИ"}
+                    </button>
+
+                    {aiResult && (
+                        <div style={{display: "flex", alignItems: "center", gap: 8}}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={aiResult.dataUrl} alt="Результат ИИ" style={{
+                                width: 44, height: 44, borderRadius: 8, objectFit: "cover",
+                                border: "2px solid #5b4fcf",
+                            }}/>
+                            <span style={{fontSize: "0.75rem", color: muted}}>Выбран результат ИИ</span>
+                            <button
+                                type="button"
+                                onClick={() => setAiResult(null)}
+                                title="Вернуть исходный кадр"
+                                style={{
+                                    border: 0, background: "transparent", cursor: "pointer",
+                                    color: muted, fontSize: "1.05rem", lineHeight: 1, padding: 2,
+                                }}
+                            >
+                                <i className="bx bx-x"/>
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {!completedCrop && (
+                    <p style={{margin: "6px 0 0", fontSize: "0.72rem", color: muted}}>
+                        Сначала выделите область кадра.
+                    </p>
+                )}
 
                 {aiError && (
                     <div style={{
@@ -262,22 +251,30 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     </div>
                 )}
 
-                {hasVariants && (
-                    <>
-                        <p style={{margin: "10px 0 6px", fontSize: "0.75rem", color: muted}}>
-                            Выберите аватар — оригинал или один из вариантов ИИ:
-                        </p>
-                        <div style={{display: "flex", gap: 8, flexWrap: "wrap"}}>
-                            {tile("original", originalPreview, "Оригинал", selectedVariant === null, () => setSelectedVariant(null))}
-                            {aiVariants.map(v =>
-                                tile(v.id, v.dataUrl, v.label, selectedVariant === v.id, () => setSelectedVariant(v.id)),
-                            )}
-                        </div>
-                    </>
+                {uploadItem && (
+                    <div style={{marginTop: 10}}>
+                        <UploadingCards items={[uploadItem]} title="Загрузка аватара"/>
+                    </div>
                 )}
             </div>
         )
     }
+
+    /** Диалог с ИИ — общий для hero- и инлайн-режима. */
+    const studio = studioSource && (
+        <AiImageStudio
+            open
+            source={{dataUrl: studioSource, previewUrl: studioSource}}
+            context="avatar"
+            title="Аватар с ИИ"
+            applyLabel="Выбрать этот вариант"
+            onApply={(result) => {
+                setAiResult(result)
+                setStudioSource(null)
+            }}
+            onClose={() => setStudioSource(null)}
+        />
+    )
 
     // ── Hero mode: кликабельный аватар в шапке col-1 ─────────────
     if (heroMode) {
@@ -335,7 +332,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                     disabled={uploading || !completedCrop}
                                 >
                                     <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"}`}/>
-                                    {uploading ? "Загрузка…" : selectedVariant ? "Применить вариант ИИ" : "Применить"}
+                                    {uploading ? "Загрузка…" : aiResult ? "Применить вариант ИИ" : "Применить"}
                                 </button>
                                 <button className="dash-crop-panel__cancel" onClick={() => setSrcUrl(null)}>
                                     Отмена
@@ -345,6 +342,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     </div>,
                     document.body
                 )}
+                {studio}
             </>
         )
     }
@@ -397,7 +395,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                         <button className="btn btn-primary btn-sm" onClick={handleApply}
                                 disabled={uploading || !completedCrop}>
                             <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"} me-1`}/>
-                            {uploading ? "Загрузка..." : selectedVariant ? "Применить вариант ИИ" : "Применить"}
+                            {uploading ? "Загрузка..." : aiResult ? "Применить вариант ИИ" : "Применить"}
                         </button>
                         <button className="btn btn-outline-secondary btn-sm" onClick={() => setSrcUrl(null)}>
                             Отмена
@@ -405,6 +403,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     </div>
                 </div>
             )}
+            {studio}
         </div>
     )
 }

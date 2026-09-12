@@ -3,6 +3,8 @@
 import {useCallback, useMemo, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
 import type {StageType} from "@prisma/client"
+import {UploadingCards, formatFileSize, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 type UploadFile = {
     file: File
@@ -88,19 +90,13 @@ export function StageUpload({
     if (!canUpload) return null
 
     /** Загрузка на наш origin (как портфолио: `/api/files/[id]/upload`), затем сервер кладёт объект в S3 — без CORS на бакет. */
-    const putFileSameOrigin = (path: string, file: File, onProgress: (pct: number) => void) =>
-        new Promise<void>((resolve, reject) => {
-            const xhr = new XMLHttpRequest()
-            xhr.upload.onprogress = (e) => {
-                if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100))
-            }
-            xhr.open("POST", path)
-            xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream")
-            xhr.onload = () =>
-                xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`Ошибка загрузки (${xhr.status})`))
-            xhr.onerror = () => reject(new Error("Ошибка сети"))
-            xhr.send(file)
+    const putFileSameOrigin = async (path: string, file: File, onProgress: (pct: number) => void) => {
+        const res = await uploadWithProgress(path, file, {
+            headers: {"Content-Type": file.type || "application/octet-stream"},
+            onProgress: ({percent}) => onProgress(percent),
         })
+        if (!res.ok) throw new Error(`Ошибка загрузки (${res.status})`)
+    }
 
     const handleUpload = async () => {
         if (!files.length && !video) return
@@ -194,13 +190,6 @@ export function StageUpload({
         }
     }
 
-    // Format file size
-    const formatSize = (bytes: number): string => {
-        if (bytes < 1024) return `${bytes} Б`
-        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} КБ`
-        return `${(bytes / (1024 * 1024)).toFixed(1)} МБ`
-    }
-
     if (submitted) {
         return (
             <div className="alert alert-success d-flex align-items-center gap-2 mb-0">
@@ -264,56 +253,21 @@ export function StageUpload({
                 </div>
             </div>
 
-            {/* File list with progress */}
+            {/* Карточки загрузки */}
             {files.length > 0 && (
-                <div className="mb-3" style={{maxHeight: "300px", overflowY: "auto"}}>
-                    {files.map((f, i) => {
-                        const isError = f.status === "error"
-                        const isDone = f.status === "done"
-                        const isUploading = f.status === "uploading"
-
-                        return (
-                            <div
-                                key={i}
-                                className="list-group-item d-flex align-items-center gap-2"
-                                style={{
-                                    background: isError ? "rgba(220, 53, 69, 0.1)" : "transparent",
-                                    borderLeft: isError ? "3px solid #dc3545" : isDone ? "3px solid #28a745" : "3px solid transparent",
-                                }}
-                            >
-                                <i
-                                    className={`bx ${isError ? "bx-x-circle text-danger" : isDone ? "bx-check-circle text-success" : "bx-file text-muted"}`}
-                                    style={{fontSize: "1.2rem"}}
-                                />
-                                <div className="flex-grow-1">
-                                    <div className="d-flex align-items-center gap-1">
-                                        <span className="text-truncate">{f.file.name}</span>
-                                    </div>
-                                    <div className="text-muted small">
-                                        {formatSize(f.file.size)}
-                                        {isUploading && f.progress > 0 && (
-                                            <>
-                                                {" — "}
-                                                <span className="text-primary">Загружается: {f.progress}%</span>
-                                            </>
-                                        )}
-                                        {isDone && <span className="text-success"> — Загружен</span>}
-                                        {isError && <span className="text-danger"> — Ошибка</span>}
-                                    </div>
-                                </div>
-                                <small className="text-muted">
-                                    {isDone ? "✓" : isUploading ? `${f.progress}%` : ""}
-                                </small>
-                                <button
-                                    className="btn btn-sm btn-icon btn-text-secondary"
-                                    onClick={() => remove(i)}
-                                    disabled={isUploading}
-                                >
-                                    <i className="bx bx-x"/>
-                                </button>
-                            </div>
-                        )
-                    })}
+                <div className="mb-3" style={{maxHeight: 320, overflowY: "auto"}}>
+                    <UploadingCards
+                        items={files.map((f, i): UploadItem => ({
+                            id: `${i}-${f.file.name}`,
+                            name: f.file.name,
+                            size: f.file.size,
+                            mimeType: f.file.type,
+                            progress: f.status === "pending" ? 0 : f.progress,
+                            status: f.status,
+                        }))}
+                        title="Файлы этапа"
+                        onRemove={(id) => remove(Number(id.split("-")[0]))}
+                    />
                 </div>
             )}
 
@@ -327,7 +281,7 @@ export function StageUpload({
                         <i className="bx bx-video text-primary" style={{fontSize: "1.2rem"}}/>
                         <div className="flex-grow-1">
                             <div style={{fontSize: "0.82rem", fontWeight: 500}}>{video.name}</div>
-                            <div className="text-muted" style={{fontSize: "0.72rem"}}>{formatSize(video.size)} ·
+                            <div className="text-muted" style={{fontSize: "0.72rem"}}>{formatFileSize(video.size)} ·
                                 Видео-пояснение
                             </div>
                         </div>

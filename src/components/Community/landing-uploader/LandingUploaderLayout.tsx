@@ -4,6 +4,7 @@ import React from "react"
 import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {MAX_LANDING_PORTFOLIO, POS_OPTIONS} from "./constants"
 import {LandingFile, PreviewState} from "./types"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
 interface LayoutProps {
     featuredOnLanding?: boolean
@@ -36,6 +37,9 @@ interface LayoutProps {
     onTogglePortfolio: (id: string) => void
     onSetPreview: (value: PreviewState) => void
     onDeleteFile?: (id: string) => void
+    /** Открывает диалог с ИИ для портрета. */
+    onEditPortraitWithAi?: (id: string) => void
+    uploadItems?: UploadItem[]
     disabled?: boolean
 }
 
@@ -60,6 +64,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
         portraitRef, videoRef, workRef,
         onPortraitChange, onVideoChange, onWorkChange, onSaveWorkPos,
         onSelectPortrait, onSelectVideo, onSelectLandingWork, onTogglePortfolio, onSetPreview,
+        onEditPortraitWithAi, uploadItems,
         onDeleteFile,
     } = props
 
@@ -147,6 +152,15 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                 title="Показать на главной">
                           {renderSelectorMark(selected)}
                         </button>
+                                                {onEditPortraitWithAi && url && (
+                                                    <button type="button" className="landing-up-select-btn"
+                                                            onClick={() => onEditPortraitWithAi(f.id)}
+                                                            title="Редактировать с ИИ"
+                                                            style={{marginLeft: 2}}>
+                                                        <i className="bx bx-magic-wand"
+                                                           style={{fontSize: 11, color: "#a78bfa"}}/>
+                                                    </button>
+                                                )}
                                                 {onDeleteFile && (
                                                     <button type="button" className="landing-up-select-btn"
                                                             onClick={() => onDeleteFile(f.id)} title="Удалить"
@@ -165,6 +179,12 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     <input ref={portraitRef} type="file" accept="image/*" style={{display: "none"}}
                            onChange={onPortraitChange}/>
                 </>,
+            )}
+
+            {uploadItems && uploadItems.length > 0 && (
+                <div className="landing-up-card">
+                    <UploadingCards items={uploadItems} title="Загрузка файлов"/>
+                </div>
             )}
 
             {card(

@@ -28,7 +28,14 @@ export async function aiAsk(system: string, userPrompt: string, maxTokens = 1024
     return aiChat([{role: "system", content: system}, {role: "user", content: userPrompt}], maxTokens)
 }
 
-export async function aiGenerateAvatar(prompt: string, image: {data: string; mimeType: string}) {
+/** Правит ли провайдер именно исходное фото. YandexART умеет только text-to-image,
+ *  то есть при `AI_PROVIDER=yandex` загруженный кадр в генерацию не уходит. */
+export function aiSupportsImageEditing(): boolean {
+    return getAiProvider() === "gemini"
+}
+
+/** Редактирование изображения по текстовому запросу. На yandex исходник игнорируется — см. aiSupportsImageEditing. */
+export async function aiEditImage(prompt: string, image: {data: string; mimeType: string}) {
     return getAiProvider() === "yandex" ? yandexGenerateImage(prompt) : geminiEditImage(prompt, image)
 }
 

@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import {ActionButton} from "@/components/app/AppCard"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
 export type ProjectMaterialRow = {
     id: string
@@ -52,6 +53,7 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
     const [rows, setRows] = useState<ProjectMaterialRow[]>([])
     const [loading, setLoading] = useState(false)
     const [uploading, setUploading] = useState(false)
+    const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
     const [error, setError] = useState<string | null>(null)
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -78,22 +80,42 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
         if (!files.length) return
         setUploading(true)
         setError(null)
+        const cards: UploadItem[] = files.map((file, i) => ({
+            id: `${Date.now()}-${i}`,
+            name: file.name,
+            size: file.size,
+            mimeType: file.type,
+            progress: 0,
+            status: "pending",
+        }))
+        setUploadItems(cards)
+        const patchCard = (id: string, patch: Partial<UploadItem>) =>
+            setUploadItems((prev) => prev.map((item) => (item.id === id ? {...item, ...patch} : item)))
         try {
-            for (const file of files) {
+            for (const [i, file] of files.entries()) {
+                const cardId = cards[i].id
+                patchCard(cardId, {status: "uploading"})
                 const cat = fileCategoryForAttachment(file)
-                const up = await uploadUserFileToPortfolio(file, cat, {
-                    title: file.name.replace(/\.[^.]+$/, ""),
-                    description: null,
-                })
+                const up = await uploadUserFileToPortfolio(
+                    file,
+                    cat,
+                    {title: file.name.replace(/\.[^.]+$/, ""), description: null},
+                    ({percent}) => patchCard(cardId, {progress: percent}),
+                )
                 await fetchJson(`/api/portfolio/projects/${projectId}/materials`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({fileId: up.id}),
                 })
+                patchCard(cardId, {progress: 100, status: "done"})
             }
             await load()
+            setUploadItems([])
         } catch (err) {
-            setError((err as Error).message)
+            const message = (err as Error).message
+            setError(message)
+            setUploadItems((prev) => prev.map((item) =>
+                item.status === "uploading" ? {...item, status: "error", error: message} : item))
         } finally {
             setUploading(false)
         }
@@ -157,6 +179,12 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
                     </ActionButton>
                 </div>
             </div>
+            {uploadItems.length > 0 && (
+                <div className="mb-2">
+                    <UploadingCards items={uploadItems} title="Загрузка материалов"
+                                    onRemove={(id) => setUploadItems((prev) => prev.filter((i) => i.id !== id))}/>
+                </div>
+            )}
             {error && <small className="text-danger d-block mb-2">{error}</small>}
             {loading ? (
                 <span className="small text-muted">

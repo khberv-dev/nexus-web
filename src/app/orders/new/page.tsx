@@ -10,6 +10,8 @@ import {DashPageTitle} from "@/components/dashboard-ui/DashPageTitle"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {BriefWizardAIDrawer} from "@/components/app/BriefWizardAIDrawer"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 import {buildClientCabinetNavItems} from "@/components/Client/client-cabinet/constants"
 import {CLIENT_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import {Button} from "@/components/ui/button"
@@ -270,6 +272,7 @@ function StepFiles({
                        briefVideo,
                        onUploadVideo,
                        uploading,
+                       uploadItems,
                    }: {
     d: D
     set: (k: string, v: string) => void
@@ -287,11 +290,11 @@ function StepFiles({
     briefVideo: { id: string; s3Key: string; filename: string; mimeType: string | null; createdAt: string } | null
     onUploadVideo: (file: File) => void
     uploading: boolean
+    uploadItems: UploadItem[]
 }) {
     const filesInputRef = useRef<HTMLInputElement>(null)
     const videoInputRef = useRef<HTMLInputElement>(null)
     const [dragOver, setDragOver] = useState(false)
-    const [filesUploadPct, setFilesUploadPct] = useState<number | null>(null)
 
     const formatSize = (bytes: number | null): string => {
         if (!bytes || !Number.isFinite(bytes)) return "—"
@@ -366,11 +369,16 @@ function StepFiles({
                         </div>
                         <div style={{fontSize: "0.74rem", color: "var(--dash-muted)", marginTop: 2}}>
                             {uploading ? "Идет загрузка…" : "Можно выбрать сразу несколько файлов"}
-                            {filesUploadPct != null ? ` · ${filesUploadPct}%` : ""}
                         </div>
                     </div>
                 </div>
             </div>
+
+            {uploadItems.length > 0 && (
+                <div style={{marginTop: 10}}>
+                    <UploadingCards items={uploadItems} title="Загрузка"/>
+                </div>
+            )}
 
             {briefFiles.length > 0 ? (
                 <div style={{marginTop: 10, display: "grid", gap: 8}}>
@@ -606,6 +614,7 @@ export default function NewOrderPage() {
     const [agreed, setAgreed] = useState(false)
     const [toast, setToast] = useState<string | null>(null)
     const [bootError, setBootError] = useState<string | null>(null)
+    const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
     const [helpRequested, setHelpRequested] = useState(false)
     const [confirmHelp, setConfirmHelp] = useState(false)
     const [showHelpHint, setShowHelpHint] = useState(false)
@@ -693,20 +702,34 @@ export default function NewOrderPage() {
         if (!orderId) return
         setSaving(true)
         setError(null)
+        const cardId = `video-${Date.now()}`
+        setUploadItems([{
+            id: cardId, name: file.name, size: file.size, mimeType: file.type,
+            progress: 0, status: "uploading",
+        }])
+        const patchCard = (patch: Partial<UploadItem>) =>
+            setUploadItems((prev) => prev.map((item) => (item.id === cardId ? {...item, ...patch} : item)))
         try {
             const fd = new FormData()
             fd.append("file", file)
-            const res = await fetch(`/api/orders/${orderId}/brief/video`, {method: "POST", body: fd})
+            const res = await uploadWithProgress(`/api/orders/${orderId}/brief/video`, fd, {
+                onProgress: ({percent}) => patchCard({progress: percent}),
+            })
             if (!res.ok) {
-                const err = await res.json().catch(() => ({})) as { error?: string }
-                setError(err.error || "Не удалось загрузить видео")
+                const err = JSON.parse(res.text || "{}") as { error?: string }
+                const message = err.error || "Не удалось загрузить видео"
+                setError(message)
+                patchCard({status: "error", error: message})
                 return
             }
-            const body = await res.json() as { file: typeof briefVideo }
+            const body = JSON.parse(res.text) as { file: typeof briefVideo }
+            patchCard({progress: 100, status: "done"})
             setBriefVideo(body.file ?? null)
             setToast("Видео прикреплено к брифу")
+            setUploadItems([])
         } catch {
             setError("Ошибка сети при загрузке видео")
+            patchCard({status: "error", error: "Ошибка сети"})
         } finally {
             setSaving(false)
         }
@@ -729,16 +752,30 @@ export default function NewOrderPage() {
         if (files.length === 0) return
         setSaving(true)
         setError(null)
+        const batch = files.slice(0, 30)
+        const stamp = Date.now()
+        // Файлы уезжают одним запросом, поэтому прогресс у карточек общий.
+        setUploadItems(batch.map((f, i) => ({
+            id: `${stamp}-${i}`, name: f.name, size: f.size, mimeType: f.type,
+            progress: 0, status: "uploading",
+        })))
+        const patchAll = (patch: Partial<UploadItem>) =>
+            setUploadItems((prev) => prev.map((item) => ({...item, ...patch})))
         try {
             const fd = new FormData()
-            for (const f of files.slice(0, 30)) fd.append("files", f)
-            const res = await fetch(`/api/orders/${orderId}/brief/files`, {method: "POST", body: fd})
+            for (const f of batch) fd.append("files", f)
+            const res = await uploadWithProgress(`/api/orders/${orderId}/brief/files`, fd, {
+                onProgress: ({percent}) => patchAll({progress: percent}),
+            })
             if (!res.ok) {
-                const err = await res.json().catch(() => ({})) as { error?: string }
-                setError(err.error || "Не удалось загрузить файлы")
+                const err = JSON.parse(res.text || "{}") as { error?: string }
+                const message = err.error || "Не удалось загрузить файлы"
+                setError(message)
+                patchAll({status: "error", error: message})
                 return
             }
-            const body = await res.json() as { files?: typeof briefFiles }
+            const body = JSON.parse(res.text) as { files?: typeof briefFiles }
+            patchAll({progress: 100, status: "done"})
             if (Array.isArray(body.files)) {
                 // prepend new files
                 setBriefFiles((prev) => [...body.files!, ...prev])
@@ -746,8 +783,10 @@ export default function NewOrderPage() {
                 await refreshBriefFiles()
             }
             setToast("Файлы прикреплены к брифу")
+            setUploadItems([])
         } catch {
             setError("Ошибка сети при загрузке файлов")
+            patchAll({status: "error", error: "Ошибка сети"})
         } finally {
             setSaving(false)
         }
@@ -1028,6 +1067,7 @@ export default function NewOrderPage() {
                                                 briefVideo={briefVideo}
                                                 onUploadVideo={uploadBriefVideo}
                                                 uploading={saving}
+                                                uploadItems={uploadItems}
                                             />
                                         )}
                                         {step === 5 && (

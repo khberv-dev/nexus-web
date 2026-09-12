@@ -4,6 +4,8 @@ import {createPortal} from "react-dom"
 import {ActionButton, AppModal, SectionLabel} from "@/components/app/AppCard"
 import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {ConfirmDialog} from "./ConfirmDialog"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 const DESC_MAX = 500
 
@@ -594,10 +596,9 @@ export default function PortfolioUploader() {
             const {file: saved} = resJson as { file: UserFile }
 
             // 2. Загружаем через backend, чтобы не зависеть от CORS браузера на S3
-            const putRes = await fetch(`/api/files/${saved.id}/upload`, {
-                method: "POST",
-                body: pendingFile,
+            const putRes = await uploadWithProgress(`/api/files/${saved.id}/upload`, pendingFile, {
                 headers: {"Content-Type": pendingFile.type || "application/octet-stream"},
+                onProgress: ({percent}) => setProgress(percent),
             })
             if (!putRes.ok) throw new Error(`Upload ошибка: ${putRes.status}`)
             setProgress(100)
@@ -959,6 +960,19 @@ export default function PortfolioUploader() {
                                 )}
                                 <input ref={inputRef} type="file" accept={currentTab.accept} className="d-none"
                                        onChange={e => e.target.files?.[0] && selectFile(e.target.files[0])}/>
+                                {uploading && pendingFile && (
+                                    <div className="mt-2">
+                                        <UploadingCards items={[{
+                                            id: "pending",
+                                            name: pendingFile.name,
+                                            size: pendingFile.size,
+                                            mimeType: pendingFile.type,
+                                            progress,
+                                            status: "uploading",
+                                            previewUrl: pendingPreview,
+                                        } satisfies UploadItem]}/>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="col-md-7 d-flex flex-column gap-2">

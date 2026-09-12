@@ -6,6 +6,8 @@ import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import type {PaymentWithRelations, SpecAct, SpecContract} from "./types"
 import {DISCOVER_HUES, PAYMENT_BADGE, STAGE_LABELS} from "./types"
 import type {StageType} from "@prisma/client"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 const CON_BADGE: Record<string, { variant: "done" | "pending" | "current" | "rejected"; label: string }> = {
     DRAFT: {variant: "pending", label: "Черновик"}, SIGNED_CLIENT: {variant: "current", label: "Подписан"},
@@ -29,6 +31,7 @@ function Section({title, icon, children}: { title: string; icon: string; childre
 
 function ContractActions({contract: c}: { contract: SpecContract }) {
     const [loading, setLoading] = useState(false)
+    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
 
     const download = async () => {
         setLoading(true)
@@ -58,17 +61,32 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
             const file = input.files?.[0]
             if (!file) return
             setLoading(true)
+            setUploadItem({
+                id: "signed", name: file.name, size: file.size,
+                mimeType: file.type, progress: 0, status: "uploading",
+            })
+            const patchCard = (patch: Partial<UploadItem>) =>
+                setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
             try {
                 const fd = new FormData()
                 fd.set("file", file)
-                const res = await fetch("/api/specialist/framework-contract", {method: "POST", body: fd})
+                const res = await uploadWithProgress("/api/specialist/framework-contract", fd, {
+                    onProgress: ({percent}) => patchCard({progress: percent}),
+                })
                 if (!res.ok) {
-                    const err = await res.json().catch(() => ({}));
-                    throw new Error(err.error ?? "Ошибка загрузки")
+                    let message = "Ошибка загрузки"
+                    try {
+                        const err = JSON.parse(res.text || "{}") as { error?: string }
+                        if (err.error) message = err.error
+                    } catch { /* ответ не JSON — оставляем общий текст */ }
+                    throw new Error(message)
                 }
+                patchCard({progress: 100, status: "done"})
                 window.location.reload()
             } catch (e) {
-                alert((e as Error).message)
+                const message = (e as Error).message
+                patchCard({status: "error", error: message})
+                alert(message)
             } finally {
                 setLoading(false)
             }
@@ -80,7 +98,13 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
     const canDownload = !!c.s3Key
 
     return (
-        <div style={{display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap"}}>
+        <div style={{marginTop: 8}}>
+            {uploadItem && (
+                <div style={{marginBottom: 8}}>
+                    <UploadingCards items={[uploadItem]}/>
+                </div>
+            )}
+            <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
             {canDownload && (
                 <button onClick={download} disabled={loading} data-tour="btn-contract-download" style={{
                     background: "none",
@@ -111,6 +135,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                        style={{marginRight: 4}}/>{loading ? "Загрузка..." : "Загрузить подписанный"}
                 </button>
             )}
+            </div>
         </div>
     )
 }

@@ -7,6 +7,8 @@ import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell"
+import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {uploadWithProgress} from "@/lib/upload-progress"
 
 const STATUS_HINT: Record<string, { title: string; detail: string }> = {
     NONE: {
@@ -52,6 +54,7 @@ export default function OnboardingContractPage() {
     })
     const [edoOperator, setEdoOperator] = useState("")
     const [signedFile, setSignedFile] = useState<File | null>(null)
+    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -115,19 +118,38 @@ export default function OnboardingContractPage() {
             return
         }
         setBusy(true)
+        setUploadItem({
+            id: "signed", name: signedFile.name, size: signedFile.size,
+            mimeType: signedFile.type, progress: 0, status: "uploading",
+        })
+        const patchCard = (patch: Partial<UploadItem>) =>
+            setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
         try {
             const fd = new FormData()
             fd.set("file", signedFile)
             if (edoOperator.trim()) fd.set("edoOperator", edoOperator.trim())
-            const r = await fetch("/api/specialist/framework-contract", {method: "POST", body: fd})
+            const r = await uploadWithProgress("/api/specialist/framework-contract", fd, {
+                onProgress: ({percent}) => patchCard({progress: percent}),
+            })
             if (!r.ok) {
-                const e = await r.json().catch(() => ({}))
-                alert(typeof e.error === "string" ? e.error : "Ошибка загрузки")
+                let message = "Ошибка загрузки"
+                try {
+                    const e = JSON.parse(r.text || "{}") as { error?: string }
+                    if (typeof e.error === "string") message = e.error
+                } catch { /* ответ не JSON — оставляем общий текст */ }
+                patchCard({status: "error", error: message})
+                alert(message)
                 return
             }
+            patchCard({progress: 100, status: "done"})
             setSignedFile(null)
+            setUploadItem(null)
             await load()
             router.refresh()
+        } catch (e) {
+            const message = e instanceof Error ? e.message : "Ошибка загрузки"
+            patchCard({status: "error", error: message})
+            alert(message)
         } finally {
             setBusy(false)
         }
@@ -288,6 +310,11 @@ export default function OnboardingContractPage() {
                                     onChange={(e) => setSignedFile(e.target.files?.[0] ?? null)}
                                     style={{...inputStyle, padding: "0.5em", background: "transparent"}}
                                 />
+                                {uploadItem && (
+                                    <div style={{marginTop: 12}}>
+                                        <UploadingCards items={[uploadItem]} title="Загрузка договора"/>
+                                    </div>
+                                )}
                                 <div style={{display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16}}>
                                     <button
                                         type="button"
