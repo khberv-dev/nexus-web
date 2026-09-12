@@ -6,7 +6,6 @@ import {ActionButton, AppModal} from "@/components/app/AppCard"
 import {isPortfolioVisualFile} from "@/lib/portfolioVisualFile"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioLocalFilePreview, PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
-import {isPortfolioVideo} from "@/lib/portfolio-video"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
 function DashSectionLabel({children}: { children: ReactNode }) {
@@ -221,15 +220,6 @@ export function PortfolioCardEditorModal({
         const t = title.trim()
         if (!t) {
             setError("Укажите название работы")
-            return
-        }
-        const hasExistingVideo = localAttachments.some((attachment) => isPortfolioVideo(attachment.file))
-        const hasPendingVideo = extraDrafts.some((row) => isPortfolioVideo({
-            mimeType: row.file.type,
-            filename: row.file.name,
-        }))
-        if (!hasExistingVideo && !hasPendingVideo) {
-            setError("Добавьте обязательное видео работы (MP4, WebM или MOV)")
             return
         }
         setSaving(true)
@@ -493,25 +483,7 @@ export function PortfolioCardEditorModal({
                         </div>
                     </div>
 
-                    {mode === "create" && (
-                        <div className="alert py-2 px-3 mb-3" role="note" style={{
-                            background: "rgba(115,103,240,0.1)",
-                            border: "1px solid rgba(115,103,240,0.3)",
-                            color: "rgba(255,255,255,0.82)",
-                            fontSize: "0.8rem",
-                        }}>
-                            <strong>Видео обязательно.</strong> Добавьте MP4, WebM или MOV в материалы работы.
-                        </div>
-                    )}
-
                     <>
-                            <DashSectionLabel>Материалы и видео *</DashSectionLabel>
-                            <p className="small mb-2" style={{marginTop: -6, color: "rgba(255,255,255,0.5)"}}>
-                                Видео MP4, WebM или MOV обязательно. Также можно добавить PDF, ZIP, RAR, DWG, DXF и
-                                доп. изображения. Два варианта: привязать файл к главному
-                                фото или к ранее добавленному кадру (изображение),
-                                либо оставить «отдельная сетка материалов» без привязки к кадру.
-                            </p>
                             <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
                                 <input
                                     ref={extraInputRef}

@@ -81,6 +81,86 @@ export function LandingUploaderStyles() {
         font-size: 0.7rem;
       }
       .landing-up-upload-tile i { font-size: 1.2rem; }
+      /* ── Положение кадра: превью сверху, схемы вариантов снизу ── */
+      .landing-up-pos {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background: rgba(91,79,207,0.05);
+        border: 1px solid rgba(91,79,207,0.14);
+      }
+      .landing-up-pos__head { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 9px; }
+      .landing-up-pos__head-icon { color: #5b4fcf; font-size: 0.95rem; margin-top: 1px; }
+      .landing-up-pos__title { font-size: 0.78rem; font-weight: 600; margin: 0; }
+      .landing-up-pos__sub {
+        font-size: 0.68rem; line-height: 1.4; margin: 1px 0 0;
+        color: var(--dash-muted, #888);
+      }
+
+      /* Пропорция как у главной: фото там во весь экран, а не в плитке. */
+      .landing-up-pos__preview {
+        display: flex; align-items: center; justify-content: center;
+        aspect-ratio: 16 / 9;
+        border-radius: 8px; overflow: hidden;
+        margin-bottom: 10px;
+        background-color: rgba(91,79,207,0.1);
+        background-size: cover;
+        background-repeat: no-repeat;
+        color: var(--dash-muted, #888); font-size: 1.4rem;
+      }
+
+      .landing-up-pos__grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .landing-up-pos__card {
+        display: flex; flex-direction: column; align-items: center; gap: 5px;
+        padding: 6px 5px; border-radius: 9px; cursor: pointer; font-family: inherit;
+        border: 1px solid rgba(91,79,207,0.22);
+        background: rgba(91,79,207,0.04);
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .landing-up-pos__card:hover { border-color: rgba(91,79,207,0.45); background: rgba(91,79,207,0.09); }
+      .landing-up-pos__card.is-active {
+        border-color: #5b4fcf;
+        background: rgba(91,79,207,0.14);
+        box-shadow: 0 0 0 2px rgba(91,79,207,0.2);
+      }
+
+      /* Схема кадра: рамка — всё фото целиком, полоса — что попадёт на экран. */
+      .landing-up-pos__scheme {
+        position: relative;
+        width: 100%; max-width: 40px;
+        aspect-ratio: 3 / 4;
+        border-radius: 4px;
+        border: 1px solid rgba(91,79,207,0.35);
+        background: repeating-linear-gradient(
+          -45deg,
+          rgba(91,79,207,0.06) 0 3px,
+          rgba(91,79,207,0.13) 3px 6px
+        );
+        overflow: hidden;
+      }
+      .landing-up-pos__band {
+        position: absolute; left: 0; right: 0;
+        background: rgba(91,79,207,0.45);
+        border-top: 1px solid rgba(91,79,207,0.75);
+        border-bottom: 1px solid rgba(91,79,207,0.75);
+        transition: top 0.15s ease;
+      }
+      .landing-up-pos__card.is-active .landing-up-pos__scheme { border-color: #5b4fcf; }
+      .landing-up-pos__card.is-active .landing-up-pos__band {
+        background: #5b4fcf;
+        border-color: #8b7ff0;
+      }
+
+      .landing-up-pos__label {
+        font-size: 0.68rem; text-align: center; line-height: 1.2;
+        color: var(--dash-muted, #888);
+      }
+      .landing-up-pos__card.is-active .landing-up-pos__label { color: #5b4fcf; font-weight: 600; }
+
       .landing-up-thumb-strip {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));

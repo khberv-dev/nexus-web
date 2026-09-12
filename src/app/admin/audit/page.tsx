@@ -118,8 +118,8 @@ export default function AuditPage() {
                 {loading ? (
                     <div className="sp-card">
                         <div className="sp-card-bd" style={{textAlign: "center", padding: 40}}>
-                            <i className="bx bx-loader-alt"
-                               style={{fontSize: 32, color: "var(--adm-muted)", animation: "spin 1s linear infinite"}}/>
+                            <i className="bx bx-loader-alt bx-spin"
+                               style={{fontSize: 32, color: "var(--adm-muted)"}}/>
                             <p style={{marginTop: 12, color: "var(--adm-muted)"}}>Загрузка…</p>
                         </div>
                     </div>

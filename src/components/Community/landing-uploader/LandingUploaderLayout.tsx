@@ -2,7 +2,7 @@
 
 import React from "react"
 import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
-import {MAX_LANDING_PORTFOLIO, POS_OPTIONS} from "./constants"
+import {MAX_LANDING_PORTFOLIO, POS_OPTIONS, posBandStyle} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
@@ -27,6 +27,7 @@ interface LayoutProps {
     portraitRef: React.RefObject<HTMLInputElement | null>
     videoRef: React.RefObject<HTMLInputElement | null>
     workRef: React.RefObject<HTMLInputElement | null>
+    portfolioRef?: React.RefObject<HTMLInputElement | null>
     onPortraitChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onVideoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onWorkChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -35,6 +36,7 @@ interface LayoutProps {
     onSelectVideo: (id: string) => void
     onSelectLandingWork: (id: string) => void
     onTogglePortfolio: (id: string) => void
+    onPortfolioChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     onSetPreview: (value: PreviewState) => void
     onDeleteFile?: (id: string) => void
     /** Открывает диалог с ИИ для портрета. */
@@ -61,7 +63,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
         introVideoFiles, introVideoUrls, selectedVideoId,
         workFiles, workUrls, selectedWorkId, workPos,
         portfolioFiles, portfolioUrls, selectedIds, preview,
-        portraitRef, videoRef, workRef,
+        portraitRef, videoRef, workRef, portfolioRef, onPortfolioChange,
         onPortraitChange, onVideoChange, onWorkChange, onSaveWorkPos,
         onSelectPortrait, onSelectVideo, onSelectLandingWork, onTogglePortfolio, onSetPreview,
         onEditPortraitWithAi, uploadItems,
@@ -73,6 +75,8 @@ export function LandingUploaderLayout(props: LayoutProps) {
       <i className={`bx ${selected ? "bx-check" : "bx-circle"}`}/>
     </span>
     )
+
+    const portfolioImages = portfolioFiles.filter((f) => f.mimeType?.startsWith("image/"))
 
     const isPreviewPrimary = !!preview?.fileId && (
         (preview.category === "PORTRAIT" && selectedPortraitId === preview.fileId) ||
@@ -331,21 +335,50 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     <input ref={workRef} type="file" accept="image/*" style={{display: "none"}}
                            onChange={onWorkChange}/>
                     {selectedWorkId && !disabled && (
-                        <div style={{display: "flex", gap: 4, flexWrap: "wrap", marginTop: 8}}>
-                            {POS_OPTIONS.map((o) => (
-                                <button
-                                    key={o.value}
-                                    onClick={() => onSaveWorkPos(o.value)}
-                                    style={{
-                                        padding: "2px 8px", borderRadius: 6, fontSize: "0.7rem", cursor: "pointer",
-                                        border: workPos === o.value ? "1px solid #5b4fcf" : "1px solid var(--dash-border, #ddd)",
-                                        background: workPos === o.value ? "rgba(91,79,207,0.1)" : "transparent",
-                                        color: workPos === o.value ? "#5b4fcf" : "var(--dash-text, #201d1d)",
-                                    }}
-                                >
-                                    {o.label}
-                                </button>
-                            ))}
+                        <div className="landing-up-pos">
+                            <div className="landing-up-pos__head">
+                                <i className="bx bx-crop landing-up-pos__head-icon"/>
+                                <div>
+                                    <h5 className="landing-up-pos__title">Положение кадра</h5>
+                                    <p className="landing-up-pos__sub">
+                                        На главной фото растянуто во весь экран — выберите, какая часть останется
+                                        в кадре
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Живое превью: ровно то, что увидит посетитель. */}
+                            <div
+                                className="landing-up-pos__preview"
+                                style={workUrls[selectedWorkId] ? {
+                                    backgroundImage: `url('${workUrls[selectedWorkId]}')`,
+                                    backgroundPosition: workPos,
+                                } : undefined}
+                            >
+                                {!workUrls[selectedWorkId] && <i className="bx bx-image"/>}
+                            </div>
+
+                            <div className="landing-up-pos__grid">
+                                {POS_OPTIONS.map((o) => {
+                                    const active = workPos === o.value
+                                    return (
+                                        <button
+                                            key={o.value}
+                                            type="button"
+                                            className={`landing-up-pos__card ${active ? "is-active" : ""}`}
+                                            onClick={() => onSaveWorkPos(o.value)}
+                                            aria-pressed={active}
+                                            title={`Кадр: ${o.label}`}
+                                        >
+                                            {/* Схема: рамка — всё фото, подсветка — видимая часть. */}
+                                            <span className="landing-up-pos__scheme" aria-hidden>
+                                                <span className="landing-up-pos__band" style={posBandStyle(o.value)}/>
+                                            </span>
+                                            <span className="landing-up-pos__label">{o.label}</span>
+                                        </button>
+                                    )
+                                })}
+                            </div>
                         </div>
                     )}
                 </>,
@@ -354,16 +387,28 @@ export function LandingUploaderLayout(props: LayoutProps) {
             {card(
                 <>
                     {cardTitle("bx-grid-alt", "Работы для портфолио", `Выберите до ${MAX_LANDING_PORTFOLIO} фото`)}
-                    {portfolioFiles.filter((f) => f.mimeType?.startsWith("image/")).length === 0 ? (
-                        <p style={{fontSize: "0.82rem", color: "var(--dash-muted, #aaa)", margin: 0}}>Сначала загрузите
-                            фото во вкладке «Портфолио»</p>
-                    ) : (
-                        <div style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-                            gap: 8
-                        }}>
-                            {portfolioFiles.filter((f) => f.mimeType?.startsWith("image/")).map((f) => {
+                    {portfolioImages.length === 0 && (
+                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted, #aaa)", margin: "0 0 8px"}}>
+                            Загрузите фото здесь или во вкладке «Портфолио» — список работ у них общий.
+                        </p>
+                    )}
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                        gap: 8
+                    }}>
+                        {!disabled && onPortfolioChange && (
+                            <button
+                                type="button"
+                                className="landing-up-upload-tile"
+                                style={{width: "100%", height: "auto", aspectRatio: "4 / 3"}}
+                                onClick={() => portfolioRef?.current?.click()}
+                            >
+                                <i className={`bx ${uploading === "portfolio" ? "bx-loader-alt bx-spin" : "bx-plus"}`}/>
+                                <span>Загрузить</span>
+                            </button>
+                        )}
+                        {portfolioImages.map((f) => {
                                 const selected = selectedIds.has(f.id)
                                 const isDisabled = disabled || (!selected && selectedIds.size >= MAX_LANDING_PORTFOLIO)
                                 return (
@@ -412,7 +457,10 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                     </div>
                                 )
                             })}
-                        </div>
+                    </div>
+                    {onPortfolioChange && (
+                        <input ref={portfolioRef} type="file" accept="image/*" multiple style={{display: "none"}}
+                               onChange={onPortfolioChange}/>
                     )}
                 </>,
             )}

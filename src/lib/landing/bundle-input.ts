@@ -1,5 +1,6 @@
 import type {FileCategory, UserFile} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
+import {MAX_LANDING_PORTFOLIO} from "@/lib/landing/bundle-requirements"
 
 export type LandingBundlePatch = {
     portraitFileId?: string | null
@@ -39,7 +40,9 @@ export function parseLandingBundlePatch(body: unknown): LandingBundlePatch {
         if (!Array.isArray(input.portfolioFileIds)) throw new Error("portfolioFileIds должен быть массивом")
         portfolioFileIds = [...new Set(input.portfolioFileIds.map((id) => optionalId(id, "fileId")))]
             .filter((id): id is string => Boolean(id))
-        if (portfolioFileIds.length > 3) throw new Error("Для лендинга можно выбрать не более 3 работ")
+        if (portfolioFileIds.length > MAX_LANDING_PORTFOLIO) {
+            throw new Error(`Для лендинга можно выбрать не более ${MAX_LANDING_PORTFOLIO} работ`)
+        }
     }
 
     return {

@@ -303,7 +303,7 @@ export function StageUpload({
                     onClick={handleUpload}
                     disabled={uploading || files.some((f) => f.status === "uploading")}
                 >
-                    <i className={`bx ${uploading ? "bx-loader-alt" : "bx-cloud-upload"} me-1`}/>
+                    <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-cloud-upload"} me-1`}/>
                     {uploading
                         ? "Загрузка..."
                         : files.length > 0

@@ -129,7 +129,7 @@ export function DeleteButton({
             disabled={deleting}
             className={["dash-inline-action", "dash-inline-action--delete", confirming ? "is-confirming" : "", className ?? ""].join(" ").trim()}
         >
-            <i className={`bx ${deleting ? "bx-loader-circle" : confirming ? "bx-check" : "bx-trash"}`}
+            <i className={`bx ${deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash"}`}
                style={{marginRight: 3}}/>
             {deleting ? "Удаление..." : confirming ? "Точно?" : "Удалить"}
         </button>

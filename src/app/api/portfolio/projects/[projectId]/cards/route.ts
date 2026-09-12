@@ -2,7 +2,6 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {type AttachmentCreateSpec, validateAttachmentSpecsForNewCard} from "@/lib/portfolioCreateAttachments"
-import {isPortfolioVideo} from "@/lib/portfolio-video"
 
 async function checkProject(projectId: string, userId: string) {
     return prisma.portfolioProject.findFirst({
@@ -100,13 +99,9 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ proje
         if (owned.length !== new Set(fileIds).size) {
             return NextResponse.json({error: "Invalid file ownership"}, {status: 400})
         }
-        const attachmentIds = new Set(attachmentSpecs?.map((spec) => spec.fileId) ?? [])
-        const hasRequiredVideo = owned.some((file) => attachmentIds.has(file.id) && isPortfolioVideo(file))
-        if (!hasRequiredVideo) {
-            return NextResponse.json({error: "Добавьте видео работы (MP4, WebM или MOV)"}, {status: 400})
-        }
     } else {
-        return NextResponse.json({error: "Добавьте видео работы (MP4, WebM или MOV)"}, {status: 400})
+        // Видео необязательно, но совсем пустую карточку заводить незачем.
+        return NextResponse.json({error: "Добавьте фото или файл работы"}, {status: 400})
     }
 
     if (attachmentSpecs?.length) {

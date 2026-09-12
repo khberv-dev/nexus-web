@@ -185,3 +185,38 @@
         max-height: none !important;
     }
 }
+
+/* ── Анимации иконок ─────────────────────────────────────────────────────
+   Классы `bx-*` приходят из iconify-набора (public/sneat/fonts/iconify-icons.css),
+   где иконка рисуется CSS-маской на самом <i>. Анимаций в этом наборе нет —
+   `bx-spin` из boxicons там не определён, поэтому все лоадеры стояли неподвижно.
+   Крутим сам элемент: маска вращается вместе с ним. */
+@keyframes bx-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Алиас для инлайнового `animation: spin ...`, встречающегося в разметке. */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.bx-spin {
+    animation: bx-spin 1.4s linear infinite;
+    transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bx-spin {
+        animation-duration: 3.5s;
+    }
+}

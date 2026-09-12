@@ -30,6 +30,7 @@ import type {
     UrgentItem
 } from "./types"
 import {ONBOARDING_STEPS} from "./types"
+import {landingRequirements} from "@/lib/landing/bundle-requirements"
 
 interface CommunityProps {
     name: string;
@@ -412,18 +413,21 @@ export default function CommunityPage({
                                                 textAlign: "left",
                                                 lineHeight: 1.45
                                             }}>
-                        <span
-                            style={{color: landingReadiness.portrait ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.portrait ? "✓" : "○"} Портрет</span><br/>
-                        <span
-                            style={{color: landingReadiness.work ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.work ? "✓" : "○"} Фото интерьера</span><br/>
-                        <span
-                            style={{color: landingReadiness.video ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.video ? "✓" : "○"} Видео-визитка</span><br/>
-                        <span
-                            style={{color: landingReadiness.portfolio > 0 ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.portfolio > 0 ? "✓" : "○"} Портфолио: {landingReadiness.portfolio}/3</span><br/>
-                        <span
-                            style={{color: landingReadiness.specialty ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.specialty ? "✓" : "○"} Специализация</span><br/>
-                        <span
-                            style={{color: landingReadiness.about ? "var(--dash-success, #28c76f)" : "var(--dash-muted, #8f95b2)"}}>{landingReadiness.about ? "✓" : "○"} О себе</span>
+                        {landingRequirements(landingReadiness).map((item) => (
+                            <span key={item.key}>
+                                <span style={{
+                                    color: item.done
+                                        ? "var(--dash-success, #28c76f)"
+                                        : "var(--dash-muted, #8f95b2)",
+                                }}>
+                                    {item.done ? "✓" : "○"} {item.label}
+                                    {item.optional && (
+                                        <span style={{opacity: 0.7}}> · необязательно</span>
+                                    )}
+                                </span>
+                                <br/>
+                            </span>
+                        ))}
                       </span>
                                         </>
                                     }

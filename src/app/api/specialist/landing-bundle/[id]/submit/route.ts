@@ -3,6 +3,7 @@ import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {notify} from "@/lib/notifications"
 import {validateLandingBundleFiles} from "@/lib/landing/bundle-input"
+import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 
 // POST — отправить сборку на модерацию
 export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -17,8 +18,16 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
     if (bundle.status !== "DRAFT" && bundle.status !== "REJECTED") {
         return NextResponse.json({error: "Нельзя отправить эту сборку"}, {status: 400})
     }
-    if (!bundle.portraitFileId || !bundle.workFileId) {
-        return NextResponse.json({error: "Портрет и фото интерьера обязательны"}, {status: 400})
+    const missing = missingLandingRequirements({
+        portrait: Boolean(bundle.portraitFileId),
+        work: Boolean(bundle.workFileId),
+        video: Boolean(bundle.videoFileId),
+        portfolio: bundle.items.length,
+        specialty: Boolean(bundle.specialty?.trim()),
+        about: Boolean(bundle.about?.trim()),
+    })
+    if (missing.length > 0) {
+        return NextResponse.json({error: `Заполните: ${missing.join(", ")}`, missing}, {status: 400})
     }
     try {
         await validateLandingBundleFiles(dbUser.id, {

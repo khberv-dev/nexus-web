@@ -8,6 +8,7 @@ import {dataUrlToFile, getPreviewUrl, uploadFile} from "./landing-uploader/api"
 import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
 import type {UploadItem} from "@/components/app/UploadingCard"
 import {MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
+import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 
 type SelectableCategory = "LANDING_WORK" | "PORTRAIT" | "INTRO_VIDEO"
@@ -75,6 +76,7 @@ export default function LandingUploader({
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null)
     const videoRef = useRef<HTMLInputElement>(null)
 
+    const portfolioRef = useRef<HTMLInputElement>(null)
     const [portfolioFiles, setPortfolioFiles] = useState<LandingFile[]>([])
     const [portfolioUrls, setPortfolioUrls] = useState<Record<string, string>>({})
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
@@ -287,6 +289,31 @@ export default function LandingUploader({
         }
     }
 
+    /** Загрузка фото прямо в карточку «Работы для портфолио»: раньше сюда можно было
+     *  попасть только через вкладку «Портфолио». Новые файлы сразу попадают в выбор. */
+    const handlePortfolio = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files ?? [])
+        if (files.length === 0 || !isEditable) return
+        try {
+            setUploading("portfolio")
+            const next = new Set(selectedIds)
+            for (const file of files) {
+                if (!file.type.startsWith("image/")) throw new Error(`«${file.name}» — нужен файл-изображение`)
+                const saved = await runUpload(file, "PORTFOLIO")
+                setPortfolioFiles((prev) => [saved, ...prev])
+                setPortfolioUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
+                if (next.size < MAX_LANDING_PORTFOLIO) next.add(saved.id)
+            }
+            setSelectedIds(next)
+            await patchBundle({portfolioFileIds: Array.from(next)})
+        } catch (err) {
+            showToast((err as Error).message)
+        } finally {
+            setUploading(null)
+            if (portfolioRef.current) portfolioRef.current.value = ""
+        }
+    }
+
     const saveWorkPos = async (pos: string) => {
         if (!isEditable) return
         setWorkPos(pos)
@@ -381,6 +408,18 @@ export default function LandingUploader({
     }
 
     // --- readiness ---
+    // Кнопку отправки сверяем с тем, что реально выбрано в сборке, а не с тем,
+    // что вообще загружено: модерацию проходит именно сборка.
+    const bundleReadiness = {
+        portrait: Boolean(selectedPortraitId),
+        work: Boolean(selectedWorkId),
+        video: Boolean(selectedVideoId),
+        portfolio: selectedIds.size,
+        specialty: Boolean(bundleSpecialty.trim()),
+        about: Boolean(bundleAbout.trim()),
+    }
+    const missing = missingLandingRequirements(bundleReadiness)
+
     useEffect(() => {
         onReadinessChange?.({
             portrait: portraitFiles.length > 0,
@@ -543,6 +582,7 @@ export default function LandingUploader({
                         portraitRef={portraitRef}
                         videoRef={videoRef}
                         workRef={workRef}
+                        portfolioRef={portfolioRef}
                         onPortraitChange={handlePortrait}
                         onVideoChange={handleVideo}
                         onWorkChange={handleWork}
@@ -551,6 +591,7 @@ export default function LandingUploader({
                         onSelectVideo={selectVideo}
                         onSelectLandingWork={selectWork}
                         onTogglePortfolio={togglePortfolio}
+                        onPortfolioChange={handlePortfolio}
                         onSetPreview={setPreview}
                         onDeleteFile={(id) => setConfirmDeleteFileId(id)}
                         onEditPortraitWithAi={openPortraitAi}
@@ -621,14 +662,26 @@ export default function LandingUploader({
 
                     {/* Submit button */}
                     {isEditable && (
-                        <div style={{marginTop: 14, display: "flex", gap: 8}}>
+                        <div style={{marginTop: 14}}>
+                            {missing.length > 0 && (
+                                <p style={{
+                                    margin: "0 0 8px", fontSize: "0.74rem", lineHeight: 1.45,
+                                    color: "var(--dash-muted, #8f95b2)",
+                                }}>
+                                    <i className="bx bx-info-circle" style={{marginRight: 4}}/>
+                                    Для отправки не хватает: {missing.join(", ")}
+                                </p>
+                            )}
+                            <div style={{display: "flex", gap: 8}}>
                             <button
                                 onClick={submitBundle}
                                 data-tour="btn-landing-submit"
-                                disabled={!selectedPortraitId || !selectedWorkId}
+                                disabled={missing.length > 0}
+                                title={missing.length > 0 ? `Не заполнено: ${missing.join(", ")}` : undefined}
                                 style={{
-                                    padding: "8px 18px", borderRadius: 8, border: "none", cursor: "pointer",
-                                    background: selectedPortraitId && selectedWorkId ? "#5b4fcf" : "rgba(91,79,207,0.2)",
+                                    padding: "8px 18px", borderRadius: 8, border: "none",
+                                    cursor: missing.length > 0 ? "not-allowed" : "pointer",
+                                    background: missing.length > 0 ? "rgba(91,79,207,0.2)" : "#5b4fcf",
                                     color: "#fff", fontSize: "0.8rem", fontWeight: 600,
                                 }}
                             >
@@ -646,6 +699,7 @@ export default function LandingUploader({
                                 <i className="bx bx-trash" style={{marginRight: 4}}/>
                                 Удалить сборку
                             </button>
+                            </div>
                         </div>
                     )}
                 </div>
