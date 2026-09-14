@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
         DEV_MOCK_ROLE: process.env.DEV_MOCK_ROLE ?? "",
     },
     generateBuildId: async () => `build-${Date.now()}`,
+    // undici (прокси для AI, src/lib/ai-proxy.ts) не должен попадать в бандл — грузится из node_modules.
+    serverExternalPackages: ["undici"],
     experimental: {
         serverActions: {
             allowedOrigins: (process.env.ALLOWED_ORIGINS ?? "localhost:3000").split(","),

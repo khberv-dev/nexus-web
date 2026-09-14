@@ -1,13 +1,16 @@
 /**
- * Google Gemini API — через официальный SDK `@google/genai`.
- * Docs: https://ai.google.dev/gemini-api/docs
+ * Google Gemini API — через REST (`generateContent`).
+ * Docs: https://ai.google.dev/api/generate-content
+ *
+ * SDK `@google/genai` ходит через глобальный fetch и не принимает свой диспетчер,
+ * поэтому запросы идут напрямую через aiFetch — так работает AI_PROXY_URL.
  *
  * Ключ: Google AI Studio → Get API key.
  * Переменные: GEMINI_API_KEY (обязательно), GEMINI_MODEL (опционально, по умолчанию
  * gemini-2.5-flash — актуальный список моделей см. в доках выше, они меняются часто).
  */
 
-import {GoogleGenAI} from "@google/genai"
+import {aiFetch} from "@/lib/ai-proxy"
 
 function apiKey(): string {
     return (process.env.GEMINI_API_KEY ?? "").trim()
@@ -29,22 +32,36 @@ export function isGeminiConfigured(): boolean {
     return Boolean(apiKey())
 }
 
-let client: GoogleGenAI | null = null
+type GeminiPart = {
+    text?: string
+    thought?: boolean
+    inlineData?: {data?: string; mimeType?: string}
+}
 
-function getClient(): GoogleGenAI {
+type GeminiResponse = {
+    candidates?: Array<{content?: {parts?: GeminiPart[]}}>
+}
+
+const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
+
+async function generateContent(model: string, body: Record<string, unknown>): Promise<GeminiResponse> {
     if (!isGeminiConfigured()) throw new Error("GEMINI_NOT_CONFIGURED")
-    if (!client) client = new GoogleGenAI({apiKey: apiKey()})
-    return client
+    const res = await aiFetch(`${GEMINI_API_BASE}/models/${encodeURIComponent(model)}:generateContent`, {
+        method: "POST",
+        headers: {"x-goog-api-key": apiKey(), "Content-Type": "application/json"},
+        body: JSON.stringify(body),
+    })
+    const raw = await res.text()
+    if (!res.ok) throw new Error(`GEMINI_HTTP_${res.status}:${raw.slice(0, 500)}`)
+    return JSON.parse(raw) as GeminiResponse
 }
 
 /** Простой (не-диалоговый) промт: системная инструкция + пользовательский запрос. */
 export async function geminiGenerate(system: string, userPrompt: string, maxTokens = 512): Promise<string> {
-    const ai = getClient()
-    const response = await ai.models.generateContent({
-        model: modelId(),
-        contents: userPrompt,
-        config: {
-            systemInstruction: system,
+    const response = await generateContent(modelId(), {
+        systemInstruction: {parts: [{text: system}]},
+        contents: [{role: "user", parts: [{text: userPrompt}]}],
+        generationConfig: {
             maxOutputTokens: maxTokens,
             // Prompts here are straightforward rewrites, not multi-step reasoning — without
             // this, 2.5+ "thinking" models can burn most of maxOutputTokens on internal
@@ -52,7 +69,12 @@ export async function geminiGenerate(system: string, userPrompt: string, maxToke
             thinkingConfig: {thinkingBudget: 0},
         },
     })
-    const text = response.text?.trim()
+    const parts = response.candidates?.[0]?.content?.parts ?? []
+    const text = parts
+        .filter((part) => !part.thought && typeof part.text === "string")
+        .map((part) => part.text)
+        .join("")
+        .trim()
     if (!text) throw new Error("Empty AI response")
     return text
 }
@@ -101,8 +123,7 @@ export async function geminiEditImage(
 
     let response
     try {
-        response = await getClient().models.generateContent({
-            model: imageModelId(),
+        response = await generateContent(imageModelId(), {
             contents: [
                 {
                     role: "user",

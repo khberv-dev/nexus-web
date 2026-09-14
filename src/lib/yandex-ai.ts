@@ -1,3 +1,5 @@
+import {aiFetch} from "@/lib/ai-proxy"
+
 export type YandexMessage = {role: "system" | "user" | "assistant"; content: string}
 
 function env(name: string): string {
@@ -27,7 +29,7 @@ function requireConfig(): void {
 export async function yandexChat(messages: YandexMessage[], maxTokens = 1024): Promise<string> {
     requireConfig()
     const modelUri = env("YANDEX_GPT_MODEL_URI") || `gpt://${folderId()}/yandexgpt/latest`
-    const res = await fetch("https://llm.api.cloud.yandex.net/foundationModels/v1/completion", {
+    const res = await aiFetch("https://llm.api.cloud.yandex.net/foundationModels/v1/completion", {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify({
@@ -64,7 +66,7 @@ function imagePrompt(prompt: string): string {
 export async function yandexGenerateImage(prompt: string): Promise<{dataUrl: string; mimeType: string}> {
     requireConfig()
     const modelUri = env("YANDEX_ART_MODEL_URI") || `art://${folderId()}/yandex-art/latest`
-    const created = await fetch("https://llm.api.cloud.yandex.net/foundationModels/v1/imageGenerationAsync", {
+    const created = await aiFetch("https://llm.api.cloud.yandex.net/foundationModels/v1/imageGenerationAsync", {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify({
@@ -80,7 +82,7 @@ export async function yandexGenerateImage(prompt: string): Promise<{dataUrl: str
 
     for (let attempt = 0; attempt < 60 && !operation.done; attempt += 1) {
         await wait(2000)
-        const polled = await fetch(`https://operation.api.cloud.yandex.net/operations/${operation.id}`, {
+        const polled = await aiFetch(`https://operation.api.cloud.yandex.net/operations/${operation.id}`, {
             headers: {Authorization: `Api-Key ${apiKey()}`},
         })
         const polledRaw = await polled.text()
