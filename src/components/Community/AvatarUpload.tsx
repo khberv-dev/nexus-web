@@ -6,6 +6,7 @@ import "react-image-crop/dist/ReactCrop.css"
 import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadJsonWithProgress} from "@/lib/upload-progress"
+import {AiIcon} from "@/components/app/AiIcon"
 
 interface AvatarUploadProps {
     initials: string
@@ -203,7 +204,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             opacity: uploading || !completedCrop ? 0.6 : 1,
                         }}
                     >
-                        <i className="bx bx-magic-wand"/>
+                        <AiIcon/>
                         {aiResult ? "Изменить запрос к ИИ" : "Редактировать с ИИ"}
                     </button>
 

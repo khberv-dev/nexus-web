@@ -363,7 +363,7 @@ export default function WorkOrderClient({
         )
 
     const headerPrimary = focusedStageType
-        ? {href: `/work/${order.id}`, label: "К заказу", iconClassName: "bx bx-left-arrow-alt"}
+        ? {href: `/work/orders/${order.id}`, label: "К заказу", iconClassName: "bx bx-left-arrow-alt"}
         : {href: SPECIALIST_CABINET_LOGO_HREF, label: "Все проекты", iconClassName: "bx bx-grid-alt"}
 
     const headerChip = focusedStageType
@@ -592,7 +592,7 @@ export default function WorkOrderClient({
                                         orderId={order.id}
                                         stages={gridStages}
                                         showActivityFooter={false}
-                                        resolveStageHref={({orderId, stageType}) => `/work/${orderId}/${stageType}`}
+                                        resolveStageHref={({orderId, stageType}) => `/work/orders/${orderId}/${stageType}`}
                                         viewerRole="SPECIALIST"
                                     />
                                 </div>
@@ -697,7 +697,7 @@ export default function WorkOrderClient({
                             ) : null}
 
                             <div style={{marginTop: 16}}>
-                                <Link href={`/work/${order.id}`} prefetch={false}
+                                <Link href={`/work/orders/${order.id}`} prefetch={false}
                                       className="dash-header__btn dash-header__btn--primary"
                                       style={{width: "100%", justifyContent: "center", boxSizing: "border-box"}}>
                                     <i className="bx bx-left-arrow-alt" aria-hidden/>
@@ -716,7 +716,7 @@ export default function WorkOrderClient({
                                     gap: 10,
                                     flexWrap: "wrap"
                                 }}>
-                                    <Link href={`/work/${order.id}`} prefetch={false}
+                                    <Link href={`/work/orders/${order.id}`} prefetch={false}
                                           className="dash-header__btn dash-header__btn--primary">
                                         <i className="bx bx-left-arrow-alt" aria-hidden/>
                                         К заказу

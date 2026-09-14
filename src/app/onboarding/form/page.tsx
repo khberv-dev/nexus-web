@@ -9,6 +9,7 @@ import {PhoneField} from "@/components/ui/PhoneField"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {MultiSelectField} from "@/components/ui/MultiSelectField"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
+import {AiIcon} from "@/components/app/AiIcon"
 
 // ─── Типы AI ─────────────────────────────────────────────────────────────────
 
@@ -521,7 +522,7 @@ export default function OnboardingFormPage() {
                                                             opacity: generatingAbout || !form.about?.trim() ? 0.5 : 1,
                                                         }}
                                                     >
-                                                        {generatingAbout ? "Генерируем…" : "✨ Дополнить с помощью ИИ"}
+                                                        {generatingAbout ? "Генерируем…" : <><AiIcon style={{marginRight: "0.35em"}}/>Дополнить с помощью ИИ</>}
                                                     </button>
                                                 )}
                                             </>
@@ -947,7 +948,7 @@ export default function OnboardingFormPage() {
                                     whiteSpace: "nowrap",
                                 }}
                             >
-                                <span>✨</span> Подсказки AI
+                                <AiIcon/> Подсказки AI
                             </button>
                         </div>
                     </form>
@@ -1004,7 +1005,7 @@ export default function OnboardingFormPage() {
                         flexShrink: 0,
                     }}>
                         <div style={{display: "flex", alignItems: "center", gap: "0.6em"}}>
-                            <span style={{fontSize: "1.1rem"}}>✨</span>
+                            <AiIcon size="1.1rem"/>
                             <span style={{color: "#f4f4f4", fontSize: "0.95rem", fontWeight: 500}}>
                 AI-подсказки
               </span>

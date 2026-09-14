@@ -1,6 +1,7 @@
 "use client"
 
 import {useCallback, useEffect, useRef, useState} from "react"
+import type {AdminOrderTab} from "@/lib/admin-routes"
 import {BriefEditor} from "@/components/admin/BriefEditor"
 import {Modal} from "@/components/ui/modal"
 import {STAGE_ORDER} from "@/lib/stage-constants"
@@ -9,7 +10,7 @@ import {adminManualStatusTargets} from "./types"
 import {OrderAlerts} from "./components/OrderAlerts"
 import {OrderHeader} from "./components/OrderHeader"
 import {OrderInfoCards} from "./components/OrderInfoCards"
-import {type OrderDetailTab, OrderTabs} from "./components/OrderTabs"
+import {OrderTabs} from "./components/OrderTabs"
 import {OrderOverviewTab} from "./components/OrderOverviewTab"
 import {OrderStagesTab} from "./components/OrderStagesTab"
 import {OrderManageTab} from "./components/OrderManageTab"
@@ -20,7 +21,10 @@ import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 
 interface Props {
-    order: Order | null
+    order: Order
+    /** Вкладка из адреса /admin/orders/:id[/:tab]. */
+    activeTab: AdminOrderTab
+    tabHref: (tab: AdminOrderTab) => string
     specialists: SpecialistForAssignment[]
     assignMap: Record<string, string>
     assigning: string | null
@@ -45,7 +49,7 @@ interface Props {
 }
 
 export function OrderDetail({
-                                order, specialists, assignMap, assigning, acting,
+                                order, activeTab, tabHref, specialists, assignMap, assigning, acting,
                                 onAssignMapChange, onAssign, onReviewStage, onExtraPayment, onChangeStatus,
                                 onBriefApprove, onBriefReject, onBriefSaved, onResolveHelp,
                                 onGenerateContract, onSendContractToClient, onConfirmContract,
@@ -53,7 +57,6 @@ export function OrderDetail({
                                 onClientRevision,
                             }: Props) {
     const [briefModalOpen, setBriefModalOpen] = useState(false)
-    const [activeTab, setActiveTab] = useState<OrderDetailTab>("overview")
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [previewFilename, setPreviewFilename] = useState("")
     const [previewFileId, setPreviewFileId] = useState<string | null>(null)
@@ -61,7 +64,7 @@ export function OrderDetail({
     const [chatDrawerOpen, setChatDrawerOpen] = useState(false)
     const [unreadChatCount, setUnreadChatCount] = useState(0)
     const chatDrawerOpenRef = useRef(false)
-    const orderId = order?.id
+    const orderId = order.id
 
     const fetchUnreadChatCount = useCallback(async () => {
         if (!orderId) {
@@ -128,33 +131,6 @@ export function OrderDetail({
         ["--dash-accent-bg" as never]: "var(--adm-active-bg, rgba(99,102,241,0.10))",
         ["--dash-accent-border" as never]: "var(--adm-active-color, #6366f1)",
         ["--dash-danger" as never]: "#dc2626",
-    }
-
-    // Restore active tab from URL (?tab=overview|stages|manage) so refresh doesn't reset.
-    useEffect(() => {
-        if (typeof window === "undefined") return
-        const url = new URL(window.location.href)
-        const tab = url.searchParams.get("tab") as OrderDetailTab | null
-        if (tab === "overview" || tab === "stages" || tab === "manage") setActiveTab(tab)
-    }, [])
-
-    // Persist active tab into URL.
-    useEffect(() => {
-        if (typeof window === "undefined") return
-        const url = new URL(window.location.href)
-        url.searchParams.set("tab", activeTab)
-        window.history.replaceState(null, "", url.toString())
-    }, [activeTab])
-
-    if (!order) {
-        return (
-            <div className="sp-detail">
-                <div style={{textAlign: "center", color: "var(--adm-muted)", padding: "60px 0"}}>
-                    <i className="bx bx-folder-open" style={{fontSize: 48, opacity: 0.3, display: "block"}}/>
-                    <p style={{marginTop: 8}}>Выберите заказ</p>
-                </div>
-            </div>
-        )
     }
 
     const bd = order.briefData
@@ -252,7 +228,7 @@ export function OrderDetail({
                         <OrderInfoCards order={order}/>
 
                         {/* Tabs */}
-                        <OrderTabs activeTab={activeTab} modStagesCount={modStages.length} onTabChange={setActiveTab}/>
+                        <OrderTabs activeTab={activeTab} modStagesCount={modStages.length} tabHref={tabHref}/>
 
                         {/* OVERVIEW */}
                         {activeTab === "overview" && (

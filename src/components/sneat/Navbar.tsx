@@ -14,7 +14,7 @@ export default function Navbar() {
             <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <ul className="navbar-nav flex-row align-items-center ms-auto">
                     <li className="nav-item">
-                        <Link href="/work/profile" className="nav-link">
+                        <Link href="/work/settings" className="nav-link">
                             <div className="avatar avatar-online">
                                 <img src="/sneat/img/avatars/1.png" alt="avatar" className="rounded-circle"/>
                             </div>

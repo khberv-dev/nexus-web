@@ -13,10 +13,10 @@ import type {ActItem, OrderWithRelations, UrgentItem} from "./types"
 import {DISCOVER_HUES, ORDER_HUE, ORDER_STATUS_MAP, STAGE_LABELS} from "./types"
 
 const QUICK_LINKS = [
-    {href: "/work/community?tab=portfolio", label: "Портфолио", sub: "Фото и рендеры", icon: "bx-image-alt"},
-    {href: "/work/community?tab=payments", label: "Выплаты", sub: "История платежей", icon: "bx-credit-card"},
+    {href: "/work/portfolio", label: "Портфолио", sub: "Фото и рендеры", icon: "bx-image-alt"},
+    {href: "/work/payments", label: "Выплаты", sub: "История платежей", icon: "bx-credit-card"},
     {href: "/work/academy", label: "Академия", sub: "Обучение и гайды", icon: "bx-book-open"},
-    {href: "/work/community?tab=settings", label: "Настройки", sub: "Профиль и данные", icon: "bx-cog"},
+    {href: "/work/settings", label: "Настройки", sub: "Профиль и данные", icon: "bx-cog"},
 ]
 
 const STAGE_ORDER: StageType[] = ["CONCEPT", "PLANNING", "VISUALIZATION", "DOCUMENTATION", "SPECIFICATION"]
@@ -97,7 +97,7 @@ function UrgentBlock({items}: { items: UrgentItem[] }) {
                             <p className="dash-urgent__sub">Заказ
                                 #{order.id.slice(-6).toUpperCase()} · {LABEL[stage.status] ?? stage.status}</p>
                         </div>
-                        <a href={`/work/${order.id}`} className="dash-urgent__action">Загрузить <i
+                        <a href={`/work/orders/${order.id}`} className="dash-urgent__action">Загрузить <i
                             className="bx bx-upload"/></a>
                     </li>
                 ))}
@@ -197,7 +197,7 @@ export function OrdersCol2({orders, urgentItems, actItems, onSignAct}: {
                                 title={`Заказ #${order.id.slice(-6).toUpperCase()}`}
                                 subtitle={order.client.name ?? order.client.email}
                                 hideSpecialistInfo
-                                onClick={() => window.location.href = `/work/${order.id}`}
+                                onClick={() => window.location.href = `/work/orders/${order.id}`}
                                 statusLabel={st.label}
                                 statusVariant={st.variant}
                             >

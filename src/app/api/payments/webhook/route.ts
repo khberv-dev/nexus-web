@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
         const shortId = orderId.slice(-6).toUpperCase();
         void notify(order.client.id ?? order.clientId, "payment_received", "Оплата получена", `Платеж по заказу #${shortId} подтвержден`, `/orders/${orderId}`);
         if (order.specialist) {
-            void notify(order.specialist.id ?? order.specialistId, "payment_received", "Оплата получена", `Платеж по заказу #${shortId} подтвержден`, `/work/${orderId}`);
+            void notify(order.specialist.id ?? order.specialistId, "payment_received", "Оплата получена", `Платеж по заказу #${shortId} подтвержден`, `/work/orders/${orderId}`);
         }
 
         if (payment) {

@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
         const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
         const specName = dbUser.name ?? dbUser.email ?? "Специалист"
         for (const a of admins) {
-            await notify(a.id, "contract_signed", "Договор подписан", `${specName} загрузил подписанный договор`, `/admin/specialists`)
+            await notify(a.id, "contract_signed", "Договор подписан", `${specName} загрузил подписанный договор`, `/admin/specialists/${dbUser.id}/contract`)
         }
 
         return NextResponse.json({ok: true, status: "SIGNED_BY_SPECIALIST"})

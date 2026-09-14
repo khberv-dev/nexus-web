@@ -79,7 +79,7 @@ export async function POST(_req: Request, {params}: { params: Promise<{ id: stri
         notificationType: "contract_confirmed",
         title: "Договор подтверждён",
         message: "Администратор подтвердил ваш договор с платформой. Этап подписания закрыт.",
-        url: "/work/community",
+        url: "/work/orders",
     })
 
     // Последний шаг закрыт — отдельным письмом приветствуем на платформе.

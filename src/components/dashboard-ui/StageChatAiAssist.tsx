@@ -3,6 +3,7 @@
 import {useCallback, useState} from "react"
 import {DashRightDrawer} from "./DashRightDrawer"
 import {type DashAiSuggestion, DashAiSuggestionsBody} from "./DashAiSuggestionsBody"
+import {AiIcon} from "@/components/app/AiIcon"
 
 export function StageChatAiAssist({
                                       orderId,
@@ -83,7 +84,7 @@ export function StageChatAiAssist({
                     flexShrink: 0,
                 }}
             >
-                <span aria-hidden>✨</span>
+                <AiIcon/>
                 ИИ для текста
             </button>
 
@@ -91,7 +92,7 @@ export function StageChatAiAssist({
                 open={open}
                 onClose={close}
                 title="ИИ для сообщения"
-                titleIcon={<span aria-hidden>✨</span>}
+                titleIcon={<AiIcon/>}
                 badge={
                     <span
                         style={{

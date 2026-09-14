@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     // Notify admins
     const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
     for (const admin of admins) {
-        void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Специалист ${user.name ?? user.email} запросил смену реквизитов`, "/admin/specialists")
+        void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Специалист ${user.name ?? user.email} запросил смену реквизитов`, `/admin/specialists/${user.id}`)
     }
 
     await audit(user.id, "requisite_change_requested", "User", user.id, {requestId: {to: request.id}})

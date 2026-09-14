@@ -201,7 +201,7 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
                     "stage_chat",
                     `Пометки на изображении: ${stageTitle}`,
                     `Заказ #${shortOrder}: заказчик сохранил пометки на файле «${gate.file.filename}».`,
-                    `/work/${order.id}`,
+                    `/work/orders/${order.id}`,
                 )
             }
         } catch (e) {

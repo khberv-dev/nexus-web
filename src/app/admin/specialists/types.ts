@@ -43,7 +43,7 @@ export type SpecialistOrder = {
     status: string
     title: string | null
     briefData: Record<string, string> | null
-    client: { email: string; name: string | null }
+    client: { id: string; email: string; name: string | null }
 }
 
 export type TestModalData = {

@@ -10,7 +10,8 @@ export type HintStep = {
     /** Короткое пояснение — одна-две строки, длинные тексты убивают смысл подсветки. */
     text: string
     /** Подготовка перед показом: переключить вкладку, раскрыть блок и т.п. */
-    before?: () => void
+    /** Подготовка шага. `true` — начат переход на другой адрес, цель появится после загрузки. */
+    before?: () => void | boolean
 }
 
 type Rect = { top: number; left: number; width: number; height: number }
@@ -22,6 +23,12 @@ const CARD_WIDTH = 320
 const CARD_GAP = 14
 /** Пауза после before(): даём React отрисовать вкладку, прежде чем мерить элемент. */
 const BEFORE_DELAY_MS = 220
+/**
+ * before() может переключать раздел переходом на другой адрес — тогда цель появляется
+ * только после загрузки страницы. Ждём её столько, прежде чем пропустить шаг.
+ */
+const BEFORE_TARGET_TIMEOUT_MS = 3000
+const TARGET_POLL_MS = 100
 
 function readViewport(): Viewport {
     const vv = window.visualViewport
@@ -146,7 +153,7 @@ export function HintTour({
         let raf = 0
         let resizeObserver: ResizeObserver | null = null
 
-        step.before?.()
+        const navigating = step.before?.() === true
 
         const measure = () => {
             if (cancelled) return
@@ -155,10 +162,16 @@ export function HintTour({
             setViewport(readViewport())
         }
 
-        const timer = window.setTimeout(() => {
+        const startedAt = Date.now()
+        let timer = 0
+        const locate = () => {
             if (cancelled) return
             const el = document.querySelector<HTMLElement>(step.target)
             if (!el) {
+                if (navigating && Date.now() - startedAt < BEFORE_TARGET_TIMEOUT_MS) {
+                    timer = window.setTimeout(locate, TARGET_POLL_MS)
+                    return
+                }
                 // Цели нет (вкладка пустая, блок не отрисован) — шаг пропускаем.
                 goTo(index + 1)
                 return
@@ -177,7 +190,8 @@ export function HintTour({
             raf = window.requestAnimationFrame(() => {
                 raf = window.requestAnimationFrame(measure)
             })
-        }, step.before ? BEFORE_DELAY_MS : 0)
+        }
+        timer = window.setTimeout(locate, step.before ? BEFORE_DELAY_MS : 0)
 
         const onViewportChange = () => {
             window.cancelAnimationFrame(raf)

@@ -2,6 +2,7 @@
 
 import React, {useCallback, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
+import {AiIcon} from "@/components/app/AiIcon"
 
 export type AiImageStudioSource = {
     /** Исходник как data-url (аватар — свежий кадр из кроппера). */
@@ -154,7 +155,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
             <div className="ai-studio" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
                 <header className="ai-studio__hd">
                     <div className="ai-studio__hd-title">
-                        <i className="bx bx-magic-wand"/>
+                        <AiIcon/>
                         <span>{title ?? "Редактор фото с ИИ"}</span>
                     </div>
                     <button type="button" className="ai-studio__close" onClick={onClose} disabled={busy}
@@ -280,7 +281,7 @@ function AiImageStudioStyles() {
       }
       .ai-studio__hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
       .ai-studio__hd-title { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 0.95rem; }
-      .ai-studio__hd-title i { color: #a78bfa; font-size: 1.1rem; }
+      .ai-studio__hd-title svg { color: #a78bfa; width: 1.1rem; height: 1.1rem; }
       .ai-studio__close {
         border: 0; background: transparent; color: rgba(255,255,255,0.6);
         font-size: 1.35rem; line-height: 1; cursor: pointer; padding: 2px 4px; border-radius: 8px;

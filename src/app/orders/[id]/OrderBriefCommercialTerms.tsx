@@ -103,7 +103,7 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
 
             <div style={{display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 14}}>
                 <Link
-                    href="/orders?tab=payments"
+                    href="/orders/payments"
                     className="dash-header__btn dash-header__btn--primary"
                     style={{
                         fontSize: "0.82rem",

@@ -95,7 +95,7 @@ export async function POST(_req: Request, {params}: { params: Promise<{ id: stri
         "act_confirmed",
         "Акт подтвержден",
         `Акт по этапу ${stageLabelRu(stage.type)} (заказ #${stage.order.id}) подтвержден.${nextStage ? ` Следующий этап: "${stageLabelRu(nextStage.type)}".` : " Работа над этапом завершена."}`,
-        `/work/${stage.order.id}`
+        `/work/orders/${stage.order.id}`
     )
 
     void notify(

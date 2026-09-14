@@ -4,6 +4,8 @@ import Link from "next/link"
 import {useMemo, useState} from "react"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildSpecialistDashboardHintSteps} from "@/components/app/hint-tour-steps"
+import type {ProfileCompleteness} from "@/lib/profile-completeness"
+import ProfileCompletenessCard from "./ProfileCompletenessCard"
 import "./specialist-dashboard.css"
 
 interface UrgentStage {
@@ -34,6 +36,7 @@ interface SpecialistDashboardProps {
     recentOrders: RecentOrder[]
     formData: Record<string, string> | null
     onboardingStatus: string
+    profileCompleteness: ProfileCompleteness
 }
 
 const STAGE_LABELS: Record<string, string> = {
@@ -60,6 +63,7 @@ export default function SpecialistDashboard({
                                                 recentOrders,
                                                 formData,
                                                 onboardingStatus,
+                                                profileCompleteness,
                                             }: SpecialistDashboardProps) {
     const initials = name[0]?.toUpperCase() ?? "?"
     const [hintsOpen, setHintsOpen] = useState(false)
@@ -77,7 +81,7 @@ export default function SpecialistDashboard({
             {/*
               Экскурсия по кабинету при первом входе на /work: запускается сама,
               отметка о просмотре — в localStorage по email, дальше только по кнопке «?».
-              Ключ свой, не общий с экскурсией по вкладкам в /work/community.
+              Ключ свой, не общий с экскурсией по разделам кабинета /work/<section>.
             */}
             <HintTour
                 steps={hintSteps}
@@ -98,6 +102,9 @@ export default function SpecialistDashboard({
                     </div>
                 </div>
             </div>
+
+            {/* Заполненность профиля — пропадает, когда все шаги выполнены */}
+            {!profileCompleteness.complete && <ProfileCompletenessCard completeness={profileCompleteness}/>}
 
             {/* Stats Grid */}
             <div className="spec-dashboard__stats-grid" data-tour="dash-stats">
@@ -157,7 +164,7 @@ export default function SpecialistDashboard({
                             {urgentStages.slice(0, 5).map((item, idx) => (
                                 <Link
                                     key={idx}
-                                    href={`/work/${item.orderId}`}
+                                    href={`/work/orders/${item.orderId}`}
                                     className="spec-dashboard__urgent-item"
                                 >
                                     <div className="spec-dashboard__urgent-icon">
@@ -186,7 +193,7 @@ export default function SpecialistDashboard({
                         <h2 className="spec-dashboard__section-title">
                             <i className="bx bx-folder-open"/> Последние проекты
                         </h2>
-                        <Link href="/work/community?tab=orders" className="spec-dashboard__link">
+                        <Link href="/work/orders" className="spec-dashboard__link">
                             Все проекты →
                         </Link>
                     </div>
@@ -215,7 +222,7 @@ export default function SpecialistDashboard({
                                     return (
                                         <tr key={order.id}>
                                             <td>
-                                                <Link href={`/work/${order.id}`} className="spec-dashboard__order-link">
+                                                <Link href={`/work/orders/${order.id}`} className="spec-dashboard__order-link">
                                                     {getOrderTitle(order.briefData)}
                                                 </Link>
                                             </td>
@@ -252,15 +259,15 @@ export default function SpecialistDashboard({
                         </h2>
                     </div>
                     <div className="spec-dashboard__quick-links">
-                        <Link href="/work/community?tab=payments" className="spec-dashboard__quick-link">
+                        <Link href="/work/payments" className="spec-dashboard__quick-link">
                             <i className="bx bx-credit-card"/>
                             <span>Выплаты</span>
                         </Link>
-                        <Link href="/work/community?tab=portfolio" className="spec-dashboard__quick-link">
+                        <Link href="/work/portfolio" className="spec-dashboard__quick-link">
                             <i className="bx bx-image-alt"/>
                             <span>Портфолио</span>
                         </Link>
-                        <Link href="/work/community?tab=settings" className="spec-dashboard__quick-link">
+                        <Link href="/work/settings" className="spec-dashboard__quick-link">
                             <i className="bx bx-cog"/>
                             <span>Профиль</span>
                         </Link>

@@ -964,7 +964,7 @@ export default function NewOrderPage() {
                                     fontSize: "0.88rem",
                                     lineHeight: 1.5
                                 }}>{bootError}</p>
-                                <Link href="/orders?tab=payments" style={{
+                                <Link href="/orders/payments" style={{
                                     display: "inline-block",
                                     marginTop: 16,
                                     color: "var(--dash-accent)",

@@ -1,6 +1,7 @@
 "use client"
 
 import {useState} from "react"
+import {AiIcon} from "@/components/app/AiIcon"
 
 // ─── Типы ────────────────────────────────────────────────────────────────────
 
@@ -233,7 +234,7 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                             gap: "0.4em",
                         }}
                     >
-                        <span style={{fontSize: "1em"}}>✨</span>
+                        <AiIcon/>
                         {loadingAI ? "Анализирую…" : "Подсказки AI"}
                     </button>
                 </div>
@@ -249,7 +250,7 @@ export function BriefForm({orderId, initialData, editable = true}: BriefFormProp
                         marginBottom: "0.875rem"
                     }}>
                         <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
-                            <span style={{fontSize: "1rem"}}>✨</span>
+                            <AiIcon size="1rem"/>
                             <span style={{
                                 color: "rgba(255,255,255,0.6)",
                                 fontSize: "0.8rem",

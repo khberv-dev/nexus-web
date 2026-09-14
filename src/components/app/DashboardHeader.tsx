@@ -94,7 +94,7 @@ export function DashboardHeader({
                                         <div className="dropdown-divider my-1"/>
                                     </li>
                                     <li>
-                                        <Link className="dropdown-item" href="/work/profile"
+                                        <Link className="dropdown-item" href="/work/settings"
                                               onClick={() => setOpen(false)}>
                                             <i className="icon-base bx bx-user icon-md me-3"/>Профиль
                                         </Link>

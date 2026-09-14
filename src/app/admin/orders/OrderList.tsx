@@ -86,7 +86,7 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
             {!loading && filtered.length === 0 && <div className="sp-empty">Заказов нет</div>}
 
             {!loading && filtered.map(o => {
-                const isActive = o.id === selected || (!selected && o === filtered[0])
+                const isActive = o.id === selected
                 const title = o.title ?? o.briefData?.name ?? `Заказ #${o.id.slice(-6)}`
                 const modStages = o.stages.filter(s => s.status === "MOD_REVIEW")
                 const needsAssign = !o.specialist && o.status !== "DRAFT" && o.status !== "CANCELLED"

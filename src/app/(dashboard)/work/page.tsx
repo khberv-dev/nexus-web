@@ -10,6 +10,7 @@ import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import SpecialistDashboard from "@/components/Dashboard/SpecialistDashboard"
 import type {Prisma} from "@prisma/client"
 import {sortStages} from "@/lib/stage-order"
+import {getProfileCompleteness} from "@/lib/profile-completeness"
 
 export default async function WorkDashboard() {
     const user = await getSessionUser()
@@ -52,6 +53,18 @@ export default async function WorkDashboard() {
         include: {
             order: {select: {id: true}},
         },
+    })
+
+    // Заполненность профиля: аватар, проект в портфолио, одобренный лендинг
+    const [avatarCount, portfolioProjectCount, landingBundles] = await Promise.all([
+        prisma.userFile.count({where: {userId: dbUser.id, category: "AVATAR"}}),
+        prisma.portfolioProject.count({where: {userId: dbUser.id}}),
+        prisma.landingBundle.findMany({where: {userId: dbUser.id}, select: {status: true}}),
+    ])
+    const profileCompleteness = getProfileCompleteness({
+        hasAvatar: avatarCount > 0,
+        portfolioProjectCount,
+        landingStatuses: landingBundles.map((b) => b.status),
     })
 
     // Calculate statistics
@@ -107,6 +120,7 @@ export default async function WorkDashboard() {
                     recentOrders={orders.slice(0, 5)}
                     formData={formData}
                     onboardingStatus={dbUser.specialistProfile.onboardingStatus}
+                    profileCompleteness={profileCompleteness}
                 />
             </DashMainLayout>
         </div>

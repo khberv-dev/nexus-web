@@ -38,10 +38,10 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
             void notify(order.clientId, "order_active", "Проект запущен", `Заказ #${shortId} переведен в работу`, `/orders/${id}`)
         } else if (status === "DONE") {
             void notify(order.clientId, "order_done", "Проект завершен", `Заказ #${shortId} успешно завершен`, `/orders/${id}`)
-            if (order.specialistId) void notify(order.specialistId, "order_done", "Проект завершен", `Заказ #${shortId} завершен`, `/work/${id}`)
+            if (order.specialistId) void notify(order.specialistId, "order_done", "Проект завершен", `Заказ #${shortId} завершен`, `/work/orders/${id}`)
         } else if (status === "CANCELLED") {
             void notify(order.clientId, "order_cancelled", "Проект отменен", `Заказ #${shortId} отменен`, `/orders/${id}`)
-            if (order.specialistId) void notify(order.specialistId, "order_cancelled", "Проект отменен", `Заказ #${shortId} отменен`, `/work/${id}`)
+            if (order.specialistId) void notify(order.specialistId, "order_cancelled", "Проект отменен", `Заказ #${shortId} отменен`, `/work/orders/${id}`)
         }
     }
 

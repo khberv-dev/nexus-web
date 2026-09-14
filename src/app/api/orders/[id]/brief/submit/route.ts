@@ -33,7 +33,7 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
     const shortId = id.slice(-6).toUpperCase()
     for (const admin of admins) {
         if (admin.email) void sendEmail("new_order", admin.email, {orderId: id, status: "BRIEFING"})
-        void notify(admin.id, "new_brief", "Новый бриф", `Заказчик отправил бриф #${shortId}`, `/admin/orders`)
+        void notify(admin.id, "new_brief", "Новый бриф", `Заказчик отправил бриф #${shortId}`, `/admin/orders/${id}`)
     }
 
     return NextResponse.json({status: updated.status})

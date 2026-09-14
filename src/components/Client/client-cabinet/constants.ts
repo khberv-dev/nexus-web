@@ -1,4 +1,5 @@
 import type {PaymentStatus, StageType} from "@prisma/client"
+import {clientSectionHref} from "@/lib/cabinet-shell"
 
 /** Короткие названия этапов проекта (сводка для заказчика) */
 export const STAGE_LABELS_SHORT: Record<StageType, string> = {
@@ -76,9 +77,9 @@ export const FRAMEWORK_CONTRACT_BADGE: Record<
 }
 
 export const SIDEBAR_TABS = [
-    {id: "orders", icon: "bx-folder", label: "Проекты"},
-    {id: "payments", icon: "bx-credit-card", label: "Оплата"},
-    {id: "settings", icon: "bx-cog", label: "Настройки"},
+    {id: "orders", icon: "bx-folder", label: "Проекты", href: clientSectionHref("orders")},
+    {id: "payments", icon: "bx-credit-card", label: "Оплата", href: clientSectionHref("payments")},
+    {id: "settings", icon: "bx-cog", label: "Настройки", href: clientSectionHref("settings")},
 ] as const
 
 export type ClientCabinetNavItem = {
@@ -91,7 +92,7 @@ export type ClientCabinetNavItem = {
 /** Ссылки верхней навигации кабинета заказчика (те же разделы, что в боковой панели). */
 export function buildClientCabinetNavItems(activeTab: string): ClientCabinetNavItem[] {
     return SIDEBAR_TABS.map(t => ({
-        href: t.id === "orders" ? "/orders" : `/orders?tab=${t.id}`,
+        href: clientSectionHref(t.id),
         label: t.label,
         iconClassName: `bx ${t.icon}`,
         active: activeTab === t.id,

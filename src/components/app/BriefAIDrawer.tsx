@@ -1,6 +1,7 @@
 "use client"
 
 import {useEffect, useState} from "react"
+import {AiIcon} from "@/components/app/AiIcon"
 
 interface Suggestion {
     field: string | null
@@ -103,7 +104,7 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                     e.currentTarget.style.borderColor = "rgba(32,29,29,0.18)"
                 }}
             >
-                <span style={{fontSize: "0.95em"}}>✨</span>
+                <AiIcon size="0.95em"/>
                 Подсказки AI
             </button>
 
@@ -159,7 +160,7 @@ export function BriefAIDrawer({briefData, onApply}: BriefAIDrawerProps) {
                         background: "#fff",
                     }}>
                         <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
-                            <span style={{fontSize: "1.05rem"}}>✨</span>
+                            <AiIcon size="1.05rem"/>
                             <span style={{color: "#201d1d", fontSize: "0.95rem", fontWeight: 600}}>
                 AI-подсказки
               </span>

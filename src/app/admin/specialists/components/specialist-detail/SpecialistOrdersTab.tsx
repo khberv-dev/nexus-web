@@ -1,3 +1,5 @@
+import Link from "next/link"
+import {adminClientHref, adminOrderHref} from "@/lib/admin-routes"
 import type {SpecialistOrder} from "../../types"
 import {SPEC_ORDER_STATUS_LABEL} from "./constants"
 
@@ -39,7 +41,7 @@ export function SpecialistOrdersTab({
                     {specOrders.map((o) => (
                         <div key={o.id} className="sp-order-row" style={{alignItems: "flex-start"}}>
                             <div style={{flex: 1, minWidth: 0}}>
-                                <a href={`/admin/orders?highlight=${o.id}`} style={{
+                                <Link href={adminOrderHref(o.id)} style={{
                                     fontWeight: 500,
                                     fontSize: "0.85rem",
                                     overflow: "hidden",
@@ -50,12 +52,12 @@ export function SpecialistOrdersTab({
                                     textDecoration: "none"
                                 }}>
                                     {o.title ?? o.briefData?.name ?? `#${o.id.slice(-6)}`}
-                                </a>
-                                <a href={`/admin/clients?highlight=${o.client.email}`} style={{
+                                </Link>
+                                <Link href={adminClientHref(o.client.id)} style={{
                                     fontSize: "0.72rem",
                                     color: "var(--adm-muted)",
                                     textDecoration: "none"
-                                }}>{o.client.name ?? o.client.email}</a>
+                                }}>{o.client.name ?? o.client.email}</Link>
                                 <div style={{fontSize: "0.68rem", color: "var(--adm-muted)", marginTop: 4}}>
                                     Статус: <span
                                     style={{color: "var(--adm-text)"}}>{SPEC_ORDER_STATUS_LABEL[o.status] ?? o.status}</span>

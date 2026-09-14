@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import {adminClientHref, adminSpecialistHref} from "@/lib/admin-routes"
 import type {Order} from "../types"
 
 export function OrderInfoCards({order}: { order: Order }) {
@@ -14,12 +16,12 @@ export function OrderInfoCards({order}: { order: Order }) {
                 }}>
                     Заказчик
                 </div>
-                <a
-                    href={`/admin/clients?highlight=${order.client.id}`}
+                <Link
+                    href={adminClientHref(order.client.id)}
                     style={{fontSize: "0.82rem", fontWeight: 500, color: "inherit", textDecoration: "none"}}
                 >
                     {order.client.name ?? order.client.email}
-                </a>
+                </Link>
                 <div style={{fontSize: "0.7rem", color: "var(--adm-muted)"}}>{order.client.email}</div>
             </div>
 
@@ -34,12 +36,12 @@ export function OrderInfoCards({order}: { order: Order }) {
                 </div>
                 {order.specialist ? (
                     <>
-                        <a
-                            href={`/admin/specialists?highlight=${order.specialist.id}`}
+                        <Link
+                            href={adminSpecialistHref(order.specialist.id)}
                             style={{fontSize: "0.82rem", fontWeight: 500, color: "inherit", textDecoration: "none"}}
                         >
                             {order.specialist.name ?? order.specialist.email}
-                        </a>
+                        </Link>
                         <div style={{fontSize: "0.7rem", color: "var(--adm-muted)"}}>{order.specialist.email}</div>
                     </>
                 ) : (

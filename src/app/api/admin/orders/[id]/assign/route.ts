@@ -71,7 +71,7 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         void sendEmail("order_assigned", order.specialist.email, {orderId: id})
     }
     if (specialistId) {
-        void notify(specialistId, "order_assigned", "Новый заказ", `Вам назначен заказ #${shortId}`, `/work/${id}`)
+        void notify(specialistId, "order_assigned", "Новый заказ", `Вам назначен заказ #${shortId}`, `/work/orders/${id}`)
     }
 
     // Notify client

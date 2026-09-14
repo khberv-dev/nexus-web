@@ -5,6 +5,7 @@ import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {MAX_LANDING_PORTFOLIO, POS_OPTIONS, posBandStyle} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {AiIcon} from "@/components/app/AiIcon"
 
 interface LayoutProps {
     featuredOnLanding?: boolean
@@ -161,8 +162,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                                             onClick={() => onEditPortraitWithAi(f.id)}
                                                             title="Редактировать с ИИ"
                                                             style={{marginLeft: 2}}>
-                                                        <i className="bx bx-magic-wand"
-                                                           style={{fontSize: 11, color: "#a78bfa"}}/>
+                                                        <AiIcon size={11} style={{color: "#a78bfa"}}/>
                                                     </button>
                                                 )}
                                                 {onDeleteFile && (

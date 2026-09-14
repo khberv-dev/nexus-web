@@ -1,36 +1,32 @@
 "use client"
 
-import React, {useCallback, useEffect, useMemo, useState} from "react"
-import {useRouter, useSearchParams} from "next/navigation"
+import {type ReactNode, useCallback, useMemo, useState} from "react"
+import {useRouter, useSelectedLayoutSegment} from "next/navigation"
 import "./Community.css"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
-import {DashEmptyState} from "@/components/dashboard-ui/DashEmptyState"
 import {DashHeroFrame} from "@/components/dashboard-ui/DashHeroFrame"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
-import {DashSectionCard} from "@/components/dashboard-ui/DashSectionCard"
 import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
-import {SPECIALIST_CABINET_HOME_HREF, SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
+import {buildSpecialistCabinetNavItems, SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs"
+import {
+    SPECIALIST_CABINET_LOGO_HREF,
+    SPECIALIST_CABINET_SECTIONS,
+    type SpecialistCabinetSection,
+    specialistSectionHref,
+} from "@/lib/cabinet-shell"
 import AvatarUpload from "./AvatarUpload"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildSpecialistHintSteps} from "@/components/app/hint-tour-steps"
-import LandingUploader from "./LandingUploader"
-import PortfolioProjects from "./PortfolioProjects"
-import {OrdersCol1, OrdersCol2} from "./OrdersTab"
-import {PaymentsCol1, PaymentsCol2} from "./PaymentsTab"
-import {SettingsCol1, SettingsCol2} from "./SettingsTab"
+import {SpecialistCabinetContext, type SpecialistCabinetData} from "./SpecialistCabinetContext"
 import type {
-    ActItem,
     OnboardingStep,
     OrderWithRelations,
     PaymentWithRelations,
     SpecAct,
     SpecContract,
-    UrgentItem
 } from "./types"
 import {ONBOARDING_STEPS} from "./types"
-import {landingRequirements} from "@/lib/landing/bundle-requirements"
 
 interface CommunityProps {
     name: string;
@@ -50,21 +46,9 @@ interface CommunityProps {
     featuredOnLanding?: boolean
     landingWorkPos?: string
     rating?: number | null
+    /** Раздел кабинета — страница из /work/(cabinet)/<section>. */
+    children: ReactNode
 }
-
-const SIDEBAR_TABS = [
-    // «Главная» уводит на /work, поэтому у неё href — DashSidebarNav отрисует ссылку,
-    // а не кнопку переключения вкладки. Остальные пункты — вкладки этой же страницы.
-    {id: "home", icon: "bx-home", label: "Главная", href: SPECIALIST_CABINET_HOME_HREF},
-    {id: "orders", icon: "bx-folder", label: "Проекты"},
-    {id: "portfolio", icon: "bx-image-alt", label: "Портфолио"},
-    {id: "landing", icon: "bx-globe", label: "Лендинг"},
-    {id: "payments", icon: "bx-credit-card", label: "Выплаты"},
-    {id: "settings", icon: "bx-cog", label: "Настройки"},
-]
-
-/** Только вкладки самой страницы: «Главная» — внешний роут, ?tab=home не существует. */
-const VALID_TABS = new Set(SIDEBAR_TABS.filter(t => !t.href).map(t => t.id))
 
 export default function CommunityPage({
                                           name,
@@ -84,52 +68,38 @@ export default function CommunityPage({
                                           featuredOnLanding,
                                           landingWorkPos,
                                           rating,
+                                          children,
                                       }: CommunityProps) {
-    const searchParams = useSearchParams()
     const router = useRouter()
-    const tabFromUrl = searchParams.get("tab")
-    const initialTab = tabFromUrl && VALID_TABS.has(tabFromUrl) ? tabFromUrl : "orders"
-
-    const [activeTab, setActiveTabState] = useState(initialTab)
+    // Раздел берём из адреса: layout не знает, какая страница под ним открыта.
+    const segment = useSelectedLayoutSegment()
+    const activeTab: SpecialistCabinetSection =
+        SPECIALIST_CABINET_SECTIONS.find((section) => section === segment) ?? "orders"
+    // Экскурсия переключает разделы сама — переходом, а не состоянием вкладки.
+    // true — переход начат, HintTour подождёт, пока страница раздела отрисуется.
     const setActiveTab = useCallback((tab: string) => {
-        setActiveTabState(tab)
-        const url = tab === "orders" ? SPECIALIST_CABINET_LOGO_HREF : `${SPECIALIST_CABINET_LOGO_HREF}?tab=${tab}`
-        router.replace(url, {scroll: false})
+        const section = SPECIALIST_CABINET_SECTIONS.find((s) => s === tab)
+        if (!section) return false
+        // Текущий адрес читаем в момент вызова: колбэк стабилен, и экскурсия
+        // не пересобирает шаги посреди показа.
+        const href = specialistSectionHref(section)
+        if (window.location.pathname === href) return false
+        router.push(href, {scroll: false})
+        return true
     }, [router])
-
-    // Sync when browser back/forward changes the URL
-    useEffect(() => {
-        const t = searchParams.get("tab")
-        const resolved = t && VALID_TABS.has(t) ? t : "orders"
-        setActiveTabState(resolved)
-    }, [searchParams])
 
     const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl ?? null)
     const [hintsOpen, setHintsOpen] = useState(false)
     const specialistHintSteps = useMemo(() => buildSpecialistHintSteps(setActiveTab), [setActiveTab])
-    const [landingReadiness, setLandingReadiness] = useState({
-        portrait: false,
-        work: false,
-        video: false,
-        portfolio: 0,
-        specialty: !!(formData?.specialty?.trim() || formData?.specialization?.trim()),
-        about: !!about?.trim(),
-    })
 
     const initials = name[0]?.toUpperCase() ?? "?"
 
     const totalEarned = payments.filter(p => p.status === "RELEASED").reduce((sum, p) => sum + p.amount, 0)
 
-    const urgentItems: UrgentItem[] = orders.flatMap(order =>
-        order.stages.filter(s => s.status === "MOD_REVISION" || s.status === "CLIENT_REVISION").map(stage => ({
-            order,
-            stage
-        }))
+    const needsAction = orders.reduce(
+        (count, order) => count + order.stages.filter(s => s.status === "MOD_REVISION" || s.status === "CLIENT_REVISION").length,
+        0,
     )
-    const actItems: ActItem[] = orders.flatMap(order =>
-        order.stages.filter(s => s.act && s.act.signedAt === null).map(stage => ({order, stage}))
-    )
-    const needsAction = urgentItems.length
 
     const testStep = onboardingSteps.find(s => s.type === "TEST")
     const testScoreText = (() => {
@@ -161,13 +131,14 @@ export default function CommunityPage({
     const onboardingBadge = `${passedStepsCount}/${ONBOARDING_STEPS.length}`
     const doneOrdersCount = orders.filter(o => o.status === "DONE").length
 
-    const signAct = async (stageId: string) => {
-        const res = await fetch(`/api/stages/${stageId}/act/sign`, {method: "POST"})
-        if (res.ok) window.location.reload()
-        else alert("Ошибка подписания акта")
+    const cabinetData: SpecialistCabinetData = {
+        name, email, city, experience, software, about, status,
+        orders, payments, contracts, acts, formData, onboardingSteps,
+        featuredOnLanding, landingWorkPos,
     }
 
     return (
+        <SpecialistCabinetContext.Provider value={cabinetData}>
         <div className="dash">
             {/* Подсказки после онбординга: показываем один раз, дальше — по кнопке в шапке. */}
             <HintTour
@@ -187,9 +158,8 @@ export default function CommunityPage({
             <DashMainLayout
                 sidebar={
                     <DashSidebarNav
-                        tabs={SIDEBAR_TABS}
+                        tabs={SPECIALIST_ROUTE_TABS}
                         activeTab={activeTab}
-                        onChange={setActiveTab}
                         badgeCountByTab={{orders: needsAction}}
                     />
                 }
@@ -387,91 +357,14 @@ export default function CommunityPage({
                     </div>
                 </DashHeroFrame>
 
-                {/* Tab content */}
+                {/* Раздел кабинета */}
                 <div className={`dash-content${activeTab === "payments" ? " dash-content--payments" : ""}`}>
-                    {activeTab === "orders" && (
-                        <>
-                            <div className="dash-col1" data-tour="orders-list"><OrdersCol1 orders={orders}/></div>
-                            <div className="dash-col2" data-tour="orders-actions"><OrdersCol2 orders={orders} urgentItems={urgentItems}
-                                                                   actItems={actItems} onSignAct={signAct}/></div>
-                        </>
-                    )}
-                    {activeTab === "portfolio" && <PortfolioProjects/>}
-                    {activeTab === "landing" && (
-                        <>
-                            <div className="dash-col1" data-tour="landing-readiness">
-                                <DashEmptyState
-                                    iconClass="bx-globe"
-                                    message={
-                                        <>
-                                            Материалы для<br/>главной страницы
-                                            <br/>
-                                            <span style={{
-                                                display: "inline-block",
-                                                marginTop: 8,
-                                                fontSize: 12,
-                                                textAlign: "left",
-                                                lineHeight: 1.45
-                                            }}>
-                        {landingRequirements(landingReadiness).map((item) => (
-                            <span key={item.key}>
-                                <span style={{
-                                    color: item.done
-                                        ? "var(--dash-success, #28c76f)"
-                                        : "var(--dash-muted, #8f95b2)",
-                                }}>
-                                    {item.done ? "✓" : "○"} {item.label}
-                                    {item.optional && (
-                                        <span style={{opacity: 0.7}}> · необязательно</span>
-                                    )}
-                                </span>
-                                <br/>
-                            </span>
-                        ))}
-                      </span>
-                                        </>
-                                    }
-                                    style={{paddingTop: 16}}
-                                />
-                            </div>
-                            <div className="dash-col2" data-tour="landing-uploader">
-                                <DashSectionCard title="Карусель на лендинге">
-                                    <LandingUploader
-                                        featuredOnLanding={featuredOnLanding}
-                                        specialty={formData?.specialty ?? formData?.specialization}
-                                        about={about}
-                                        onGoToSettings={() => setActiveTab("settings")}
-                                        initialWorkPos={landingWorkPos}
-                                        onReadinessChange={setLandingReadiness}
-                                    />
-                                </DashSectionCard>
-                            </div>
-                        </>
-                    )}
-                    {activeTab === "payments" && (
-                        <>
-                            <div className="dash-col1" data-tour="payments-summary"><PaymentsCol1 payments={payments} formData={formData ?? null}
-                                                                     contracts={contracts} acts={acts}/></div>
-                            <div className="dash-col2" data-tour="payments-history"><PaymentsCol2 payments={payments}/></div>
-                        </>
-                    )}
-                    {activeTab === "settings" && (
-                        <>
-                            <div className="dash-col1" data-tour="settings-overview">
-                                <SettingsCol1 name={name} email={email} city={city} experience={experience}
-                                              software={software} about={about} status={status}
-                                              onboardingSteps={onboardingSteps}/>
-                            </div>
-                            <div className="dash-col2" data-tour="settings-form">
-                                <SettingsCol2 name={name} email={email} formData={formData ?? null} status={status}
-                                              onboardingSteps={onboardingSteps} featuredOnLanding={featuredOnLanding}/>
-                            </div>
-                        </>
-                    )}
+                    {children}
                 </div>
 
                 <ClientDashFooter/>
             </DashMainLayout>
         </div>
+        </SpecialistCabinetContext.Provider>
     )
 }

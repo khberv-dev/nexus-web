@@ -1,5 +1,6 @@
 import {redirect} from "next/navigation"
+import {specialistSectionHref} from "@/lib/cabinet-shell"
 
 export default function ProfilePage() {
-    redirect("/work/community?tab=settings")
+    redirect(specialistSectionHref("settings"))
 }

@@ -45,14 +45,14 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
                 data: {featuredOnLanding: true, landingWorkPos: bundle.workPos},
             })
         })
-        await notify(bundle.userId, "landing_bundle_approved", "Сборка одобрена", "Ваш профиль теперь на главной странице", "/work/community?tab=landing")
+        await notify(bundle.userId, "landing_bundle_approved", "Сборка одобрена", "Ваш профиль теперь на главной странице", "/work/landing")
     } else {
         if (typeof reason !== "string" || !reason.trim()) return NextResponse.json({error: "Укажите причину отказа"}, {status: 400})
         await prisma.landingBundle.update({
             where: {id},
             data: {status: "REJECTED", rejectReason: reason.trim(), reviewedBy: dbUser.id, reviewedAt: new Date()},
         })
-        await notify(bundle.userId, "landing_bundle_rejected", "Сборка отклонена", reason.trim(), "/work/community?tab=landing")
+        await notify(bundle.userId, "landing_bundle_rejected", "Сборка отклонена", reason.trim(), "/work/landing")
     }
 
     return NextResponse.json({ok: true})

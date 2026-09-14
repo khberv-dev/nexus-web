@@ -1,0 +1,559 @@
+"use client"
+
+import {type ComponentProps, createContext, type ReactNode, useCallback, useContext, useEffect, useState} from "react"
+import {useParams, useRouter, useSearchParams} from "next/navigation"
+import {useRegisterAdminRefresh} from "@/components/admin/AdminRefreshContext"
+import {Modal} from "@/components/ui/modal"
+import type {Order, OrderStatus, SpecialistForAssignment} from "./types"
+import {ORDER_LABEL, STAGE_STATUS_LABEL} from "./types"
+import {OrderList} from "./OrderList"
+import type {OrderDetail} from "./OrderDetail"
+import {adminOrderHref} from "@/lib/admin-routes"
+import {replaceQueryParams} from "@/lib/client/url-query"
+import "./orders.css"
+
+const STATUS_FILTERS = ["ALL", "DRAFT", "BRIEFING", "BRIEF_REVIEW", "ACTIVE", "DONE", "CANCELLED"] as const
+
+const ORDER_STATUS_EFFECT: Record<OrderStatus, string> = {
+    DRAFT: "Заказ вернётся в черновик и перестанет участвовать в рабочем процессе.",
+    BRIEFING: "Заказчик увидит статус брифа и сможет продолжить работу с анкетой проекта.",
+    BRIEF_REVIEW: "Бриф перейдёт на проверку; заказчик получит уведомление.",
+    ACTIVE: "Проект станет активным и откроется рабочий процесс по этапам.",
+    DONE: "Проект будет отмечен завершённым; заказчик и дизайнер получат уведомления.",
+    CANCELLED: "Заказ будет отменён; заказчик и назначенный дизайнер получат уведомления.",
+}
+
+type ChangePrompt =
+    | { kind: "order"; orderId: string; from: OrderStatus; to: OrderStatus }
+    | { kind: "stageApprove"; stageId: string; stageName: string }
+    | { kind: "clientRevisionAccept"; stageId: string; stageName: string }
+
+/** Всё, что карточке заказа нужно от списка, кроме самого заказа и вкладки (они приходят из URL). */
+type OrdersShellContextValue = {
+    orders: Order[]
+    loading: boolean
+    detailProps: Omit<ComponentProps<typeof OrderDetail>, "order" | "activeTab" | "tabHref">
+}
+
+const OrdersShellContext = createContext<OrdersShellContextValue | null>(null)
+
+export function useOrdersShell(): OrdersShellContextValue {
+    const value = useContext(OrdersShellContext)
+    if (!value) throw new Error("useOrdersShell must be used inside OrdersShell")
+    return value
+}
+
+/**
+ * Список заказов слева живёт в layout: выбранный заказ и вкладка — в пути
+ * (/admin/orders/:id[/:tab]), фильтр и поиск — в query (?status=&q=).
+ */
+export function OrdersShell({children}: { children: ReactNode }) {
+    const router = useRouter()
+    const params = useParams<{ id?: string }>()
+    const searchParams = useSearchParams()
+    const selected = params.id ?? null
+    const statusParam = searchParams.get("status")
+    const filter: OrderStatus | "ALL" =
+        STATUS_FILTERS.find((value) => value === statusParam) ?? "ALL"
+    const [search, setSearch] = useState(() => searchParams.get("q") ?? "")
+    const [orders, setOrders] = useState<Order[]>([])
+    const [loading, setLoading] = useState(true)
+    const [specialists, setSpecialists] = useState<SpecialistForAssignment[]>([])
+    const [assignMap, setAssignMap] = useState<Record<string, string>>({})
+    const [assigning, setAssigning] = useState<string | null>(null)
+    const [acting, setActing] = useState<string | null>(null)
+    const [revisionModal, setRevisionModal] = useState<{ stageId: string; stageName: string } | null>(null)
+    const [revisionComment, setRevisionComment] = useState("")
+    const [clientRevModal, setClientRevModal] = useState<{
+        stageId: string;
+        stageName: string;
+        action: "accept" | "reject"
+    } | null>(null)
+    const [clientRevComment, setClientRevComment] = useState("")
+    const [extraForm, setExtraForm] = useState<{ stageId: string; stageName: string } | null>(null)
+    const [extraAmount, setExtraAmount] = useState("")
+    const [extraReason, setExtraReason] = useState("")
+    const [briefRejectModal, setBriefRejectModal] = useState<{ orderId: string } | null>(null)
+    const [briefRejectComment, setBriefRejectComment] = useState("")
+    const [changePrompt, setChangePrompt] = useState<ChangePrompt | null>(null)
+
+    const load = useCallback(async () => {
+        setLoading(true)
+        const [ordRes, specRes] = await Promise.all([fetch("/api/admin/orders"), fetch("/api/admin/specialists")])
+        if (ordRes.ok) setOrders(await ordRes.json())
+        if (specRes.ok) {
+            const all = await specRes.json() as SpecialistForAssignment[]
+            setSpecialists(all.filter(s => s.specialistProfile?.onboardingStatus === "ACTIVE"))
+        }
+        setLoading(false)
+    }, [])
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    useEffect(() => {
+        load()
+    }, [load])
+
+    useRegisterAdminRefresh(load)
+
+    const filtered = (filter === "ALL" ? orders : orders.filter(o => o.status === filter))
+        .filter(o => {
+            if (!search.trim()) return true
+            const q = search.toLowerCase()
+            const title = o.title ?? o.briefData?.name ?? o.id
+            return title.toLowerCase().includes(q) || o.client.email.toLowerCase().includes(q) || (o.specialist?.email ?? "").toLowerCase().includes(q)
+        })
+
+    const assign = async (orderId: string) => {
+        const specialistId = assignMap[orderId]
+        if (!specialistId) return
+        setAssigning(orderId)
+        await fetch(`/api/admin/orders/${orderId}/assign`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({specialistId})
+        })
+        await load();
+        setAssigning(null)
+    }
+
+    const reviewStage = async (stageId: string, action: "modApprove" | "modRevision", stageName: string) => {
+        if (action === "modRevision") {
+            setRevisionComment("");
+            setRevisionModal({stageId, stageName});
+            return
+        }
+        setChangePrompt({kind: "stageApprove", stageId, stageName})
+    }
+
+    const clientRevision = async (stageId: string, action: "accept" | "reject", stageName: string) => {
+        if (action === "reject") {
+            setClientRevComment("")
+            setClientRevModal({stageId, stageName, action})
+            return
+        }
+        setChangePrompt({kind: "clientRevisionAccept", stageId, stageName})
+    }
+
+    const submitClientRevReject = async () => {
+        if (!clientRevModal || clientRevModal.action !== "reject") return
+        setActing(clientRevModal.stageId)
+        const stageId = clientRevModal.stageId
+        setClientRevModal(null)
+        await fetch(`/api/admin/stages/${stageId}/client-revision`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "reject", comment: clientRevComment || undefined}),
+        })
+        setClientRevComment("")
+        await load()
+        setActing(null)
+    }
+
+    const submitRevision = async () => {
+        if (!revisionModal) return
+        setActing(revisionModal.stageId);
+        setRevisionModal(null)
+        await fetch(`/api/admin/stages/${revisionModal.stageId}/review`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "modRevision", comment: revisionComment || undefined})
+        })
+        setRevisionComment("");
+        await load();
+        setActing(null)
+    }
+
+    const submitExtra = async () => {
+        if (!extraForm || !extraAmount) return
+        setActing(extraForm.stageId);
+        setExtraForm(null)
+        await fetch(`/api/admin/payments/${extraForm.stageId}/extra`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                amount: Math.round(Number(extraAmount) * 100),
+                reason: extraReason || "Дополнительные правки"
+            })
+        })
+        setExtraAmount("");
+        setExtraReason("");
+        await load();
+        setActing(null)
+    }
+
+    const changeStatus = (orderId: string, status: OrderStatus) => {
+        const current = orders.find(item => item.id === orderId)?.status
+        if (!current || current === status) return
+        setChangePrompt({kind: "order", orderId, from: current, to: status})
+    }
+
+    const confirmChange = async () => {
+        const prompt = changePrompt
+        if (!prompt) return
+        setChangePrompt(null)
+        if (prompt.kind === "order") {
+            setActing(`order-${prompt.orderId}`)
+            await fetch(`/api/admin/orders/${prompt.orderId}/status`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({status: prompt.to})
+        })
+        await load()
+            setActing(null)
+            return
+        }
+
+        setActing(prompt.stageId)
+        if (prompt.kind === "stageApprove") {
+            await fetch(`/api/admin/stages/${prompt.stageId}/review`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action: "modApprove"}),
+            })
+        } else {
+            await fetch(`/api/admin/stages/${prompt.stageId}/client-revision`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action: "accept"}),
+            })
+        }
+        await load()
+        setActing(null)
+    }
+
+    const briefApprove = async (orderId: string) => {
+        setActing("brief-approve")
+        await fetch(`/api/admin/orders/${orderId}/brief`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "approve"})
+        })
+        await load();
+        setActing(null)
+    }
+
+    const briefReject = async (orderId: string) => {
+        setBriefRejectComment("")
+        setBriefRejectModal({orderId})
+    }
+
+    const submitBriefReject = async () => {
+        if (!briefRejectModal || !briefRejectComment.trim()) return
+        setActing("brief-reject")
+        setBriefRejectModal(null)
+        await fetch(`/api/admin/orders/${briefRejectModal.orderId}/brief`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "reject", comment: briefRejectComment})
+        })
+        setBriefRejectComment("")
+        await load()
+        setActing(null)
+    }
+
+    // ==================== Contract actions ====================
+    const [contractGenerating, setContractGenerating] = useState<string | null>(null)
+
+    const generateContract = async (orderId: string) => {
+        const input = document.createElement("input")
+        input.type = "file"
+        input.accept = ".pdf,application/pdf"
+        input.onchange = async (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0]
+            if (!file) return
+            if (file.size > 10 * 1024 * 1024) {
+                alert("Размер файла не должен превышать 10МБ")
+                return
+            }
+            setContractGenerating(orderId)
+            const formData = new FormData()
+            formData.append("file", file)
+            const res = await fetch(`/api/admin/orders/${orderId}/contract/generate`, {
+                method: "POST",
+                body: formData,
+            })
+            if (res.ok) {
+                await load()
+            } else {
+                const err = await res.json()
+                alert(err.error || "Ошибка генерации договора")
+            }
+            setContractGenerating(null)
+        }
+        input.click()
+    }
+
+    const sendContractToClient = async (orderId: string) => {
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/send-to-client`, {method: "POST"})
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            alert(err.error || "Ошибка отправки договора")
+        }
+    }
+
+    const confirmContract = async (orderId: string) => {
+        const res = await fetch(`/api/admin/orders/${orderId}/contract/confirm`, {method: "POST"})
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            alert(err.error || "Ошибка подтверждения договора")
+        }
+    }
+
+    // ==================== Act actions ====================
+    const approveAct = async (stageId: string, actId: string) => {
+        const res = await fetch(`/api/stages/${stageId}/act/approve`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "approve"}),
+        })
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            alert(err.error || "Ошибка одобрения акта")
+        }
+    }
+
+    const rejectAct = async (stageId: string, actId: string, comment: string) => {
+        const res = await fetch(`/api/stages/${stageId}/act/approve`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({action: "reject", comment}),
+        })
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            alert(err.error || "Ошибка отклонения акта")
+        }
+    }
+
+    const confirmAct = async (stageId: string, actId: string) => {
+        const res = await fetch(`/api/stages/${stageId}/act/confirm`, {method: "POST"})
+        if (res.ok) {
+            await load()
+        } else {
+            const err = await res.json()
+            alert(err.error || "Ошибка подтверждения акта")
+        }
+    }
+
+    const contextValue: OrdersShellContextValue = {
+        orders,
+        loading,
+        detailProps: {
+            specialists,
+            assignMap,
+            assigning,
+            acting,
+            onAssignMapChange: (oid, sid) => setAssignMap(p => ({...p, [oid]: sid})),
+            onAssign: assign,
+            onReviewStage: reviewStage,
+            onClientRevision: clientRevision,
+            onExtraPayment: (sid, name) => {
+                setExtraAmount("")
+                setExtraReason("")
+                setExtraForm({stageId: sid, stageName: name})
+            },
+            onChangeStatus: changeStatus,
+            onBriefApprove: briefApprove,
+            onBriefReject: briefReject,
+            onBriefSaved: load,
+            onResolveHelp: async (orderId) => {
+                setActing("resolve-help")
+                await fetch(`/api/admin/orders/${orderId}/brief`, {
+                    method: "PATCH",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({action: "resolve_help"})
+                })
+                await load()
+                setActing(null)
+            },
+            onGenerateContract: generateContract,
+            onSendContractToClient: sendContractToClient,
+            onConfirmContract: confirmContract,
+            onApproveAct: approveAct,
+            onRejectAct: rejectAct,
+            onConfirmAct: confirmAct,
+            contractGenerating,
+        },
+    }
+
+    return (
+        <OrdersShellContext.Provider value={contextValue}>
+            <Modal open={!!changePrompt} onClose={() => setChangePrompt(null)} maxWidth={520}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 8px"}}>
+                        {changePrompt?.kind === "order" ? "Изменить статус заказа?" : "Изменить состояние этапа?"}
+                    </h5>
+                    {changePrompt ? (
+                        <>
+                            <div style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr auto 1fr",
+                                alignItems: "center",
+                                gap: 10,
+                                padding: "12px 14px",
+                                marginBottom: 12,
+                                borderRadius: 10,
+                                border: "1px solid var(--adm-border)",
+                                background: "var(--adm-surface-2)",
+                                fontSize: "0.82rem",
+                            }}>
+                                <span style={{color: "var(--adm-muted)"}}>
+                                    {changePrompt.kind === "order"
+                                        ? ORDER_LABEL[changePrompt.from]
+                                        : STAGE_STATUS_LABEL[changePrompt.kind === "stageApprove" ? "MOD_REVIEW" : "CLIENT_REVISION"]}
+                                </span>
+                                <i className="bx bx-right-arrow-alt" aria-hidden style={{fontSize: "1.2rem"}}/>
+                                <strong style={{color: "var(--adm-text)"}}>
+                                    {changePrompt.kind === "order"
+                                        ? ORDER_LABEL[changePrompt.to]
+                                        : changePrompt.kind === "stageApprove"
+                                            ? STAGE_STATUS_LABEL.CLIENT_REVIEW
+                                            : "Правки приняты администратором"}
+                                </strong>
+                            </div>
+                            <p style={{color: "var(--adm-muted)", fontSize: "0.84rem", lineHeight: 1.5, margin: "0 0 18px"}}>
+                                {changePrompt.kind === "order"
+                                    ? ORDER_STATUS_EFFECT[changePrompt.to]
+                                    : changePrompt.kind === "stageApprove"
+                                        ? `${changePrompt.stageName}: материалы станут доступны заказчику, этап перейдёт на клиентскую проверку, заказчик получит уведомление.`
+                                        : `${changePrompt.stageName}: запрос правок останется активным, а дизайнер получит уведомление, что администратор принял замечания клиента.`}
+                            </p>
+                        </>
+                    ) : null}
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setChangePrompt(null)}>Отмена</button>
+                        <button
+                            className={changePrompt?.kind === "order" && changePrompt.to === "CANCELLED"
+                                ? "sp-btn sp-btn-danger"
+                                : "sp-btn sp-btn-primary"}
+                            onClick={() => void confirmChange()}
+                        >
+                            Подтвердить изменение
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Revision modal */}
+            <Modal open={!!revisionModal} onClose={() => setRevisionModal(null)} maxWidth={480}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 4px"}}>На доработку</h5>
+                    <p style={{
+                        color: "var(--adm-muted)",
+                        fontSize: "0.875rem",
+                        margin: "0 0 16px"
+                    }}>{revisionModal?.stageName}: статус изменится с «На модерации» на «На доработке». Дизайнер получит замечания и уведомление.</p>
+                    <textarea className="sp-textarea" rows={4} placeholder="Замечания…" value={revisionComment}
+                              onChange={e => setRevisionComment(e.target.value)} autoFocus/>
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setRevisionModal(null)}>Отмена</button>
+                        <button className="sp-btn sp-btn-danger" onClick={submitRevision}>Отправить</button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Client revision decision modal */}
+            <Modal open={!!clientRevModal} onClose={() => setClientRevModal(null)} maxWidth={480}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 4px"}}>Отклонить правки клиента</h5>
+                    <p style={{
+                        color: "var(--adm-muted)",
+                        fontSize: "0.875rem",
+                        margin: "0 0 16px"
+                    }}>{clientRevModal?.stageName}: этап вернётся из «Правки клиента» в «У заказчика», а заказчик получит причину отказа.</p>
+                    <textarea
+                        className="sp-textarea"
+                        rows={4}
+                        placeholder="Причина…"
+                        value={clientRevComment}
+                        onChange={(e) => setClientRevComment(e.target.value)}
+                        autoFocus
+                    />
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setClientRevModal(null)}>
+                            Отмена
+                        </button>
+                        <button className="sp-btn sp-btn-danger" onClick={submitClientRevReject}>
+                            Отклонить
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Brief reject modal */}
+            <Modal open={!!briefRejectModal} onClose={() => setBriefRejectModal(null)} maxWidth={480}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 4px"}}>Вернуть бриф</h5>
+                    <p style={{color: "var(--adm-muted)", fontSize: "0.875rem", margin: "0 0 16px"}}>Укажите причину
+                        возврата</p>
+                    <textarea className="sp-textarea" rows={4} placeholder="Причина возврата…"
+                              value={briefRejectComment} onChange={e => setBriefRejectComment(e.target.value)}
+                              autoFocus/>
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setBriefRejectModal(null)}>Отмена
+                        </button>
+                        <button className="sp-btn sp-btn-danger" onClick={submitBriefReject}
+                                disabled={!briefRejectComment.trim()}>Вернуть
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Extra payment modal */}
+            <Modal open={!!extraForm} onClose={() => setExtraForm(null)} maxWidth={480}>
+                <div style={{padding: "24px 24px 20px"}}>
+                    <h5 style={{fontWeight: 600, margin: "0 0 4px"}}>Доплата за правки</h5>
+                    <p style={{
+                        color: "var(--adm-muted)",
+                        fontSize: "0.875rem",
+                        margin: "0 0 16px"
+                    }}>{extraForm?.stageName}</p>
+                    <div style={{marginBottom: 12}}>
+                        <label
+                            style={{display: "block", fontSize: "0.75rem", color: "var(--adm-muted)", marginBottom: 4}}>Сумма
+                            (руб.)</label>
+                        <input type="number" className="sp-input" value={extraAmount}
+                               onChange={e => setExtraAmount(e.target.value)} placeholder="5000"/>
+                    </div>
+                    <div style={{marginBottom: 16}}>
+                        <label style={{
+                            display: "block",
+                            fontSize: "0.75rem",
+                            color: "var(--adm-muted)",
+                            marginBottom: 4
+                        }}>Причина</label>
+                        <input type="text" className="sp-input" value={extraReason}
+                               onChange={e => setExtraReason(e.target.value)} placeholder="Дополнительные правки"/>
+                    </div>
+                    <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
+                        <button className="sp-btn sp-btn-ghost" onClick={() => setExtraForm(null)}>Отмена</button>
+                        <button className="sp-btn sp-btn-primary" onClick={submitExtra}
+                                disabled={!extraAmount}>Выставить счет
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
+            <div className="sp-wrap">
+                <OrderList
+                    filtered={filtered} loading={loading}
+                    selected={selected} search={search} filter={filter}
+                    onSelect={(id) => router.push(adminOrderHref(id, undefined, window.location.search), {scroll: false})}
+                    onSearch={(q) => {
+                        setSearch(q)
+                        replaceQueryParams({q: q.trim() ? q : null})
+                    }}
+                    onFilter={(f) => replaceQueryParams({status: f === "ALL" ? null : f})}
+                />
+                {children}
+            </div>
+        </OrdersShellContext.Provider>
+    )
+}

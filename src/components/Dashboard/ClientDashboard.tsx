@@ -131,15 +131,15 @@ export default function ClientDashboard({
                             <i className="bx bx-plus"/>
                             <span>Создать проект</span>
                         </Link>
-                        <Link href="/orders?tab=payments" className="client-dashboard__action-btn">
+                        <Link href="/orders/payments" className="client-dashboard__action-btn">
                             <i className="bx bx-credit-card"/>
                             <span>Счета и оплаты</span>
                         </Link>
-                        <Link href="/orders?tab=orders" className="client-dashboard__action-btn">
+                        <Link href="/orders" className="client-dashboard__action-btn">
                             <i className="bx bx-folder-open"/>
                             <span>Мои проекты</span>
                         </Link>
-                        <Link href="/orders?tab=settings" className="client-dashboard__action-btn">
+                        <Link href="/orders/settings" className="client-dashboard__action-btn">
                             <i className="bx bx-cog"/>
                             <span>Профиль</span>
                         </Link>
@@ -214,7 +214,7 @@ export default function ClientDashboard({
                             <h2 className="client-dashboard__section-title">
                                 <i className="bx bx-credit-card"/> Последние платежи
                             </h2>
-                            <Link href="/orders?tab=payments" className="client-dashboard__link">
+                            <Link href="/orders/payments" className="client-dashboard__link">
                                 История платежей →
                             </Link>
                         </div>

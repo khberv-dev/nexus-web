@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
             "new_application",
             "Новая анкета специалиста",
             `${specialistName} подал(а) заявку на регистрацию`,
-            "/admin/specialists",
+            `/admin/specialists/${user.id}`,
         );
     }
 

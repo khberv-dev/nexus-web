@@ -6,6 +6,7 @@ import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {ConfirmDialog} from "./ConfirmDialog"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {AiIcon} from "@/components/app/AiIcon"
 
 const DESC_MAX = 500
 
@@ -133,7 +134,7 @@ function AiChatDrawer({
                     flexShrink: 0
                 }}>
                     <div style={{display: "flex", alignItems: "center", gap: "0.5em"}}>
-                        <span style={{fontSize: "1rem"}}>✨</span>
+                        <AiIcon size="1rem"/>
                         <span style={{color: "#f4f4f4", fontSize: "0.92rem", fontWeight: 500}}>AI-помощник</span>
                         <span style={{
                             background: "rgba(121,40,202,0.25)",
@@ -1016,7 +1017,7 @@ export default function PortfolioUploader() {
                                                 whiteSpace: "nowrap"
                                             }} onClick={() => setDrawerOpen(true)} disabled={uploading || !pendingFile}
                                             title="Составить описание с помощью AI">
-                                        <span style={{fontSize: "0.85rem"}}>✨</span> AI описание
+                                        <AiIcon size="0.85rem"/> AI описание
                                     </button>
                                     {error && <small className="text-danger">{error}</small>}
                                 </div>

@@ -13,7 +13,7 @@ import type {HintStep} from "@/components/app/HintTour"
  * Короткая экскурсия по стартовому экрану специалиста (/work).
  *
  * Отдельная от buildSpecialistHintSteps: та водит по вкладкам кабинета
- * (/work/community) и переключает их через goToTab, здесь же вкладок нет —
+ * (/work/<section>) и переключает разделы через goToTab, здесь же разделов нет —
  * только разделы самой страницы, боковая навигация и ключевые цифры.
  * Кнопки внутри блоков намеренно не подсвечиваем: экскурсия должна
  * заканчиваться, пока её ещё читают.
@@ -66,7 +66,7 @@ export function buildSpecialistDashboardHintSteps(): HintStep[] {
     ]
 }
 
-export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintStep[] {
+export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolean): HintStep[] {
     return [
         // ── Знакомство ──────────────────────────────────────────────────────
         {
@@ -256,7 +256,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void): HintSt
     ]
 }
 
-export function buildClientHintSteps(goToTab: (tab: string) => void): HintStep[] {
+export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): HintStep[] {
     return [
         // ── Знакомство ──────────────────────────────────────────────────────
         {

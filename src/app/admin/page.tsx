@@ -210,7 +210,7 @@ export default async function AdminPage() {
                             {recentOrders.map(row => (
                                 <tr key={row.id} style={{cursor: "pointer"}}>
                                     <td className="fw-medium">
-                                        <a href={`/admin/orders?highlight=${row.id}`}
+                                        <a href={`/admin/orders/${row.id}`}
                                            style={{color: "inherit", textDecoration: "none"}}>
                                             #{row.id.slice(-6)}
                                         </a>
@@ -218,14 +218,14 @@ export default async function AdminPage() {
                                                             style={{fontSize: "0.78rem"}}>{row.title}</span>}
                                     </td>
                                     <td style={{fontSize: "0.85rem"}}>
-                                        <a href={`/admin/clients?highlight=${row.clientId}`} className="text-muted"
+                                        <a href={`/admin/clients/${row.clientId}`} className="text-muted"
                                            style={{textDecoration: "none"}}>
                                             {row.client.name ?? row.client.email}
                                         </a>
                                     </td>
                                     <td style={{fontSize: "0.85rem"}}>
                                         {row.specialist ? (
-                                            <a href={`/admin/specialists?highlight=${row.specialistId}`}
+                                            <a href={`/admin/specialists/${row.specialistId}`}
                                                className="text-muted" style={{textDecoration: "none"}}>
                                                 {row.specialist.name ?? row.specialist.email}
                                             </a>

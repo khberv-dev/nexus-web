@@ -5,7 +5,7 @@ import {usePathname} from "next/navigation"
 const navItems = [
     {href: "/work", icon: "bx bx-briefcase", label: "Мои заказы"},
     {href: "/work/payments", icon: "bx bx-credit-card", label: "Платежи"},
-    {href: "/work/profile", icon: "bx bx-user", label: "Профиль"},
+    {href: "/work/settings", icon: "bx bx-user", label: "Профиль"},
 ]
 
 export default function Sidebar() {

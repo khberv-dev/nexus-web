@@ -317,7 +317,7 @@ export async function POST(req: NextRequest) {
                     "onboarding_status",
                     "Тест: требуется подтверждение",
                     `Специалист прошёл уровень ${level}. Подтвердите в карточке специалиста, чтобы открыть следующий уровень.`,
-                    `/admin/specialists?highlight=${user.id}`
+                    `/admin/specialists/${user.id}`
                 )
             }
         } catch {

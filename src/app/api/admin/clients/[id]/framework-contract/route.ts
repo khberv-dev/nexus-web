@@ -48,10 +48,10 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         },
     })
 
-    void notify(clientUserId, "framework_contract_uploaded", "Договор оказания услуг загружен", "Ознакомьтесь с договором и подпишите его в разделе «Оплата»", "/orders?tab=payments")
+    void notify(clientUserId, "framework_contract_uploaded", "Договор оказания услуг загружен", "Ознакомьтесь с договором и подпишите его в разделе «Оплата»", "/orders/payments")
 
     const base = (process.env.NEXTAUTH_URL ?? "").replace(/\/$/, "")
-    const cabinetUrl = base ? `${base}/orders?tab=payments` : ""
+    const cabinetUrl = base ? `${base}/orders/payments` : ""
     if (db.email?.trim()) {
         void sendEmail("framework_contract_ready", db.email.trim(), {
             contractNumber: number,

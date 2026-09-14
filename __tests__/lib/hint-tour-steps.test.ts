@@ -3,7 +3,7 @@
  *
  * Якоря собираются не по всему src, а по графу импортов конкретного роута: иначе шаг,
  * указывающий на элемент соседней страницы (например, дашбордный `dash-hero` в экскурсии
- * по /work/community), тихо проходил бы проверку — селектор в src существует, но на этой
+ * по кабинету /work/<section>), тихо проходил бы проверку — селектор в src существует, но на этой
  * странице его нет, и HintTour молча пропустит шаг.
  */
 
@@ -28,11 +28,15 @@ function resolveImport(spec: string, fromFile: string): string | null {
     return null;
 }
 
-/** Якоря data-tour во всех модулях, достижимых со страницы по импортам. */
-function pageAnchors(entry: string): Set<string> {
+/**
+ * Якоря data-tour во всех модулях, достижимых по импортам из точек входа роута.
+ * Кабинет — это layout плюс страницы разделов: экскурсия переходит между ними,
+ * поэтому точек входа несколько.
+ */
+function pageAnchors(...entries: string[]): Set<string> {
     const anchors = new Set<string>();
     const seen = new Set<string>();
-    const stack = [entry];
+    const stack = [...entries];
 
     while (stack.length > 0) {
         const file = stack.pop()!;
@@ -68,9 +72,13 @@ const noop = () => {
 
 const suites = [
     [
-        "specialist cabinet (/work/community)",
+        "specialist cabinet (/work/<section>)",
         buildSpecialistHintSteps(noop),
-        pageAnchors(page("src/app/(dashboard)/work/community/page.tsx")),
+        pageAnchors(
+            page("src/app/(dashboard)/work/(cabinet)/layout.tsx"),
+            ...["orders", "portfolio", "landing", "payments", "settings"]
+                .map(section => page(`src/app/(dashboard)/work/(cabinet)/${section}/page.tsx`)),
+        ),
     ],
     [
         "specialist dashboard (/work)",
@@ -78,9 +86,14 @@ const suites = [
         pageAnchors(page("src/app/(dashboard)/work/page.tsx")),
     ],
     [
-        "client cabinet (/orders)",
+        "client cabinet (/orders[/<section>])",
         buildClientHintSteps(noop),
-        pageAnchors(page("src/app/orders/(cabinet)/page.tsx")),
+        pageAnchors(
+            page("src/app/orders/(cabinet)/layout.tsx"),
+            page("src/app/orders/(cabinet)/page.tsx"),
+            page("src/app/orders/(cabinet)/payments/page.tsx"),
+            page("src/app/orders/(cabinet)/settings/page.tsx"),
+        ),
     ],
 ] as const;
 
@@ -154,7 +167,7 @@ describe("экскурсия по стартовому экрану /work", () =
         }
     });
 
-    test("не переключает вкладки: на /work их нет, в отличие от /work/community", () => {
+    test("не переключает разделы: на /work их нет, в отличие от кабинета /work/<section>", () => {
         expect(steps.filter(s => s.before !== undefined)).toEqual([]);
     });
 });

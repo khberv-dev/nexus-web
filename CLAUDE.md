@@ -73,6 +73,16 @@ Middleware is a coarse gate. **Every Route Handler under `src/app/api/**` must i
 
 `shouldUseSecureAuthCookies()` must return the same value in `proxy.ts` and `authConfig` — a mismatch means `getToken` looks for `__Secure-next-auth.session-token` while sign-in set `next-auth.session-token`, and every protected route silently bounces to `/login`.
 
+### URL hierarchy
+
+Resources and sections live in the path; only list filters go in the query. Never select a record or switch a tab via React state or `?tab=`/`?highlight=`.
+
+- **Admin** (`src/lib/admin-routes.ts`): `/admin/specialists/:id[/:tab]`, `/admin/clients/:id`, `/admin/orders/:id[/:tab]`; filters `?status=&q=&archived=1`. Each section's `layout.tsx` renders a `*Shell` that keeps the list mounted and exposes data/actions via context; `[id]/[[...tab]]/page.tsx` validates the tab with `parseTabSegment` (the default tab has no segment) and renders a `*DetailRoute`. Filters are written with `replaceQueryParams()` (`src/lib/client/url-query.ts`), not router navigation.
+- **Specialist cabinet** (`src/lib/cabinet-shell.ts`): `/work/{orders,portfolio,landing,payments,settings}` under the `work/(cabinet)` group (data loaded once in its layout, sections read `useSpecialistCabinet()`); order detail is `/work/orders/:id[/:stageType]`.
+- **Client cabinet**: `/orders`, `/orders/payments`, `/orders/settings` under `orders/(cabinet)`; order detail stays `/orders/:id`.
+- Old URLs (`?highlight=`, `?tab=`, `/work/community`, `/work/:id`) still redirect, because notification links already stored in the DB use them — keep those redirect stubs.
+- Hint tours switch sections by navigating: a step's `before()` returns `true` when it started a navigation, and `HintTour` then waits for the target to appear.
+
 ### Stage state machine — `src/lib/stage-machine.ts`
 
 The core domain model. An `Order` moves `DRAFT → BRIEFING → BRIEF_REVIEW → ACTIVE → DONE` (or `CANCELLED`); an `ACTIVE` order has sequential `ProjectStage`s (`CONCEPT` → `PLANNING` → `VISUALIZATION` → `DOCUMENTATION` → `SPECIFICATION`, order in `STAGE_ORDER`). **All** `ProjectStage.status` changes must go through `transition(stageId, action, actorRole, ...)` — never write `status` directly via Prisma elsewhere.

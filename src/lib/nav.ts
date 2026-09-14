@@ -1,9 +1,9 @@
 export const NAV_ITEMS = [
-    {href: "/work/community", label: "Главное меню", icon: "bx-grid-alt"},
-    {href: "/work/community?tab=portfolio", label: "Портфолио", icon: "bx-image"},
-    {href: "/work/community?tab=landing", label: "Лендинг", icon: "bx-globe"},
+    {href: "/work/orders", label: "Главное меню", icon: "bx-grid-alt"},
+    {href: "/work/portfolio", label: "Портфолио", icon: "bx-image"},
+    {href: "/work/landing", label: "Лендинг", icon: "bx-globe"},
     {href: "/work/payments", label: "Платежи", icon: "bx-wallet"},
-    {href: "/work/profile", label: "Настройки", icon: "bx-cog"},
+    {href: "/work/settings", label: "Настройки", icon: "bx-cog"},
 ]
 
 export const CLIENT_NAV = [

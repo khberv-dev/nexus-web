@@ -106,7 +106,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         "act_rejected",
         "Акт требует доработки",
         `Администратор вернул акт по этапу ${stageLabelRu(stage.type)} на доработку.${comment ? ` Комментарий: "${comment}"` : ""}`,
-        `/work/${stage.order.id}`
+        `/work/orders/${stage.order.id}`
     )
 
     return NextResponse.json({

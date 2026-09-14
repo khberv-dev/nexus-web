@@ -66,7 +66,7 @@ export async function PATCH(req: NextRequest) {
         })
 
         const notifyUserId = request.specialistId ?? request.clientId!
-        const cabinetUrl = request.clientId ? "/orders?tab=payments" : "/work/community?tab=settings"
+        const cabinetUrl = request.clientId ? "/orders/payments" : "/work/settings"
         void notify(notifyUserId, "requisite_change", "Реквизиты обновлены", "Ваш запрос на смену реквизитов одобрен.", cabinetUrl)
     } else {
         await prisma.requisiteChangeRequest.update({
@@ -75,7 +75,7 @@ export async function PATCH(req: NextRequest) {
         })
 
         const notifyUserId = request.specialistId ?? request.clientId!
-        const cabinetUrl = request.clientId ? "/orders?tab=payments" : "/work/community?tab=settings"
+        const cabinetUrl = request.clientId ? "/orders/payments" : "/work/settings"
         void notify(notifyUserId, "requisite_change", "Запрос отклонён", comment || "Ваш запрос на смену реквизитов отклонён.", cabinetUrl)
     }
 

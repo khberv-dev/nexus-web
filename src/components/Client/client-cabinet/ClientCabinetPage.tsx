@@ -1,24 +1,19 @@
 "use client"
 
-import {usePathname, useRouter, useSearchParams} from "next/navigation"
-import {useCallback, useMemo, useState} from "react"
+import {useRouter, useSelectedLayoutSegment} from "next/navigation"
+import {type ReactNode, useCallback, useMemo, useState} from "react"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashHeroFrame} from "@/components/dashboard-ui/DashHeroFrame"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
 import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import "../../Community/Community.css"
-import {CLIENT_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
+import {CLIENT_CABINET_LOGO_HREF, CLIENT_CABINET_SECTIONS, type ClientCabinetSection, clientSectionHref} from "@/lib/cabinet-shell"
 import {buildClientCabinetNavItems, SIDEBAR_TABS} from "./constants"
 import type {ClientCabinetProps} from "./types"
-import {OrdersSidebar} from "./OrdersSidebar"
-import {OrdersTab} from "./OrdersTab"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildClientHintSteps} from "@/components/app/hint-tour-steps"
-import {PaymentsTab} from "./PaymentsTab"
-import {SettingsTab} from "./SettingsTab"
-
-const VALID_TABS: Set<string> = new Set(SIDEBAR_TABS.map(t => t.id))
+import {ClientCabinetContext} from "./ClientCabinetSections"
 
 export default function ClientCabinetPage({
                                               name,
@@ -30,21 +25,26 @@ export default function ClientCabinetPage({
                                               contracts = [],
                                               acts = [],
                                               frameworkContract = {status: "NONE", number: null, hasFile: false},
-                                          }: ClientCabinetProps) {
-    const searchParams = useSearchParams()
+                                              children,
+                                          }: ClientCabinetProps & { children: ReactNode }) {
     const router = useRouter()
-    const pathname = usePathname()
+    // Раздел берём из адреса: у списка проектов (/orders) дочернего сегмента нет.
+    const segment = useSelectedLayoutSegment()
+    const activeTab: ClientCabinetSection =
+        CLIENT_CABINET_SECTIONS.find((section) => section === segment) ?? "orders"
 
-    const rawTab = searchParams.get("tab") ?? "orders"
-    const activeTab = VALID_TABS.has(rawTab) ? rawTab : "orders"
-
+    // Экскурсия переключает разделы сама — переходом на адрес раздела.
+    // true — переход начат, HintTour подождёт, пока страница раздела отрисуется.
     const setActiveTab = useCallback((tab: string) => {
-        const params = new URLSearchParams(searchParams.toString())
-        if (tab === "orders") params.delete("tab")
-        else params.set("tab", tab)
-        const qs = params.toString()
-        router.push(qs ? `${pathname}?${qs}` : pathname, {scroll: false})
-    }, [searchParams, router, pathname])
+        const section = CLIENT_CABINET_SECTIONS.find((s) => s === tab)
+        if (!section) return false
+        // Текущий адрес читаем в момент вызова: колбэк стабилен, и экскурсия
+        // не пересобирает шаги посреди показа.
+        const href = clientSectionHref(section)
+        if (window.location.pathname === href) return false
+        router.push(href, {scroll: false})
+        return true
+    }, [router])
     const initials = (name || email)[0].toUpperCase()
 
     const needsAction = orders.filter(o => o.stages.some(s => s.status === "CLIENT_REVIEW")).length
@@ -52,7 +52,12 @@ export default function ClientCabinetPage({
     const [hintsOpen, setHintsOpen] = useState(false)
     const clientHintSteps = useMemo(() => buildClientHintSteps(setActiveTab), [setActiveTab])
 
+    const cabinetData: ClientCabinetProps = {
+        name, email, formData, orders, payments, invoices, contracts, acts, frameworkContract,
+    }
+
     return (
+        <ClientCabinetContext.Provider value={cabinetData}>
         <div className="dash">
             {/* Подсказки по кабинету: один раз при первом входе, дальше — по кнопке «?». */}
             <HintTour
@@ -83,7 +88,6 @@ export default function ClientCabinetPage({
                     <DashSidebarNav
                         tabs={SIDEBAR_TABS}
                         activeTab={activeTab}
-                        onChange={setActiveTab}
                         badgeCountByTab={{orders: needsAction}}
                     />
                 }
@@ -138,39 +142,11 @@ export default function ClientCabinetPage({
                     </div>
                 </DashHeroFrame>
 
-                {activeTab === "payments" ? (
-                    <div style={{padding: "0 1rem"}} data-tour="client-payments">
-                        <PaymentsTab
-                            payments={payments}
-                            formData={formData}
-                            invoices={invoices}
-                            contracts={contracts}
-                            acts={acts}
-                            frameworkContract={frameworkContract}
-                            onSwitchToSettings={() => setActiveTab("settings")}
-                        />
-                    </div>
-                ) : activeTab === "settings" ? (
-                    <div style={{padding: "0 1rem"}} data-tour="client-settings">
-                        <SettingsTab name={name} email={email} formData={formData}/>
-                    </div>
-                ) : (
-                    <div className="dash-content">
-                        {activeTab === "orders" && (
-                            <>
-                                <div className="dash-col1" data-tour="client-orders">
-                                    <OrdersTab orders={orders}/>
-                                </div>
-                                <div className="dash-col2" data-tour="client-stages">
-                                    <OrdersSidebar orders={orders} payments={payments}/>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                )}
+                {children}
 
                 <ClientDashFooter/>
             </DashMainLayout>
         </div>
+        </ClientCabinetContext.Provider>
     )
 }

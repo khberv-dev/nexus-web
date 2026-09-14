@@ -3,6 +3,7 @@
 import {useCallback, useState} from "react"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {type DashAiSuggestion, DashAiSuggestionsBody} from "@/components/dashboard-ui/DashAiSuggestionsBody"
+import {AiIcon} from "@/components/app/AiIcon"
 
 interface BriefWizardAIDrawerProps {
     briefData: Record<string, string>
@@ -109,7 +110,7 @@ export function BriefWizardAIDrawer({briefData, stepKey, onApply}: BriefWizardAI
                     flexShrink: 0,
                 }}
             >
-                <span aria-hidden>✨</span>
+                <AiIcon/>
                 Подсказки ИИ
             </button>
 
@@ -117,7 +118,7 @@ export function BriefWizardAIDrawer({briefData, stepKey, onApply}: BriefWizardAI
                 open={open}
                 onClose={close}
                 title="ИИ для этого шага"
-                titleIcon={<span aria-hidden>✨</span>}
+                titleIcon={<AiIcon/>}
                 badge={
                     <span
                         style={{

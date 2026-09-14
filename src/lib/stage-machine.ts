@@ -293,7 +293,7 @@ export async function transition(
         if (order) {
             const shortId = order.id.slice(-6).toUpperCase();
             const stageLabel = STAGE_LABELS_RU[stage.type as keyof typeof STAGE_LABELS_RU] ?? stage.type;
-            const link = `/work/${order.id}`;
+            const link = `/work/orders/${order.id}`;
 
             if (nextStatus === StageStatus.MOD_REVISION && order.specialistId) {
                 await notify(order.specialistId, "stage_revision", `Доработка: ${stageLabel}`, `Модератор вернул этап на доработку (заказ #${shortId})`, link);
@@ -307,7 +307,7 @@ export async function transition(
                         "stage_revision",
                         `Правки клиента: ${stageLabel}`,
                         `Клиент запросил правки (заказ #${shortId})`,
-                        `/admin/orders`,
+                        `/admin/orders/${order.id}/stages`,
                     );
                 }
             }
@@ -320,7 +320,7 @@ export async function transition(
             if (nextStatus === StageStatus.MOD_REVIEW) {
                 const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}});
                 for (const a of admins) {
-                    await notify(a.id, "stage_submitted", `На модерацию: ${stageLabel}`, `Специалист сдал этап (заказ #${shortId})`, `/admin/orders`);
+                    await notify(a.id, "stage_submitted", `На модерацию: ${stageLabel}`, `Специалист сдал этап (заказ #${shortId})`, `/admin/orders/${order.id}/stages`);
                 }
             }
             if (nextStatus === StageStatus.EXTRA_PAYMENT) {
@@ -354,7 +354,7 @@ export async function activateNextStage(orderId: string, currentType: string): P
             if (order) {
                 const shortId = orderId.slice(-6).toUpperCase();
                 void notify(order.clientId, "order_done", "Проект завершен", `Все этапы заказа #${shortId} приняты. Проект завершен!`, `/orders/${orderId}`);
-                if (order.specialistId) void notify(order.specialistId, "order_done", "Проект завершен", `Заказ #${shortId} завершен`, `/work/${orderId}`);
+                if (order.specialistId) void notify(order.specialistId, "order_done", "Проект завершен", `Заказ #${shortId} завершен`, `/work/orders/${orderId}`);
             }
         } catch (e) {
             console.error("[notifications] Failed to send order_done notification:", e);
