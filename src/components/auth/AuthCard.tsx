@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import {useSearchParams} from "next/navigation"
-import type {FormEvent, ReactNode} from "react"
+import type {CSSProperties, FormEvent, ReactNode} from "react"
 import {signIn} from "next-auth/react"
 import {PhoneField} from "@/components/ui/PhoneField"
 import {
@@ -23,10 +23,15 @@ type Props = {
     role: AuthRoleSlug
 }
 
-/** Выбор роли — чипы; каждый ведёт на свой адрес и заменяет его в истории. */
+/** Выбор роли — вкладки на всю ширину; каждая ведёт на свой адрес и заменяет его в истории. */
 function RoleSwitch({role, mode, search}: { role: AuthRoleSlug; mode: AuthMode; search: string }) {
+    const tabStyle = {
+        "--tab-count": AUTH_ROLES.length,
+        "--tab-index": AUTH_ROLES.indexOf(role),
+    } as CSSProperties
     return (
-        <nav className={styles.roles} aria-label="Роль">
+        <nav className={styles.tabs} style={tabStyle} aria-label="Роль">
+            <span className={styles.tabIndicator} aria-hidden/>
             {AUTH_ROLES.map((r) => {
                 const active = r === role
                 return (
@@ -36,7 +41,7 @@ function RoleSwitch({role, mode, search}: { role: AuthRoleSlug; mode: AuthMode; 
                         replace
                         scroll={false}
                         aria-current={active ? "page" : undefined}
-                        className={`${styles.chip} ${active ? styles.chipActive : ""}`}
+                        className={`${styles.tab} ${active ? styles.tabActive : ""}`}
                         onClick={active ? (e) => e.preventDefault() : undefined}
                     >
                         {AUTH_ROLE_LABEL[r]}

@@ -7,8 +7,8 @@
     padding: 1.35rem 1.25rem 1.5rem;
     color: #f4f4f4;
     background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    /* Только стандартное свойство: при паре с -webkit- сборщик CSS выкидывал обе декларации. */
+    backdrop-filter: blur(20px) saturate(140%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 18px;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
@@ -50,32 +50,62 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* ── Роли — чипы ── */
-.roles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+/* ── Роли — вкладки на всю ширину в стиле полей; подсвеченная «таблетка» переезжает под активную ── */
+.tabs {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--tab-count), minmax(0, 1fr));
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
 }
 
-.chip {
-    padding: 0.35em 0.85em;
-    border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: transparent;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-}
-
-.chip:hover {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.chipActive,
-.chipActive:hover {
-    border-color: rgba(255, 255, 255, 0.35);
+.tabIndicator {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc((100% - 8px) / var(--tab-count));
+    box-sizing: border-box;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
     background: rgba(255, 255, 255, 0.12);
+    transform: translateX(calc(100% * var(--tab-index)));
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.tab {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 8px;
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.tab:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.tab:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: -1px;
+}
+
+.tabActive,
+.tabActive:hover {
     color: #f4f4f4;
 }
 
