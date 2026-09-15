@@ -4,6 +4,7 @@ import {FileAudience, ReviewerRole} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionDbUser, getSessionUser} from "@/lib/session"
 import {filterStageFilesVisibleToClient} from "@/lib/client-stage-file-visibility"
+import {formatUserName} from "@/lib/user-name"
 
 const STAGE_ACT_ACTIONS = ["act_admin_approved", "act_admin_rejected", "act_client_signed", "act_confirmed"] as const
 
@@ -144,7 +145,7 @@ async function buildStageTimelineItems(
                     entityId: {in: actIdRows.map(a => a.id)},
                     action: {in: [...STAGE_ACT_ACTIONS]},
                 },
-                include: {user: {select: {name: true, email: true, role: true}}},
+                include: {user: {select: {firstName: true, lastName: true, email: true, role: true}}},
                 orderBy: [{createdAt: "desc"}, {id: "desc"}],
             }),
         fileIds.length === 0
@@ -155,7 +156,7 @@ async function buildStageTimelineItems(
                     entityId: {in: fileIds},
                     action: "stage_file_annotations_saved",
                 },
-                include: {user: {select: {name: true, email: true, role: true}}},
+                include: {user: {select: {firstName: true, lastName: true, email: true, role: true}}},
                 orderBy: [{createdAt: "desc"}, {id: "desc"}],
             }),
     ])
@@ -209,7 +210,7 @@ async function buildStageTimelineItems(
                 : null),
             user: log.user
                 ? {
-                    name: log.user.name,
+                    name: formatUserName(log.user) || null,
                     email: log.user.email ?? "",
                     role: String(log.user.role),
                 }
@@ -230,7 +231,7 @@ async function buildStageTimelineItems(
                 : null),
             user: log.user
                 ? {
-                    name: log.user.name,
+                    name: formatUserName(log.user) || null,
                     email: log.user.email ?? "",
                     role: String(log.user.role),
                 }
@@ -360,7 +361,7 @@ export async function GET(req: NextRequest, {params}: { params: Promise<{ id: st
         where,
         orderBy: [{createdAt: "desc"}, {id: "desc"}],
         take: limit + 1,
-        include: {user: {select: {name: true, email: true, role: true}}},
+        include: {user: {select: {firstName: true, lastName: true, email: true, role: true}}},
     })
 
     const page = rows.slice(0, limit)
@@ -415,7 +416,7 @@ export async function GET(req: NextRequest, {params}: { params: Promise<{ id: st
         changes: log.changes,
         user: log.user
             ? {
-                name: log.user.name,
+                name: formatUserName(log.user) || null,
                 email: log.user.email ?? "",
                 role: String(log.user.role),
             }

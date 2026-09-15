@@ -6,7 +6,8 @@ export function SystemInfoCard({specialist}: { specialist: RawSpecialist }) {
         {label: "ID пользователя", value: specialist.id, icon: "bx-hash", color: "#94a3b8"},
         {label: "Email", value: specialist.email, icon: "bx-envelope", color: "#0ea5e9"},
         {label: "Телефон (аккаунт)", value: specialist.phone, icon: "bx-phone", color: "#22c55e"},
-        {label: "Имя в системе", value: specialist.name, icon: "bx-user", color: "#a78bfa"},
+        {label: "Имя", value: specialist.firstName, icon: "bx-user", color: "#a78bfa"},
+        {label: "Фамилия", value: specialist.lastName, icon: "bx-user", color: "#a78bfa"},
         {
             label: "Регистрация",
             value: new Date(specialist.createdAt).toLocaleString("ru-RU"),

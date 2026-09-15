@@ -208,11 +208,21 @@ export function SettingsTab({name, email, formData}: {
                 <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16}}>
                     <DashSettingsSection title="Контактные данные" iconClass="bx bx-user"
                                          className="dash-surface-card--pad-md">
-                        <F label="ФИО">
+                        <F label="Имя">
                             <input
                                 type="text"
-                                value={form.fullName || name || ""}
-                                onChange={e => setForm(p => ({...p, fullName: e.target.value}))}
+                                autoComplete="given-name"
+                                value={form.firstName || ""}
+                                onChange={e => setForm(p => ({...p, firstName: e.target.value}))}
+                                style={settingsInputStyle}
+                            />
+                        </F>
+                        <F label="Фамилия">
+                            <input
+                                type="text"
+                                autoComplete="family-name"
+                                value={form.lastName || ""}
+                                onChange={e => setForm(p => ({...p, lastName: e.target.value}))}
                                 style={settingsInputStyle}
                             />
                         </F>

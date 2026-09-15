@@ -16,7 +16,7 @@ export interface Designer {
     portfolioImages?: string[]
     /** Код уровня квалификационного теста: L1…L4. */
     level?: string | null
-    /** Подпись уровня для интерфейса: «Мастер-дизайнер», «Элита». */
+    /** Подпись уровня для интерфейса: MASTER, ELITE. */
     levelTitle?: string | null
 }
 

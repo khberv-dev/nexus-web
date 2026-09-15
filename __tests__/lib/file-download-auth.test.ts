@@ -15,10 +15,10 @@ import { canAccessS3Key } from "@/lib/file-download-auth";
 import { prisma } from "@/lib/db/prisma";
 
 const mp = prisma as jest.Mocked<typeof prisma>;
-const CLIENT = { id: "c1", email: "c@t", name: null, role: "CLIENT" };
-const SPEC = { id: "s1", email: "s@t", name: null, role: "SPECIALIST" };
-const ADMIN = { id: "a1", email: "a@t", name: null, role: "ADMIN" };
-const OUTSIDER = { id: "x9", email: "x@t", name: null, role: "CLIENT" };
+const CLIENT = { id: "c1", email: "c@t", firstName: null, lastName: null, role: "CLIENT" };
+const SPEC = { id: "s1", email: "s@t", firstName: null, lastName: null, role: "SPECIALIST" };
+const ADMIN = { id: "a1", email: "a@t", firstName: null, lastName: null, role: "ADMIN" };
+const OUTSIDER = { id: "x9", email: "x@t", firstName: null, lastName: null, role: "CLIENT" };
 
 describe("canAccessS3Key (SEC1 IDOR guard)", () => {
   beforeEach(() => {

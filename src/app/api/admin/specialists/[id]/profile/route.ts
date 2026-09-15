@@ -3,6 +3,7 @@ import type {Prisma} from "@prisma/client"
 import {prisma} from "@/lib/db/prisma"
 import {getSessionUser} from "@/lib/session"
 import {audit, diff} from "@/lib/audit"
+import {omitNameFields, parseNameParts} from "@/lib/user-name"
 
 export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
@@ -13,6 +14,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         rating?: number
         featuredOnLanding?: boolean
         formData?: Record<string, string>
+        firstName?: string
+        lastName?: string
     }
 
     const dbUser = await prisma.user.findUnique({
@@ -21,14 +24,18 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     })
     if (!dbUser?.specialistProfile) return NextResponse.json({error: "Not found"}, {status: 404})
 
-    const nextFormData =
+    const nextFormData = omitNameFields(
         body.formData && typeof body.formData === "object"
             ? body.formData
-            : (dbUser.specialistProfile.formData as Record<string, string> | null) ?? null
+            : (dbUser.specialistProfile.formData as Record<string, string> | null) ?? {},
+    )
 
-    const fullName = typeof nextFormData?.fullName === "string" && nextFormData.fullName.trim()
-        ? nextFormData.fullName.trim()
-        : dbUser.name
+    const nameChanged = body.firstName !== undefined || body.lastName !== undefined
+    const nameParts = parseNameParts({
+        firstName: body.firstName ?? dbUser.firstName,
+        lastName: body.lastName ?? dbUser.lastName,
+    }, {required: nameChanged})
+    if ("error" in nameParts) return NextResponse.json({error: nameParts.error}, {status: 400})
     const phone = typeof nextFormData?.phone === "string" && nextFormData.phone.trim()
         ? nextFormData.phone.trim()
         : null
@@ -39,7 +46,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     await prisma.user.update({
         where: {id},
         data: {
-            name: fullName ?? undefined,
+            firstName: nameParts.firstName,
+            lastName: nameParts.lastName,
             phone,
         },
     })
@@ -54,10 +62,14 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
         },
     })
 
-    if (body.formData) {
+    if (body.formData || nameChanged) {
         await audit(user.id, "specialist_profile_edited_by_admin", "User", id, diff(
-            ((dbUser.specialistProfile.formData as Record<string, unknown> | null) ?? {}),
-            nextFormData ?? {},
+            {
+                ...omitNameFields((dbUser.specialistProfile.formData as Record<string, unknown> | null) ?? {}),
+                firstName: dbUser.firstName ?? "",
+                lastName: dbUser.lastName ?? "",
+            },
+            {...nextFormData, firstName: nameParts.firstName ?? "", lastName: nameParts.lastName ?? ""},
         ))
     }
 

@@ -13,6 +13,7 @@ import {
 import {formatEdoProvidersLabel} from "@/lib/edo-providers"
 import {FW_CONTRACT_STATUS_LABEL, ORDER_LABEL, ORDER_VARIANT} from "./client-types"
 import {useClientsShell} from "./ClientsShell"
+import {userDisplayName} from "@/lib/user-name"
 
 /** Карточка заказчика по адресу /admin/clients/:id; данные и действия — из списка в layout. */
 export function ClientDetailRoute({id}: { id: string }) {
@@ -28,7 +29,7 @@ export function ClientDetailRoute({id}: { id: string }) {
         )
     }
 
-    const displayName = client.name ?? client.email
+    const displayName = userDisplayName(client, "?")
     const pendingReq = client.clientRequisiteChangeRequests?.[0] ?? null
     const baseFd = client.clientProfile?.formData
     const fd: Record<string, string> | null = (() => {
@@ -52,7 +53,7 @@ export function ClientDetailRoute({id}: { id: string }) {
             <div className="cl-profile-header">
                 <div className="cl-av-xl">{displayName[0].toUpperCase()}</div>
                 <div className="cl-profile-info">
-                    <h4 className="cl-profile-name">{fd?.fullName || displayName}</h4>
+                    <h4 className="cl-profile-name">{displayName}</h4>
                     <div className="cl-profile-email">{client.email}</div>
                     {client.phone && <div className="cl-profile-email"
                                           style={{marginTop: 2}}>{client.phone}</div>}
@@ -295,7 +296,8 @@ export function ClientDetailRoute({id}: { id: string }) {
                         formData={fd as Record<string, string> | undefined}
                         clientEmail={client.email}
                         clientPhone={client.phone}
-                        clientName={client.name}
+                        clientFirstName={client.firstName}
+                        clientLastName={client.lastName}
                         systemRows={[
                             {
                                 label: "ID",

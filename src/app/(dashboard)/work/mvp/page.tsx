@@ -4,13 +4,14 @@ import {getSessionUser} from "@/lib/session"
 import {redirect} from "next/navigation"
 import {NAV_ITEMS} from "@/lib/nav"
 import MvpKanban from "@/components/Kanban/MvpKanban"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function MvpPage() {
     const user = await getSessionUser()
     if (!user) redirect("/login")
 
     return (
-        <DashboardLayout navItems={NAV_ITEMS} userName={user.name ?? undefined} userEmail={user.email}>
+        <DashboardLayout navItems={NAV_ITEMS} userName={formatUserName(user) || undefined} userEmail={user.email}>
             <DashboardBreadcrumb items={[
                 {href: "/work", label: "Дашборд"},
                 {href: "/work/mvp", label: "План MVP"},

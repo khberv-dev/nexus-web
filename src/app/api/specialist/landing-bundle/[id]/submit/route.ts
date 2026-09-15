@@ -4,6 +4,7 @@ import {prisma} from "@/lib/db/prisma"
 import {notify} from "@/lib/notifications"
 import {hasProfileAvatar, validateLandingBundleFiles} from "@/lib/landing/bundle-input"
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
+import {userDisplayName} from "@/lib/user-name"
 
 // POST — отправить сборку на модерацию
 export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -47,7 +48,7 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
 
     // Notify all admins
     const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
-    const specName = dbUser.name ?? dbUser.email ?? "Специалист"
+    const specName = userDisplayName(dbUser, "Специалист")
     for (const admin of admins) {
         await notify(admin.id, "landing_bundle_submitted", "Новая сборка на модерацию", `${specName} отправил сборку для лендинга`, "/admin/landing")
     }

@@ -210,8 +210,8 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
         },
         {
             target: '[data-tour="btn-contract-sign"]',
-            title: "Кнопка «Подписан»",
-            text: "Загрузите скан с подписью и подтвердите — администратор проверит и закроет этап.",
+            title: "Кнопка «Отправить подписанный»",
+            text: "Выберите PDF с подписью и отправьте — после этого загрузка закрывается, администратор проверит и закроет этап.",
             before: () => goToTab("payments"),
         },
         {

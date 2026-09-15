@@ -1,5 +1,6 @@
 import {prisma} from "@/lib/db/prisma"
 import {REGULATION_SECTIONS} from "@/lib/onboarding/regulations-default"
+import {userDisplayName} from "@/lib/user-name"
 
 /** Единственный документ регламента, который читает специалист на шаге «Ознакомление с регламентом». */
 export const REGULATIONS_SLUG = "onboarding"
@@ -23,7 +24,7 @@ export type RegulationsDocument = {
 export async function getRegulationsDocument(): Promise<RegulationsDocument> {
     const doc = await prisma.regulationDocument.findUnique({
         where: {slug: REGULATIONS_SLUG},
-        include: {updatedBy: {select: {name: true, email: true}}},
+        include: {updatedBy: {select: {firstName: true, lastName: true, email: true}}},
     })
 
     if (!doc) {
@@ -40,7 +41,7 @@ export async function getRegulationsDocument(): Promise<RegulationsDocument> {
         title: doc.title,
         content: doc.content,
         updatedAt: doc.updatedAt.toISOString(),
-        updatedBy: doc.updatedBy?.name ?? doc.updatedBy?.email ?? null,
+        updatedBy: doc.updatedBy ? userDisplayName(doc.updatedBy) || null : null,
         isDefault: false,
     }
 }

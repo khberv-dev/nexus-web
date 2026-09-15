@@ -8,6 +8,7 @@ import {
     resolveResendFrom,
     type MailProvider,
 } from "@/lib/email-config";
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles";
 
 function getBaseAppUrl(): string {
     const primary = (process.env.NEXTAUTH_URL ?? "").trim().replace(/\/$/, "")
@@ -133,10 +134,10 @@ function resolveOnboardingSubject(data: Record<string, unknown>): string {
     if (s === "REJECTED") return "Результат рассмотрения Вашей кандидатуры"
     if (s === "LEVEL_PASSED") {
         const level = data.level as string | undefined
-        if (level === "L1") return "Вам присвоен уровень «Начинающий»"
-        if (level === "L2") return "Вам присвоен уровень «Профессионал»"
-        if (level === "L3") return "Вам присвоен уровень «Мастер-дизайнер»"
-        if (level === "L4") return "Вам присвоен уровень «Элита»"
+        if (level === "L1") return `Вам присвоен уровень «${LEVEL_TITLE.L1}»`
+        if (level === "L2") return `Вам присвоен уровень «${LEVEL_TITLE.L2}»`
+        if (level === "L3") return `Вам присвоен уровень «${LEVEL_TITLE.L3}»`
+        if (level === "L4") return `Вам присвоен уровень «${LEVEL_TITLE.L4}»`
         return "Результат квалификационного теста NEXUS"
     }
     if (s === "LEVEL_RETRY") return "Результат квалификационного теста NEXUS"
@@ -249,14 +250,14 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
         const isL4 = level === "L4"
         const nextUrl = appUrl || "#"
 
-        // L4 — Элита
+        // L4 — ELITE
         if (isL4) {
             return renderEmailLayout({
-                preheader: "Вам присвоен уровень «Элита»",
+                preheader: `Вам присвоен уровень «${LEVEL_TITLE.L4}»`,
                 welcomeText: "Поздравляем!",
                 bodyHtml: `
           <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Мы впечатлены качеством выполненных заданий и высоким уровнем профессионализма.</p>
-          <p class="text-body" style="text-align:left">Вам присвоен уровень <strong>«Элита»</strong>.</p>
+          <p class="text-body" style="text-align:left">Вам присвоен уровень <strong>«${LEVEL_TITLE.L4}»</strong>.</p>
           <p class="text-body" style="text-align:left">Приглашаем Вас на персональное интервью по видеосвязи с руководителем организации. Это позволит нам лично познакомиться, обсудить Ваш опыт, подход к проектам и потенциальное сотрудничество.</p>
           <p class="text-body" style="text-align:left">Представитель нашей команды свяжется с Вами и согласует дату и время встречи.</p>
           <p class="text-body" style="text-align:left">Интервью будет состоять из нескольких блоков:</p>
@@ -275,15 +276,15 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
             })
         }
 
-        // L3 — Мастер-дизайнер
+        // L3 — MASTER
         if (isL3) {
             return renderEmailLayout({
-                preheader: "Вам присвоен уровень «Мастер-дизайнер»",
+                preheader: `Вам присвоен уровень «${LEVEL_TITLE.L3}»`,
                 welcomeText: "Поздравляем!",
                 bodyHtml: `
           <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Мы впечатлены качеством выполненных заданий и высоким уровнем профессионализма.</p>
-          <p class="text-body" style="text-align:left">Вам присвоен уровень <strong>«Мастер-дизайнер»</strong>.</p>
-          <p class="text-body" style="text-align:left">Приглашаем Вас на финальный этап квалификационного теста. В случае его прохождения Вам будет присвоен уровень «Элита».</p>
+          <p class="text-body" style="text-align:left">Вам присвоен уровень <strong>«${LEVEL_TITLE.L3}»</strong>.</p>
+          <p class="text-body" style="text-align:left">Приглашаем Вас на финальный этап квалификационного теста. В случае его прохождения Вам будет присвоен уровень «${LEVEL_TITLE.L4}».</p>
           <p class="text-body" style="text-align:left">Вне зависимости от результатов финального квалификационного теста мы пригласим Вас на персональное интервью по видеосвязи с руководителем организации. Это позволит нам лично познакомиться, обсудить Ваш опыт, подход к проектам и потенциальное сотрудничество.</p>
           <a href="${escapeHtml(nextUrl)}" class="activation-link">Пройти тест уровня 4 →</a>
           <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
@@ -291,29 +292,29 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
             })
         }
 
-        // L2 — Профессионал
+        // L2 — SENIOR
         if (isL2) {
             return renderEmailLayout({
-                preheader: "Вам присвоен уровень «Профессионал»",
+                preheader: `Вам присвоен уровень «${LEVEL_TITLE.L2}»`,
                 welcomeText: "Поздравляем!",
                 bodyHtml: `
-          <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Мы впечатлены качеством выполненных заданий и высоким уровнем профессионализма. Вам присвоен уровень <strong>«Профессионал»</strong>.</p>
-          <p class="text-body" style="text-align:left">Приглашаем Вас пройти тесты для перехода на уровень «Мастер-дизайнер».</p>
+          <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Мы впечатлены качеством выполненных заданий и высоким уровнем профессионализма. Вам присвоен уровень <strong>«${LEVEL_TITLE.L2}»</strong>.</p>
+          <p class="text-body" style="text-align:left">Приглашаем Вас пройти тесты для перехода на уровень «${LEVEL_TITLE.L3}».</p>
           <a href="${escapeHtml(nextUrl)}" class="activation-link">Пройти тест уровня 3 →</a>
           <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
         `,
             })
         }
 
-        // L1 — Начинающий (и fallback)
+        // L1 — JUNIOR (и fallback)
         void isL1
         void rank
         return renderEmailLayout({
-            preheader: "Вам присвоен уровень «Начинающий»",
+            preheader: `Вам присвоен уровень «${LEVEL_TITLE.L1}»`,
             welcomeText: "Поздравляем!",
             bodyHtml: `
-        <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Вам присвоен уровень <strong>«Начинающий»</strong>.</p>
-        <p class="text-body" style="text-align:left">Приглашаем Вас пройти тесты для перехода на уровень «Профессионал».</p>
+        <p class="text-body" style="text-align:left">Благодарим Вас за участие в квалификационном тесте и за отличные результаты. Вам присвоен уровень <strong>«${LEVEL_TITLE.L1}»</strong>.</p>
+        <p class="text-body" style="text-align:left">Приглашаем Вас пройти тесты для перехода на уровень «${LEVEL_TITLE.L2}».</p>
         <a href="${escapeHtml(nextUrl)}" class="activation-link">Пройти тест уровня 2 →</a>
         <p class="link-copy">С наилучшими пожеланиями,<br/>Команда NEXUS</p>
       `,
@@ -439,7 +440,7 @@ function renderOnboardingEmail(data: Record<string, unknown>): string {
             preheader: "Приглашение на интервью NEXUS",
             welcomeText: "Здравствуйте!",
             bodyHtml: `
-        <p class="text-body" style="text-align:left">Вы не достигли проходного балла. У Вас ещё будет возможность пройти тест для присвоения уровня «Элита».</p>
+        <p class="text-body" style="text-align:left">Вы не достигли проходного балла. У Вас ещё будет возможность пройти тест для присвоения уровня «${LEVEL_TITLE.L4}».</p>
         <p class="text-body" style="text-align:left">Приглашаем Вас на персональное интервью по видеосвязи с руководителем организации. Это позволит нам лично познакомиться, обсудить Ваш опыт, подход к проектам и потенциальное сотрудничество.</p>
         <p class="text-body" style="text-align:left">Представитель нашей команды свяжется с Вами и согласует дату и время встречи.</p>
         <p class="text-body" style="text-align:left">Интервью будет состоять из нескольких блоков:</p>

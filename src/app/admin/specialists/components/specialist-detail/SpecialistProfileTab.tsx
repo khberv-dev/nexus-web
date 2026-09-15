@@ -52,8 +52,11 @@ export function SpecialistProfileTab({
 }) {
     const sp = specialist
     const prof = sp.specialistProfile
+    // Имя и фамилия хранятся в User — в анкету для просмотра и редактирования подставляем их отсюда.
     const fdWithPhone: Record<string, string> = {
         ...(fd ?? {}),
+        firstName: sp.firstName ?? "",
+        lastName: sp.lastName ?? "",
         phone: (typeof (fd as Record<string, string> | null | undefined)?.phone === "string" && (fd as Record<string, string>).phone.trim())
             ? (fd as Record<string, string>).phone.trim()
             : (sp.phone ?? ""),

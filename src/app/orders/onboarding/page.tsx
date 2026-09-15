@@ -67,7 +67,7 @@ export default function ClientOnboardingPage() {
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dadataLoading, setDadataLoading] = useState(false)
-    const [profileLocks, setProfileLocks] = useState({fullName: false, email: false})
+    const [profileLocks, setProfileLocks] = useState({name: false, email: false})
 
     useEffect(() => {
         fetch("/api/mock-client/apply?source=onboarding")
@@ -79,7 +79,7 @@ export default function ClientOnboardingPage() {
                 if (locks && typeof locks === "object") {
                     const lockRecord = locks as Record<string, unknown>
                     setProfileLocks({
-                        fullName: lockRecord.fullName === true,
+                        name: lockRecord.name === true,
                         email: lockRecord.email === true,
                     })
                 }
@@ -196,19 +196,24 @@ export default function ClientOnboardingPage() {
 
                 <AppCard>
                     <form onSubmit={handleSubmit} noValidate>
-                        <Field label="ФИО" required>
-                            <input type="text" required placeholder="Иван Иванов" value={form.fullName || ""}
-                                   onChange={e => setForm(f => ({...f, fullName: e.target.value}))}
-                                   disabled={profileLocks.fullName}
-                                   aria-readonly={profileLocks.fullName}
-                                   title={profileLocks.fullName ? "Значение получено из профиля" : undefined}
-                                   style={profileLocks.fullName ? {
-                                       ...inputStyle,
-                                       cursor: "not-allowed",
-                                       opacity: 0.65,
-                                       background: "rgba(255,255,255,0.025)",
-                                   } : inputStyle}/>
-                        </Field>
+                        <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+                            {([["firstName", "Имя", "Иван"], ["lastName", "Фамилия", "Иванов"]] as const).map(([key, label, ph]) => (
+                                <Field key={key} label={label} required>
+                                    <input type="text" required placeholder={ph} value={form[key] || ""}
+                                           autoComplete={key === "firstName" ? "given-name" : "family-name"}
+                                           onChange={e => setForm(f => ({...f, [key]: e.target.value}))}
+                                           disabled={profileLocks.name}
+                                           aria-readonly={profileLocks.name}
+                                           title={profileLocks.name ? "Значение получено из профиля" : undefined}
+                                           style={profileLocks.name ? {
+                                               ...inputStyle,
+                                               cursor: "not-allowed",
+                                               opacity: 0.65,
+                                               background: "rgba(255,255,255,0.025)",
+                                           } : inputStyle}/>
+                                </Field>
+                            ))}
+                        </div>
                         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
                             <Field label="Email" required>
                                 <input type="email" required placeholder="ivan@example.com" value={form.email || ""}

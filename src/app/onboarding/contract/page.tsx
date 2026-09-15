@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell"
-import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {uploadWithProgress} from "@/lib/upload-progress"
 
 const STATUS_HINT: Record<string, { title: string; detail: string }> = {
@@ -44,6 +44,7 @@ export default function OnboardingContractPage() {
         downloadUrl: string | null
         hasSignedFile: boolean
         signedDownloadUrl: string | null
+        signedUploadedAt: string | null
     }>({
         status: "NONE",
         number: null,
@@ -51,10 +52,12 @@ export default function OnboardingContractPage() {
         downloadUrl: null,
         hasSignedFile: false,
         signedDownloadUrl: null,
+        signedUploadedAt: null,
     })
     const [edoOperator, setEdoOperator] = useState("")
     const [signedFile, setSignedFile] = useState<File | null>(null)
-    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null)
+    const [uploadError, setUploadError] = useState<string | null>(null)
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -68,6 +71,7 @@ export default function OnboardingContractPage() {
                 downloadUrl?: string | null
                 hasSignedFile?: boolean
                 signedDownloadUrl?: string | null
+                signedUploadedAt?: string | null
             }
             setState({
                 status: j.status ?? "NONE",
@@ -76,6 +80,7 @@ export default function OnboardingContractPage() {
                 downloadUrl: j.downloadUrl ?? null,
                 hasSignedFile: Boolean(j.hasSignedFile),
                 signedDownloadUrl: j.signedDownloadUrl ?? null,
+                signedUploadedAt: j.signedUploadedAt ?? null,
             })
         } finally {
             setLoading(false)
@@ -114,22 +119,18 @@ export default function OnboardingContractPage() {
 
     const uploadSigned = async () => {
         if (!signedFile) {
-            alert("Выберите подписанный PDF")
+            setUploadError("Выберите подписанный PDF")
             return
         }
         setBusy(true)
-        setUploadItem({
-            id: "signed", name: signedFile.name, size: signedFile.size,
-            mimeType: signedFile.type, progress: 0, status: "uploading",
-        })
-        const patchCard = (patch: Partial<UploadItem>) =>
-            setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
+        setUploadError(null)
+        setUploadProgress(0)
         try {
             const fd = new FormData()
             fd.set("file", signedFile)
             if (edoOperator.trim()) fd.set("edoOperator", edoOperator.trim())
             const r = await uploadWithProgress("/api/specialist/framework-contract", fd, {
-                onProgress: ({percent}) => patchCard({progress: percent}),
+                onProgress: ({percent}) => setUploadProgress(percent),
             })
             if (!r.ok) {
                 let message = "Ошибка загрузки"
@@ -137,23 +138,23 @@ export default function OnboardingContractPage() {
                     const e = JSON.parse(r.text || "{}") as { error?: string }
                     if (typeof e.error === "string") message = e.error
                 } catch { /* ответ не JSON — оставляем общий текст */ }
-                patchCard({status: "error", error: message})
-                alert(message)
+                setUploadError(message)
                 return
             }
-            patchCard({progress: 100, status: "done"})
             setSignedFile(null)
-            setUploadItem(null)
             await load()
             router.refresh()
         } catch (e) {
-            const message = e instanceof Error ? e.message : "Ошибка загрузки"
-            patchCard({status: "error", error: message})
-            alert(message)
+            setUploadError(e instanceof Error ? e.message : "Ошибка загрузки")
         } finally {
+            setUploadProgress(null)
             setBusy(false)
         }
     }
+
+    // После отправки подписанного файла форма остаётся на месте, но заблокирована.
+    const awaitingSignature = state.status === "AWAITING_SIGNATURE"
+    const signedSubmitted = !awaitingSignature && state.hasSignedFile
 
     const hint = STATUS_HINT[state.status] ?? {title: state.status, detail: ""}
 
@@ -249,111 +250,94 @@ export default function OnboardingContractPage() {
                             </AppCard>
                         )}
 
-                        {state.hasSignedFile && (
+                        {state.hasFile && (awaitingSignature || signedSubmitted) && (
                             <AppCard style={{marginBottom: "1.25rem"}}>
-                                <div style={{color: "#f4f4f4", fontWeight: 500, marginBottom: 12}}>Ваш подписанный PDF
+                                {awaitingSignature && (
+                                    <>
+                                        <label style={{
+                                            display: "block",
+                                            color: "rgba(255,255,255,0.45)",
+                                            fontSize: "0.78rem",
+                                            fontWeight: 600,
+                                            marginBottom: 8
+                                        }}>
+                                            Оператор ЭДО
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Например: Контур.Диадок"
+                                            value={edoOperator}
+                                            onChange={(e) => setEdoOperator(e.target.value)}
+                                            style={{...inputStyle, ...(busy ? {opacity: 0.6, cursor: "not-allowed"} : {})}}
+                                            maxLength={500}
+                                            disabled={busy}
+                                        />
+                                    </>
+                                )}
+                                <div style={{marginTop: awaitingSignature ? 16 : 0}}>
+                                    <DocumentUpload
+                                        label="Подписанный PDF"
+                                        file={signedFile}
+                                        onFileChange={(f) => {
+                                            setSignedFile(f)
+                                            setUploadError(null)
+                                        }}
+                                        progress={uploadProgress}
+                                        error={uploadError}
+                                        disabled={busy}
+                                        submitted={signedSubmitted ? {
+                                            title: "Подписанный договор отправлен",
+                                            submittedAt: state.signedUploadedAt,
+                                            hint: state.status === "SIGNED_BY_ADMIN"
+                                                ? "Договор подтверждён администратором"
+                                                : "Ожидает проверки администратором",
+                                            onDownload: state.signedDownloadUrl
+                                                ? () => download(state.signedDownloadUrl)
+                                                : undefined,
+                                        } : null}
+                                    />
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={() => download(state.signedDownloadUrl)}
-                                    style={{
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        gap: 8,
-                                        padding: "0.75em 1.2em",
-                                        background: "rgba(52,211,153,0.12)",
-                                        border: "1px solid rgba(52,211,153,0.25)",
-                                        borderRadius: 10,
-                                        color: "#34d399",
-                                        fontSize: "0.88rem",
-                                        cursor: "pointer",
-                                        fontFamily: "inherit",
-                                    }}
-                                >
-                                    <span>↓</span> Скачать загруженный файл
-                                </button>
-                            </AppCard>
-                        )}
-
-                        {state.status === "AWAITING_SIGNATURE" && state.hasFile && (
-                            <AppCard style={{marginBottom: "1.25rem"}}>
-                                <label style={{
-                                    display: "block",
-                                    color: "rgba(255,255,255,0.45)",
-                                    fontSize: "0.78rem",
-                                    fontWeight: 600,
-                                    marginBottom: 8
-                                }}>
-                                    Оператор ЭДО
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Например: Контур.Диадок"
-                                    value={edoOperator}
-                                    onChange={(e) => setEdoOperator(e.target.value)}
-                                    style={inputStyle}
-                                    maxLength={500}
-                                />
-                                <label style={{
-                                    display: "block",
-                                    color: "rgba(255,255,255,0.45)",
-                                    fontSize: "0.78rem",
-                                    fontWeight: 600,
-                                    marginTop: 16,
-                                    marginBottom: 8
-                                }}>
-                                    Подписанный PDF
-                                </label>
-                                <input
-                                    type="file"
-                                    accept=".pdf,application/pdf"
-                                    onChange={(e) => setSignedFile(e.target.files?.[0] ?? null)}
-                                    style={{...inputStyle, padding: "0.5em", background: "transparent"}}
-                                />
-                                {uploadItem && (
-                                    <div style={{marginTop: 12}}>
-                                        <UploadingCards items={[uploadItem]} title="Загрузка договора"/>
+                                {awaitingSignature && (
+                                    <div style={{display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16}}>
+                                        <button
+                                            type="button"
+                                            disabled={busy || !signedFile}
+                                            onClick={() => void uploadSigned()}
+                                            style={{
+                                                padding: "0.75em 1.4em",
+                                                background: "rgba(52,211,153,0.15)",
+                                                border: "1px solid rgba(52,211,153,0.35)",
+                                                borderRadius: 10,
+                                                color: "#34d399",
+                                                fontSize: "0.88rem",
+                                                fontWeight: 600,
+                                                cursor: busy || !signedFile ? "not-allowed" : "pointer",
+                                                fontFamily: "inherit",
+                                                opacity: busy || !signedFile ? 0.6 : 1,
+                                            }}
+                                        >
+                                            {busy ? "Отправка…" : "Отправить подписанный PDF"}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            disabled={busy}
+                                            onClick={() => void decline()}
+                                            style={{
+                                                padding: "0.75em 1.4em",
+                                                background: "transparent",
+                                                border: "1px solid rgba(248,113,113,0.4)",
+                                                borderRadius: 10,
+                                                color: "#f87171",
+                                                fontSize: "0.88rem",
+                                                fontWeight: 500,
+                                                cursor: busy ? "not-allowed" : "pointer",
+                                                fontFamily: "inherit",
+                                            }}
+                                        >
+                                            Отказаться
+                                        </button>
                                     </div>
                                 )}
-                                <div style={{display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16}}>
-                                    <button
-                                        type="button"
-                                        disabled={busy || !signedFile}
-                                        onClick={() => void uploadSigned()}
-                                        style={{
-                                            padding: "0.75em 1.4em",
-                                            background: "rgba(52,211,153,0.15)",
-                                            border: "1px solid rgba(52,211,153,0.35)",
-                                            borderRadius: 10,
-                                            color: "#34d399",
-                                            fontSize: "0.88rem",
-                                            fontWeight: 600,
-                                            cursor: busy || !signedFile ? "default" : "pointer",
-                                            fontFamily: "inherit",
-                                            opacity: busy || !signedFile ? 0.7 : 1,
-                                        }}
-                                    >
-                                        {busy ? "..." : "Загрузить подписанный PDF"}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        disabled={busy}
-                                        onClick={() => void decline()}
-                                        style={{
-                                            padding: "0.75em 1.4em",
-                                            background: "transparent",
-                                            border: "1px solid rgba(248,113,113,0.4)",
-                                            borderRadius: 10,
-                                            color: "#f87171",
-                                            fontSize: "0.88rem",
-                                            fontWeight: 500,
-                                            cursor: busy ? "default" : "pointer",
-                                            fontFamily: "inherit",
-                                        }}
-                                    >
-                                        Отказаться
-                                    </button>
-                                </div>
                             </AppCard>
                         )}
 

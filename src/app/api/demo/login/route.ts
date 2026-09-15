@@ -3,6 +3,7 @@ import {encode} from "next-auth/jwt"
 import {prisma} from "@/lib/db/prisma"
 import type {Role} from "@prisma/client"
 import {getClientIp, rateLimit} from "@/lib/rate-limit"
+import {formatUserName} from "@/lib/user-name"
 
 const DEMO_EMAILS: Record<string, string> = {
     CLIENT: "demo-client@nexuspro.ru",
@@ -31,17 +32,17 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({error: "Demo admin login is disabled in production"}, {status: 403})
     }
 
-    let user: { id: string; email: string; name: string | null; role: string }
+    let user: { id: string; email: string; name: string; role: string }
 
     if (role === "ADMIN") {
         const admin = await prisma.user.findFirst({where: {role: "ADMIN", archivedAt: null}})
         if (!admin?.email) return NextResponse.json({error: "Admin not found"}, {status: 404})
-        user = {id: admin.id, email: admin.email, name: admin.name, role: admin.role}
+        user = {id: admin.id, email: admin.email, name: formatUserName(admin), role: admin.role}
     } else {
         const email = DEMO_EMAILS[role]!
         const dbUser = await prisma.user.upsert({
             where: {email},
-            create: {email, name: role === "CLIENT" ? "Demo Заказчик" : "Demo Специалист", role},
+            create: {email, firstName: "Demo", lastName: role === "CLIENT" ? "Заказчик" : "Специалист", role},
             update: {},
         })
         if (role === "SPECIALIST") {
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
                 update: {},
             })
         }
-        user = {id: dbUser.id, email: dbUser.email!, name: dbUser.name, role: dbUser.role}
+        user = {id: dbUser.id, email: dbUser.email!, name: formatUserName(dbUser), role: dbUser.role}
     }
 
     const secret = process.env.NEXTAUTH_SECRET!

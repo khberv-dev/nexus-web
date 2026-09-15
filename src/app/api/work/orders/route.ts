@@ -15,7 +15,7 @@ export async function GET() {
         where: {specialistId: user.id, deletedAt: null},
         orderBy: {createdAt: "desc"},
         include: {
-            client: {select: {name: true, email: true}},
+            client: {select: {firstName: true, lastName: true, email: true}},
             stages: {
                 orderBy: {type: "asc"},
                 include: {files: {orderBy: {uploadedAt: "desc"}}},

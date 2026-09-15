@@ -2,7 +2,7 @@ import type {PaymentStatus, StageType} from "@prisma/client"
 
 export type OrderWithRelations = {
     id: string; status: string; briefData: unknown; createdAt: Date; updatedAt: Date
-    client: { name: string | null; email: string | null }
+    client: { firstName: string | null; lastName: string | null; email: string | null }
     stages: {
         id: string;
         type: StageType;

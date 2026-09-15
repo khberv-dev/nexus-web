@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {OnboardingStatus, Prisma, Role} from "@prisma/client";
 import {prisma} from "@/lib/db/prisma";
 import {hashPassword} from "@/lib/auth/password";
+import {omitNameFields, parseNameParts} from "@/lib/user-name";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -15,7 +16,8 @@ export async function POST(req: NextRequest) {
         email?: string;
         password?: string;
         role?: string;
-        name?: string;
+        firstName?: unknown;
+        lastName?: unknown;
         phone?: string;
         formData?: unknown;
     };
@@ -38,6 +40,12 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({error: "Invalid role"}, {status: 400});
     }
 
+    const nameParts = parseNameParts(body, {required: true});
+    if ("error" in nameParts) {
+        return NextResponse.json({error: nameParts.error}, {status: 400});
+    }
+    const {firstName, lastName} = nameParts;
+
     const existing = await prisma.user.findUnique({where: {email}, select: {id: true}});
     if (existing) {
         return NextResponse.json(
@@ -46,18 +54,20 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    const name = typeof body.name === "string" ? body.name.trim() || null : null;
     const phone = typeof body.phone === "string" ? body.phone.trim() || null : null;
-    const rawFormData =
+    // Имя хранится в User — из анкеты его убираем, даже если клиент прислал.
+    const rawFormData = omitNameFields(
         body.formData != null && typeof body.formData === "object"
             ? (body.formData as Record<string, unknown>)
-            : {};
+            : {},
+    );
     const passwordHash = await hashPassword(password);
 
     await prisma.user.create({
         data: {
             email,
-            name,
+            firstName,
+            lastName,
             phone,
             role,
             password: passwordHash,
@@ -67,7 +77,6 @@ export async function POST(req: NextRequest) {
                         create: {
                             formData: {
                                 ...rawFormData,
-                                fullName: name ?? "",
                                 email,
                             } as Prisma.InputJsonValue,
                         },

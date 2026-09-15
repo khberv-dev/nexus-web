@@ -1,6 +1,7 @@
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import {QUIZ_LEVEL_ORDER} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 
 /**
  * Квалификационный уровень дизайнера = самый высокий подтверждённый уровень теста.
@@ -16,18 +17,11 @@ export type SpecialistLevel = {
     rank: number
 }
 
-const LEVEL_TITLE_RU: Record<QuizLevelCode, string> = {
-    L1: "Начинающий",
-    L2: "Профессионал",
-    L3: "Мастер-дизайнер",
-    L4: "Элита",
-}
-
 /** Уровень, начиная с которого дизайнер считается «сильным» для главной страницы. */
-export const LANDING_PREFERRED_LEVEL_RANK = 3 // Мастер-дизайнер и выше
+export const LANDING_PREFERRED_LEVEL_RANK = 3 // MASTER и выше
 
 export function levelByCode(code: QuizLevelCode): SpecialistLevel {
-    return {code, title: LEVEL_TITLE_RU[code], rank: QUIZ_LEVEL_ORDER.indexOf(code) + 1}
+    return {code, title: LEVEL_TITLE[code], rank: QUIZ_LEVEL_ORDER.indexOf(code) + 1}
 }
 
 /** Самый высокий подтверждённый уровень; null — тест не пройден ни на одном уровне. */
@@ -57,7 +51,7 @@ export type LandingCandidate = {
 /**
  * Порядок на главной: закреплённые админом → выше уровень → выше рейтинг →
  * кураторская сборка выше автособранного слайда.
- * Если сильных (мастер и элита) меньше LANDING_MIN_SLIDES, показываем всех подходящих
+ * Если сильных (MASTER и ELITE) меньше LANDING_MIN_SLIDES, показываем всех подходящих
  * в том же порядке — пустая главная хуже, чем главная с юниорами.
  */
 export function selectLandingCandidates<T extends LandingCandidate>(

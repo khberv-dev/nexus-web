@@ -14,7 +14,7 @@ export async function GET(_req: Request, {params}: { params: Promise<{ id: strin
     const order = await prisma.order.findFirst({
         where: {id, specialistId: user.id, deletedAt: null},
         include: {
-            client: {select: {name: true, email: true}},
+            client: {select: {firstName: true, lastName: true, email: true}},
             stages: {
                 orderBy: {type: "asc"},
                 include: {

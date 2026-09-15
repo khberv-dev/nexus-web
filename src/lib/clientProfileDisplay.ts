@@ -2,6 +2,14 @@
 
 export type ClientProfileFieldDef = { key: string; label: string }
 
+/** Значения из User: имя и контакты в анкете заказчика не хранятся. */
+export type ClientProfileFallbacks = {
+    email: string
+    phone: string | null
+    firstName: string | null
+    lastName: string | null
+}
+
 export type ClientProfileSectionDef = {
     id: string
     label: string
@@ -15,7 +23,8 @@ export const CLIENT_PROFILE_SECTIONS: ClientProfileSectionDef[] = [
         label: "Контакты и представитель",
         icon: "bx-user",
         fields: [
-            {key: "fullName", label: "ФИО"},
+            {key: "firstName", label: "Имя"},
+            {key: "lastName", label: "Фамилия"},
             {key: "email", label: "Email"},
             {key: "phone", label: "Телефон"},
             {key: "website", label: "Сайт"},
@@ -61,12 +70,13 @@ export const CLIENT_PROFILE_SECTIONS: ClientProfileSectionDef[] = [
 export function resolveClientProfileValue(
     key: string,
     fd: Record<string, string> | null | undefined,
-    fallbacks: { email: string; phone: string | null; name: string | null },
+    fallbacks: ClientProfileFallbacks,
 ): string {
     const f = fd ?? {}
     if (key === "email") return (f.email || fallbacks.email || "").trim()
     if (key === "phone") return (f.phone || fallbacks.phone || "").trim()
-    if (key === "fullName") return (f.fullName || fallbacks.name || "").trim()
+    if (key === "firstName") return (fallbacks.firstName ?? "").trim()
+    if (key === "lastName") return (fallbacks.lastName ?? "").trim()
     const v = f[key]
     return typeof v === "string" ? v.trim() : ""
 }
@@ -78,7 +88,7 @@ export function isClientProfileValueFilled(s: string): boolean {
 export function clientProfileSectionStats(
     section: ClientProfileSectionDef,
     fd: Record<string, string> | null | undefined,
-    fallbacks: { email: string; phone: string | null; name: string | null },
+    fallbacks: ClientProfileFallbacks,
 ): { filled: number; total: number } {
     let filled = 0
     for (const field of section.fields) {

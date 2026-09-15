@@ -6,6 +6,7 @@ import OrderDetailClient from "./OrderDetailClient"
 import {sortStages} from "@/lib/stage-order"
 import {filterStageFilesVisibleToClient} from "@/lib/client-stage-file-visibility"
 import {levelFromTestStep} from "@/lib/landing/specialist-level"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function OrderDetailPage({params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
@@ -22,7 +23,7 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
         include: {
             specialist: {
                 select: {
-                    name: true, email: true,
+                    firstName: true, lastName: true, email: true,
                     specialistProfile: {
                         select: {
                             formData: true,
@@ -126,7 +127,7 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
     return (
         <OrderDetailClient
             viewerEmail={dbUser.email ?? ""}
-            viewerName={dbUser.name}
+            viewerName={formatUserName(dbUser) || null}
             order={{
                 id: o.id,
                 status: o.status,
@@ -134,11 +135,11 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                 briefData: o.briefData as Record<string, string> | null,
                 briefHelpRequested: o.briefHelpRequested,
                 specialist: o.specialist ? {
-                    name: (o.specialist.specialistProfile?.formData as Record<string, string> | null)?.fullName ?? o.specialist.name,
+                    name: formatUserName(o.specialist) || null,
                     email: o.specialist.email ?? "",
                     avatarUrl: specialistAvatarUrl,
                     profile: o.specialist.specialistProfile ? {
-                        name: specialistForm.fullName ?? o.specialist.name ?? "Специалист",
+                        name: formatUserName(o.specialist) || "Специалист",
                         specialty: specialistBundle?.specialty ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
                         avatar: specialistAvatarUrl,
                         work: workUrl ?? specialistAvatarUrl ?? "",

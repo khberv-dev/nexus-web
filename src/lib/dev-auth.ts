@@ -52,7 +52,8 @@ export async function resolveDevMockDbUser() {
                 where: {email},
                 create: {
                     email,
-                    name: "Dev bypass",
+                    firstName: "Dev",
+                    lastName: "Bypass",
                     role: bootRole,
                     zitadelId: null,
                 },

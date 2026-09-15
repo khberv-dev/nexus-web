@@ -17,7 +17,8 @@ export async function ensureDevBypassDemoOrders(): Promise<void> {
         where: {email: DEMO_CLIENT_EMAIL},
         create: {
             email: DEMO_CLIENT_EMAIL,
-            name: "Demo client",
+            firstName: "Demo",
+            lastName: "Client",
             role: Role.CLIENT,
             zitadelId: null,
         },
@@ -34,7 +35,8 @@ export async function ensureDevBypassDemoOrders(): Promise<void> {
         where: {email: DEMO_SPECIALIST_EMAIL},
         create: {
             email: DEMO_SPECIALIST_EMAIL,
-            name: "Demo specialist",
+            firstName: "Demo",
+            lastName: "Specialist",
             role: Role.SPECIALIST,
             zitadelId: null,
         },

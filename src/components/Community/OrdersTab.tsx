@@ -11,6 +11,7 @@ import {DashStatsRow} from "@/components/dashboard-ui/DashStatsRow"
 import type {StageType} from "@prisma/client"
 import type {ActItem, OrderWithRelations, UrgentItem} from "./types"
 import {DISCOVER_HUES, ORDER_HUE, ORDER_STATUS_MAP, STAGE_LABELS} from "./types"
+import {userDisplayName} from "@/lib/user-name"
 
 const QUICK_LINKS = [
     {href: "/work/portfolio", label: "Портфолио", sub: "Фото и рендеры", icon: "bx-image-alt"},
@@ -195,7 +196,7 @@ export function OrdersCol2({orders, urgentItems, actItems, onSignAct}: {
                                 hue={hue}
                                 watermark={`#${order.id.slice(-4).toUpperCase()}`}
                                 title={`Заказ #${order.id.slice(-6).toUpperCase()}`}
-                                subtitle={order.client.name ?? order.client.email}
+                                subtitle={userDisplayName(order.client)}
                                 hideSpecialistInfo
                                 onClick={() => window.location.href = `/work/orders/${order.id}`}
                                 statusLabel={st.label}

@@ -16,7 +16,8 @@ interface Props {
     formData: Record<string, string> | null | undefined
     clientEmail: string
     clientPhone: string | null
-    clientName: string | null
+    clientFirstName: string | null
+    clientLastName: string | null
     /** Регистрация, ID — показываем отдельной секцией */
     systemRows: { label: string; value: string; icon: string }[]
 }
@@ -25,12 +26,13 @@ export function AdminClientProfileAccordion({
                                                 formData,
                                                 clientEmail,
                                                 clientPhone,
-                                                clientName,
+                                                clientFirstName,
+                                                clientLastName,
                                                 systemRows,
                                             }: Props) {
     const fallbacks = useMemo(
-        () => ({email: clientEmail, phone: clientPhone, name: clientName}),
-        [clientEmail, clientPhone, clientName],
+        () => ({email: clientEmail, phone: clientPhone, firstName: clientFirstName, lastName: clientLastName}),
+        [clientEmail, clientPhone, clientFirstName, clientLastName],
     )
 
     const [open, setOpen] = useState<Record<string, boolean>>(() => ({

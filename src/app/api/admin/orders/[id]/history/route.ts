@@ -11,7 +11,7 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
         where: {entity: "Order", entityId: id},
         // id desc — доводчик для записей с одинаковым createdAt, см. ../../../audit/route.ts
         orderBy: [{createdAt: "desc"}, {id: "desc"}],
-        include: {user: {select: {name: true, email: true, role: true}}},
+        include: {user: {select: {firstName: true, lastName: true, email: true, role: true}}},
         take: 50,
     })
 

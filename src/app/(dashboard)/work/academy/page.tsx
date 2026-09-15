@@ -7,6 +7,7 @@ import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-
 import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import AcademyPage from "@/components/Academy/AcademyPage"
 import Link from "next/link"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function Academy() {
     const user = await getSessionUser()
@@ -16,7 +17,7 @@ export default async function Academy() {
         <div className="dash">
             <DashTopHeader
                 email={user.email}
-                name={user.name}
+                name={formatUserName(user) || null}
                 title="Академия"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
                 navItems={buildSpecialistCabinetNavItems("")}

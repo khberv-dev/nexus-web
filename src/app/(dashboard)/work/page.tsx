@@ -10,6 +10,7 @@ import SpecialistDashboard from "@/components/Dashboard/SpecialistDashboard"
 import type {Prisma} from "@prisma/client"
 import {sortStages} from "@/lib/stage-order"
 import {getProfileCompleteness} from "@/lib/profile-completeness"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function WorkDashboard() {
     const user = await getSessionUser()
@@ -34,7 +35,7 @@ export default async function WorkDashboard() {
         where: {specialistId: dbUser.id},
         orderBy: {updatedAt: "desc"},
         include: {
-            client: {select: {name: true, email: true}},
+            client: {select: {firstName: true, lastName: true, email: true}},
             stages: {
                 orderBy: {type: "asc"},
                 include: {
@@ -87,7 +88,7 @@ export default async function WorkDashboard() {
                     orderTitle: typeof briefData?.objectType === "string" ? briefData.objectType : "Проект",
                     stageType: stage.type,
                     stageStatus: stage.status,
-                    clientName: order.client.name,
+                    clientName: formatUserName(order.client) || null,
                 }
             })
     )
@@ -98,7 +99,7 @@ export default async function WorkDashboard() {
         <div className="dash">
             <DashTopHeader
                 email={user.email}
-                name={user.name}
+                name={formatUserName(user) || null}
                 title="Кабинет специалиста"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
                 navItems={buildSpecialistCabinetNavItems("home")}
@@ -110,7 +111,7 @@ export default async function WorkDashboard() {
             />
             <DashMainLayout>
                 <SpecialistDashboard
-                    name={user.name ?? user.email}
+                    name={formatUserName(user) || user.email}
                     email={user.email}
                     activeOrders={activeOrders}
                     completedOrders={completedOrders}

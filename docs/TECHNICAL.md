@@ -94,6 +94,8 @@ crm/
 |---|---|---|
 | `id` | cuid | Первичный ключ |
 | `email` | String (unique) | Email |
+| `firstName` | String? | Имя |
+| `lastName` | String? | Фамилия. Имя одной строкой не хранится: для вывода — `formatUserName` / `userDisplayName` (`src/lib/user-name.ts`); в анкетах профилей (`formData`) имени нет |
 | `zitadelId` | String (unique) | ID пользователя в Zitadel |
 | `role` | Enum | `CLIENT` / `SPECIALIST` / `ADMIN` |
 | `phone` | String? | Телефон |

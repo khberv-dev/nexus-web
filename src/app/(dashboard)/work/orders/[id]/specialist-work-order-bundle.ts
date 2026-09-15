@@ -3,6 +3,7 @@ import {prisma} from "@/lib/db/prisma"
 import {sortStages} from "@/lib/stage-order"
 import type {ActStatus, OrderStage as PipelineStage, StageStatus} from "@/app/orders/[id]/types"
 import {STAGE_LABEL} from "@/app/orders/[id]/types"
+import {formatUserName} from "@/lib/user-name"
 
 function lastRejectedAtIso(reviews: { verdict: string; createdAt: Date }[]): string | null {
     const rej = reviews.filter(r => r.verdict === "REJECTED")
@@ -82,7 +83,7 @@ export async function loadSpecialistWorkOrderBundle(orderId: string, specialistU
     const order = await prisma.order.findFirst({
         where: {id: orderId, specialistId: specialistUserId},
         include: {
-            client: {select: {name: true, email: true, clientProfile: {select: {formData: true}}}},
+            client: {select: {firstName: true, lastName: true, email: true, clientProfile: {select: {formData: true}}}},
             stages: {
                 orderBy: {type: "asc"},
                 include: {
@@ -180,8 +181,7 @@ export async function loadSpecialistWorkOrderBundle(orderId: string, specialistU
         })),
     }))
 
-    const clientFd = order.client.clientProfile?.formData as Record<string, string> | null
-    const clientName = clientFd?.fullName ?? order.client.name
+    const clientName = formatUserName(order.client) || null
 
     return {
         briefHelpRequested: order.briefHelpRequested,

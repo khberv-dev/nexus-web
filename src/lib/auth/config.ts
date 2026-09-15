@@ -6,6 +6,8 @@ import {resendEmailProvider} from "./email-provider";
 import {credentialsProvider} from "./credentials-provider";
 import {zitadelProvider} from "./providers";
 import {shouldUseSecureAuthCookies} from "@/lib/dev-auth-flag";
+import {omitNameFields, splitFullName} from "@/lib/user-name";
+import type {Adapter, AdapterUser} from "next-auth/adapters";
 
 /** JWT-сессия (используется как access token) — 3 дня. */
 const ACCESS_TOKEN_MAX_AGE = 3 * 24 * 60 * 60;
@@ -20,28 +22,32 @@ async function applyPendingSignup(userId: string, emailNorm: string) {
     if (!pending) return;
 
     const ageMs = Date.now() - db.createdAt.getTime();
-    const data: { role?: Role; name?: string } = {};
+    const data: { role?: Role; firstName?: string; lastName?: string } = {};
     if (ageMs < PENDING_ROLE_WINDOW_MS) {
         data.role = pending.role;
-        if (pending.name?.trim()) data.name = pending.name.trim();
+        if (pending.firstName?.trim()) data.firstName = pending.firstName.trim();
+        if (pending.lastName?.trim()) data.lastName = pending.lastName.trim();
     }
     if (Object.keys(data).length > 0) {
         await prisma.user.update({where: {id: userId}, data});
     }
 
     if (ageMs < PENDING_ROLE_WINDOW_MS && pending.role === "CLIENT" && pending.formData != null) {
-        const raw = pending.formData as Record<string, unknown>;
+        const raw = omitNameFields(pending.formData as Record<string, unknown>);
         const phone = typeof raw.phone === "string" && raw.phone.trim() ? raw.phone.trim() : null;
         if (phone) {
             await prisma.user.update({where: {id: userId}, data: {phone}});
         }
-        const fullNameFromRaw =
-            typeof raw.fullName === "string" && raw.fullName.trim() ? raw.fullName.trim() : pending.name?.trim() ?? "";
         const emailFromRaw = typeof raw.email === "string" && raw.email.trim() ? raw.email.trim() : emailNorm;
-        const {personalDataConsentAccepted: _consent, phone: _p, email: _e, fullName: _fn, ...formDataRest} = raw;
+        // Имя живёт в User.firstName/lastName — в анкету его не копируем.
+        const {
+            personalDataConsentAccepted: _consent,
+            phone: _p,
+            email: _e,
+            ...formDataRest
+        } = raw;
         const profileData = {
             ...formDataRest,
-            fullName: fullNameFromRaw,
             email: emailFromRaw,
         } as Prisma.InputJsonValue;
         await prisma.clientProfile.upsert({
@@ -52,7 +58,7 @@ async function applyPendingSignup(userId: string, emailNorm: string) {
     }
 
     if (ageMs < PENDING_ROLE_WINDOW_MS && pending.role === "SPECIALIST" && pending.formData != null) {
-        const raw = pending.formData as Record<string, unknown>;
+        const raw = omitNameFields(pending.formData as Record<string, unknown>);
         const phone = typeof raw.phone === "string" && raw.phone.trim() ? raw.phone.trim() : null;
         const {
             phone: _p,
@@ -91,6 +97,21 @@ async function ensureSpecialistProfile(userId: string) {
 
 type AuthProvider = NonNullable<AuthOptions["providers"]>[number];
 
+/**
+ * Адаптер создаёт User при первом входе через OIDC и передаёт `name` из профиля провайдера.
+ * В схеме имени одной строкой нет — раскладываем его на firstName/lastName.
+ */
+function withSplitUserName(adapter: Adapter): Adapter {
+    return {
+        ...adapter,
+        async createUser(user: Omit<AdapterUser, "id">) {
+            const {name, ...rest} = user as Omit<AdapterUser, "id"> & { name?: string | null };
+            const created = await prisma.user.create({data: {...rest, ...splitFullName(name)}});
+            return created as unknown as AdapterUser;
+        },
+    };
+}
+
 function buildProviders(): AuthProvider[] {
     const list: AuthProvider[] = [resendEmailProvider(), credentialsProvider()];
     if (
@@ -107,7 +128,7 @@ export const authConfig: AuthOptions = {
     // Cast: `prisma` carries a narrower generic type from the global `omit` config
     // (see src/lib/db/prisma.ts), which the adapter's own PrismaClient type doesn't
     // model — the adapter only touches Account/Session/VerificationToken at runtime.
-    adapter: PrismaAdapter(prisma as unknown as PrismaClient),
+    adapter: withSplitUserName(PrismaAdapter(prisma as unknown as PrismaClient)),
     secret: process.env.NEXTAUTH_SECRET,
     providers: buildProviders(),
     session: {strategy: "jwt", maxAge: ACCESS_TOKEN_MAX_AGE},

@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {prisma} from "@/lib/db/prisma";
 import {getDownloadUrl} from "@/lib/s3";
 import {devOnlyGuard} from "@/lib/dev-only";
+import {formatUserName} from "@/lib/user-name"
 
 export async function GET(req: NextRequest) {
     // Dev-only login helper: leaks user email/name/phone. Never expose in prod.
@@ -16,7 +17,8 @@ export async function GET(req: NextRequest) {
         select: {
             id: true,
             email: true,
-            name: true,
+            firstName: true,
+            lastName: true,
             zitadelId: true,
             role: true,
             specialistProfile: {
@@ -41,7 +43,6 @@ export async function GET(req: NextRequest) {
 
     const mapped = await Promise.all(
         users.map(async u => {
-            const fd = (u.specialistProfile?.formData ?? u.clientProfile?.formData ?? null) as Record<string, string> | null
             let href = "/onboarding"
             if (u.role === "SPECIALIST" && u.specialistProfile) {
                 const passed = new Set(
@@ -72,7 +73,7 @@ export async function GET(req: NextRequest) {
             return {
                 id: u.id,
                 email: u.email,
-                name: fd?.fullName ?? u.name ?? null,
+                name: formatUserName(u) || null,
                 zitadelId: u.zitadelId,
                 role: u.role,
                 href,

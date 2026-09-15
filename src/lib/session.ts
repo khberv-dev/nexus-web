@@ -4,11 +4,13 @@ import {authConfig} from "@/lib/auth/config";
 import {prisma} from "@/lib/db/prisma";
 import {Role} from "@prisma/client";
 import {isDevAuthBypass, resolveDevMockDbUser} from "@/lib/dev-auth";
+import {formatUserName} from "@/lib/user-name";
 
 export type SessionUser = {
     id: string;
     email: string;
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     phone?: string | null;
     role: string;
 };
@@ -32,12 +34,12 @@ export async function getOrCreateDbUser(session: SessionUser) {
     return prisma.user.upsert({
         where: {email: session.email},
         update: {
-            name: session.name ?? undefined,
             phone: session.phone ?? undefined,
         },
         create: {
             email: session.email,
-            name: session.name,
+            firstName: session.firstName,
+            lastName: session.lastName,
             phone: session.phone ?? undefined,
             role: session.role as Role,
             zitadelId: null,
@@ -55,7 +57,7 @@ export async function getServerSessionWithDevBypass(): Promise<Session | null> {
             user: {
                 id: row.id,
                 email: row.email ?? "dev@local",
-                name: row.name ?? "",
+                name: formatUserName(row),
                 image: row.image,
                 role: row.role,
                 zitadelSub: row.zitadelId ?? null,
@@ -91,7 +93,8 @@ export async function getSessionUser(): Promise<SessionUser | null> {
         return {
             id: row.id,
             email: row.email ?? "dev@local",
-            name: row.name,
+            firstName: row.firstName,
+            lastName: row.lastName,
             phone: row.phone,
             role: row.role,
         };
@@ -103,7 +106,10 @@ export async function getSessionUser(): Promise<SessionUser | null> {
 
     const dbUser = await prisma.user.findUnique({
         where: {id: u.id},
-        select: {id: true, email: true, name: true, phone: true, role: true, archivedAt: true, sessionVersion: true},
+        select: {
+            id: true, email: true, firstName: true, lastName: true, phone: true, role: true,
+            archivedAt: true, sessionVersion: true,
+        },
     });
     if (!dbUser || dbUser.archivedAt) return null;
 
@@ -114,7 +120,8 @@ export async function getSessionUser(): Promise<SessionUser | null> {
     return {
         id: dbUser.id,
         email: dbUser.email ?? u.email ?? "",
-        name: dbUser.name ?? u.name ?? null,
+        firstName: dbUser.firstName,
+        lastName: dbUser.lastName,
         phone: dbUser.phone ?? u.phone ?? null,
         role: dbUser.role,
     };

@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {aiAsk, stripJsonFences} from "@/lib/ai-provider"
 import {getSessionUser} from "@/lib/session"
 import {rateLimit} from "@/lib/rate-limit"
+import {formatUserName} from "@/lib/user-name"
 
 const SYSTEM = `Ты — HR-консультант платформы NEXUS для дизайнеров интерьера.
 Помогаешь дизайнерам заполнить анкету верификации так, чтобы произвести лучшее впечатление на администраторов.
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
     const form = await req.json() as Record<string, string>
 
     const filled = [
-        form.fullName && `Имя: ${form.fullName}`,
+        formatUserName(form) && `Имя: ${formatUserName(form)}`,
         form.city && `Город: ${form.city}`,
         form.experience && `Опыт: ${form.experience} лет`,
         form.specialty && `Специализация: ${form.specialty}`,
@@ -33,7 +34,7 @@ ${filled || "Анкета пока пустая"}
 Дай 3–4 конкретные подсказки, которые помогут дизайнеру произвести лучшее впечатление на администраторов платформы.
 
 Правила:
-- Указывай одно из полей (ключи: fullName, city, experience, portfolio, software, about) или null для общей подсказки
+- Указывай одно из полей (ключи: firstName, lastName, city, experience, portfolio, software, about) или null для общей подсказки
 - Поле "about" — самое важное, сфокусируйся на нем если оно заполнено слабо
 - Если "about" заполнен хорошо — предложи конкретный улучшенный вариант текста
 - Давай практичные советы, специфичные для дизайна интерьера

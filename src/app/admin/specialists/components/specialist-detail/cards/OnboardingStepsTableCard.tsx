@@ -10,7 +10,8 @@ import type {RawSpecialist} from "../../../types"
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
 const FORM_LABELS: Record<string, string> = {
-    fullName: "ФИО",
+    firstName: "Имя",
+    lastName: "Фамилия",
     phone: "Телефон",
     email: "Email",
     city: "Город",

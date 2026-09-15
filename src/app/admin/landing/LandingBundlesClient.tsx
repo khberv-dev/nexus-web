@@ -2,6 +2,7 @@
 
 import {useCallback, useEffect, useState} from "react"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
+import {userDisplayName} from "@/lib/user-name"
 
 interface BundleItem {
     id: string;
@@ -23,7 +24,7 @@ interface Bundle {
     reviewedAt: string | null
     createdAt: string
     updatedAt: string
-    user: { id: string; name: string | null; email: string | null }
+    user: { id: string; firstName: string | null; lastName: string | null; email: string | null }
     items: BundleItem[]
 }
 
@@ -173,7 +174,7 @@ export default function LandingBundlesClient() {
                                                 <div style={{
                                                     fontWeight: 500,
                                                     fontSize: "0.82rem"
-                                                }}>{b.user.name ?? b.user.email}</div>
+                                                }}>{userDisplayName(b.user)}</div>
                                                 <div style={{
                                                     fontSize: "0.72rem",
                                                     color: "var(--adm-muted)"
@@ -204,7 +205,7 @@ export default function LandingBundlesClient() {
                             <div className="card">
                                 <div className="card-header d-flex align-items-center justify-content-between">
                   <span className="fw-semibold" style={{fontSize: "0.88rem"}}>
-                    {selectedBundle.user.name ?? selectedBundle.user.email}
+                    {userDisplayName(selectedBundle.user)}
                   </span>
                                     <span
                                         className={`badge ${STATUS_CLASS[selectedBundle.status]}`}>{STATUS_LABEL[selectedBundle.status]}</span>

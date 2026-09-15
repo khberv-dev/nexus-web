@@ -2,6 +2,7 @@
 
 import type {Order, OrderStatus, SpecialistForAssignment} from "../types"
 import {ORDER_LABEL} from "../types"
+import {userDisplayName} from "@/lib/user-name"
 
 export function OrderManageTab({
                                    order,
@@ -40,8 +41,7 @@ export function OrderManageTab({
                             >
                                 <option value="">Выберите…</option>
                                 {specialists.map((s) => {
-                                    const fd = s.specialistProfile?.formData
-                                    const label = fd?.fullName ?? s.name ?? s.email
+                                    const label = userDisplayName(s)
                                     return (
                                         <option key={s.id} value={s.id}>
                                             {label}

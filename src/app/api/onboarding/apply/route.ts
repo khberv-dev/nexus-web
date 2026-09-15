@@ -4,6 +4,7 @@ import {prisma} from "@/lib/db/prisma";
 import {sendEmail} from "@/lib/email";
 import {notify} from "@/lib/notifications";
 import type {Prisma} from "@prisma/client";
+import {omitNameFields, parseNameParts, userDisplayName} from "@/lib/user-name";
 
 export async function POST(req: NextRequest) {
     const session = await getServerSessionWithDevBypass();
@@ -29,10 +30,15 @@ export async function POST(req: NextRequest) {
     if (!phone) {
         return NextResponse.json({error: "Укажите телефон."}, {status: 400});
     }
-    const formDataWithoutPhone = {...((formData ?? {}) as Record<string, unknown>)}
+    // Имя, заданное при регистрации, в анкете заблокировано; пустое можно заполнить здесь.
+    const hasProfileName = Boolean(user.firstName?.trim() && user.lastName?.trim())
+    const nameParts = hasProfileName
+        ? {firstName: user.firstName, lastName: user.lastName}
+        : parseNameParts(formData ?? {}, {required: true})
+    if ("error" in nameParts) return NextResponse.json({error: nameParts.error}, {status: 400});
+    const formDataWithoutPhone = omitNameFields({...((formData ?? {}) as Record<string, unknown>)})
     delete formDataWithoutPhone.phone
     const normalizedFormData = {...formDataWithoutPhone} as Record<string, unknown>
-    if (user.name?.trim()) normalizedFormData.fullName = user.name.trim()
     if (user.email?.trim()) normalizedFormData.email = user.email.trim()
     const specialtyRaw =
         typeof normalizedFormData.specialty === "string" ? normalizedFormData.specialty :
@@ -44,7 +50,10 @@ export async function POST(req: NextRequest) {
         normalizedFormData.specialization = specialtyRaw
     }
     const jsonFormData = normalizedFormData as Prisma.InputJsonValue;
-    await prisma.user.update({where: {id: user.id}, data: {phone}});
+    await prisma.user.update({
+        where: {id: user.id},
+        data: {phone, firstName: nameParts.firstName, lastName: nameParts.lastName},
+    });
     await prisma.specialistProfile.update({
         where: {id: user.specialistProfile.id},
         data: {formData: jsonFormData, onboardingStatus: "PENDING"},
@@ -53,9 +62,7 @@ export async function POST(req: NextRequest) {
     const admin = await prisma.user.findFirst({where: {role: "ADMIN"}});
     if (admin?.email) void sendEmail("new_application", admin.email, {specialistId: user.id});
 
-    const fullNameFromForm =
-        typeof normalizedFormData.fullName === "string" ? normalizedFormData.fullName.trim() : "";
-    const specialistName = fullNameFromForm || user.name?.trim() || user.email || "Специалист";
+    const specialistName = userDisplayName({...nameParts, email: user.email}, "Специалист");
     const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}});
     for (const a of admins) {
         await notify(
@@ -84,15 +91,15 @@ export async function GET() {
     if (!user) return NextResponse.json(null);
 
     const formData = (user.specialistProfile?.formData ?? null) as Record<string, unknown> | null;
-    const profileName = user.name?.trim() ?? ""
     const profileEmail = user.email?.trim() ?? ""
     return NextResponse.json({
-        ...(formData ?? {}),
+        ...omitNameFields(formData ?? {}),
         phone: user.phone ?? "",
-        fullName: profileName || (typeof formData?.fullName === "string" ? formData.fullName : ""),
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
         email: profileEmail || (typeof formData?.email === "string" ? formData.email : ""),
         _profileLocks: {
-            fullName: Boolean(profileName),
+            name: Boolean(user.firstName?.trim() && user.lastName?.trim()),
             email: Boolean(profileEmail),
         },
     });

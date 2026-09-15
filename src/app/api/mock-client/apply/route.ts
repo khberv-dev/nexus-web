@@ -7,6 +7,7 @@ import {getSessionUser} from "@/lib/session";
 import {notify} from "@/lib/notifications";
 import {audit} from "@/lib/audit";
 import {parseJsonBody} from "@/lib/validate";
+import {omitNameFields, parseNameParts, userDisplayName} from "@/lib/user-name";
 
 // Free-form client profile/requisites blob — must preserve ALL keys (they are
 // persisted into clientProfile.formData), so a lenient record. Rejects non-objects.
@@ -42,16 +43,20 @@ export async function POST(req: NextRequest) {
     const lockProfileIdentity = req.nextUrl.searchParams.get("source") === "onboarding"
     const existingUser = await prisma.user.findUnique({
         where: {id: session.id},
-        select: {phone: true, name: true, email: true},
+        select: {phone: true, firstName: true, lastName: true, email: true},
     })
-    if (lockProfileIdentity && existingUser?.name?.trim()) formData.fullName = existingUser.name.trim()
+    // В онбординге имя из регистрации заблокировано; в настройках его можно поменять.
+    const nameLocked = lockProfileIdentity && Boolean(existingUser?.firstName?.trim() && existingUser?.lastName?.trim())
+    const nameParts = nameLocked
+        ? {firstName: existingUser!.firstName, lastName: existingUser!.lastName}
+        : parseNameParts(formData, {required: true})
+    if ("error" in nameParts) return NextResponse.json({error: nameParts.error}, {status: 400});
     if (lockProfileIdentity && existingUser?.email?.trim()) formData.email = existingUser.email.trim()
     const reqErr = validateClientRequisitesForm(formData);
     if (reqErr) return NextResponse.json({error: reqErr}, {status: 400});
-    const fullName = formData?.fullName || formData?.name || null;
     const phoneFromBody = typeof formData?.phone === "string" && formData.phone.trim() ? formData.phone.trim() : null;
     const email = typeof formData?.email === "string" && formData.email.trim() ? formData.email.trim() : undefined;
-    const formDataRest = {...formData}
+    const formDataRest = omitNameFields(formData) as Record<string, unknown>
     delete formDataRest.phone
     delete formDataRest.email
 
@@ -59,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     const user = await prisma.user.update({
         where: {id: session.id},
-        data: {name: fullName ?? undefined, phone, ...(email ? {email} : {})},
+        data: {firstName: nameParts.firstName, lastName: nameParts.lastName, phone, ...(email ? {email} : {})},
     });
 
     const existingProfile = await prisma.clientProfile.findUnique({where: {userId: user.id}})
@@ -105,7 +110,7 @@ export async function POST(req: NextRequest) {
 
         const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
         for (const admin of admins) {
-            void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Заказчик ${user.name ?? user.email} запросил смену реквизитов`, `/admin/clients/${user.id}`)
+            void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Заказчик ${userDisplayName(user)} запросил смену реквизитов`, `/admin/clients/${user.id}`)
         }
         await audit(user.id, "requisite_change_requested", "User", user.id, {})
 
@@ -141,7 +146,7 @@ export async function GET(req: NextRequest) {
 
     if (!user) return NextResponse.json(null);
     const profileData = (user.clientProfile?.formData ?? null) as Record<string, unknown> | null;
-    const merged: Record<string, unknown> = profileData ? {...profileData} : {};
+    const merged: Record<string, unknown> = profileData ? omitNameFields(profileData) : {};
 
     // If requisites are pending admin approval — expose latest requested values to the client UI.
     // They are stored in RequisiteChangeRequest.newData while clientProfile.formData keeps old requisites.
@@ -157,17 +162,16 @@ export async function GET(req: NextRequest) {
         merged.requisitesPending = true
     }
 
-    const fn = typeof merged.fullName === "string" ? merged.fullName.trim() : "";
-    if (!fn && user.name?.trim()) merged.fullName = user.name.trim();
     const lockProfileIdentity = req.nextUrl.searchParams.get("source") === "onboarding"
-    if (lockProfileIdentity && user.name?.trim()) merged.fullName = user.name.trim()
     return NextResponse.json({
         ...merged,
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
         phone: user.phone ?? "",
         email: user.email ?? "",
         ...(lockProfileIdentity ? {
             _profileLocks: {
-                fullName: Boolean(user.name?.trim()),
+                name: Boolean(user.firstName?.trim() && user.lastName?.trim()),
                 email: Boolean(user.email?.trim()),
             },
         } : {}),

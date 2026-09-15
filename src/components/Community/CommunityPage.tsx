@@ -26,6 +26,7 @@ import type {
     SpecContract,
 } from "./types"
 import {ONBOARDING_STEPS} from "./types"
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 
 interface CommunityProps {
     name: string;
@@ -119,7 +120,7 @@ export default function CommunityPage({
         if (!raw) return null
         try {
             const parsed = JSON.parse(raw) as { passedLevels?: string[] }
-            const labels: Record<string, string> = {L1: "JUNIOR", L2: "SENIOR", L3: "MASTER", L4: "ELITE"}
+            const labels: Record<string, string> = LEVEL_TITLE
             const highest = [...(parsed.passedLevels ?? [])].sort().at(-1)
             return highest ? (labels[highest] ?? highest) : null
         } catch {

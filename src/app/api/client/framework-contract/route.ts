@@ -4,6 +4,8 @@ import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl, getUploadUrl} from "@/lib/s3"
 import {ClientFrameworkContractStatus} from "@prisma/client"
 
+const SIGNED_SCAN_EXTENSIONS = /\.(pdf|jpe?g|png)$/i
+
 /** Статус и ссылка на скачивание договора оказания услуг (только свой профиль) */
 export async function GET() {
     const user = await getSessionUser()
@@ -32,6 +34,7 @@ export async function GET() {
         downloadUrl,
         uploadedAt: profile.frameworkContractUploadedAt?.toISOString() ?? null,
         hasSignedFile: Boolean(profile.signedContractS3Key),
+        signedUploadedAt: profile.signedContractUploadedAt?.toISOString() ?? null,
     })
 }
 
@@ -76,13 +79,23 @@ export async function PUT(req: NextRequest) {
     const dbUser = await getSessionDbUser(user)
     if (!dbUser) return NextResponse.json({error: "Not found"}, {status: 404})
 
-    const {filename} = (await req.json()) as { filename: string }
-    if (!filename) return NextResponse.json({error: "filename required"}, {status: 400})
+    const {filename} = (await req.json()) as { filename?: unknown }
+    if (typeof filename !== "string" || !filename.trim()) {
+        return NextResponse.json({error: "filename required"}, {status: 400})
+    }
+    if (!SIGNED_SCAN_EXTENSIONS.test(filename)) {
+        return NextResponse.json({error: "Загрузите скан в формате PDF, JPG или PNG"}, {status: 400})
+    }
 
     const profile = await prisma.clientProfile.findUnique({where: {userId: dbUser.id}})
     if (!profile) return NextResponse.json({error: "No profile"}, {status: 404})
+    // Скан принимается только пока договор ждёт подписи: после «Подписан» / отказа загрузка закрыта.
+    if (!profile.frameworkContractS3Key || profile.frameworkContractStatus !== ClientFrameworkContractStatus.AWAITING_SIGNATURE) {
+        return NextResponse.json({error: "Загрузка скана сейчас недоступна"}, {status: 409})
+    }
 
-    const s3Key = `client-contracts/${dbUser.id}/${Date.now()}-${filename}`
+    const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-120)
+    const s3Key = `client-contracts/${dbUser.id}/${Date.now()}-${safeName}`
     const {url: uploadUrl} = await getUploadUrl(s3Key)
 
     await prisma.clientProfile.update({

@@ -179,37 +179,44 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
         }
     }
 
-    /** Кнопка запуска диалога с ИИ + состояние выбранного результата. Одна разметка на модалку и инлайн. */
+    /** Кнопка запуска диалога с ИИ — в подвале диалога, сразу после «Применить». */
+    const renderAiButton = (variant: "modal" | "inline") => {
+        const disabled = uploading || !completedCrop
+        return (
+            <button
+                type="button"
+                onClick={() => void openStudio()}
+                disabled={disabled}
+                style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: variant === "modal" ? "8px 16px" : "0.25rem 0.5rem",
+                    borderRadius: variant === "modal" ? 10 : 6,
+                    border: "1px solid rgba(167,139,250,0.45)",
+                    background: "rgba(167,139,250,0.12)",
+                    color: "#a78bfa",
+                    fontSize: variant === "modal" ? 13 : "0.8125rem",
+                    fontWeight: 500,
+                    fontFamily: "inherit",
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    opacity: disabled ? 0.5 : 1,
+                }}
+            >
+                <AiIcon/>
+                {aiResult ? "Изменить запрос к ИИ" : "Редактировать с ИИ"}
+            </button>
+        )
+    }
+
+    /** Состояние работы с ИИ в теле диалога: выбранный результат, подсказка, ошибка, загрузка. */
     const renderAiBlock = (variant: "modal" | "inline") => {
         const muted = variant === "modal" ? "rgba(255,255,255,0.55)" : "var(--bs-secondary-color, #6c757d)"
+        if (!aiResult && completedCrop && !aiError && !uploadItem) return null
 
         return (
             <div style={{marginTop: 12}}>
                 <div style={{display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
-                    <button
-                        type="button"
-                        onClick={() => void openStudio()}
-                        disabled={uploading || !completedCrop}
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 6,
-                            padding: "0.45em 0.9em",
-                            borderRadius: 8,
-                            border: "1px solid rgba(167,139,250,0.45)",
-                            background: "rgba(167,139,250,0.12)",
-                            color: "#a78bfa",
-                            fontSize: "0.82rem",
-                            fontWeight: 500,
-                            fontFamily: "inherit",
-                            cursor: uploading || !completedCrop ? "default" : "pointer",
-                            opacity: uploading || !completedCrop ? 0.6 : 1,
-                        }}
-                    >
-                        <AiIcon/>
-                        {aiResult ? "Изменить запрос к ИИ" : "Редактировать с ИИ"}
-                    </button>
-
                     {aiResult && (
                         <div style={{display: "flex", alignItems: "center", gap: 8}}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -338,6 +345,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                     <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"}`}/>
                                     {uploading ? "Загрузка…" : aiResult ? "Применить вариант ИИ" : "Применить"}
                                 </button>
+                                {renderAiButton("modal")}
                                 <button className="dash-crop-panel__cancel" onClick={() => setSrcUrl(null)}>
                                     Отмена
                                 </button>
@@ -401,6 +409,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"} me-1`}/>
                             {uploading ? "Загрузка..." : aiResult ? "Применить вариант ИИ" : "Применить"}
                         </button>
+                        {renderAiButton("inline")}
                         <button className="btn btn-outline-secondary btn-sm" onClick={() => setSrcUrl(null)}>
                             Отмена
                         </button>

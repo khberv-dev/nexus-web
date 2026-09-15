@@ -3,6 +3,7 @@
 import type {StatusVariant} from "./AppCard"
 import {InfoRow, SectionLabel, StatusBadge} from "./AppCard"
 import {splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
+import {formatUserName, userDisplayName} from "@/lib/user-name"
 
 // ── Типы ──────────────────────────────────────────────────────────────────────
 
@@ -11,7 +12,6 @@ export type OnboardingStatus =
     | "REGULATIONS" | "CONTRACT" | "ACTIVE" | "REJECTED"
 
 export interface SpecialistFormData {
-    fullName?: string
     city?: string
     experience?: string
     portfolio?: string
@@ -23,7 +23,8 @@ export interface SpecialistFormData {
 export interface SpecialistCardData {
     id: string
     email: string
-    name: string | null
+    firstName: string | null
+    lastName: string | null
     createdAt?: string
     onboardingStatus: OnboardingStatus
     formData: SpecialistFormData | null
@@ -143,9 +144,9 @@ interface SpecialistCardProps {
 }
 
 export function SpecialistCard({specialist, expanded, onToggle, actions}: SpecialistCardProps) {
-    const {email, name, onboardingStatus, formData: fd, steps, portfolioCount = 0} = specialist
+    const {email, onboardingStatus, formData: fd, steps, portfolioCount = 0} = specialist
     const hasForm = fd && Object.values(fd).some(Boolean)
-    const displayName = fd?.fullName ?? name ?? email
+    const displayName = userDisplayName(specialist, "?")
 
     return (
         <div>
@@ -208,9 +209,9 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                 <div className="card-body">
                                     <SectionLabel>Анкета специалиста</SectionLabel>
                                     <div className="row g-3">
-                                        {fd?.fullName && (
+                                        {formatUserName(specialist) && (
                                             <div className="col-sm-6">
-                                                <InfoRow icon="bx-user" label="ФИО" value={fd.fullName}/>
+                                                <InfoRow icon="bx-user" label="Имя и фамилия" value={formatUserName(specialist)}/>
                                             </div>
                                         )}
                                         {fd?.city && (

@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server"
 import {aiAsk} from "@/lib/ai-provider"
 import {getClientIp, rateLimit} from "@/lib/rate-limit"
+import {formatUserName} from "@/lib/user-name"
 
 const SYSTEM = `Ты — редактор платформы NEXUS для дизайнеров интерьера.
 Твоя задача — превратить черновой набросок раздела «О себе» в развёрнутый, официальный и профессиональный текст для анкеты специалиста.
@@ -15,7 +16,8 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json().catch(() => ({})) as {
         text?: string
-        fullName?: string
+        firstName?: string
+        lastName?: string
         city?: string
         experience?: string
         specialty?: string
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest) {
     if (!draft) return NextResponse.json({error: "Сначала напишите пару слов о себе"}, {status: 400})
 
     const context = [
-        body.fullName && `Имя: ${body.fullName}`,
+        formatUserName(body) && `Имя: ${formatUserName(body)}`,
         body.city && `Город: ${body.city}`,
         body.experience && `Опыт: ${body.experience} лет`,
         body.specialty && `Специализация: ${body.specialty}`,

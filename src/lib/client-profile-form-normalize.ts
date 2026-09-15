@@ -2,11 +2,11 @@ import type {Prisma} from "@prisma/client"
 
 /**
  * Готовит данные анкеты для клиентских форм: скаляры из Json → string,
- * контакты подтягиваются из User, если в JSON их нет (после сохранения API вырезает phone/email).
+ * имя и контакты подтягиваются из User (после сохранения API вырезает имя, phone и email).
  */
 export function normalizeClientCabinetFormData(
     formDataJson: Prisma.JsonValue | null | undefined,
-    user: { name: string | null; phone: string | null; email: string | null },
+    user: { firstName: string | null; lastName: string | null; phone: string | null; email: string | null },
 ): Record<string, string> {
     const out: Record<string, string> = {}
     if (formDataJson && typeof formDataJson === "object" && !Array.isArray(formDataJson)) {
@@ -16,7 +16,10 @@ export function normalizeClientCabinetFormData(
             out[k] = String(v)
         }
     }
-    if (!out.fullName?.trim() && user.name?.trim()) out.fullName = user.name.trim()
+    // Имя всегда из User: в анкете оно не хранится (старые записи с fullName игнорируем).
+    delete out.fullName
+    out.firstName = user.firstName ?? ""
+    out.lastName = user.lastName ?? ""
     out.phone = user.phone ?? out.phone ?? ""
     out.email = user.email ?? out.email ?? ""
     return out

@@ -26,7 +26,8 @@ export function QuestionnaireCard({
             <div className="sp-card-bd">
                 <div className="sp-info-grid">
                     {[
-                        {label: "ФИО", value: fd.fullName, icon: "bx-user", color: "#6366f1"},
+                        {label: "Имя", value: fd.firstName, icon: "bx-user", color: "#6366f1"},
+                        {label: "Фамилия", value: fd.lastName, icon: "bx-user", color: "#6366f1"},
                         {label: "Телефон (в анкете)", value: fd.phone, icon: "bx-phone", color: "#0ea5e9"},
                         {label: "Город", value: fd.city, icon: "bx-map", color: "#6366f1"},
                         {

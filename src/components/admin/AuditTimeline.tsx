@@ -1,11 +1,12 @@
 "use client"
 
 import {useEffect, useState} from "react"
+import {formatUserName} from "@/lib/user-name"
 
 type LogEntry = {
     id: string; action: string; createdAt: string
     changes: Record<string, { from?: string; to?: string }> | null
-    user: { name: string | null; email: string; role: string } | null
+    user: { firstName: string | null; lastName: string | null; email: string; role: string } | null
 }
 
 const ACTION_LABEL: Record<string, { label: string; icon: string; color: string }> = {
@@ -52,7 +53,7 @@ const FIELD_LABEL: Record<string, string> = {
     onboardingStatus: "Статус онбординга",
     specialistContractStatus: "Статус договора",
     // Profile fields
-    fullName: "ФИО", phone: "Телефон", city: "Город", experience: "Опыт (лет)",
+    firstName: "Имя", lastName: "Фамилия", phone: "Телефон", city: "Город", experience: "Опыт (лет)",
     sqm: "Реализовано м²", interiorStyle: "Стиль", specialty: "Специализация",
     portfolio: "Портфолио", software: "Программы", about: "О себе",
     has3d: "3D моделирование", hasRd: "Чертежи",
@@ -127,7 +128,7 @@ export function AuditTimeline({entity, entityId}: { entity: string; entityId: st
                     icon: "bx-dots-horizontal-rounded",
                     color: "var(--adm-muted)"
                 }
-                const who = log.user ? (log.user.name ?? log.user.email.split("@")[0]) : "Система"
+                const who = log.user ? (formatUserName(log.user) || log.user.email.split("@")[0]) : "Система"
                 const role = log.user ? ROLE_LABEL[log.user.role] ?? log.user.role : ""
                 const date = new Date(log.createdAt)
                 const time = date.toLocaleTimeString("ru-RU", {hour: "2-digit", minute: "2-digit"})

@@ -13,6 +13,7 @@ import {
     AdminTableWrapper,
 } from "@/components/admin/AdminTable"
 import {StatusBadge, type StatusVariant} from "@/components/app/AppCard"
+import {userDisplayName} from "@/lib/user-name"
 
 interface AuditLogEntry {
     id: string
@@ -21,7 +22,7 @@ interface AuditLogEntry {
     action: string
     changes: Record<string, unknown> | null
     createdAt: string
-    user: { name: string | null; email: string; role: string }
+    user: { firstName: string | null; lastName: string | null; email: string; role: string }
 }
 
 function actionVariant(action: string): StatusVariant {
@@ -148,7 +149,7 @@ export default function AuditPage() {
                                     <AdminTableRow key={log.id}>
                                         <AdminTableCell muted mono>{formatDate(log.createdAt)}</AdminTableCell>
                                         <AdminTableCell>
-                                            <div style={{fontWeight: 500}}>{log.user.name || "Система"}</div>
+                                            <div style={{fontWeight: 500}}>{userDisplayName(log.user, "Система")}</div>
                                             <div style={{
                                                 fontSize: "0.72rem",
                                                 color: "var(--adm-muted)",

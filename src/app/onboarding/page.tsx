@@ -6,6 +6,7 @@ import {OnboardingStatusPoller} from "@/components/app/OnboardingStatusPoller"
 import {prisma} from "@/lib/db/prisma"
 import {parseQuizLevelState} from "@/lib/onboarding/levels/state"
 import {getSessionUser} from "@/lib/session"
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 
 const STEPS = [
     {
@@ -88,12 +89,7 @@ export default async function OnboardingPage() {
     const allDone = isActive || STEP_KEYS.every((_, i) => isDoneByIndex(i))
     const testStep = dbUser?.specialistProfile?.steps.find((s) => s.type === "TEST")
     const quizState = parseQuizLevelState(testStep?.comment ?? null)
-    const levelLabels: Record<string, string> = {
-        L1: "JUNIOR",
-        L2: "SENIOR",
-        L3: "MASTER",
-        L4: "ELITE",
-    }
+    const levelLabels: Record<string, string> = LEVEL_TITLE
     const highestPassedLevel = (quizState?.passedLevels ?? []).sort().at(-1) ?? null
 
     return (

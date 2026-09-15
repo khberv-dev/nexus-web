@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import {prisma} from "@/lib/db/prisma";
 import {Prisma, Role} from "@prisma/client";
+import {parseNameParts} from "@/lib/user-name";
 
 const TTL_MS = 24 * 60 * 60 * 1000;
 
@@ -22,7 +23,8 @@ export async function POST(req: NextRequest) {
     const body = (await req.json()) as {
         email?: string;
         role?: string;
-        name?: string;
+        firstName?: unknown;
+        lastName?: unknown;
         formData?: unknown;
     };
     const emailRaw = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
@@ -49,7 +51,11 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    const name = typeof body.name === "string" ? body.name.trim() || null : null;
+    const nameParts = parseNameParts(body);
+    if ("error" in nameParts) {
+        return NextResponse.json({error: nameParts.error}, {status: 400});
+    }
+    const {firstName, lastName} = nameParts;
     let formData: Prisma.InputJsonValue | undefined;
     // Важное правило: для специалистов телефон обязателен уже на этапе pending-signup,
     // потому что этот путь может обойти /api/onboarding/apply (и создать User с phone = null).
@@ -83,12 +89,14 @@ export async function POST(req: NextRequest) {
         create: {
             email: emailRaw,
             role,
-            name,
+            firstName,
+            lastName,
             ...(formData !== undefined ? {formData} : {}),
         },
         update: {
             role,
-            name,
+            firstName,
+            lastName,
             createdAt: new Date(),
             ...(formData !== undefined ? {formData} : {}),
         },

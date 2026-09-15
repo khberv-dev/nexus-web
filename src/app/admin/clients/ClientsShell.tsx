@@ -9,6 +9,7 @@ import {formatEdoProvidersLabel} from "@/lib/edo-providers"
 import {adminClientHref} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import type {ClientOrder, RawClient} from "./client-types"
+import {userDisplayName} from "@/lib/user-name"
 
 type ClientsShellContextValue = {
     clients: RawClient[]
@@ -63,7 +64,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
     const filtered = clients.filter(c => showArchived ? !!c.archivedAt : !c.archivedAt).filter(c => {
         if (!search.trim()) return true
         const q = search.toLowerCase()
-        return (c.name ?? "").toLowerCase().includes(q) || c.email.toLowerCase().includes(q)
+        return userDisplayName(c).toLowerCase().includes(q) || c.email.toLowerCase().includes(q)
     })
 
     const openClient = (id: string) => router.push(adminClientHref(id, window.location.search), {scroll: false})
@@ -139,7 +140,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
 
                     {!loading && filtered.map(c => {
                         const isOn = c.id === selected
-                        const displayName = c.name ?? c.email
+                        const displayName = userDisplayName(c, "?")
                         const cFd = c.clientProfile?.formData
                         const edoLabel = formatEdoProvidersLabel(typeof cFd?.edoProviders === "string" ? cFd.edoProviders : undefined)
                         return (

@@ -14,8 +14,8 @@ export async function GET(req: NextRequest) {
     const requests = await prisma.requisiteChangeRequest.findMany({
         where: {status: status as "PENDING" | "APPROVED" | "REJECTED"},
         include: {
-            specialist: {select: {id: true, name: true, email: true}},
-            client: {select: {id: true, name: true, email: true}},
+            specialist: {select: {id: true, firstName: true, lastName: true, email: true}},
+            client: {select: {id: true, firstName: true, lastName: true, email: true}},
         },
         orderBy: {createdAt: "desc"},
         take: 50,

@@ -88,7 +88,7 @@ export async function GET(_req: NextRequest, {params}: { params: Promise<{ id: s
         rows = await prisma.$queryRaw<MessageRow[]>`
       SELECT m.id, m.body, m."createdAt",
              u.id AS "senderId",
-             u.name AS "senderName",
+             NULLIF(concat_ws(' ', NULLIF(btrim(u."firstName"), ''), NULLIF(btrim(u."lastName"), '')), '') AS "senderName",
              u.email AS "senderEmail",
              u.role AS "senderRole"
       FROM "OrderChatMessage" m
@@ -185,7 +185,7 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         inserted = await prisma.$queryRaw<InsertedRow[]>`
       SELECT m.id, m.body, m."createdAt", m."channel",
              u.id AS "senderId",
-             u.name AS "senderName",
+             NULLIF(concat_ws(' ', NULLIF(btrim(u."firstName"), ''), NULLIF(btrim(u."lastName"), '')), '') AS "senderName",
              u.email AS "senderEmail",
              u.role AS "senderRole"
       FROM "OrderChatMessage" m

@@ -5,6 +5,7 @@ import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl} from "@/lib/s3"
 import CommunityPage from "@/components/Community/CommunityPage"
 import {sortStages} from "@/lib/stage-order"
+import {omitNameFields, userDisplayName} from "@/lib/user-name"
 
 /**
  * Общая оболочка разделов кабинета специалиста (/work/orders, /work/portfolio, …):
@@ -23,18 +24,21 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
     const featuredOnLanding = dbUser?.specialistProfile?.featuredOnLanding ?? false
 
     const formDataRaw = dbUser?.specialistProfile?.formData as Record<string, string> | null
-    const formData: Record<string, string> | null = (() => {
-        if (!dbUser) return null
-        const phone = dbUser.phone ?? ""
-        if (formDataRaw) return {...formDataRaw, phone}
-        return phone ? {phone} : null
-    })()
+    // Имя, фамилия и телефон — из User: в анкете они не хранятся.
+    const formData: Record<string, string> | null = dbUser
+        ? {
+            ...(formDataRaw ? omitNameFields(formDataRaw) : {}),
+            firstName: dbUser.firstName ?? "",
+            lastName: dbUser.lastName ?? "",
+            phone: dbUser.phone ?? "",
+        }
+        : null
 
     const ordersRaw = dbUser ? await prisma.order.findMany({
         where: {specialistId: dbUser.id},
         orderBy: {updatedAt: "desc"},
         include: {
-            client: {select: {name: true, email: true}},
+            client: {select: {firstName: true, lastName: true, email: true}},
             stages: {
                 orderBy: {type: "asc"},
                 include: {act: {select: {id: true, signedAt: true, generatedAt: true}}},
@@ -99,7 +103,7 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
 
     return (
         <CommunityPage
-            name={formData?.fullName || user.name || user.email}
+            name={userDisplayName(user)}
             email={user.email}
             city={formData?.city}
             experience={formData?.experience}

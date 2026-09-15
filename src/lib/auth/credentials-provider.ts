@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import {prisma} from "@/lib/db/prisma";
 import {verifyPassword} from "./password";
+import {formatUserName} from "@/lib/user-name";
 
 /** Email + пароль. Работает только для User с уже установленным password (см. prisma/seed.ts). */
 export function credentialsProvider() {
@@ -23,7 +24,7 @@ export function credentialsProvider() {
             const valid = await verifyPassword(password, user.password);
             if (!valid) return null;
 
-            return {id: user.id, email: user.email, name: user.name, role: user.role};
+            return {id: user.id, email: user.email, name: formatUserName(user) || null, role: user.role};
         },
     });
 }

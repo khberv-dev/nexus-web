@@ -1,7 +1,8 @@
 "use client"
 
-import {type ChangeEvent, useRef, useState} from "react"
+import {useState} from "react"
 import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
+import {DocumentUpload} from "@/components/app/DocumentUpload"
 
 interface Props {
     contract: Contract | null
@@ -45,7 +46,6 @@ function UploadModal({
     const [file, setFile] = useState<File | null>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleSubmit = async () => {
         if (!file || !onUpload) return
@@ -58,22 +58,6 @@ function UploadModal({
             setFile(null)
         } else {
             setError(result.error || "Ошибка загрузки")
-        }
-    }
-
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const f = e.target.files?.[0]
-        if (f) {
-            if (!f.name.toLowerCase().endsWith(".pdf") && f.type !== "application/pdf") {
-                setError("Загрузите файл в формате PDF")
-                return
-            }
-            if (f.size > 10 * 1024 * 1024) {
-                setError("Размер файла не должен превышать 10МБ")
-                return
-            }
-            setFile(f)
-            setError(null)
         }
     }
 
@@ -118,23 +102,23 @@ function UploadModal({
                     </button>
                 </div>
                 <p style={{color: "#999", fontSize: "0.85rem", marginBottom: 16}}>{description}</p>
-                <input ref={fileInputRef} type="file" accept=".pdf,application/pdf" onChange={handleFileChange}
-                       style={{display: "none"}}/>
-                <button
-                    onClick={() => fileInputRef.current?.click()}
-                    style={{
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                        width: "100%", padding: 12, border: "2px dashed #444", borderRadius: 8,
-                        background: "#222", color: "#999", cursor: "pointer", fontSize: "0.9rem",
-                        marginBottom: 12, minHeight: 48,
-                    }}
-                >
-                    <i className="bx bx-upload"/>
-                    {file ? file.name : "Выберите файл (PDF, до 10МБ)"}
-                </button>
-                {error && <p style={{color: "#f44336", fontSize: "0.85rem", marginBottom: 12}}>{error}</p>}
+                <div style={{marginBottom: 16}}>
+                    <DocumentUpload
+                        file={file}
+                        onFileChange={(f) => {
+                            setFile(f)
+                            setError(null)
+                        }}
+                        disabled={loading}
+                        error={error}
+                    />
+                </div>
                 <div style={{display: "flex", gap: 8, justifyContent: "flex-end"}}>
-                    <button onClick={onClose} disabled={loading}
+                    <button onClick={() => {
+                        setFile(null)
+                        setError(null)
+                        onClose()
+                    }} disabled={loading}
                             style={{
                                 padding: "8px 16px",
                                 borderRadius: 6,
@@ -154,10 +138,11 @@ function UploadModal({
                                 background: "#34d399",
                                 color: "#fff",
                                 cursor: !file || loading ? "not-allowed" : "pointer",
+                                opacity: !file || loading ? 0.6 : 1,
                                 fontSize: "0.85rem",
                                 fontWeight: 600
                             }}>
-                        {loading ? "Загрузка…" : "Загрузить"}
+                        {loading ? "Отправка…" : "Отправить"}
                     </button>
                 </div>
             </div>
@@ -219,9 +204,12 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
         ? {label: "Требует вашей подписи", icon: "bx bx-edit"}
         : statusAction
 
-    // Может ли пользователь загрузить подписанный договор
+    // Загрузка открыта ровно в тех статусах, которые принимает сервер (…/contract/<role>/sign).
     const canUpload = userRole === "SPECIALIST" && contract.status === "SENT_TO_SPECIALIST"
-        || userRole === "CLIENT" && (contract.status === "SENT_TO_CLIENT" || contract.status === "SPECIALIST_SIGNED")
+        || userRole === "CLIENT" && contract.status === "SENT_TO_CLIENT"
+    // Своя подпись уже отправлена — форма остаётся видимой, но заблокированной.
+    const ownSignedAt = userRole === "SPECIALIST" ? contract.specialistSignedAt : contract.clientSignedAt
+    const ownSubmitted = !canUpload && Boolean(userRole === "SPECIALIST" ? contract.specialistSignedS3Key : contract.clientSignedS3Key)
 
     return (
         <div style={{
@@ -254,6 +242,19 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
                     <ContractFileLink contractId={contract.id} s3Key={contract.s3Key} label="Скачать"/>
                 )}
             </div>
+
+            {ownSubmitted && (
+                <DocumentUpload
+                    size="sm"
+                    file={null}
+                    onFileChange={() => undefined}
+                    submitted={{
+                        title: "Подписанный договор отправлен",
+                        submittedAt: ownSignedAt,
+                        hint: contract.status === "CONFIRMED" ? "Договор подтверждён" : "Ожидает проверки администратором",
+                    }}
+                />
+            )}
 
             {canUpload && onUploadSigned && (
                 <div style={{marginTop: 8}}>

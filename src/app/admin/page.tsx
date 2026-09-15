@@ -3,6 +3,7 @@ import {getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {AdminLayout} from "@/components/admin/AdminLayout"
 import {StatusBadge} from "@/components/app/AppCard"
+import {userDisplayName} from "@/lib/user-name"
 
 const ORDER_STATUS_VARIANT = {
     DRAFT: "pending", BRIEFING: "pending", BRIEF_REVIEW: "current",
@@ -45,8 +46,8 @@ export default async function AdminPage() {
             select: {
                 id: true, status: true, title: true, createdAt: true, updatedAt: true,
                 clientId: true, specialistId: true,
-                client: {select: {email: true, name: true}},
-                specialist: {select: {email: true, name: true}},
+                client: {select: {email: true, firstName: true, lastName: true}},
+                specialist: {select: {email: true, firstName: true, lastName: true}},
             },
         }),
     ])
@@ -220,14 +221,14 @@ export default async function AdminPage() {
                                     <td style={{fontSize: "0.85rem"}}>
                                         <a href={`/admin/clients/${row.clientId}`} className="text-muted"
                                            style={{textDecoration: "none"}}>
-                                            {row.client.name ?? row.client.email}
+                                            {userDisplayName(row.client)}
                                         </a>
                                     </td>
                                     <td style={{fontSize: "0.85rem"}}>
                                         {row.specialist ? (
                                             <a href={`/admin/specialists/${row.specialistId}`}
                                                className="text-muted" style={{textDecoration: "none"}}>
-                                                {row.specialist.name ?? row.specialist.email}
+                                                {userDisplayName(row.specialist)}
                                             </a>
                                         ) : (
                                             <span className="text-danger" style={{fontSize: "0.78rem"}}>

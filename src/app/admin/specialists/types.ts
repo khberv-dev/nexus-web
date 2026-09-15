@@ -13,7 +13,8 @@ export type SpecialistDetailTab =
 export interface RawSpecialist {
     id: string
     email: string
-    name: string | null
+    firstName: string | null
+    lastName: string | null
     phone: string | null
     archivedAt: string | null
     createdAt: string

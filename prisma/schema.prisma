@@ -101,7 +101,8 @@ enum PaymentStatus {
 
 model User {
   id                String             @id @default(cuid())
-  name              String?
+  firstName         String?
+  lastName          String?
   email             String?            @unique
   emailVerified     DateTime?
   image             String?
@@ -171,7 +172,8 @@ model VerificationToken {
 model PendingSignup {
   email     String   @id
   role      Role
-  name      String?
+  firstName String?
+  lastName  String?
   formData  Json?
   createdAt DateTime @default(now())
 }

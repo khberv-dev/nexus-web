@@ -1,0 +1,240 @@
+/*
+ * Загрузка документа. Цвета — из токенов кабинета (--dash-*), с запасными значениями
+ * для страниц онбординга, где оболочки .dash нет.
+ */
+
+.root {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    font-family: inherit;
+    --du-text: var(--dash-text, #f4f4f4);
+    --du-muted: var(--dash-muted, rgba(255, 255, 255, 0.45));
+    --du-border: var(--dash-border, rgba(255, 255, 255, 0.14));
+    --du-surface: var(--dash-surface2, rgba(255, 255, 255, 0.04));
+    --du-accent: var(--dash-accent, #a78bfa);
+    --du-accent-bg: var(--dash-accent-bg, rgba(167, 139, 250, 0.1));
+    --du-success: var(--dash-success, #34d399);
+    --du-success-bg: var(--dash-success-bg, rgba(52, 211, 153, 0.1));
+    --du-danger: var(--dash-danger, #f87171);
+}
+
+.label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--du-muted);
+}
+
+.input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--du-border);
+    background: var(--du-surface);
+    color: var(--du-text);
+    transition: border-color 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.dropzone {
+    border-style: dashed;
+    border-width: 1.5px;
+    cursor: pointer;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible,
+.dragOver {
+    border-color: var(--du-accent);
+    background: var(--du-accent-bg);
+    outline: none;
+}
+
+.selected {
+    border-color: var(--du-accent);
+}
+
+.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.dropzone.locked:hover {
+    border-color: var(--du-border);
+    background: var(--du-surface);
+}
+
+.submitted {
+    border-color: color-mix(in oklab, var(--du-success) 45%, transparent);
+    background: var(--du-success-bg);
+    cursor: default;
+}
+
+.icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--du-accent-bg);
+    color: var(--du-accent);
+    font-size: 1.35rem;
+}
+
+.iconDone {
+    background: color-mix(in oklab, var(--du-success) 18%, transparent);
+    color: var(--du-success);
+}
+
+.meta {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--du-text);
+}
+
+.dropzone .title {
+    white-space: normal;
+    font-weight: 500;
+}
+
+.accent {
+    color: var(--du-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.sub {
+    font-size: 0.76rem;
+    line-height: 1.35;
+    color: var(--du-muted);
+    overflow-wrap: anywhere;
+}
+
+.progress {
+    display: block;
+    height: 4px;
+    margin-top: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--du-accent) 18%, transparent);
+}
+
+.progress > span {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--du-accent);
+    transition: width 0.2s ease;
+}
+
+.action {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--du-border);
+    background: transparent;
+    color: var(--du-text);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.action:hover {
+    border-color: var(--du-accent);
+    color: var(--du-accent);
+}
+
+.remove {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--du-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.remove:hover {
+    color: var(--du-danger);
+    background: color-mix(in oklab, var(--du-danger) 12%, transparent);
+}
+
+.lock {
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--du-muted);
+}
+
+.error {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--du-danger);
+}
+
+/* Компактный вариант — для карточек кабинета. */
+.sm .box {
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.sm .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.sm .title {
+    font-size: 0.8rem;
+}
+
+.sm .sub {
+    font-size: 0.72rem;
+}
+
+@media (max-width: 480px) {
+    .box {
+        flex-wrap: wrap;
+    }
+
+    .selected .action,
+    .submitted .action {
+        order: 3;
+    }
+}

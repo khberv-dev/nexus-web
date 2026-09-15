@@ -18,6 +18,7 @@ import {
 // Тип живёт рядом с текстами подтверждений (обычный .ts — его видят тесты),
 // но реэкспортируется отсюда: на него уже ссылаются соседние компоненты.
 import type {SpecialistOnboardingAdminAction} from "../onboarding-confirm"
+import {userDisplayName} from "@/lib/user-name"
 
 export type {SpecialistOnboardingAdminAction}
 
@@ -152,7 +153,7 @@ export function SpecialistDetail({
     const sp = specialist
     const status = (sp.specialistProfile?.onboardingStatus ?? "PENDING") as OnboardingStatus
     const fd = sp.specialistProfile?.formData
-    const displayName = fd?.fullName ?? sp.name ?? sp.email
+    const displayName = userDisplayName(sp, "?")
     const canAdvance = !sp.archivedAt && status !== "ACTIVE" && status !== "REJECTED"
     const canReject = !sp.archivedAt && status !== "ACTIVE" && status !== "REJECTED"
     const steps = sp.specialistProfile?.steps ?? []

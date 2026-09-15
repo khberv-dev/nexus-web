@@ -1,10 +1,11 @@
 import type {ReactNode} from "react"
 import {getSessionUser} from "@/lib/session"
 import {AdminViewerProvider} from "@/components/admin/AdminViewerContext"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function AdminLayout({children}: { children: ReactNode }) {
     const user = await getSessionUser()
-    const viewer = user ? {name: user.name, email: user.email} : null
+    const viewer = user ? {name: formatUserName(user) || null, email: user.email} : null
 
     return (
         <>

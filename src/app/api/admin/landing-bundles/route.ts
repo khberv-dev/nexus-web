@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
         include: {
             user: {
                 select: {
-                    id: true, name: true, email: true,
+                    id: true, firstName: true, lastName: true, email: true,
                     files: {where: {category: "AVATAR"}, orderBy: {createdAt: "desc"}, take: 1, select: {id: true}},
                 },
             },

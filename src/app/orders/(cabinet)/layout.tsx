@@ -8,6 +8,7 @@ import {normalizeClientCabinetFormData} from "@/lib/client-profile-form-normaliz
 import ClientCabinetPage from "@/components/Client/ClientCabinetPage"
 import type {ClientContract} from "@/components/Client/client-cabinet/types"
 import {sortStages} from "@/lib/stage-order"
+import {formatUserName, userDisplayName} from "@/lib/user-name"
 
 export const dynamic = "force-dynamic"
 
@@ -36,7 +37,7 @@ export default async function ClientCabinetLayout({children}: { children: ReactN
     }
 
     const formDataForClient = normalizeClientCabinetFormData(dbUser.clientProfile?.formData, dbUser)
-    const displayName = dbUser.name?.trim() || user.name?.trim() || user.email
+    const displayName = userDisplayName(dbUser) || user.email
 
     // If requisites are pending approval — show the latest requested requisites in Settings UI.
     const pendingReq = await prisma.requisiteChangeRequest.findFirst({
@@ -65,7 +66,8 @@ export default async function ClientCabinetLayout({children}: { children: ReactN
             specialist: {
                 select: {
                     id: true,
-                    name: true,
+                    firstName: true,
+                    lastName: true,
                     email: true,
                     specialistProfile: {select: {formData: true}},
                     files: {where: {category: "AVATAR"}, orderBy: {createdAt: "desc"}, take: 1, select: {s3Key: true}},
@@ -89,7 +91,7 @@ export default async function ClientCabinetLayout({children}: { children: ReactN
             return {
                 ...o,
                 specialist: {
-                    name: (o.specialist.specialistProfile?.formData as Record<string, string> | null)?.fullName ?? o.specialist.name,
+                    name: formatUserName(o.specialist) || null,
                     email: o.specialist.email ?? "",
                     avatarUrl,
                 },

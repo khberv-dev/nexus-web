@@ -17,8 +17,8 @@ export async function GET() {
         where,
         orderBy: {createdAt: "desc"},
         include: {
-            client: {select: {email: true, name: true}},
-            specialist: {select: {email: true, name: true}},
+            client: {select: {email: true, firstName: true, lastName: true}},
+            specialist: {select: {email: true, firstName: true, lastName: true}},
         },
     })
 

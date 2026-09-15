@@ -3,6 +3,7 @@ import {getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import WorkOrderClient from "./WorkOrderClient"
 import {loadSpecialistWorkOrderBundle} from "./specialist-work-order-bundle"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function WorkOrderPage({params}: { params: Promise<{ id: string }> }) {
     const {id} = await params
@@ -18,7 +19,7 @@ export default async function WorkOrderPage({params}: { params: Promise<{ id: st
     return (
         <WorkOrderClient
             email={user.email}
-            name={user.name}
+            name={formatUserName(user) || null}
             briefHelpRequested={bundle.briefHelpRequested}
             pipelineStages={bundle.pipelineStages}
             order={bundle.order}

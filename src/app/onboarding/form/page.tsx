@@ -21,12 +21,13 @@ interface AISuggestion {
 }
 
 const FIELD_LABELS: Record<string, string> = {
-    fullName: "ФИО", city: "Город", experience: "Опыт",
+    firstName: "Имя", lastName: "Фамилия", city: "Город", experience: "Опыт",
     portfolio: "Портфолио", software: "Программы", aiServices: "Нейросети", about: "О себе",
 }
 
 const FIELDS = [
-    {name: "fullName", label: "ФИО", type: "text", placeholder: "Иван Иванов", required: true},
+    {name: "firstName", label: "Имя", type: "text", placeholder: "Иван", required: true},
+    {name: "lastName", label: "Фамилия", type: "text", placeholder: "Иванов", required: true},
     {name: "email", label: "Email", type: "email", placeholder: "ivan@example.com", required: true},
     {name: "city", label: "Город", type: "text", placeholder: "Москва", required: true},
     {name: "experience", label: "Опыт работы (лет)", type: "number", placeholder: "3", required: true},
@@ -131,7 +132,11 @@ export default function OnboardingFormPage() {
     const [loading, setLoading] = useState(false)
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [profileLocks, setProfileLocks] = useState({fullName: false, email: false})
+    const [profileLocks, setProfileLocks] = useState({name: false, email: false})
+
+    // Имя и почта из регистрации в анкете только для чтения.
+    const isFieldLocked = (field: string) =>
+        field === "firstName" || field === "lastName" ? profileLocks.name : field === "email" && profileLocks.email
 
     // AI drawer
     const [drawerOpen, setDrawerOpen] = useState(false)
@@ -229,7 +234,8 @@ export default function OnboardingFormPage() {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     text: form.about,
-                    fullName: form.fullName,
+                    firstName: form.firstName,
+                    lastName: form.lastName,
                     city: form.city,
                     experience: form.experience,
                     specialty: form.specialty,
@@ -272,7 +278,7 @@ export default function OnboardingFormPage() {
     const closeDrawer = () => setDrawerOpen(false)
 
     const applyAI = (idx: number, field: string | null, example: string) => {
-        if (field && !profileLocks[field as keyof typeof profileLocks]) {
+        if (field && !isFieldLocked(field)) {
             setForm(f => ({...f, [field]: example}))
         }
         setAppliedIdx(prev => new Set(prev).add(idx))
@@ -288,7 +294,7 @@ export default function OnboardingFormPage() {
                 if (locks && typeof locks === "object") {
                     const lockRecord = locks as Record<string, unknown>
                     setProfileLocks({
-                        fullName: lockRecord.fullName === true,
+                        name: lockRecord.name === true,
                         email: lockRecord.email === true,
                     })
                 }
@@ -399,9 +405,7 @@ export default function OnboardingFormPage() {
                         >
                             {FIELDS.map(field => {
                                 const isWide = field.type === "textarea" || field.type === "software" || field.type === "ai" || field.type === "multiselect" || field.name === "portfolio"
-                                const lockedFromProfile = field.name === "fullName"
-                                    ? profileLocks.fullName
-                                    : field.name === "email" && profileLocks.email
+                                const lockedFromProfile = isFieldLocked(field.name)
                                 return (
                                     <div
                                         key={field.name}

@@ -100,10 +100,10 @@ describe("админ назначает уровень → письмо спец
     });
 
     test.each([
-        ["L1", "Начинающий"],
-        ["L2", "Профессионал"],
-        ["L3", "Мастер-дизайнер"],
-        ["L4", "Элита"],
+        ["L1", "JUNIOR"],
+        ["L2", "SENIOR"],
+        ["L3", "MASTER"],
+        ["L4", "ELITE"],
     ])("уровень %s уходит на почту специалиста с названием «%s»", async (level, title) => {
         const res = await POST(makeReq("/x", "POST", {level}), params);
         expect(res.status).toBe(200);

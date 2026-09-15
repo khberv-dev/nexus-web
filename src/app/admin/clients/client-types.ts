@@ -13,7 +13,8 @@ export interface ClientOrder {
 export interface RawClient {
     id: string;
     email: string;
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
     phone: string | null;
     createdAt: string
     archivedAt: string | null

@@ -4,13 +4,14 @@ import {DashboardBreadcrumb} from "@/components/app/DashboardBreadcrumb"
 import {getSessionUser} from "@/lib/session"
 import {redirect} from "next/navigation"
 import PerfectScrollbarDemo from "./PerfectScrollbarDemo"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function ScrollbarPage() {
     const user = await getSessionUser()
     if (!user) redirect("/login")
 
     return (
-        <DashboardLayout navItems={NAV_ITEMS} userName={user.name ?? undefined} userEmail={user.email}>
+        <DashboardLayout navItems={NAV_ITEMS} userName={formatUserName(user) || undefined} userEmail={user.email}>
             <DashboardBreadcrumb items={[
                 {href: "/work", label: "Дашборд"},
                 {href: "/work/scrollbar", label: "Perfect Scrollbar"},

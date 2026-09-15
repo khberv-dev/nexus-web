@@ -8,7 +8,8 @@ import {MultiSelectField} from "@/components/ui/MultiSelectField"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 
 const FIELDS = [
-    {name: "fullName", label: "ФИО", placeholder: "Иван Иванов"},
+    {name: "firstName", label: "Имя", placeholder: "Иван"},
+    {name: "lastName", label: "Фамилия", placeholder: "Иванов"},
     {name: "phone", label: "Телефон", placeholder: "+7 (999) 123-45-67"},
     {name: "city", label: "Город", placeholder: "Москва"},
     {name: "experience", label: "Опыт (лет)", placeholder: "3"},
@@ -139,9 +140,10 @@ export default function ProfileForm({
                 specialization: form.specialty ?? "",
                 portfolio: splitPortfolioLinks(form.portfolio || "").join("\n"),
             }
+            // Имя и фамилия лежат в User, а не в анкете — админский PATCH передаёт их отдельно.
             const payload =
                 submitMethod === "PATCH" && submitUrl.includes("/api/admin/specialists/")
-                    ? {formData: finalForm}
+                    ? {formData: finalForm, firstName: form.firstName ?? "", lastName: form.lastName ?? ""}
                     : finalForm
 
             const res = await fetch(submitUrl, {

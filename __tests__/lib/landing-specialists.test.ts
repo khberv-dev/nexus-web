@@ -25,7 +25,7 @@ describe("landing specialist level", () => {
     describe("levelFromTestStep", () => {
         test("returns the highest confirmed level", () => {
             expect(levelFromTestStep(testStepComment(["L1", "L2", "L3"]))?.code).toBe("L3");
-            expect(levelFromTestStep(testStepComment(["L1", "L2", "L3", "L4"]))?.title).toBe("Элита");
+            expect(levelFromTestStep(testStepComment(["L1", "L2", "L3", "L4"]))?.title).toBe("ELITE");
         });
 
         test("order of passedLevels does not matter", () => {

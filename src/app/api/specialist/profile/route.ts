@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import type {Prisma} from "@prisma/client"
 import {getSessionUser} from "@/lib/session"
+import {omitNameFields, parseNameParts} from "@/lib/user-name"
 
 export async function POST(req: NextRequest) {
     const session = await getSessionUser()
@@ -14,13 +15,15 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({error: "Укажите налоговый статус: ИП, самозанятый или ООО."}, {status: 400})
     }
 
-    const fullName = formData?.fullName || formData?.name || null
+    const nameParts = parseNameParts(formData ?? {}, {required: true})
+    if ("error" in nameParts) return NextResponse.json({error: nameParts.error}, {status: 400})
     const phone = typeof formData?.phone === "string" && formData.phone.trim() ? formData.phone.trim() : null
     if (!phone) {
         return NextResponse.json({error: "Укажите телефон."}, {status: 400})
     }
     const email = typeof formData?.email === "string" && formData.email.trim() ? formData.email.trim() : undefined
-    const {phone: _ignoredPhone, email: _ignoredEmail, ...formDataRest} = (formData ?? {}) as Record<string, unknown>
+    const {phone: _ignoredPhone, email: _ignoredEmail, ...formDataRest} =
+        omitNameFields((formData ?? {}) as Record<string, unknown>)
     const normalizedFormData = {...formDataRest} as Record<string, unknown>
     const specialtyRaw =
         typeof normalizedFormData.specialty === "string"
@@ -39,7 +42,8 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.update({
         where: {id: session.id},
         data: {
-            name: fullName ?? undefined,
+            firstName: nameParts.firstName,
+            lastName: nameParts.lastName,
             phone,
             ...(email ? {email} : {}),
         },
@@ -145,10 +149,16 @@ export async function GET() {
 
     if (!user) return NextResponse.json(null)
     const formData = (user.specialistProfile?.formData ?? null) as Record<string, unknown> | null
+    const identity = {
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
+        phone: user.phone ?? "",
+        email: user.email ?? "",
+    }
     return NextResponse.json(
         formData
-            ? {...formData, phone: user.phone ?? "", email: user.email ?? ""}
-            : {phone: user.phone ?? "", email: user.email ?? ""}
+            ? {...omitNameFields(formData), ...identity}
+            : identity
     )
 }
 

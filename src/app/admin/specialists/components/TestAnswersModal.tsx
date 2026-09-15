@@ -14,8 +14,9 @@ import type {TestModalData} from "../types"
 import {getLevelBank, QUIZ_LEVEL_ORDER, toOriginalOptionIndex} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelAttempt, QuizLevelCode} from "@/lib/onboarding/levels/types"
 import {parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 
-const LEVEL_LABELS: Record<QuizLevelCode, string> = {L1: "Начинающий", L2: "Профессионал", L3: "Мастер", L4: "Элита"}
+const LEVEL_LABELS = LEVEL_TITLE
 
 type ParsedState = {
     attempts: QuizLevelAttempt[]

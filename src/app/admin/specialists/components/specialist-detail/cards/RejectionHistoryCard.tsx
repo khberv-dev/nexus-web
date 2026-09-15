@@ -1,8 +1,9 @@
 "use client"
 
 import {useEffect, useMemo, useState} from "react"
+import {userDisplayName} from "@/lib/user-name"
 
-type AuditUser = { name: string | null; email: string; role: string } | null
+type AuditUser = { firstName: string | null; lastName: string | null; email: string; role: string } | null
 type AuditFieldDiff = { from?: string; to?: string }
 type AuditChanges = Record<string, AuditFieldDiff> | null
 type AuditEntry = {
@@ -72,7 +73,7 @@ export function RejectionHistoryCard({userId}: { userId: string }) {
                     <div style={{display: "grid", gap: 8}}>
                         {rejections.map((entry) => {
                             const reason = resolveReason(entry)
-                            const who = entry.user?.name?.trim() || entry.user?.email || "Система"
+                            const who = userDisplayName(entry.user, "Система")
                             const date = new Date(entry.createdAt)
                             return (
                                 <div

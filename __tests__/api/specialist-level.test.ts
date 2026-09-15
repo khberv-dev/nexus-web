@@ -158,7 +158,7 @@ describe("POST /api/admin/specialists/[id]/level", () => {
         expect(mockNotify).toHaveBeenCalledWith(expect.objectContaining({
             userId: "spec-1",
             status: "LEVEL_GRANTED",
-            extra: expect.objectContaining({level: "L4", levelTitle: "Элита"}),
+            extra: expect.objectContaining({level: "L4", levelTitle: "ELITE"}),
         }));
         expect(mockPrisma.auditLog.create).toHaveBeenCalledWith(expect.objectContaining({
             data: expect.objectContaining({action: "specialist_level_set", entityId: "spec-1"}),

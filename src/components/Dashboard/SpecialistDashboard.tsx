@@ -7,6 +7,7 @@ import {buildSpecialistDashboardHintSteps} from "@/components/app/hint-tour-step
 import type {ProfileCompleteness} from "@/lib/profile-completeness"
 import ProfileCompletenessCard from "./ProfileCompletenessCard"
 import "./specialist-dashboard.css"
+import {userDisplayName} from "@/lib/user-name"
 
 interface UrgentStage {
     orderId: string
@@ -21,7 +22,7 @@ interface RecentOrder {
     status: string
     createdAt: Date
     briefData: unknown
-    client: { name: string | null; email: string | null }
+    client: { firstName: string | null; lastName: string | null; email: string | null }
     stages: Array<{ type: string; status: string }>
 }
 
@@ -226,7 +227,7 @@ export default function SpecialistDashboard({
                                                     {getOrderTitle(order.briefData)}
                                                 </Link>
                                             </td>
-                                            <td>{order.client.name ?? order.client.email}</td>
+                                            <td>{userDisplayName(order.client)}</td>
                                             <td>
                           <span
                               className={`spec-dashboard__status spec-dashboard__status--${order.status.toLowerCase()}`}>

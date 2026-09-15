@@ -5,6 +5,7 @@ import {getSessionDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl, isStorageConfigured, putObject, validateFile} from "@/lib/s3"
 import {notify} from "@/lib/notifications"
+import {userDisplayName} from "@/lib/user-name"
 
 function mergeFormDataJson(
     current: Prisma.JsonValue | null | undefined,
@@ -142,7 +143,7 @@ export async function POST(req: NextRequest) {
 
         // Notify admins
         const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
-        const specName = dbUser.name ?? dbUser.email ?? "Специалист"
+        const specName = userDisplayName(dbUser, "Специалист")
         for (const a of admins) {
             await notify(a.id, "contract_signed", "Договор подписан", `${specName} загрузил подписанный договор`, `/admin/specialists/${dbUser.id}/contract`)
         }

@@ -7,6 +7,7 @@ import {filterStageFilesVisibleToClient} from "@/lib/client-stage-file-visibilit
 import type {StageType} from "@prisma/client"
 import type {StageType as ClientStageType} from "../../types"
 import OrderWorkStageClient from "./OrderWorkStageClient"
+import {formatUserName} from "@/lib/user-name"
 
 export default async function OrderWorkStagePage({
                                                      params,
@@ -30,7 +31,8 @@ export default async function OrderWorkStagePage({
         include: {
             specialist: {
                 select: {
-                    name: true,
+                    firstName: true,
+                    lastName: true,
                     email: true,
                     specialistProfile: {select: {formData: true}},
                     files: {
@@ -118,7 +120,7 @@ export default async function OrderWorkStagePage({
     return (
         <OrderWorkStageClient
             viewerEmail={dbUser.email ?? ""}
-            viewerName={dbUser.name}
+            viewerName={formatUserName(dbUser) || null}
             stageType={type as unknown as ClientStageType}
             initialOrder={{
                 id: order.id,
@@ -128,9 +130,7 @@ export default async function OrderWorkStagePage({
                 briefHelpRequested: order.briefHelpRequested,
                 specialist: order.specialist
                     ? {
-                        name:
-                            (order.specialist.specialistProfile?.formData as Record<string, string> | null)?.fullName ??
-                            order.specialist.name,
+                        name: formatUserName(order.specialist) || null,
                         email: order.specialist.email ?? "",
                         avatarUrl: specialistAvatarUrl,
                     }

@@ -5,6 +5,7 @@ import {getSessionUser} from "@/lib/session"
 import {notify} from "@/lib/notifications"
 import {audit} from "@/lib/audit"
 import {parseJsonBody} from "@/lib/validate"
+import {userDisplayName} from "@/lib/user-name"
 
 // Free-form requisite formData object — lenient (only known string fields are
 // picked downstream via pickRequisites), but rejects non-object bodies.
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
     // Notify admins
     const admins = await prisma.user.findMany({where: {role: "ADMIN"}, select: {id: true}})
     for (const admin of admins) {
-        void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Специалист ${user.name ?? user.email} запросил смену реквизитов`, `/admin/specialists/${user.id}`)
+        void notify(admin.id, "requisite_change", "Запрос на смену реквизитов", `Специалист ${userDisplayName(user)} запросил смену реквизитов`, `/admin/specialists/${user.id}`)
     }
 
     await audit(user.id, "requisite_change_requested", "User", user.id, {requestId: {to: request.id}})

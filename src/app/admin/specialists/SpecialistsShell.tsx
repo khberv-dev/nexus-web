@@ -18,6 +18,7 @@ import type {RawSpecialist, SpecialistDetailTab, SpecialistOrder, TestModalData}
 import {SPECIALISTS_STYLES} from "./styles"
 import {adminSpecialistHref, parseTabSegment, ADMIN_SPECIALIST_TABS} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
+import {userDisplayName} from "@/lib/user-name"
 
 const STATUS_FILTERS = [
     {value: "ALL", label: "Все"},
@@ -157,7 +158,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
         setPendingAction({
             userId,
             action,
-            specialistName: sp?.name?.trim() || sp?.email || "Специалист",
+            specialistName: userDisplayName(sp, "Специалист"),
             status: profile?.onboardingStatus ?? null,
             steps: profile?.steps,
             contractStatus: profile?.specialistContractStatus ?? null,
@@ -245,7 +246,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
             if (!search.trim()) return true
             const q = search.toLowerCase()
             const fd = s.specialistProfile?.formData
-            const name = fd?.fullName ?? s.name ?? ""
+            const name = userDisplayName(s)
             return name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q) || (fd?.city ?? "").toLowerCase().includes(q)
         })
 
@@ -364,7 +365,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                     {!loading && filtered.map((s) => {
                         const status = s.specialistProfile?.onboardingStatus ?? "PENDING"
                         const fd = s.specialistProfile?.formData
-                        const displayName = fd?.fullName ?? s.name ?? s.email
+                        const displayName = userDisplayName(s, "?")
                         const isActive = selected === s.id
                         const rating = s.specialistProfile?.rating
                         const edoLabel = formatEdoProvidersLabel(typeof fd?.edoProviders === "string" ? fd.edoProviders : undefined)

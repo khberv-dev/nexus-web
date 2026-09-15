@@ -6,7 +6,7 @@ import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import type {PaymentWithRelations, SpecAct, SpecContract} from "./types"
 import {DISCOVER_HUES, PAYMENT_BADGE, STAGE_LABELS} from "./types"
 import type {StageType} from "@prisma/client"
-import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {uploadWithProgress} from "@/lib/upload-progress"
 
 const CON_BADGE: Record<string, { variant: "done" | "pending" | "current" | "rejected"; label: string }> = {
@@ -29,11 +29,16 @@ function Section({title, icon, children}: { title: string; icon: string; childre
     )
 }
 
+/** Договор с платформой уже отправлен подписанным — повторная загрузка закрыта. */
+const ONBOARDING_SUBMITTED_STATUSES = new Set(["SIGNED_BY_SPECIALIST", "SIGNED_BY_ADMIN"])
+
 function ContractActions({contract: c}: { contract: SpecContract }) {
     const [loading, setLoading] = useState(false)
-    const [uploadItem, setUploadItem] = useState<UploadItem | null>(null)
+    const [file, setFile] = useState<File | null>(null)
+    const [progress, setProgress] = useState<number | null>(null)
+    const [error, setError] = useState<string | null>(null)
 
-    const download = async () => {
+    const openDownload = async (pick: (data: { downloadUrl?: string; url?: string; signedDownloadUrl?: string }) => string | undefined) => {
         setLoading(true)
         try {
             const url = c.kind === "ONBOARDING"
@@ -44,8 +49,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                 alert("Ошибка скачивания");
                 return
             }
-            const data = await res.json()
-            const fileUrl = data.downloadUrl ?? data.url
+            const fileUrl = pick(await res.json())
             if (fileUrl) window.open(fileUrl, "_blank")
             else alert("Файл недоступен")
         } finally {
@@ -54,88 +58,94 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
     }
 
     const uploadSigned = async () => {
-        const input = document.createElement("input")
-        input.type = "file"
-        input.accept = ".pdf"
-        input.onchange = async () => {
-            const file = input.files?.[0]
-            if (!file) return
-            setLoading(true)
-            setUploadItem({
-                id: "signed", name: file.name, size: file.size,
-                mimeType: file.type, progress: 0, status: "uploading",
+        if (!file) return
+        setLoading(true)
+        setError(null)
+        setProgress(0)
+        try {
+            const fd = new FormData()
+            fd.set("file", file)
+            const res = await uploadWithProgress("/api/specialist/framework-contract", fd, {
+                onProgress: ({percent}) => setProgress(percent),
             })
-            const patchCard = (patch: Partial<UploadItem>) =>
-                setUploadItem((prev) => (prev ? {...prev, ...patch} : prev))
-            try {
-                const fd = new FormData()
-                fd.set("file", file)
-                const res = await uploadWithProgress("/api/specialist/framework-contract", fd, {
-                    onProgress: ({percent}) => patchCard({progress: percent}),
-                })
-                if (!res.ok) {
-                    let message = "Ошибка загрузки"
-                    try {
-                        const err = JSON.parse(res.text || "{}") as { error?: string }
-                        if (err.error) message = err.error
-                    } catch { /* ответ не JSON — оставляем общий текст */ }
-                    throw new Error(message)
-                }
-                patchCard({progress: 100, status: "done"})
-                window.location.reload()
-            } catch (e) {
-                const message = (e as Error).message
-                patchCard({status: "error", error: message})
-                alert(message)
-            } finally {
-                setLoading(false)
+            if (!res.ok) {
+                let message = "Ошибка загрузки"
+                try {
+                    const err = JSON.parse(res.text || "{}") as { error?: string }
+                    if (err.error) message = err.error
+                } catch { /* ответ не JSON — оставляем общий текст */ }
+                throw new Error(message)
             }
+            window.location.reload()
+        } catch (e) {
+            setError((e as Error).message)
+            setProgress(null)
+            setLoading(false)
         }
-        input.click()
     }
 
-    const canSign = c.kind === "ONBOARDING" && c.status === "AWAITING_SIGNATURE"
+    const isOnboarding = c.kind === "ONBOARDING"
+    const canSign = isOnboarding && c.status === "AWAITING_SIGNATURE"
+    const submitted = isOnboarding && ONBOARDING_SUBMITTED_STATUSES.has(c.status)
     const canDownload = !!c.s3Key
 
     return (
-        <div style={{marginTop: 8}}>
-            {uploadItem && (
-                <div style={{marginBottom: 8}}>
-                    <UploadingCards items={[uploadItem]}/>
+        <div style={{marginTop: 8, display: "flex", flexDirection: "column", gap: 8}}>
+            {canDownload && (
+                <div>
+                    <button onClick={() => void openDownload((d) => d.downloadUrl ?? d.url)} disabled={loading}
+                            data-tour="btn-contract-download" style={{
+                        background: "none",
+                        border: "1px solid var(--dash-border)",
+                        borderRadius: 6,
+                        padding: "3px 10px",
+                        fontSize: "0.72rem",
+                        cursor: "pointer",
+                        color: "var(--dash-accent, #5b4fcf)",
+                        fontFamily: "inherit"
+                    }}>
+                        <i className="bx bx-download" style={{marginRight: 4}}/>{loading ? "..." : "Скачать"}
+                    </button>
                 </div>
             )}
-            <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
-            {canDownload && (
-                <button onClick={download} disabled={loading} data-tour="btn-contract-download" style={{
-                    background: "none",
-                    border: "1px solid var(--dash-border)",
-                    borderRadius: 6,
-                    padding: "3px 10px",
-                    fontSize: "0.72rem",
-                    cursor: "pointer",
-                    color: "var(--dash-accent, #5b4fcf)",
-                    fontFamily: "inherit"
-                }}>
-                    <i className="bx bx-download" style={{marginRight: 4}}/>{loading ? "..." : "Скачать"}
-                </button>
+            {(canSign || submitted) && (
+                <DocumentUpload
+                    size="sm"
+                    file={file}
+                    onFileChange={(f) => {
+                        setFile(f)
+                        setError(null)
+                    }}
+                    progress={progress}
+                    error={error}
+                    disabled={loading}
+                    submitted={submitted ? {
+                        title: "Подписанный договор отправлен",
+                        hint: c.status === "SIGNED_BY_ADMIN" ? "Подтверждён платформой" : "Ожидает проверки",
+                        onDownload: () => void openDownload((d) => d.signedDownloadUrl),
+                    } : null}
+                />
             )}
             {canSign && (
-                <button onClick={uploadSigned} disabled={loading} data-tour="btn-contract-sign" style={{
-                    background: "rgba(91,79,207,0.1)",
-                    border: "1px solid rgba(91,79,207,0.3)",
-                    borderRadius: 6,
-                    padding: "3px 10px",
-                    fontSize: "0.72rem",
-                    cursor: "pointer",
-                    color: "#5b4fcf",
-                    fontFamily: "inherit",
-                    fontWeight: 600
-                }}>
-                    <i className="bx bx-upload"
-                       style={{marginRight: 4}}/>{loading ? "Загрузка..." : "Загрузить подписанный"}
-                </button>
+                <div>
+                    <button onClick={() => void uploadSigned()} disabled={loading || !file} data-tour="btn-contract-sign"
+                            style={{
+                                background: "rgba(91,79,207,0.1)",
+                                border: "1px solid rgba(91,79,207,0.3)",
+                                borderRadius: 6,
+                                padding: "4px 12px",
+                                fontSize: "0.72rem",
+                                cursor: loading || !file ? "not-allowed" : "pointer",
+                                opacity: loading || !file ? 0.6 : 1,
+                                color: "#5b4fcf",
+                                fontFamily: "inherit",
+                                fontWeight: 600
+                            }}>
+                        <i className="bx bx-send" style={{marginRight: 4}}/>
+                        {loading && progress !== null ? "Отправка…" : "Отправить подписанный"}
+                    </button>
+                </div>
             )}
-            </div>
         </div>
     )
 }

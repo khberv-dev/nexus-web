@@ -2,6 +2,7 @@ import {NextResponse} from "next/server"
 import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl} from "@/lib/s3"
 import {levelFromTestStep} from "@/lib/landing/specialist-level"
+import {formatUserName} from "@/lib/user-name"
 
 export const dynamic = "force-dynamic"
 
@@ -50,7 +51,8 @@ export async function GET() {
         include: {
             user: {
                 select: {
-                    name: true,
+                    firstName: true,
+                    lastName: true,
                     files: {
                         where: {category: "AVATAR"},
                         orderBy: {createdAt: "desc"},
@@ -110,7 +112,7 @@ export async function GET() {
                 avatar,
                 work,
                 workPos: b.workPos ?? profile?.landingWorkPos ?? "center center",
-                name: b.user.name ?? fd.fullName ?? "Специалист",
+                name: formatUserName(b.user) || "Специалист",
                 specialty: b.specialty ?? fd.specialty ?? fd.specialization ?? "",
                 bio: b.about ?? fd.about ?? "",
                 portfolioImages: portfolioUrls.filter(Boolean),

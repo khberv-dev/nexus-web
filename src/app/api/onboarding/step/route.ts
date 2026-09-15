@@ -8,15 +8,16 @@ import type {QuizLevelCode} from "@/lib/onboarding/levels/types"
 import {QUIZ_LEVEL_ORDER} from "@/lib/onboarding/levels/banks"
 import {sendEmail} from "@/lib/email"
 import {notify} from "@/lib/notifications"
+import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
 
 const MAX_ATTEMPTS_PER_LEVEL = 3
 const RETRY_COOLDOWN_SEC = 60
 
 const LEVEL_EMAIL_META: Record<QuizLevelCode, { rank: string; nextLevel?: QuizLevelCode }> = {
-    L1: {rank: "начинающий", nextLevel: "L2"},
-    L2: {rank: "профессионал", nextLevel: "L3"},
-    L3: {rank: "мастер-дизайнер", nextLevel: "L4"},
-    L4: {rank: "элита"},
+    L1: {rank: LEVEL_TITLE.L1, nextLevel: "L2"},
+    L2: {rank: LEVEL_TITLE.L2, nextLevel: "L3"},
+    L3: {rank: LEVEL_TITLE.L3, nextLevel: "L4"},
+    L4: {rank: LEVEL_TITLE.L4},
 }
 
 const LEVEL_AWAIT_ADMIN_TEXT: Record<QuizLevelCode, string> = {
