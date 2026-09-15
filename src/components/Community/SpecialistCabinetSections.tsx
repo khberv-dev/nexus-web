@@ -49,9 +49,9 @@ export function SpecialistPortfolioSection() {
 
 export function SpecialistLandingSection() {
     const router = useRouter()
-    const {formData, about, featuredOnLanding, landingWorkPos} = useSpecialistCabinet()
+    const {formData, about, featuredOnLanding, landingWorkPos, avatarUrl} = useSpecialistCabinet()
     const [landingReadiness, setLandingReadiness] = useState({
-        portrait: false,
+        avatar: Boolean(avatarUrl),
         work: false,
         video: false,
         portfolio: 0,
@@ -100,6 +100,7 @@ export function SpecialistLandingSection() {
                 <DashSectionCard title="Карусель на лендинге">
                     <LandingUploader
                         featuredOnLanding={featuredOnLanding}
+                        avatarUrl={avatarUrl}
                         specialty={formData?.specialty ?? formData?.specialization}
                         about={about}
                         onGoToSettings={() => router.push(specialistSectionHref("settings"), {scroll: false})}

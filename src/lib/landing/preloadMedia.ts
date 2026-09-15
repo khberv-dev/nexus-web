@@ -49,7 +49,7 @@ export function preloadVideo(src: string, timeoutMs = DEFAULT_TIMEOUT_MS): Promi
 export function collectSlideMediaUrls(slides: DesignerSlide[], opts?: { includeVideos?: boolean }) {
     const urls = new Set<string>()
     for (const s of slides) {
-        if (s.portrait) urls.add(s.portrait)
+        if (s.avatar) urls.add(s.avatar)
         if (s.work) urls.add(s.work)
         if (opts?.includeVideos && s.introVideoUrl) urls.add(s.introVideoUrl)
         for (const img of s.portfolioImages ?? []) {
@@ -66,7 +66,7 @@ export async function preloadSlides(
 ) {
     const images = [...extraImages]
     for (const s of slides) {
-        if (s.portrait) images.push(s.portrait)
+        if (s.avatar) images.push(s.avatar)
         if (s.work) images.push(s.work)
     }
     await Promise.all(images.map((src) => preloadImage(src)))

@@ -113,7 +113,6 @@ export interface OrderData {
         profile?: {
             name: string
             specialty: string
-            portrait: string
             avatar: string | null
             work: string
             workPos: string

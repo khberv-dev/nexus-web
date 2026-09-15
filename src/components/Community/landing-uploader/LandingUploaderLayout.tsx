@@ -5,15 +5,14 @@ import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {MAX_LANDING_PORTFOLIO, POS_OPTIONS, posBandStyle} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
-import {AiIcon} from "@/components/app/AiIcon"
+import {SPECIALIST_AVATAR_INPUT_ID} from "../SpecialistCabinetContext"
 
 interface LayoutProps {
     featuredOnLanding?: boolean
     error: string | null
     uploading: string | null
-    portraitFiles: LandingFile[]
-    portraitUrls: Record<string, string>
-    selectedPortraitId: string | null
+    /** Фото профиля специалиста — меняется в шапке кабинета, здесь только показывается. */
+    avatarUrl: string | null
     introVideoFiles: LandingFile[]
     introVideoUrls: Record<string, string>
     selectedVideoId: string | null
@@ -25,23 +24,18 @@ interface LayoutProps {
     portfolioUrls: Record<string, string>
     selectedIds: Set<string>
     preview: PreviewState
-    portraitRef: React.RefObject<HTMLInputElement | null>
     videoRef: React.RefObject<HTMLInputElement | null>
     workRef: React.RefObject<HTMLInputElement | null>
     portfolioRef?: React.RefObject<HTMLInputElement | null>
-    onPortraitChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onVideoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onWorkChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onSaveWorkPos: (pos: string) => void
-    onSelectPortrait: (id: string) => void
     onSelectVideo: (id: string) => void
     onSelectLandingWork: (id: string) => void
     onTogglePortfolio: (id: string) => void
     onPortfolioChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     onSetPreview: (value: PreviewState) => void
     onDeleteFile?: (id: string) => void
-    /** Открывает диалог с ИИ для портрета. */
-    onEditPortraitWithAi?: (id: string) => void
     uploadItems?: UploadItem[]
     disabled?: boolean
 }
@@ -60,14 +54,14 @@ const cardTitle = (icon: string, title: string, sub: string) => (
 export function LandingUploaderLayout(props: LayoutProps) {
     const {
         error, uploading, disabled,
-        portraitFiles, portraitUrls, selectedPortraitId,
+        avatarUrl,
         introVideoFiles, introVideoUrls, selectedVideoId,
         workFiles, workUrls, selectedWorkId, workPos,
         portfolioFiles, portfolioUrls, selectedIds, preview,
-        portraitRef, videoRef, workRef, portfolioRef, onPortfolioChange,
-        onPortraitChange, onVideoChange, onWorkChange, onSaveWorkPos,
-        onSelectPortrait, onSelectVideo, onSelectLandingWork, onTogglePortfolio, onSetPreview,
-        onEditPortraitWithAi, uploadItems,
+        videoRef, workRef, portfolioRef, onPortfolioChange,
+        onVideoChange, onWorkChange, onSaveWorkPos,
+        onSelectVideo, onSelectLandingWork, onTogglePortfolio, onSetPreview,
+        uploadItems,
         onDeleteFile,
     } = props
 
@@ -80,14 +74,12 @@ export function LandingUploaderLayout(props: LayoutProps) {
     const portfolioImages = portfolioFiles.filter((f) => f.mimeType?.startsWith("image/"))
 
     const isPreviewPrimary = !!preview?.fileId && (
-        (preview.category === "PORTRAIT" && selectedPortraitId === preview.fileId) ||
         (preview.category === "INTRO_VIDEO" && selectedVideoId === preview.fileId) ||
         (preview.category === "LANDING_WORK" && selectedWorkId === preview.fileId)
     )
 
     const makePreviewPrimary = () => {
         if (!preview?.fileId || !preview.category || disabled) return
-        if (preview.category === "PORTRAIT") onSelectPortrait(preview.fileId)
         if (preview.category === "INTRO_VIDEO") onSelectVideo(preview.fileId)
         if (preview.category === "LANDING_WORK") onSelectLandingWork(preview.fileId)
     }
@@ -107,81 +99,30 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {card(
                 <>
-                    {cardTitle("bx-user", "Портрет", "Лучше вертикальное фото — любой формат и размер")}
-                    <div className="landing-up-row-line">
-                        {!disabled && (
-                            <button type="button" className="landing-up-upload-tile" data-tour="btn-landing-portrait"
-                                    onClick={() => portraitRef.current?.click()}>
-                                <i className={`bx ${uploading === "portrait" ? "bx-loader-alt bx-spin" : "bx-plus"}`}/>
-                                <span>Загрузить</span>
-                            </button>
+                    {cardTitle("bx-user", "Фото профиля", "Берётся из профиля — им карточка показывается в карусели на главной")}
+                    <div className="landing-up-avatar" data-tour="landing-avatar">
+                        {avatarUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img className="landing-up-avatar__tile" src={avatarUrl} alt="Фото профиля"/>
+                        ) : (
+                            <span className="landing-up-avatar__tile landing-up-avatar__tile--empty" aria-hidden>
+                                <i className="bx bx-user"/>
+                            </span>
                         )}
-                        <DashCarousel className="landing-up-carousel" viewportClassName="landing-up-carousel__viewport"
-                                      ariaLabel="Портреты">
-                            {portraitFiles.map((f) => {
-                                const selected = selectedPortraitId === f.id
-                                const url = portraitUrls[f.id]
-                                return (
-                                    <div
-                                        key={f.id}
-                                        className={`landing-up-thumb landing-up-carousel__item ${selected ? "is-selected" : ""}`}
-                                        role="button"
-                                        tabIndex={0}
-                                        onClick={() => url && onSetPreview({
-                                            url,
-                                            kind: "image",
-                                            title: "Портрет",
-                                            fileId: f.id,
-                                            category: "PORTRAIT"
-                                        })}
-                                        onKeyDown={(e) => {
-                                            if ((e.key === "Enter" || e.key === " ") && url) {
-                                                e.preventDefault();
-                                                onSetPreview({
-                                                    url,
-                                                    kind: "image",
-                                                    title: "Портрет",
-                                                    fileId: f.id,
-                                                    category: "PORTRAIT"
-                                                })
-                                            }
-                                        }}
-                                    >
-                                        {url ? <img src={url} alt=""
-                                                    style={{width: "100%", height: "100%", objectFit: "cover"}}/> :
-                                            <i className="bx bx-image"/>}
-                                        {!disabled && (
-                                            <span className="landing-up-thumb-actions"
-                                                  onClick={(e) => e.stopPropagation()}>
-                        <button type="button" className="landing-up-select-btn" onClick={() => onSelectPortrait(f.id)}
-                                title="Показать на главной">
-                          {renderSelectorMark(selected)}
-                        </button>
-                                                {onEditPortraitWithAi && url && (
-                                                    <button type="button" className="landing-up-select-btn"
-                                                            onClick={() => onEditPortraitWithAi(f.id)}
-                                                            title="Редактировать с ИИ"
-                                                            style={{marginLeft: 2}}>
-                                                        <AiIcon size={11} style={{color: "#a78bfa"}}/>
-                                                    </button>
-                                                )}
-                                                {onDeleteFile && (
-                                                    <button type="button" className="landing-up-select-btn"
-                                                            onClick={() => onDeleteFile(f.id)} title="Удалить"
-                                                            style={{marginLeft: 2}}>
-                                                        <i className="bx bx-trash"
-                                                           style={{fontSize: 11, color: "#d64c67"}}/>
-                                                    </button>
-                                                )}
-                      </span>
-                                        )}
-                                    </div>
-                                )
-                            })}
-                        </DashCarousel>
+                        <div className="landing-up-avatar__body">
+                            <p className={`landing-up-avatar__status ${avatarUrl ? "is-done" : ""}`}>
+                                <i className={`bx ${avatarUrl ? "bx-check-circle" : "bx-info-circle"}`}/>
+                                {avatarUrl ? "Используется на главной" : "Добавьте фото профиля — без него сборку не отправить"}
+                            </p>
+                            {!disabled && (
+                                // Тот же выбор фото, что и по клику на аватар в шапке кабинета.
+                                <label htmlFor={SPECIALIST_AVATAR_INPUT_ID} className="landing-up-small-btn">
+                                    <i className={`bx ${avatarUrl ? "bx-pencil" : "bx-upload"}`} style={{marginRight: 4}}/>
+                                    {avatarUrl ? "Сменить фото" : "Загрузить фото"}
+                                </label>
+                            )}
+                        </div>
                     </div>
-                    <input ref={portraitRef} type="file" accept="image/*" style={{display: "none"}}
-                           onChange={onPortraitChange}/>
                 </>,
             )}
 

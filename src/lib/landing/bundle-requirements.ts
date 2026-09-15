@@ -8,7 +8,8 @@ export const MAX_LANDING_PORTFOLIO = 20
 export const MIN_LANDING_PORTFOLIO = 3
 
 export type LandingBundleReadiness = {
-    portrait: boolean
+    /** Фото профиля (аватар) — на главной им показывается карточка специалиста. */
+    avatar: boolean
     work: boolean
     /** Видео-визитка необязательна — в требования не входит, показывается как бонус. */
     video: boolean
@@ -27,7 +28,7 @@ export type LandingRequirement = {
 
 export function landingRequirements(readiness: LandingBundleReadiness): LandingRequirement[] {
     return [
-        {key: "portrait", label: "Портрет", done: readiness.portrait},
+        {key: "avatar", label: "Фото профиля", done: readiness.avatar},
         {key: "work", label: "Фото интерьера", done: readiness.work},
         {key: "video", label: "Видео-визитка", done: readiness.video, optional: true},
         {

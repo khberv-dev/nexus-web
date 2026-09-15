@@ -28,14 +28,3 @@ export async function getPreviewUrl(id: string): Promise<string> {
     const {url} = await r.json()
     return url ?? ""
 }
-
-/** Картинка из AI-студии приходит data-url'ом — упаковываем в File для обычной загрузки. */
-export function dataUrlToFile(dataUrl: string, filename: string): File {
-    const match = /^data:([^;]+);base64,(.+)$/.exec(dataUrl)
-    if (!match) throw new Error("Некорректное изображение")
-    const mimeType = match[1]
-    const binary = atob(match[2])
-    const bytes = new Uint8Array(binary.length)
-    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i)
-    return new File([bytes], filename, {type: mimeType})
-}

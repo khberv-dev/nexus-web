@@ -54,7 +54,7 @@ function LevelBadge({slide}: { slide: DesignerSlide }) {
 
 
 function slideKey(s: DesignerSlide, i: number) {
-    return s.id ?? `${s.name}-${s.portrait}-${i}`
+    return s.id ?? `${s.name}-${s.avatar}-${i}`
 }
 
 function ActiveDesignerContent({
@@ -68,7 +68,7 @@ function ActiveDesignerContent({
         <>
             <div className="ds-designer-row">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="ds-avatar" src={slide.avatar ?? slide.portrait} alt={slide.name} decoding="async"/>
+                <img className="ds-avatar" src={slide.avatar ?? undefined} alt={slide.name} decoding="async"/>
                 <div>
                     <div className="ds-name">{slide.name}</div>
                     {slide.levelTitle && <div className="ds-specialty"><LevelBadge slide={slide}/></div>}
@@ -176,7 +176,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                             <div className="ds-content">
                                 <div className="ds-designer-row">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img className="ds-avatar" src={activeSlide.avatar ?? activeSlide.portrait}
+                                    <img className="ds-avatar" src={activeSlide.avatar ?? undefined}
                                          alt={activeSlide.name} decoding="async"/>
                                     <div>
                                         <div className="ds-name">{activeSlide.name}</div>
@@ -209,7 +209,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                                     type="button"
                                     key={`preview-${slideKey(preview, index)}`}
                                     className="ds-slide-item ds-slide-item--preview"
-                                    style={{backgroundImage: `url('${preview.portrait}')`}}
+                                    style={preview.avatar ? {backgroundImage: `url('${preview.avatar}')`} : undefined}
                                     onClick={() => setActiveIndex(index)}
                                     aria-label={`Показать специалиста ${preview.name}`}
                                 >
@@ -394,7 +394,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           right: 0;
           padding: 12px 14px;
           background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-          border-radius: 0 0 20px 20px;
           color: #fff;
           display: block;
         }
@@ -503,12 +502,15 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           display: none;
         }
 
+        /* Превью — квадратная карточка с фото профиля: клик переключает специалиста. */
         .ds-slide .ds-slide-item--preview {
           top: 50%;
-          width: 14vw;
-          height: 62vh;
+          width: clamp(120px, 12vw, 220px);
+          height: auto;
+          aspect-ratio: 1 / 1;
           transform: translateY(-50%);
-          border-radius: 20px;
+          border-radius: 22%;
+          background-position: center;
           cursor: pointer;
           appearance: none;
           padding: 0;
@@ -543,8 +545,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         .ds-slide .ds-preview-rail .ds-slide-item--preview {
           position: relative !important;
           inset: auto !important;
-          flex: 0 0 14vw;
-          width: 14vw;
+          flex: 0 0 clamp(120px, 12vw, 220px);
+          width: clamp(120px, 12vw, 220px);
           transform: none;
           margin: 0;
           animation: ds-preview-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -579,7 +581,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           }
 
           .ds-slide .ds-slide-item--preview {
-            width: 28vw;
+            width: 24vw;
           }
 
           .ds-preview-rail {
@@ -587,8 +589,8 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           }
 
           .ds-slide .ds-preview-rail .ds-slide-item--preview {
-            flex-basis: 28vw;
-            width: 28vw;
+            flex-basis: 24vw;
+            width: 24vw;
           }
 
           .ds-slide .ds-slide-item .ds-card-label {

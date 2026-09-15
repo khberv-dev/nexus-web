@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {notify} from "@/lib/notifications"
+import {hasProfileAvatar} from "@/lib/landing/bundle-input"
 
 // POST — approve / reject сборку
 export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -26,8 +27,8 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
     if (!bundle || bundle.status !== "PENDING_REVIEW") {
         return NextResponse.json({error: "Сборка не найдена или не на модерации"}, {status: 404})
     }
-    if (action === "approve" && (!bundle.portraitFileId || !bundle.workFileId)) {
-        return NextResponse.json({error: "Портрет и фото интерьера обязательны"}, {status: 400})
+    if (action === "approve" && (!bundle.workFileId || !(await hasProfileAvatar(bundle.userId)))) {
+        return NextResponse.json({error: "Фото профиля и фото интерьера обязательны"}, {status: 400})
     }
 
     if (action === "approve") {

@@ -2,9 +2,8 @@ export interface Designer {
     id?: string
     name: string
     specialty: string
-    portrait: string
-    /** Круглый аватар рядом с именем; портрет может быть крупным фото на всю карточку. */
-    avatar?: string | null
+    /** Фото профиля: круглый аватар рядом с именем и квадратная карточка в карусели главной. */
+    avatar: string | null
     work: string
     workPos?: string
     experience: number

@@ -35,7 +35,7 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                         orderBy: {reviewedAt: "desc"},
                         take: 1,
                         select: {
-                            portraitFileId: true, workFileId: true, videoFileId: true,
+                            workFileId: true, videoFileId: true,
                             workPos: true, specialty: true, about: true,
                             items: {orderBy: {position: "asc"}, select: {fileId: true}},
                         },
@@ -109,7 +109,7 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
     const specialistAvatarUrl = specAvatarKey ? (await getDownloadUrl(specAvatarKey)).url : null
     const specialistBundle = o.specialist?.landingBundles?.[0]
     const bundleFileIds = specialistBundle
-        ? [specialistBundle.portraitFileId, specialistBundle.workFileId, specialistBundle.videoFileId,
+        ? [specialistBundle.workFileId, specialistBundle.videoFileId,
             ...specialistBundle.items.map((item) => item.fileId)].filter((fileId): fileId is string => Boolean(fileId))
         : []
     const bundleFiles = bundleFileIds.length > 0
@@ -121,7 +121,6 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
     })))
     const specialistForm = (o.specialist?.specialistProfile?.formData as Record<string, string> | null) ?? {}
     const specialistLevel = levelFromTestStep(o.specialist?.specialistProfile?.steps?.[0]?.comment ?? null)
-    const portraitUrl = specialistBundle?.portraitFileId ? bundleUrls.get(specialistBundle.portraitFileId) : undefined
     const workUrl = specialistBundle?.workFileId ? bundleUrls.get(specialistBundle.workFileId) : undefined
 
     return (
@@ -140,9 +139,8 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
                     profile: o.specialist.specialistProfile ? {
                         name: specialistForm.fullName ?? o.specialist.name ?? "Специалист",
                         specialty: specialistBundle?.specialty ?? specialistForm.specialty ?? specialistForm.specialization ?? "",
-                        portrait: portraitUrl ?? specialistAvatarUrl ?? "",
-                        avatar: specialistAvatarUrl ?? portraitUrl ?? null,
-                        work: workUrl ?? portraitUrl ?? specialistAvatarUrl ?? "",
+                        avatar: specialistAvatarUrl,
+                        work: workUrl ?? specialistAvatarUrl ?? "",
                         workPos: specialistBundle?.workPos ?? "center center",
                         experience: parseInt(specialistForm.experience ?? "0") || 0,
                         sqm: parseInt(specialistForm.sqm ?? "0") || 0,

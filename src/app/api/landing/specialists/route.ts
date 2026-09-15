@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic"
  * в эту сборку: напрямую собирать профиль из портфолио здесь нельзя.
  *
  * Все одобренные сборки показываются в порядке последней модерации.
+ * Лицо карточки — фото профиля (аватар) специалиста, отдельного портрета в сборке нет.
  */
 
 type ProfileForSlide = {
@@ -50,6 +51,12 @@ export async function GET() {
             user: {
                 select: {
                     name: true,
+                    files: {
+                        where: {category: "AVATAR"},
+                        orderBy: {createdAt: "desc"},
+                        take: 1,
+                        select: {id: true},
+                    },
                     specialistProfile: {
                         select: {
                             formData: true,
@@ -64,9 +71,9 @@ export async function GET() {
         orderBy: {reviewedAt: "desc"},
     })
 
-    // Портрет и обложка обязательны при отправке на модерацию. Проверка здесь защищает
-    // публичную страницу от старых или повреждённых записей; галерея при этом необязательна.
-    const eligible = bundles.filter(b => b.portraitFileId && b.workFileId)
+    // Фото профиля и обложка обязательны при отправке на модерацию. Проверка здесь защищает
+    // публичную страницу от старых записей и удалённого аватара; галерея при этом необязательна.
+    const eligible = bundles.filter(b => b.user.files[0] && b.workFileId)
 
     const candidates = [
         ...eligible.map(b => ({
@@ -91,8 +98,8 @@ export async function GET() {
             }
 
             const b = candidate.bundle
-            const [portrait, work, introVideoUrl, ...portfolioUrls] = await Promise.all([
-                fileUrl(b.portraitFileId),
+            const [avatar, work, introVideoUrl, ...portfolioUrls] = await Promise.all([
+                fileUrl(b.user.files[0]?.id ?? null),
                 fileUrl(b.workFileId),
                 fileUrl(b.videoFileId),
                 ...b.items.map(item => fileUrl(item.fileId)),
@@ -100,8 +107,7 @@ export async function GET() {
             return {
                 id: b.id,
                 ...common,
-                portrait,
-                avatar: portrait,
+                avatar,
                 work,
                 workPos: b.workPos ?? profile?.landingWorkPos ?? "center center",
                 name: b.user.name ?? fd.fullName ?? "Специалист",
@@ -113,7 +119,7 @@ export async function GET() {
         }),
     )
 
-    return NextResponse.json(slides.filter((slide) => slide.portrait && slide.work), {
+    return NextResponse.json(slides.filter((slide) => slide.avatar && slide.work), {
         headers: {"Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=300"},
     })
 }

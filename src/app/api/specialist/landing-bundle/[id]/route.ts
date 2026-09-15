@@ -24,13 +24,12 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     } catch (error) {
         return NextResponse.json({error: (error as Error).message}, {status: 400})
     }
-    const {portraitFileId, workFileId, workPos, videoFileId, specialty, about, portfolioFileIds} = patch
+    const {workFileId, workPos, videoFileId, specialty, about, portfolioFileIds} = patch
 
     await prisma.$transaction(async (tx) => {
         await tx.landingBundle.update({
             where: {id},
             data: {
-                ...(portraitFileId !== undefined && {portraitFileId}),
                 ...(workFileId !== undefined && {workFileId}),
                 ...(workPos !== undefined && {workPos}),
                 ...(videoFileId !== undefined && {videoFileId}),

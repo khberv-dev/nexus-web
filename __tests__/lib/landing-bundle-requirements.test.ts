@@ -7,7 +7,7 @@ import {
 } from "@/lib/landing/bundle-requirements"
 
 const full: LandingBundleReadiness = {
-    portrait: true,
+    avatar: true,
     work: true,
     video: true,
     portfolio: MIN_LANDING_PORTFOLIO,
@@ -29,12 +29,12 @@ describe("требования к сборке для главной", () => {
     })
 
     it("блокирует отправку без каждого из обязательных пунктов", () => {
-        expect(missingLandingRequirements({...full, portrait: false})).toContain("Портрет")
+        expect(missingLandingRequirements({...full, avatar: false})).toContain("Фото профиля")
         expect(missingLandingRequirements({...full, work: false})).toContain("Фото интерьера")
         expect(missingLandingRequirements({...full, specialty: false})).toContain("Специализация")
         expect(missingLandingRequirements({...full, about: false})).toContain("О себе")
         for (const readiness of [
-            {...full, portrait: false},
+            {...full, avatar: false},
             {...full, work: false},
             {...full, specialty: false},
             {...full, about: false},
@@ -52,7 +52,7 @@ describe("требования к сборке для главной", () => {
 
     it("перечисляет все незаполненные пункты сразу", () => {
         const empty: LandingBundleReadiness = {
-            portrait: false, work: false, video: false, portfolio: 0, specialty: false, about: false,
+            avatar: false, work: false, video: false, portfolio: 0, specialty: false, about: false,
         }
         expect(missingLandingRequirements(empty)).toHaveLength(5)
     })

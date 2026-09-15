@@ -155,19 +155,19 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
         {
             target: '[data-tour="landing-readiness"]',
             title: "Готовность карточки",
-            text: "Чек-лист: портрет, фото интерьера, видео-визитка, работы, специализация и текст о себе.",
+            text: "Чек-лист: фото профиля, фото интерьера, видео-визитка, работы, специализация и текст о себе.",
             before: () => goToTab("landing"),
         },
         {
             target: '[data-tour="landing-uploader"]',
             title: "Сборка карточки",
-            text: "Каждый блок — свой материал: портрет, интерьер, видео и работы для галереи.",
+            text: "Каждый блок — свой материал: фото профиля, интерьер, видео и работы для галереи.",
             before: () => goToTab("landing"),
         },
         {
-            target: '[data-tour="btn-landing-portrait"]',
-            title: "Загрузить портрет",
-            text: "Вертикальное фото — им карточка показывается в карусели на главной.",
+            target: '[data-tour="landing-avatar"]',
+            title: "Фото профиля",
+            text: "Берётся из профиля — им карточка показывается в карусели на главной. Сменить можно здесь или кликом по аватару в шапке.",
             before: () => goToTab("landing"),
         },
         {
@@ -185,7 +185,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
         {
             target: '[data-tour="btn-landing-submit"]',
             title: "Кнопка «Отправить на модерацию»",
-            text: "Становится активной, когда выбраны портрет и интерьер. После одобрения вы появляетесь на главной.",
+            text: "Становится активной, когда заполнены все обязательные пункты чек-листа. После одобрения вы появляетесь на главной.",
             before: () => goToTab("landing"),
         },
 

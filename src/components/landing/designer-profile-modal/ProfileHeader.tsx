@@ -19,10 +19,10 @@ export function ProfileHeader({designer: d, compact}: ProfileHeaderProps) {
             gap: compact ? 14 : 16,
             marginBottom: compact ? 20 : 0
         }}>
-            {d.avatar || d.portrait ? (
+            {d.avatar ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
-                    src={d.avatar ?? d.portrait}
+                    src={d.avatar}
                     alt={d.name}
                     style={{
                     width: avatarSize,

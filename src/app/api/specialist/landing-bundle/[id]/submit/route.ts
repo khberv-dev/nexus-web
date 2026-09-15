@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server"
 import {getOrCreateDbUser, getSessionUser} from "@/lib/session"
 import {prisma} from "@/lib/db/prisma"
 import {notify} from "@/lib/notifications"
-import {validateLandingBundleFiles} from "@/lib/landing/bundle-input"
+import {hasProfileAvatar, validateLandingBundleFiles} from "@/lib/landing/bundle-input"
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 
 // POST — отправить сборку на модерацию
@@ -19,7 +19,7 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
         return NextResponse.json({error: "Нельзя отправить эту сборку"}, {status: 400})
     }
     const missing = missingLandingRequirements({
-        portrait: Boolean(bundle.portraitFileId),
+        avatar: await hasProfileAvatar(dbUser.id),
         work: Boolean(bundle.workFileId),
         video: Boolean(bundle.videoFileId),
         portfolio: bundle.items.length,
@@ -31,7 +31,6 @@ export async function POST(_req: NextRequest, {params}: { params: Promise<{ id: 
     }
     try {
         await validateLandingBundleFiles(dbUser.id, {
-            portraitFileId: bundle.portraitFileId,
             workFileId: bundle.workFileId,
             videoFileId: bundle.videoFileId,
             portfolioFileIds: bundle.items.map((item) => item.fileId),

@@ -18,10 +18,20 @@ export async function GET(req: NextRequest) {
     const bundles = await prisma.landingBundle.findMany({
         where: resolvedStatus ? {status: resolvedStatus} : undefined,
         include: {
-            user: {select: {id: true, name: true, email: true}},
+            user: {
+                select: {
+                    id: true, name: true, email: true,
+                    files: {where: {category: "AVATAR"}, orderBy: {createdAt: "desc"}, take: 1, select: {id: true}},
+                },
+            },
             items: {orderBy: {position: "asc"}},
         },
         orderBy: {updatedAt: "desc"},
     })
-    return NextResponse.json(bundles)
+    // Фото профиля отдаём id файла — превью админка подписывает тем же /api/admin/files/:id/url.
+    return NextResponse.json(bundles.map(({user: {files, ...user}, ...bundle}) => ({
+        ...bundle,
+        user,
+        avatarFileId: files[0]?.id ?? null,
+    })))
 }

@@ -3,7 +3,6 @@ import {prisma} from "@/lib/db/prisma"
 import {MAX_LANDING_PORTFOLIO} from "@/lib/landing/bundle-requirements"
 
 export type LandingBundlePatch = {
-    portraitFileId?: string | null
     workFileId?: string | null
     workPos?: string | null
     videoFileId?: string | null
@@ -46,7 +45,6 @@ export function parseLandingBundlePatch(body: unknown): LandingBundlePatch {
     }
 
     return {
-        portraitFileId: optionalId(input.portraitFileId, "portraitFileId"),
         workFileId: optionalId(input.workFileId, "workFileId"),
         workPos,
         videoFileId: optionalId(input.videoFileId, "videoFileId"),
@@ -58,7 +56,6 @@ export function parseLandingBundlePatch(body: unknown): LandingBundlePatch {
 
 export async function validateLandingBundleFiles(userId: string, patch: LandingBundlePatch): Promise<void> {
     const expected = new Map<string, FileCategory>()
-    if (patch.portraitFileId) expected.set(patch.portraitFileId, "PORTRAIT")
     if (patch.workFileId) expected.set(patch.workFileId, "LANDING_WORK")
     if (patch.videoFileId) expected.set(patch.videoFileId, "INTRO_VIDEO")
     for (const id of patch.portfolioFileIds ?? []) expected.set(id, "PORTFOLIO")
@@ -72,4 +69,10 @@ export async function validateLandingBundleFiles(userId: string, patch: LandingB
     for (const [id, category] of expected) {
         if (actual.get(id) !== category) throw new Error("Выбранный файл не найден или имеет неверную категорию")
     }
+}
+
+/** Карточка на главной показывается фото профиля — без аватара сборку не отправить и не одобрить. */
+export async function hasProfileAvatar(userId: string): Promise<boolean> {
+    const avatar = await prisma.userFile.findFirst({where: {userId, category: "AVATAR"}, select: {id: true}})
+    return Boolean(avatar)
 }

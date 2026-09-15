@@ -4,19 +4,15 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 import {LandingUploaderLayout} from "./landing-uploader/LandingUploaderLayout"
 import {LandingUploaderStyles} from "./landing-uploader/LandingUploaderStyles"
 import {ConfirmDialog} from "./ConfirmDialog"
-import {dataUrlToFile, getPreviewUrl, uploadFile} from "./landing-uploader/api"
-import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
+import {getPreviewUrl, uploadFile} from "./landing-uploader/api"
 import type {UploadItem} from "@/components/app/UploadingCard"
 import {MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 
-type SelectableCategory = "LANDING_WORK" | "PORTRAIT" | "INTRO_VIDEO"
-
 interface Bundle {
     id: string
     status: "DRAFT" | "PENDING_REVIEW" | "APPROVED" | "REJECTED"
-    portraitFileId: string | null
     workFileId: string | null
     workPos: string | null
     videoFileId: string | null
@@ -44,6 +40,7 @@ const STATUS_COLOR: Record<Bundle["status"], string> = {
 
 export default function LandingUploader({
                                             featuredOnLanding,
+                                            avatarUrl,
                                             initialWorkPos,
                                             specialty,
                                             about,
@@ -57,11 +54,6 @@ export default function LandingUploader({
     const isEditable = activeBundle?.status === "DRAFT" || activeBundle?.status === "REJECTED"
 
     // --- files (same as before) ---
-    const [portraitFiles, setPortraitFiles] = useState<LandingFile[]>([])
-    const [portraitUrls, setPortraitUrls] = useState<Record<string, string>>({})
-    const [selectedPortraitId, setSelectedPortraitId] = useState<string | null>(null)
-    const portraitRef = useRef<HTMLInputElement>(null)
-
     const [workFiles, setWorkFiles] = useState<LandingFile[]>([])
     const [workUrls, setWorkUrls] = useState<Record<string, string>>({})
     const [selectedWorkId, setSelectedWorkId] = useState<string | null>(null)
@@ -83,8 +75,6 @@ export default function LandingUploader({
 
     const [uploading, setUploading] = useState<string | null>(null)
     const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
-    /** Портрет, открытый в диалоге с ИИ. */
-    const [aiPortrait, setAiPortrait] = useState<{ fileId: string; previewUrl: string } | null>(null)
     const [toast, setToast] = useState<string | null>(null)
     const [confirmDeleteBundleId, setConfirmDeleteBundleId] = useState<string | null>(null)
     const [confirmDeleteFileId, setConfirmDeleteFileId] = useState<string | null>(null)
@@ -119,10 +109,6 @@ export default function LandingUploader({
 
     // --- load files ---
     const loadFiles = useCallback(async () => {
-        const portraits: LandingFile[] = await safeFetch("/api/files?category=PORTRAIT")
-        setPortraitFiles(portraits)
-        setPortraitUrls(await resolveUrls(portraits))
-
         const works: LandingFile[] = await safeFetch("/api/files?category=LANDING_WORK")
         setWorkFiles(works)
         setWorkUrls(await resolveUrls(works))
@@ -140,7 +126,6 @@ export default function LandingUploader({
     // sync bundle → selected state
     useEffect(() => {
         if (!activeBundle) return
-        setSelectedPortraitId(activeBundle.portraitFileId)
         setSelectedWorkId(activeBundle.workFileId)
         setSelectedVideoId(activeBundle.videoFileId)
         setWorkPos(activeBundle.workPos ?? "center center")
@@ -233,24 +218,6 @@ export default function LandingUploader({
     }
 
     // --- file handlers (upload + patch bundle) ---
-    const handlePortrait = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file || !isEditable) return
-        try {
-            setUploading("portrait")
-            const saved = await runUpload(file, "PORTRAIT")
-            setPortraitFiles((prev) => [saved, ...prev])
-            setPortraitUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
-            setSelectedPortraitId(saved.id)
-            await patchBundle({portraitFileId: saved.id})
-        } catch (err) {
-            showToast((err as Error).message)
-        } finally {
-            setUploading(null);
-            if (portraitRef.current) portraitRef.current.value = ""
-        }
-    }
-
     const handleWork = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file || !isEditable) return
@@ -320,11 +287,6 @@ export default function LandingUploader({
         await patchBundle({workPos: pos})
     }
 
-    const selectPortrait = async (id: string) => {
-        if (!isEditable) return;
-        setSelectedPortraitId(id);
-        await patchBundle({portraitFileId: id})
-    }
     const selectVideo = async (id: string) => {
         if (!isEditable) return;
         setSelectedVideoId(id);
@@ -334,26 +296,6 @@ export default function LandingUploader({
         if (!isEditable) return;
         setSelectedWorkId(id);
         await patchBundle({workFileId: id})
-    }
-
-    /** Открыть диалог с ИИ для конкретного портрета. */
-    const openPortraitAi = (id: string) => {
-        const url = portraitUrls[id]
-        if (!url || !isEditable) return
-        setAiPortrait({fileId: id, previewUrl: url})
-    }
-
-    /** Результат ИИ сохраняем отдельным файлом-портретом и сразу делаем его выбранным. */
-    const applyAiPortrait = async (result: AiImageResult) => {
-        const ext = result.mimeType === "image/png" ? "png" : "jpg"
-        const file = dataUrlToFile(result.dataUrl, `portrait-ai-${Date.now()}.${ext}`)
-        const saved = await runUpload(file, "PORTRAIT", result.dataUrl)
-        setPortraitFiles((prev) => [saved, ...prev])
-        setPortraitUrls((prev) => ({...prev, [saved.id]: result.dataUrl}))
-        setSelectedPortraitId(saved.id)
-        await patchBundle({portraitFileId: saved.id})
-        setAiPortrait(null)
-        showToast("Портрет от ИИ добавлен и выбран")
     }
 
     const togglePortfolio = async (id: string) => {
@@ -379,17 +321,12 @@ export default function LandingUploader({
         }
 
         // Remove from all file lists
-        setPortraitFiles((prev) => prev.filter((f) => f.id !== id))
         setWorkFiles((prev) => prev.filter((f) => f.id !== id))
         setIntroVideoFiles((prev) => prev.filter((f) => f.id !== id))
         setPortfolioFiles((prev) => prev.filter((f) => f.id !== id))
 
         // Clear selection in bundle if deleted file was selected
         const updates: Record<string, unknown> = {}
-        if (selectedPortraitId === id) {
-            setSelectedPortraitId(null);
-            updates.portraitFileId = null
-        }
         if (selectedWorkId === id) {
             setSelectedWorkId(null);
             updates.workFileId = null
@@ -409,9 +346,9 @@ export default function LandingUploader({
 
     // --- readiness ---
     // Кнопку отправки сверяем с тем, что реально выбрано в сборке, а не с тем,
-    // что вообще загружено: модерацию проходит именно сборка.
+    // что вообще загружено: модерацию проходит именно сборка. Фото профиля — общее для всех сборок.
     const bundleReadiness = {
-        portrait: Boolean(selectedPortraitId),
+        avatar: Boolean(avatarUrl),
         work: Boolean(selectedWorkId),
         video: Boolean(selectedVideoId),
         portfolio: selectedIds.size,
@@ -422,14 +359,14 @@ export default function LandingUploader({
 
     useEffect(() => {
         onReadinessChange?.({
-            portrait: portraitFiles.length > 0,
+            avatar: Boolean(avatarUrl),
             work: workFiles.length > 0,
             video: introVideoFiles.length > 0,
             portfolio: selectedIds.size,
             specialty: !!specialty?.trim(),
             about: !!about?.trim(),
         })
-    }, [portraitFiles.length, workFiles.length, introVideoFiles.length, selectedIds.size, specialty, about, onReadinessChange])
+    }, [avatarUrl, workFiles.length, introVideoFiles.length, selectedIds.size, specialty, about, onReadinessChange])
 
     // --- bundle sidebar ---
     const canCreate = !bundles.some((b) => b.status === "DRAFT" || b.status === "PENDING_REVIEW")
@@ -508,7 +445,7 @@ export default function LandingUploader({
               </span>
                         </div>
                         <div style={{fontSize: "0.68rem", color: "var(--dash-muted, #8f95b2)"}}>
-                            {[b.portraitFileId && "портрет", b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
+                            {[b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
                                 .filter(Boolean).join(" · ") || "пустая"}
                         </div>
                         {(b.status === "DRAFT" || b.status === "REJECTED") && (
@@ -565,9 +502,7 @@ export default function LandingUploader({
                         featuredOnLanding={featuredOnLanding}
                         error={null}
                         uploading={isEditable ? uploading : null}
-                        portraitFiles={portraitFiles}
-                        portraitUrls={portraitUrls}
-                        selectedPortraitId={selectedPortraitId}
+                        avatarUrl={avatarUrl}
                         introVideoFiles={introVideoFiles}
                         introVideoUrls={introVideoUrls}
                         selectedVideoId={selectedVideoId}
@@ -579,22 +514,18 @@ export default function LandingUploader({
                         portfolioUrls={portfolioUrls}
                         selectedIds={selectedIds}
                         preview={preview}
-                        portraitRef={portraitRef}
                         videoRef={videoRef}
                         workRef={workRef}
                         portfolioRef={portfolioRef}
-                        onPortraitChange={handlePortrait}
                         onVideoChange={handleVideo}
                         onWorkChange={handleWork}
                         onSaveWorkPos={saveWorkPos}
-                        onSelectPortrait={selectPortrait}
                         onSelectVideo={selectVideo}
                         onSelectLandingWork={selectWork}
                         onTogglePortfolio={togglePortfolio}
                         onPortfolioChange={handlePortfolio}
                         onSetPreview={setPreview}
                         onDeleteFile={(id) => setConfirmDeleteFileId(id)}
-                        onEditPortraitWithAi={openPortraitAi}
                         uploadItems={uploadItems}
                         disabled={!isEditable}
                     />
@@ -703,18 +634,6 @@ export default function LandingUploader({
                         </div>
                     )}
                 </div>
-            )}
-
-            {aiPortrait && (
-                <AiImageStudio
-                    open
-                    source={{fileId: aiPortrait.fileId, previewUrl: aiPortrait.previewUrl}}
-                    context="portrait"
-                    title="Портрет с ИИ"
-                    applyLabel="Сохранить как портрет"
-                    onApply={applyAiPortrait}
-                    onClose={() => setAiPortrait(null)}
-                />
             )}
 
             <LandingUploaderStyles/>

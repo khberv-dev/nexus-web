@@ -19,7 +19,7 @@ export function DesignerProfileModal({designer, onClose}: DesignerProfileModalPr
     const hasVideo = !!d?.introVideoUrl
     const works = d?.portfolioImages ?? []
     const mobileVideoLayout = isMobile && hasVideo
-    const designerKey = d ? `${d.name}|${d.portrait}|${d.work}` : ""
+    const designerKey = d ? `${d.name}|${d.avatar}|${d.work}` : ""
 
     const {videoRef, muted, toggleMute} = useIntroVideo(d?.introVideoUrl)
     const sheet = useProfileSheet(mobileVideoLayout, designerKey)

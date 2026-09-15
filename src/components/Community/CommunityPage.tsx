@@ -18,7 +18,7 @@ import {
 import AvatarUpload from "./AvatarUpload"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildSpecialistHintSteps} from "@/components/app/hint-tour-steps"
-import {SpecialistCabinetContext, type SpecialistCabinetData} from "./SpecialistCabinetContext"
+import {SPECIALIST_AVATAR_INPUT_ID, SpecialistCabinetContext, type SpecialistCabinetData} from "./SpecialistCabinetContext"
 import type {
     OnboardingStep,
     OrderWithRelations,
@@ -134,7 +134,7 @@ export default function CommunityPage({
     const cabinetData: SpecialistCabinetData = {
         name, email, city, experience, software, about, status,
         orders, payments, contracts, acts, formData, onboardingSteps,
-        featuredOnLanding, landingWorkPos,
+        featuredOnLanding, landingWorkPos, avatarUrl,
     }
 
     return (
@@ -180,7 +180,7 @@ export default function CommunityPage({
                         }}>
                             <div style={{display: "flex", alignItems: "center", gap: 14}}>
                                 <AvatarUpload heroMode initials={initials} currentUrl={avatarUrl}
-                                              onUploaded={setAvatarUrl}/>
+                                              inputId={SPECIALIST_AVATAR_INPUT_ID} onUploaded={setAvatarUrl}/>
                                 <div style={{minWidth: 0}}>
                                     <h2 className="dash-hero__name" style={{marginBottom: 4}}>{name}</h2>
                                     {specialistLevel && (

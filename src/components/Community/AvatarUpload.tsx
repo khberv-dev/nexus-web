@@ -13,6 +13,8 @@ interface AvatarUploadProps {
     currentUrl?: string | null
     onUploaded?: (url: string) => void
     heroMode?: boolean
+    /** id скрытого input — чтобы открыть выбор фото из другого места страницы через <label htmlFor>. */
+    inputId?: string
 }
 
 function centerAspectCrop(w: number, h: number): Crop {
@@ -63,7 +65,7 @@ function dataUrlToAvatarBlob(dataUrl: string): Promise<Blob> {
     })
 }
 
-export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode}: AvatarUploadProps) {
+export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode, inputId}: AvatarUploadProps) {
     const [srcUrl, setSrcUrl] = useState<string | null>(null)
     const [crop, setCrop] = useState<Crop>()
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
@@ -296,6 +298,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                 </div>
                 <input
                     ref={inputRef}
+                    id={inputId}
                     type="file"
                     accept="image/jpeg,image/png"
                     style={{display: "none"}}

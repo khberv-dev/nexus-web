@@ -10,12 +10,14 @@ export interface LandingFile {
 
 export interface LandingUploaderProps {
     featuredOnLanding?: boolean
+    /** Фото профиля — им карточка показывается на главной. */
+    avatarUrl: string | null
     specialty?: string
     about?: string
     onGoToSettings?: () => void
     initialWorkPos?: string
     onReadinessChange?: (state: {
-        portrait: boolean
+        avatar: boolean
         work: boolean
         video: boolean
         portfolio: number
@@ -29,5 +31,5 @@ export type PreviewState = {
     kind: "image" | "video"
     title: string
     fileId?: string
-    category?: "PORTRAIT" | "INTRO_VIDEO" | "LANDING_WORK"
+    category?: "INTRO_VIDEO" | "LANDING_WORK"
 } | null

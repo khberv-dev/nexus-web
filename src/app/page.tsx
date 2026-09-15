@@ -15,7 +15,7 @@ export default function Home() {
     const canExitLoader = animDone && mediaReady
     const splashImages = slides === null
         ? null
-        : slides.flatMap((slide) => [slide.work, slide.portrait, ...(slide.portfolioImages ?? [])]).filter(Boolean)
+        : slides.flatMap((slide) => [slide.work, slide.avatar, ...(slide.portfolioImages ?? [])]).filter((src): src is string => Boolean(src))
 
     const handleAnimationEnd = useCallback(() => setAnimDone(true), [])
 

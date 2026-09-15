@@ -26,7 +26,12 @@ export interface SpecialistCabinetData {
     onboardingSteps: OnboardingStep[]
     featuredOnLanding?: boolean
     landingWorkPos?: string
+    /** Текущее фото профиля — обновляется сразу после смены аватара в шапке кабинета. */
+    avatarUrl: string | null
 }
+
+/** id файлового input аватара в шапке: разделы открывают выбор фото через <label htmlFor>. */
+export const SPECIALIST_AVATAR_INPUT_ID = "specialist-avatar-input"
 
 export const SpecialistCabinetContext = createContext<SpecialistCabinetData | null>(null)
 

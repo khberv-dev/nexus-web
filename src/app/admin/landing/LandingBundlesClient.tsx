@@ -12,7 +12,8 @@ interface BundleItem {
 interface Bundle {
     id: string
     status: "DRAFT" | "PENDING_REVIEW" | "APPROVED" | "REJECTED"
-    portraitFileId: string | null
+    /** Фото профиля специалиста — лицо карточки на главной. */
+    avatarFileId: string | null
     workFileId: string | null
     workPos: string | null
     videoFileId: string | null
@@ -66,7 +67,7 @@ export default function LandingBundlesClient() {
     useEffect(() => {
         if (!selectedBundle) return
         const fileIds = [
-            selectedBundle.portraitFileId,
+            selectedBundle.avatarFileId,
             selectedBundle.workFileId,
             selectedBundle.videoFileId,
             ...selectedBundle.items.map(i => i.fileId),
@@ -182,7 +183,7 @@ export default function LandingBundlesClient() {
                                                 className={`badge ${STATUS_CLASS[b.status]}`}>{STATUS_LABEL[b.status]}</span>
                                             </td>
                                             <td style={{fontSize: "0.75rem", color: "var(--adm-muted)"}}>
-                                                {[b.portraitFileId && "портрет", b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
+                                                {[b.avatarFileId && "фото профиля", b.workFileId && "интерьер", b.videoFileId && "видео", b.items.length > 0 && `${b.items.length} фото`]
                                                     .filter(Boolean).join(", ") || "—"}
                                             </td>
                                             <td style={{
@@ -219,26 +220,26 @@ export default function LandingBundlesClient() {
 
                                     {/* Preview grid */}
                                     <div className="row g-2 mb-3">
-                                        {/* Portrait */}
+                                        {/* Avatar */}
                                         <div className="col-4">
                                             <div style={{
                                                 fontSize: "0.68rem",
                                                 fontWeight: 600,
                                                 color: "var(--adm-muted)",
                                                 marginBottom: 4
-                                            }}>ПОРТРЕТ
+                                            }}>ФОТО ПРОФИЛЯ
                                             </div>
                                             <div style={{
-                                                aspectRatio: "3/4",
-                                                borderRadius: 8,
+                                                aspectRatio: "1/1",
+                                                borderRadius: "22%",
                                                 overflow: "hidden",
                                                 background: "rgba(99,102,241,0.06)",
                                                 border: "1px solid var(--adm-sidebar-border, #e5e7eb)"
                                             }}>
-                                                {selectedBundle.portraitFileId && previews[selectedBundle.portraitFileId]
-                                                    ? <ImageLightbox src={previews[selectedBundle.portraitFileId]}
-                                                                     alt="Портрет"><img
-                                                        src={previews[selectedBundle.portraitFileId]} alt="" style={{
+                                                {selectedBundle.avatarFileId && previews[selectedBundle.avatarFileId]
+                                                    ? <ImageLightbox src={previews[selectedBundle.avatarFileId]}
+                                                                     alt="Фото профиля"><img
+                                                        src={previews[selectedBundle.avatarFileId]} alt="" style={{
                                                         width: "100%",
                                                         height: "100%",
                                                         objectFit: "cover"
