@@ -6,9 +6,8 @@ import "./Community.css"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashHeroFrame} from "@/components/dashboard-ui/DashHeroFrame"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
-import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {buildSpecialistCabinetNavItems, SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs"
+import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
 import {
     SPECIALIST_CABINET_LOGO_HREF,
     SPECIALIST_CABINET_SECTIONS,
@@ -151,19 +150,12 @@ export default function CommunityPage({
             <HintTourLauncher onClick={() => setHintsOpen(true)}/>
             <DashTopHeader
                 email={email}
+                name={name}
                 title="Кабинет специалиста"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
-                navItems={buildSpecialistCabinetNavItems(activeTab)}
+                navItems={buildSpecialistCabinetNavItems(activeTab, {orders: needsAction})}
             />
-            <DashMainLayout
-                sidebar={
-                    <DashSidebarNav
-                        tabs={SPECIALIST_ROUTE_TABS}
-                        activeTab={activeTab}
-                        badgeCountByTab={{orders: needsAction}}
-                    />
-                }
-            >
+            <DashMainLayout>
                 {/* Hero */}
                 <DashHeroFrame>
                     <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "stretch"}}>

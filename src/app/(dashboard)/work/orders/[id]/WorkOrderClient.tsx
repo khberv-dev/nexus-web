@@ -10,13 +10,12 @@ import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
 import {DashBriefCard} from "@/components/dashboard-ui/DashBriefCard"
 import {DashInfoChip} from "@/components/dashboard-ui/DashInfoChip"
 import {DashProgressCard} from "@/components/dashboard-ui/DashProgressCard"
-import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {OrderHistoryTimeline} from "@/components/dashboard-ui/OrderHistoryTimeline"
 import {openOrderChat} from "@/components/dashboard-ui/OrderChatPanel"
 import {ClientContractPanel} from "@/components/Client/ClientContractPanel"
-import {buildSpecialistCabinetNavItems, SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs"
+import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
 import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import type {StageType} from "@prisma/client"
 import {OrderStagesGrid} from "@/components/app/OrderStagesGrid"
@@ -212,12 +211,14 @@ function specialistStageStatusLabel(type: StageType, status: string): string {
 export default function WorkOrderClient({
                                             order: initial,
                                             email,
+                                            name,
                                             briefHelpRequested,
                                             pipelineStages,
                                             focusedStageType,
                                         }: {
     order: WorkOrder
     email: string
+    name?: string | null
     briefHelpRequested: boolean
     pipelineStages: PipelineOrderStage[]
     focusedStageType?: StageType
@@ -376,6 +377,7 @@ export default function WorkOrderClient({
         <div className="dash">
             <DashTopHeader
                 email={email}
+                name={name}
                 title="Кабинет специалиста"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
                 navItems={buildSpecialistCabinetNavItems("orders")}
@@ -383,7 +385,7 @@ export default function WorkOrderClient({
                 statusChip={headerChip}
                 primaryAction={headerPrimary}
             />
-            <DashMainLayout sidebar={<DashSidebarNav tabs={SPECIALIST_ROUTE_TABS} activeTab="orders"/>}>
+            <DashMainLayout>
 
                 {!focusedStageType ? (
                     <>

@@ -2,9 +2,8 @@ import {getSessionUser} from "@/lib/session"
 import {redirect} from "next/navigation"
 import "@/components/Community/Community.css"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
-import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {buildSpecialistCabinetNavItems, SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs"
+import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
 import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import AcademyPage from "@/components/Academy/AcademyPage"
 import Link from "next/link"
@@ -17,6 +16,7 @@ export default async function Academy() {
         <div className="dash">
             <DashTopHeader
                 email={user.email}
+                name={user.name}
                 title="Академия"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
                 navItems={buildSpecialistCabinetNavItems("")}
@@ -26,7 +26,7 @@ export default async function Academy() {
                     iconClassName: "bx bx-arrow-back"
                 }}
             />
-            <DashMainLayout sidebar={<DashSidebarNav tabs={SPECIALIST_ROUTE_TABS} activeTab=""/>}>
+            <DashMainLayout>
                 <Link href={SPECIALIST_CABINET_LOGO_HREF} style={{
                     display: "inline-flex",
                     alignItems: "center",

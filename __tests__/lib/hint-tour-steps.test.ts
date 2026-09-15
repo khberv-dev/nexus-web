@@ -44,7 +44,7 @@ function pageAnchors(...entries: string[]): Set<string> {
         seen.add(file);
 
         const src = readFileSync(file, "utf8");
-        // data-tour="x", data-tour={`sidebar-${id}`} и проброс через проп dataTour="x".
+        // data-tour="x", data-tour={`nav-${id}`} и проброс через проп dataTour="x".
         for (const m of src.matchAll(/data-?[tT]our=\{?["`]([^"`$]+)/g)) anchors.add(m[1]);
         for (const m of src.matchAll(/from\s+["']([^"']+)["']/g)) {
             const next = resolveImport(m[1], file);
@@ -56,13 +56,13 @@ function pageAnchors(...entries: string[]): Set<string> {
 
 const page = (p: string) => join(process.cwd(), p);
 
-const SIDEBAR_TAB_IDS = ["home", "orders", "portfolio", "landing", "payments", "settings"];
+const NAV_TAB_IDS = ["home", "orders", "portfolio", "landing", "payments", "settings"];
 
-/** `data-tour={`sidebar-${tab.id}`}` собирается в рантайме — раскрываем префикс вручную. */
+/** `data-tour={`nav-${item.id}`}` на вкладке шапки собирается в рантайме — раскрываем префикс вручную. */
 function anchorExists(anchors: Set<string>, name: string): boolean {
     if (anchors.has(name)) return true;
-    if (name.startsWith("sidebar-") && anchors.has("sidebar-")) {
-        return SIDEBAR_TAB_IDS.includes(name.slice("sidebar-".length));
+    if (name.startsWith("nav-") && anchors.has("nav-")) {
+        return NAV_TAB_IDS.includes(name.slice("nav-".length));
     }
     return false;
 }
@@ -127,7 +127,7 @@ describe("hint tour steps", () => {
         const dashboard = buildSpecialistDashboardHintSteps().map(s => s.target);
         const cabinet = buildSpecialistHintSteps(noop).map(s => s.target);
 
-        // Пересекаться могут только элементы общей оболочки (шапка, сайдбар, кнопка «?»).
+        // Пересекаться могут только элементы общей оболочки (шапка, кнопка «?»).
         const shared = dashboard.filter(t => cabinet.includes(t));
         expect(shared).toEqual(['[data-tour="header-bell"]', '[data-tour="btn-hints"]']);
     });
@@ -135,12 +135,12 @@ describe("hint tour steps", () => {
     test("every cabinet section is covered", () => {
         const specialist = buildSpecialistHintSteps(noop).map(s => s.target);
         for (const tab of ["orders", "portfolio", "landing", "payments", "settings"]) {
-            expect(specialist).toContain(`[data-tour="sidebar-${tab}"]`);
+            expect(specialist).toContain(`[data-tour="nav-${tab}"]`);
         }
 
         const client = buildClientHintSteps(noop).map(s => s.target);
         for (const tab of ["orders", "payments", "settings"]) {
-            expect(client).toContain(`[data-tour="sidebar-${tab}"]`);
+            expect(client).toContain(`[data-tour="nav-${tab}"]`);
         }
     });
 });
@@ -152,7 +152,7 @@ describe("экскурсия по стартовому экрану /work", () =
         expect(steps.length).toBeLessThanOrEqual(10);
     });
 
-    test("покрывает разделы страницы, боковую навигацию и уведомления", () => {
+    test("покрывает разделы страницы, вкладки шапки и уведомления", () => {
         const targets = steps.map(s => s.target);
         for (const anchor of [
             "dash-hero",
@@ -160,7 +160,7 @@ describe("экскурсия по стартовому экрану /work", () =
             "dash-urgent",
             "dash-orders",
             "dash-quick-links",
-            "sidebar",
+            "header-nav",
             "header-bell",
         ]) {
             expect(targets).toContain(`[data-tour="${anchor}"]`);

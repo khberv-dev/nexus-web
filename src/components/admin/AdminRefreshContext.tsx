@@ -1,6 +1,6 @@
 "use client"
 
-import {createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState,} from "react"
+import {createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef} from "react"
 import {useRouter} from "next/navigation"
 
 type RefreshHandler = () => void | Promise<void>
@@ -8,8 +8,6 @@ type RefreshHandler = () => void | Promise<void>
 type AdminRefreshContextValue = {
     register: (fn: RefreshHandler) => void
     unregister: () => void
-    runRefresh: () => Promise<void>
-    refreshing: boolean
 }
 
 const AdminRefreshContext = createContext<AdminRefreshContextValue | null>(null)
@@ -17,7 +15,6 @@ const AdminRefreshContext = createContext<AdminRefreshContextValue | null>(null)
 export function AdminRefreshProvider({children}: { children: ReactNode }) {
     const router = useRouter()
     const handlerRef = useRef<RefreshHandler | null>(null)
-    const [refreshing, setRefreshing] = useState(false)
     const lastUnreadRef = useRef<number | null>(null)
 
     const register = useCallback((fn: RefreshHandler) => {
@@ -27,16 +24,6 @@ export function AdminRefreshProvider({children}: { children: ReactNode }) {
     const unregister = useCallback(() => {
         handlerRef.current = null
     }, [])
-
-    const runRefresh = useCallback(async () => {
-        setRefreshing(true)
-        try {
-            if (handlerRef.current) await handlerRef.current()
-            else router.refresh()
-        } finally {
-            setRefreshing(false)
-        }
-    }, [router])
 
     // Auto-refresh: poll notifications, trigger refresh when unread count increases
     useEffect(() => {
@@ -62,15 +49,12 @@ export function AdminRefreshProvider({children}: { children: ReactNode }) {
         }
     }, [router])
 
-    const value = useMemo(
-        () => ({register, unregister, runRefresh, refreshing}),
-        [register, unregister, runRefresh, refreshing]
-    )
+    const value = useMemo(() => ({register, unregister}), [register, unregister])
 
     return <AdminRefreshContext.Provider value={value}>{children}</AdminRefreshContext.Provider>
 }
 
-/** Регистрирует функцию загрузки данных страницы для общей кнопки «Обновить» в шапке админки. */
+/** Регистрирует функцию загрузки данных страницы: её вызывает автообновление при новых уведомлениях. */
 export function useRegisterAdminRefresh(load: RefreshHandler) {
     const ctx = useContext(AdminRefreshContext)
     useEffect(() => {
@@ -78,10 +62,4 @@ export function useRegisterAdminRefresh(load: RefreshHandler) {
         ctx.register(load)
         return () => ctx.unregister()
     }, [ctx, load])
-}
-
-export function useAdminRefreshControls(): AdminRefreshContextValue {
-    const ctx = useContext(AdminRefreshContext)
-    if (!ctx) throw new Error("useAdminRefreshControls must be used within AdminRefreshProvider")
-    return ctx
 }

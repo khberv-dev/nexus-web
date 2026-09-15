@@ -14,7 +14,7 @@ import type {HintStep} from "@/components/app/HintTour"
  *
  * Отдельная от buildSpecialistHintSteps: та водит по вкладкам кабинета
  * (/work/<section>) и переключает разделы через goToTab, здесь же разделов нет —
- * только разделы самой страницы, боковая навигация и ключевые цифры.
+ * только разделы самой страницы, вкладки в шапке и ключевые цифры.
  * Кнопки внутри блоков намеренно не подсвечиваем: экскурсия должна
  * заканчиваться, пока её ещё читают.
  *
@@ -44,7 +44,7 @@ export function buildSpecialistDashboardHintSteps(): HintStep[] {
             text: "Назначенные вам заказы и прогресс по этапам. Нажмите строку, чтобы открыть проект.",
         },
         {
-            target: '[data-tour="sidebar"]',
+            target: '[data-tour="header-nav"]',
             title: "Разделы кабинета",
             text: "Проекты, портфолио, лендинг, выплаты и настройки — переключение между ними здесь.",
         },
@@ -83,7 +83,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Проекты ─────────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-orders"]',
+            target: '[data-tour="nav-orders"]',
             title: "Раздел «Проекты»",
             text: "Заказы, назначенные вам платформой. С них начинается работа.",
             before: () => goToTab("orders"),
@@ -109,7 +109,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Портфолио ───────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-portfolio"]',
+            target: '[data-tour="nav-portfolio"]',
             title: "Раздел «Портфолио»",
             text: "Ваши работы. Их смотрит администратор, когда подбирает исполнителя на заказ.",
             before: () => goToTab("portfolio"),
@@ -147,7 +147,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Лендинг ─────────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-landing"]',
+            target: '[data-tour="nav-landing"]',
             title: "Раздел «Лендинг»",
             text: "Ваша карточка на главной странице платформы — витрина для заказчиков.",
             before: () => goToTab("landing"),
@@ -191,7 +191,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Выплаты ─────────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-payments"]',
+            target: '[data-tour="nav-payments"]',
             title: "Раздел «Выплаты»",
             text: "Деньги и документы по завершённым этапам.",
             before: () => goToTab("payments"),
@@ -223,7 +223,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Настройки ───────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-settings"]',
+            target: '[data-tour="nav-settings"]',
             title: "Раздел «Настройки»",
             text: "Анкета, контакты и реквизиты — по ним формируются документы и выплаты.",
             before: () => goToTab("settings"),
@@ -243,9 +243,9 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
 
         // ── Как вернуть подсказки ───────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-logout"]',
-            title: "Кнопка выхода",
-            text: "Выйти из кабинета можно внизу боковой панели.",
+            target: '[data-tour="header-profile"]',
+            title: "Меню профиля",
+            text: "Иконка профиля в шапке: здесь ваше имя и выход из кабинета.",
             before: () => goToTab("orders"),
         },
         {
@@ -273,7 +273,7 @@ export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): 
 
         // ── Проекты ─────────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-orders"]',
+            target: '[data-tour="nav-orders"]',
             title: "Раздел «Проекты»",
             text: "Все ваши проекты и их этапы.",
             before: () => goToTab("orders"),
@@ -299,7 +299,7 @@ export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): 
 
         // ── Оплаты ──────────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-payments"]',
+            target: '[data-tour="nav-payments"]',
             title: "Раздел «Оплаты»",
             text: "Счета, акты и договор с платформой.",
             before: () => goToTab("payments"),
@@ -313,7 +313,7 @@ export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): 
 
         // ── Настройки ───────────────────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-settings"]',
+            target: '[data-tour="nav-settings"]',
             title: "Раздел «Настройки»",
             text: "Контакты и реквизиты компании — по ним выставляются счета и акты.",
             before: () => goToTab("settings"),
@@ -333,9 +333,9 @@ export function buildClientHintSteps(goToTab: (tab: string) => void | boolean): 
 
         // ── Как вернуть подсказки ───────────────────────────────────────────
         {
-            target: '[data-tour="sidebar-logout"]',
-            title: "Кнопка выхода",
-            text: "Выйти из кабинета можно внизу боковой панели.",
+            target: '[data-tour="header-profile"]',
+            title: "Меню профиля",
+            text: "Иконка профиля в шапке: здесь ваше имя и выход из кабинета.",
             before: () => goToTab("orders"),
         },
         {

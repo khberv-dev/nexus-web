@@ -118,6 +118,7 @@ export default async function OrderWorkStagePage({
     return (
         <OrderWorkStageClient
             viewerEmail={dbUser.email ?? ""}
+            viewerName={dbUser.name}
             stageType={type as unknown as ClientStageType}
             initialOrder={{
                 id: order.id,

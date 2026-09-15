@@ -937,6 +937,7 @@ export default function NewOrderPage() {
 
             <DashTopHeader
                 email={sessionEmail}
+                name={session?.user?.name}
                 title="Новый бриф"
                 logoHref={CLIENT_CABINET_LOGO_HREF}
                 navItems={buildClientCabinetNavItems("orders")}

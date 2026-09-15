@@ -18,6 +18,7 @@ export default async function WorkOrderPage({params}: { params: Promise<{ id: st
     return (
         <WorkOrderClient
             email={user.email}
+            name={user.name}
             briefHelpRequested={bundle.briefHelpRequested}
             pipelineStages={bundle.pipelineStages}
             order={bundle.order}

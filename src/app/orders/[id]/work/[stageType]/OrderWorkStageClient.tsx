@@ -26,10 +26,12 @@ function stageStatusLabelForUI(type: StageType, status: OrderStage["status"]): s
 export default function OrderWorkStageClient({
                                                  initialOrder,
                                                  viewerEmail,
+                                                 viewerName,
                                                  stageType,
                                              }: {
     initialOrder: OrderData
     viewerEmail: string
+    viewerName?: string | null
     stageType: StageType
 }) {
     const [order, setOrder] = useState(initialOrder)
@@ -146,6 +148,7 @@ export default function OrderWorkStageClient({
         <div className="dash">
             <DashTopHeader
                 email={viewerEmail}
+                name={viewerName}
                 title="Кабинет заказчика"
                 logoHref={CLIENT_CABINET_LOGO_HREF}
                 navItems={buildClientCabinetNavItems("orders")}

@@ -5,11 +5,10 @@ import {type ReactNode, useCallback, useMemo, useState} from "react"
 import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashHeroFrame} from "@/components/dashboard-ui/DashHeroFrame"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
-import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import "../../Community/Community.css"
 import {CLIENT_CABINET_LOGO_HREF, CLIENT_CABINET_SECTIONS, type ClientCabinetSection, clientSectionHref} from "@/lib/cabinet-shell"
-import {buildClientCabinetNavItems, SIDEBAR_TABS} from "./constants"
+import {buildClientCabinetNavItems} from "./constants"
 import type {ClientCabinetProps} from "./types"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildClientHintSteps} from "@/components/app/hint-tour-steps"
@@ -69,9 +68,10 @@ export default function ClientCabinetPage({
             <HintTourLauncher onClick={() => setHintsOpen(true)}/>
             <DashTopHeader
                 email={email}
+                name={name}
                 title="Кабинет заказчика"
                 logoHref={CLIENT_CABINET_LOGO_HREF}
-                navItems={buildClientCabinetNavItems(activeTab)}
+                navItems={buildClientCabinetNavItems(activeTab, {orders: needsAction})}
                 primaryAction={
                     activeTab === "orders"
                         ? {
@@ -83,15 +83,7 @@ export default function ClientCabinetPage({
                 }
                 showPrimaryActionInHeader={false}
             />
-            <DashMainLayout
-                sidebar={
-                    <DashSidebarNav
-                        tabs={SIDEBAR_TABS}
-                        activeTab={activeTab}
-                        badgeCountByTab={{orders: needsAction}}
-                    />
-                }
-            >
+            <DashMainLayout>
                 <DashHeroFrame>
                     <div className="dash-hero" data-tour="client-hero">
                         <div

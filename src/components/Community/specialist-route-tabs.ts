@@ -11,12 +11,17 @@ export const SPECIALIST_ROUTE_TABS = [
     {id: "settings", icon: "bx-cog", label: "Настройки", href: specialistSectionHref("settings")},
 ] as const
 
-/** Верхняя навигация и выдвижное меню — те же разделы, что в `SPECIALIST_ROUTE_TABS`. */
-export function buildSpecialistCabinetNavItems(activeTab: string): DashHeaderNavItem[] {
+/** Верхняя навигация и выдвижное меню кабинета специалиста — разделы из `SPECIALIST_ROUTE_TABS`. */
+export function buildSpecialistCabinetNavItems(
+    activeTab: string,
+    badgeCountByTab: Partial<Record<string, number>> = {},
+): DashHeaderNavItem[] {
     return SPECIALIST_ROUTE_TABS.map(t => ({
+        id: t.id,
         href: t.href,
         label: t.label,
         iconClassName: `bx ${t.icon}`,
         active: t.id === activeTab,
+        badgeCount: badgeCountByTab[t.id],
     }))
 }

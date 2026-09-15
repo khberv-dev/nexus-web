@@ -23,9 +23,11 @@ import {ProjectWorkflowInstructions} from "@/components/app/ProjectWorkflowInstr
 export default function OrderDetailClient({
                                               order: initialOrder,
                                               viewerEmail,
+                                              viewerName,
                                           }: {
     order: OrderData
     viewerEmail: string
+    viewerName?: string | null
 }) {
     const [order, setOrder] = useState(initialOrder)
     const [submitting, setSubmitting] = useState(false)
@@ -222,6 +224,7 @@ export default function OrderDetailClient({
         <div className="dash">
             <DashTopHeader
                 email={viewerEmail}
+                name={viewerName}
                 title="Кабинет заказчика"
                 logoHref={CLIENT_CABINET_LOGO_HREF}
                 navItems={buildClientCabinetNavItems("orders")}

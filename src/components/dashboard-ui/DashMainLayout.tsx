@@ -2,16 +2,10 @@
 
 import type {ReactNode} from "react"
 
-export function DashMainLayout({
-                                   sidebar,
-                                   children,
-                               }: {
-    sidebar: ReactNode
-    children: ReactNode
-}) {
+/** Тело кабинета под шапкой. Разделы переключаются вкладками в DashTopHeader — боковой панели нет. */
+export function DashMainLayout({children}: { children: ReactNode }) {
     return (
         <div className="dash-body">
-            {sidebar}
             <main className="dash-main">
                 <div className="dash-main__scroll">{children}</div>
             </main>

@@ -20,8 +20,8 @@ type Turn = { id: string; prompt: string; dataUrl: string; mimeType: string }
 type Props = {
     open: boolean
     source: AiImageStudioSource
-    /** Подмешивает на сервере правила кадра (квадрат для аватара, вертикаль для портрета). */
-    context?: "avatar" | "portrait"
+    /** Подмешивает на сервере правила кадра (квадрат для аватара). */
+    context?: "avatar"
     title?: string
     /** Подпись кнопки применения. */
     applyLabel?: string

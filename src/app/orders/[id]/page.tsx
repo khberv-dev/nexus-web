@@ -126,6 +126,7 @@ export default async function OrderDetailPage({params}: { params: Promise<{ id: 
     return (
         <OrderDetailClient
             viewerEmail={dbUser.email ?? ""}
+            viewerName={dbUser.name}
             order={{
                 id: o.id,
                 status: o.status,

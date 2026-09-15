@@ -5,19 +5,31 @@ import {useCallback, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import {usePathname} from "next/navigation"
 import NotificationBell from "@/components/Community/NotificationBell"
+import {DashProfileMenu} from "@/components/dashboard-ui/DashProfileMenu"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {OrderChatPanel, type OrderChatPanelHandle} from "@/components/dashboard-ui/OrderChatPanel"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
 
 export type DashHeaderNavItem = {
+    /** Идентификатор раздела — из него собирается data-tour="nav-<id>" для экскурсии. */
+    id: string
     href: string
     label: string
     iconClassName?: string
     active?: boolean
+    /** Счётчик на вкладке (например, проекты, ждущие действия). */
+    badgeCount?: number
+}
+
+function NavBadge({count}: { count?: number }) {
+    if (!count || count <= 0) return null
+    return <span className="dash-header__nav-badge">{count > 99 ? "99+" : count}</span>
 }
 
 interface DashTopHeaderProps {
     email: string
+    /** Имя пользователя — показывается в меню профиля. */
+    name?: string | null
     title?: string
     /** Куда ведёт логотип NEXUS (в кабинете заказчика — `/orders`). */
     logoHref?: string
@@ -46,6 +58,7 @@ interface DashTopHeaderProps {
 
 export function DashTopHeader({
                                   email,
+                                  name = null,
                                   title = "Личный кабинет",
                                   logoHref = "/",
                                   navItems = null,
@@ -57,7 +70,6 @@ export function DashTopHeader({
                               }: DashTopHeaderProps) {
     const pathname = usePathname()
     const hasNav = Array.isArray(navItems) && navItems.length > 0
-    const emailTrim = email?.trim() ?? ""
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [chatOpen, setChatOpen] = useState(false)
@@ -207,6 +219,7 @@ export function DashTopHeader({
                                 >
                                     {item.iconClassName ? <i className={item.iconClassName} aria-hidden/> : null}
                                     <span>{item.label}</span>
+                                    <NavBadge count={item.badgeCount}/>
                                 </Link>
                             ))}
                             {primaryAction ? (
@@ -231,19 +244,7 @@ export function DashTopHeader({
                                     </Link>
                                 )
                             ) : null}
-                            <Link href="/" className="dash-drawer__link dash-drawer__link--muted"
-                                  onClick={() => setDrawerOpen(false)}>
-                                <i className="bx bx-home-alt" aria-hidden/>
-                                <span>На главную</span>
-                            </Link>
                         </nav>
-                        {emailTrim ? (
-                            <div className="dash-drawer__footer">
-              <span className="dash-drawer__email" title={emailTrim}>
-                {emailTrim}
-              </span>
-                            </div>
-                        ) : null}
                     </aside>
                 </div>,
                 document.body,
@@ -275,16 +276,18 @@ export function DashTopHeader({
                 </div>
 
                 {hasNav ? (
-                    <nav className="dash-header__nav" aria-label="Разделы кабинета">
+                    <nav className="dash-header__nav" aria-label="Разделы кабинета" data-tour="header-nav">
                         {navItems!.map(item => (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 className={`dash-header__nav-link${item.active ? " dash-header__nav-link--active" : ""}`}
                                 aria-current={item.active ? "page" : undefined}
+                                data-tour={`nav-${item.id}`}
                             >
                                 {item.iconClassName ? <i className={item.iconClassName} aria-hidden/> : null}
                                 <span>{item.label}</span>
+                                <NavBadge count={item.badgeCount}/>
                             </Link>
                         ))}
                     </nav>
@@ -312,7 +315,7 @@ export function DashTopHeader({
                     {showNotifications ? (
                         <div className="dash-header__notif-slot">
                             <span data-tour="header-bell">
-                                <NotificationBell/>
+                                <NotificationBell buttonClassName="dash-header__icon-btn dash-header__bell"/>
                             </span>
                         </div>
                     ) : null}
@@ -356,11 +359,6 @@ export function DashTopHeader({
                             ) : null}
                         </button>
                     ) : null}
-                    {emailTrim ? (
-                        <span className="dash-header__email" title={emailTrim}>
-              {emailTrim}
-            </span>
-                    ) : null}
                     {primaryAction && showPrimaryActionInHeader ? (
                         primaryAction.disabled ? (
                             <span
@@ -379,6 +377,7 @@ export function DashTopHeader({
                             </Link>
                         )
                     ) : null}
+                    <DashProfileMenu name={name} email={email}/>
                 </div>
             </header>
             {drawer}

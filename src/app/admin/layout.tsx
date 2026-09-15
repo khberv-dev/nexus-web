@@ -1,6 +1,11 @@
 import type {ReactNode} from "react"
+import {getSessionUser} from "@/lib/session"
+import {AdminViewerProvider} from "@/components/admin/AdminViewerContext"
 
-export default function AdminLayout({children}: { children: ReactNode }) {
+export default async function AdminLayout({children}: { children: ReactNode }) {
+    const user = await getSessionUser()
+    const viewer = user ? {name: user.name, email: user.email} : null
+
     return (
         <>
             <link rel="stylesheet" href="/sneat/core.css"/>
@@ -107,7 +112,7 @@ export default function AdminLayout({children}: { children: ReactNode }) {
           [style*="background: #fafafa"] { background: #141e30 !important; }
         }
       `}</style>
-            {children}
+            <AdminViewerProvider viewer={viewer}>{children}</AdminViewerProvider>
         </>
     )
 }

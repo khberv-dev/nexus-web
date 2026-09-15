@@ -13,7 +13,10 @@ interface NotificationItem {
     createdAt: string
 }
 
-export default function NotificationBell() {
+export default function NotificationBell({buttonClassName}: {
+    /** Свой класс кнопки-колокольчика — тогда встроенные размеры и отступы не применяются. */
+    buttonClassName?: string
+} = {}) {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState<NotificationItem[]>([])
     const [unread, setUnread] = useState(0)
@@ -88,7 +91,7 @@ export default function NotificationBell() {
 
     return (
         <div ref={ref} style={{position: "relative"}}>
-            <button onClick={() => setOpen(!open)} style={{
+            <button onClick={() => setOpen(!open)} className={buttonClassName} style={buttonClassName ? undefined : {
                 background: "none",
                 border: "none",
                 cursor: "pointer",
@@ -96,7 +99,7 @@ export default function NotificationBell() {
                 padding: 4,
                 color: "inherit",
                 fontSize: "1.3rem"
-            }} aria-label="Уведомления">
+            }} aria-label="Уведомления" aria-expanded={open}>
                 <i className="bx bx-bell"/>
                 {unread > 0 && (
                     <span style={{

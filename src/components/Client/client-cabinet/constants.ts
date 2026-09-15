@@ -76,26 +76,33 @@ export const FRAMEWORK_CONTRACT_BADGE: Record<
     DECLINED_BY_CLIENT: {variant: "rejected", label: "Отклонен"},
 }
 
-export const SIDEBAR_TABS = [
+export const CLIENT_CABINET_TABS = [
     {id: "orders", icon: "bx-folder", label: "Проекты", href: clientSectionHref("orders")},
     {id: "payments", icon: "bx-credit-card", label: "Оплата", href: clientSectionHref("payments")},
     {id: "settings", icon: "bx-cog", label: "Настройки", href: clientSectionHref("settings")},
 ] as const
 
 export type ClientCabinetNavItem = {
+    id: string
     href: string
     label: string
     iconClassName: string
     active: boolean
+    badgeCount?: number
 }
 
-/** Ссылки верхней навигации кабинета заказчика (те же разделы, что в боковой панели). */
-export function buildClientCabinetNavItems(activeTab: string): ClientCabinetNavItem[] {
-    return SIDEBAR_TABS.map(t => ({
+/** Ссылки верхней навигации и выдвижного меню кабинета заказчика. */
+export function buildClientCabinetNavItems(
+    activeTab: string,
+    badgeCountByTab: Partial<Record<string, number>> = {},
+): ClientCabinetNavItem[] {
+    return CLIENT_CABINET_TABS.map(t => ({
+        id: t.id,
         href: clientSectionHref(t.id),
         label: t.label,
         iconClassName: `bx ${t.icon}`,
         active: activeTab === t.id,
+        badgeCount: badgeCountByTab[t.id],
     }))
 }
 

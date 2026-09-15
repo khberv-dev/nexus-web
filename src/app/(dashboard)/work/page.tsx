@@ -3,9 +3,8 @@ import {redirect} from "next/navigation"
 import {prisma} from "@/lib/db/prisma"
 import "@/components/Community/Community.css"
 import {DashMainLayout} from "@/components/dashboard-ui/DashMainLayout"
-import {DashSidebarNav} from "@/components/dashboard-ui/DashSidebarNav"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {buildSpecialistCabinetNavItems, SPECIALIST_ROUTE_TABS} from "@/components/Community/specialist-route-tabs"
+import {buildSpecialistCabinetNavItems} from "@/components/Community/specialist-route-tabs"
 import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import SpecialistDashboard from "@/components/Dashboard/SpecialistDashboard"
 import type {Prisma} from "@prisma/client"
@@ -99,6 +98,7 @@ export default async function WorkDashboard() {
         <div className="dash">
             <DashTopHeader
                 email={user.email}
+                name={user.name}
                 title="Кабинет специалиста"
                 logoHref={SPECIALIST_CABINET_LOGO_HREF}
                 navItems={buildSpecialistCabinetNavItems("home")}
@@ -108,7 +108,7 @@ export default async function WorkDashboard() {
                     iconClassName: "bx bx-user-circle"
                 }}
             />
-            <DashMainLayout sidebar={<DashSidebarNav tabs={SPECIALIST_ROUTE_TABS} activeTab="home"/>}>
+            <DashMainLayout>
                 <SpecialistDashboard
                     name={user.name ?? user.email}
                     email={user.email}

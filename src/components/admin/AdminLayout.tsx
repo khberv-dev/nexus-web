@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import {usePathname} from "next/navigation"
-import type {ReactNode} from "react"
-import {AdminRefreshProvider, useAdminRefreshControls} from "./AdminRefreshContext"
+import {type ReactNode, useEffect, useRef, useState} from "react"
+import {AdminRefreshProvider} from "./AdminRefreshContext"
+import {useAdminViewer} from "./AdminViewerContext"
 import NotificationBell from "@/components/Community/NotificationBell"
 import {SignOutButton} from "@/components/auth/SignOutButton"
 
@@ -31,46 +32,75 @@ export function AdminLayout({children, noPadding}: AdminLayoutProps) {
     )
 }
 
+/** Иконка профиля в шапке: по клику — меню с выходом. */
+function AdminProfileMenu() {
+    const pathname = usePathname()
+    const viewer = useAdminViewer()
+    const [open, setOpen] = useState(false)
+    const rootRef = useRef<HTMLDivElement>(null)
+    const displayName = viewer?.name?.trim() || viewer?.email || "Администратор"
+    const showEmail = Boolean(viewer?.email && viewer.email !== displayName)
+
+    useEffect(() => {
+        setOpen(false)
+    }, [pathname])
+
+    useEffect(() => {
+        if (!open) return
+        const onPointerDown = (e: PointerEvent) => {
+            if (!rootRef.current?.contains(e.target as Node)) setOpen(false)
+        }
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setOpen(false)
+        }
+        document.addEventListener("pointerdown", onPointerDown)
+        document.addEventListener("keydown", onKey)
+        return () => {
+            document.removeEventListener("pointerdown", onPointerDown)
+            document.removeEventListener("keydown", onKey)
+        }
+    }, [open])
+
+    return (
+        <div className="adm-profile" ref={rootRef}>
+            <button
+                type="button"
+                className="adm-header-icon-btn adm-profile-avatar"
+                title={displayName}
+                aria-label="Меню профиля"
+                aria-haspopup="menu"
+                aria-expanded={open}
+                onClick={() => setOpen((v) => !v)}
+            >
+                <i className="bx bx-user"/>
+            </button>
+            {/* Меню не размонтируем: диалог подтверждения выхода живёт внутри SignOutButton. */}
+            <div className="adm-profile-menu" role="menu" hidden={!open}>
+                <div className="adm-profile-menu__user">
+                    <span className="adm-profile-menu__name" title={displayName}>{displayName}</span>
+                    {showEmail && <span className="adm-profile-menu__email" title={viewer!.email}>{viewer!.email}</span>}
+                </div>
+                <SignOutButton
+                    title="Выйти из админки"
+                    className="adm-profile-menu__item adm-profile-menu__item--danger"
+                    onOpen={() => setOpen(false)}
+                >
+                    <i className="bx bx-power-off"/>
+                    Выйти
+                </SignOutButton>
+            </div>
+        </div>
+    )
+}
+
 function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
     const pathname = usePathname()
-    const {runRefresh, refreshing} = useAdminRefreshControls()
 
     const isActive = (href: string) =>
         href === "/admin" ? pathname === "/admin" : pathname.startsWith(href)
 
     return (
         <div className="adm-root">
-            <aside className="adm-sidebar">
-                <div className="adm-logo">
-                    <Link href="/admin" className="adm-logo-link">
-                        <i className="bx bx-grid-alt adm-logo-icon"/>
-                    </Link>
-                </div>
-                <nav className="adm-nav">
-                    {NAV.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            title={item.label}
-                            className={`adm-nav-item${isActive(item.href) ? " adm-nav-item--active" : ""}`}
-                        >
-                            <i className={`bx ${item.icon}`}/>
-                        </Link>
-                    ))}
-                </nav>
-                <div className="adm-sidebar-bottom">
-                    <Link href="/" title="На сайт" className="adm-nav-item">
-                        <i className="bx bx-globe"/>
-                    </Link>
-                    <SignOutButton
-                        title="Выйти из админки"
-                        className="adm-nav-item adm-nav-item--logout"
-                    >
-                        <i className="bx bx-power-off"/>
-                    </SignOutButton>
-                </div>
-            </aside>
-
             <div className="adm-main">
                 <header className="adm-header">
                     <nav className="adm-tabs">
@@ -85,23 +115,8 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
                         ))}
                     </nav>
                     <div className="adm-header-right">
-                        <NotificationBell/>
-                        <button
-                            type="button"
-                            className="adm-header-refresh"
-                            title="Обновить данные текущей страницы без перезагрузки (на дашборде — обновление с сервера)"
-                            aria-label="Обновить"
-                            disabled={refreshing}
-                            onClick={() => void runRefresh()}
-                        >
-                            <i className={`bx bx-refresh${refreshing ? " adm-header-refresh--spin" : ""}`}/>
-                        </button>
-                        <div className="adm-profile">
-              <span className="adm-profile-avatar">
-                <i className="bx bx-user"/>
-              </span>
-                            <span className="adm-profile-label">Админ</span>
-                        </div>
+                        <NotificationBell buttonClassName="adm-header-icon-btn adm-header-bell"/>
+                        <AdminProfileMenu/>
                     </div>
                 </header>
 
@@ -143,47 +158,6 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           overflow: hidden; font-size: 0.875rem;
         }
 
-        .adm-sidebar {
-          width: 72px; flex-shrink: 0;
-          background: var(--adm-sidebar);
-          border-right: 1px solid var(--adm-sidebar-border);
-          display: flex; flex-direction: column;
-        }
-        .adm-logo {
-          height: 56px; display: flex;
-          align-items: center; justify-content: center;
-          border-bottom: 1px solid var(--adm-sidebar-border);
-          flex-shrink: 0;
-        }
-        .adm-logo-link { text-decoration: none; color: var(--adm-active-color); font-size: 1.6rem; display: flex; }
-        .adm-logo-icon { font-size: 1.6rem; }
-        .adm-nav {
-          display: flex; flex-direction: column;
-          gap: 6px; padding: 8px; flex: 1;
-        }
-        .adm-sidebar-bottom { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
-        .adm-nav-item {
-          width: 100%; display: flex;
-          align-items: center; justify-content: center;
-          height: 40px; border-radius: 8px;
-          text-decoration: none; color: var(--adm-muted);
-          font-size: 1.25rem;
-          transition: background 0.15s, color 0.15s;
-        }
-        .adm-nav-item:hover {
-          background: var(--adm-hover-bg);
-          color: var(--adm-active-color);
-        }
-        .adm-nav-item--active {
-          background: var(--adm-active-bg);
-          color: var(--adm-active-color);
-        }
-        .adm-nav-item--logout { color: var(--adm-danger, #ea5455); }
-        .adm-nav-item--logout:hover {
-          background: rgba(234,84,85,0.12);
-          color: var(--adm-danger, #ea5455);
-        }
-
         .adm-header {
           height: 56px; flex-shrink: 0;
           display: flex; align-items: center;
@@ -217,47 +191,72 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           margin-left: auto; display: flex;
           align-items: center; gap: 12px;
         }
-        .adm-header-refresh {
-          width: 34px; height: 34px; padding: 0;
-          border-radius: 8px;
-          border: 1px solid var(--adm-sidebar-border);
-          background: transparent;
+
+        /* ── Профиль: иконка открывает меню, в нём — выход ── */
+        /* Колокольчик и профиль — одинаковые круглые кнопки 36×36, по центру шапки. */
+        .adm-header-right > * { display: flex; align-items: center; }
+        .adm-header-icon-btn {
+          position: relative;
+          width: 36px; height: 36px; padding: 0; border-radius: 50%;
+          border: 1px solid transparent;
           display: flex; align-items: center; justify-content: center;
-          cursor: pointer;
-          color: var(--adm-muted);
-          font-size: 1.15rem;
-          line-height: 1;
-          transition: color 0.15s, border-color 0.15s, background 0.15s;
+          font-size: 1.15rem; line-height: 1; cursor: pointer;
+          transition: color 0.15s, border-color 0.15s, box-shadow 0.15s, background 0.15s;
         }
-        .adm-header-refresh:hover:not(:disabled) {
-          color: var(--adm-active-color);
+        .adm-header-icon-btn i { line-height: 1; }
+        .adm-header-icon-btn:hover,
+        .adm-header-icon-btn[aria-expanded="true"] {
           border-color: var(--adm-active-color);
-          background: var(--adm-hover-bg);
+          box-shadow: 0 0 0 3px var(--adm-hover-bg);
         }
-        .adm-header-refresh:disabled {
-          opacity: 0.45;
-          cursor: not-allowed;
+        .adm-header-icon-btn:focus-visible { outline: 2px solid var(--adm-active-color); outline-offset: 2px; }
+        .adm-header-bell {
+          background: transparent;
+          border-color: var(--adm-sidebar-border);
+          color: var(--adm-muted);
         }
-        @keyframes adm-refresh-spin {
-          to { transform: rotate(360deg); }
-        }
-        .adm-header-refresh--spin {
-          display: inline-block;
-          animation: adm-refresh-spin 0.75s linear infinite;
-        }
-        .adm-profile {
-          display: flex; align-items: center; gap: 8px;
-          cursor: default;
-        }
+        .adm-header-bell:hover,
+        .adm-header-bell[aria-expanded="true"] { color: var(--adm-active-color); background: var(--adm-hover-bg); }
+        /* Счётчик непрочитанных — на краю круга, а не внутри. */
+        .adm-header-bell > span { top: -3px !important; right: -3px !important; }
+        .adm-profile { position: relative; }
         .adm-profile-avatar {
-          width: 30px; height: 30px; border-radius: 50%;
           background: var(--adm-active-bg);
           color: var(--adm-active-color);
-          display: flex; align-items: center; justify-content: center;
-          font-size: 1rem;
         }
-        .adm-profile-label {
-          font-size: 0.82rem; color: var(--adm-text);
+        .adm-profile-menu {
+          position: absolute; top: calc(100% + 8px); right: 0; z-index: 1100;
+          min-width: 180px; padding: 6px;
+          display: flex; flex-direction: column;
+          background: var(--adm-content-bg);
+          border: 1px solid var(--adm-sidebar-border);
+          border-radius: 10px;
+          box-shadow: 0 12px 32px rgba(15,23,42,0.16);
+        }
+        .adm-profile-menu[hidden] { display: none; }
+        .adm-profile-menu__user {
+          display: flex; flex-direction: column; gap: 2px;
+          padding: 8px 10px 10px; margin-bottom: 4px;
+          border-bottom: 1px solid var(--adm-sidebar-border);
+          max-width: 260px;
+        }
+        .adm-profile-menu__name,
+        .adm-profile-menu__email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .adm-profile-menu__name { font-size: 0.875rem; font-weight: 600; color: var(--adm-text); }
+        .adm-profile-menu__email { font-size: 0.75rem; color: var(--adm-muted); }
+        .adm-profile-menu__item {
+          display: flex; align-items: center; gap: 10px;
+          width: 100%; padding: 8px 10px; border-radius: 7px;
+          background: transparent; color: var(--adm-text);
+          font-size: 0.85rem; text-align: left;
+          transition: background 0.15s, color 0.15s;
+        }
+        .adm-profile-menu__item i { font-size: 1.05rem; }
+        .adm-profile-menu__item--danger { color: var(--adm-danger, #ea5455); }
+        .adm-profile-menu__item--danger:hover,
+        .adm-profile-menu__item--danger:focus-visible {
+          background: rgba(234,84,85,0.12);
+          outline: none;
         }
 
         .adm-main {
@@ -285,8 +284,6 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           }
           .adm-tabs::-webkit-scrollbar { display: none; }
           .adm-tab { padding: 0 12px; }
-          /* Reclaim width: the avatar still shows, only the text label is hidden. */
-          .adm-profile-label { display: none; }
           .adm-content { padding: 12px; }
           /* Keep the no-padding split-view panels full-bleed (equal specificity + source order
              would otherwise let the 12px above leak onto them). */

@@ -96,7 +96,7 @@ describe("POST /api/ai/image-edit", () => {
         mockedFindUnique.mockResolvedValue({id: "f1", userId: "db-user-1", s3Key: "k", mimeType: "image/png"} as never)
         mockedObjectBuffer.mockResolvedValue({buffer: Buffer.from("png-bytes"), contentType: "image/png"})
 
-        const res = await call({fileId: "f1", prompt: "светлее фон", context: "portrait"})
+        const res = await call({fileId: "f1", prompt: "светлее фон", context: "avatar"})
         expect(res.status).toBe(200)
         const [, image] = mockedEdit.mock.calls[0]
         expect(image).toEqual({data: Buffer.from("png-bytes").toString("base64"), mimeType: "image/png"})
