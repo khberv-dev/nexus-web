@@ -13,6 +13,7 @@ import {
 import {formatEdoProvidersLabel} from "@/lib/edo-providers"
 import {FW_CONTRACT_STATUS_LABEL, ORDER_LABEL, ORDER_VARIANT} from "./client-types"
 import {useClientsShell} from "./ClientsShell"
+import {ClientContractUpload} from "./ClientContractUpload"
 import {userDisplayName} from "@/lib/user-name"
 
 /** Карточка заказчика по адресу /admin/clients/:id; данные и действия — из списка в layout. */
@@ -187,53 +188,13 @@ export function ClientDetailRoute({id}: { id: string }) {
                                     </p>
                                 </div>
                             )}
-                        <form
-                            onSubmit={async e => {
-                                e.preventDefault()
-                                const el = e.currentTarget
-                                const fd = new FormData(el)
-                                const res = await fetch(`/api/admin/clients/${client.id}/framework-contract`, {
-                                    method: "POST",
-                                    body: fd
-                                })
-                                if (res.ok) {
-                                    el.reset()
-                                    load()
-                                }
-                            }}
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 8,
-                                alignItems: "flex-start"
-                            }}
-                        >
-                            <input type="file" name="file" accept=".pdf,application/pdf" required
-                                   style={{fontSize: "0.78rem", maxWidth: "100%"}}/>
-                            <input name="number" placeholder="Номер договора (необязательно)"
-                                   style={{
-                                       width: "100%",
-                                       maxWidth: 320,
-                                       padding: "6px 10px",
-                                       borderRadius: 6,
-                                       border: "1px solid var(--adm-sidebar-border)",
-                                       background: "var(--adm-outer)",
-                                       color: "var(--adm-text)",
-                                       fontSize: "0.8rem"
-                                   }}/>
-                            <button type="submit" style={{
-                                padding: "6px 14px",
-                                borderRadius: 6,
-                                border: "none",
-                                background: "var(--adm-active-color)",
-                                color: "#fff",
-                                fontWeight: 600,
-                                fontSize: "0.78rem",
-                                cursor: "pointer"
-                            }}>
-                                Загрузить / заменить PDF
-                            </button>
-                        </form>
+                        <ClientContractUpload
+                            clientId={client.id}
+                            status={fw?.frameworkContractStatus}
+                            fileKey={fw?.frameworkContractS3Key}
+                            uploadedAt={fw?.frameworkContractUploadedAt}
+                            onUploaded={load}
+                        />
                         {fw?.signedContractS3Key && (
                             <div style={{
                                 marginTop: 12,

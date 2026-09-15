@@ -4,6 +4,7 @@ import {prisma} from "@/lib/db/prisma"
 import {getDownloadUrl, isStorageConfigured, putObject, validateFile} from "@/lib/s3"
 import {SpecialistContractStatus} from "@prisma/client"
 import {notifySpecialistStep} from "@/lib/onboarding/notify-step"
+import {ADMIN_CONTRACT_UPLOAD_LOCKED_ERROR, canAdminUploadSpecialistContract} from "@/lib/contract-upload-lock"
 
 /** Админ: загрузить PDF договора с платформой для специалиста */
 export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
@@ -17,6 +18,10 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         include: {specialistProfile: true},
     })
     if (!db?.specialistProfile) return NextResponse.json({error: "Specialist not found"}, {status: 404})
+    const profile = db.specialistProfile
+    if (!canAdminUploadSpecialistContract(profile.specialistContractStatus, Boolean(profile.specialistContractS3Key))) {
+        return NextResponse.json({error: ADMIN_CONTRACT_UPLOAD_LOCKED_ERROR}, {status: 409})
+    }
 
     const form = await req.formData()
     const file = form.get("file")

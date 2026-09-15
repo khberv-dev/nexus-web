@@ -42,6 +42,8 @@ type Props = {
      */
     submitted?: SubmittedDocument | null
     size?: "md" | "sm"
+    /** Цветовая схема: кабинет/онбординг (по умолчанию) или админка. */
+    tone?: "dash" | "admin"
 }
 
 function formatDate(iso: string): string {
@@ -64,6 +66,7 @@ export function DocumentUpload({
                                    error = null,
                                    submitted = null,
                                    size = "md",
+                                   tone = "dash",
                                }: Props) {
     const inputRef = useRef<HTMLInputElement>(null)
     const inputId = useId()
@@ -98,7 +101,7 @@ export function DocumentUpload({
         }
     }
 
-    const rootClass = `${styles.root} ${size === "sm" ? styles.sm : ""}`
+    const rootClass = [styles.root, size === "sm" && styles.sm, tone === "admin" && styles.admin].filter(Boolean).join(" ")
 
     if (submitted) {
         return (

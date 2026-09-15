@@ -23,6 +23,7 @@ export interface RawClient {
         frameworkContractS3Key?: string | null
         frameworkContractStatus?: string
         frameworkContractNumber?: string | null
+        frameworkContractUploadedAt?: string | null
         signedContractS3Key?: string | null
     } | null
     clientRequisiteChangeRequests?: Array<{

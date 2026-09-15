@@ -1,5 +1,15 @@
+import {useState} from "react"
+import {DocumentUpload} from "@/components/app/DocumentUpload"
+import {canAdminUploadSpecialistContract} from "@/lib/contract-upload-lock"
+import {uploadWithProgress} from "@/lib/upload-progress"
 import {SPEC_CONTRACT_STATUS_LABEL} from "../constants"
 import type {RawSpecialist} from "../../../types"
+
+const CONTRACT_LOCK_HINT: Record<string, string> = {
+    AWAITING_SIGNATURE: "Ожидает подписи специалиста — новую версию можно загрузить после отказа",
+    SIGNED_BY_SPECIALIST: "Специалист прислал подписанный PDF — подтвердите подписание",
+    SIGNED_BY_ADMIN: "Договор подписан и зафиксирован",
+}
 
 export function PlatformContractCard({
                                          specialist,
@@ -11,6 +21,43 @@ export function PlatformContractCard({
     onRefresh?: () => Promise<void>
 }) {
     const p = profile
+    const uploadOpen = canAdminUploadSpecialistContract(p?.specialistContractStatus, Boolean(p?.specialistContractS3Key))
+    const [file, setFile] = useState<File | null>(null)
+    const [number, setNumber] = useState("")
+    const [uploading, setUploading] = useState(false)
+    const [progress, setProgress] = useState(0)
+    const [error, setError] = useState<string | null>(null)
+
+    const uploadSource = async () => {
+        if (!file) return
+        setUploading(true)
+        setProgress(0)
+        setError(null)
+        try {
+            const fd = new FormData()
+            fd.set("file", file)
+            if (number.trim()) fd.set("number", number.trim())
+            const res = await uploadWithProgress(`/api/admin/specialists/${specialist.id}/framework-contract`, fd, {
+                onProgress: ({percent}) => setProgress(percent),
+            })
+            if (!res.ok) {
+                let message = "Ошибка загрузки"
+                try {
+                    const err = JSON.parse(res.text || "{}") as { error?: string }
+                    if (typeof err.error === "string") message = err.error
+                } catch { /* ответ не JSON — оставляем общий текст */ }
+                setError(message)
+                return
+            }
+            setFile(null)
+            setNumber("")
+            await onRefresh?.()
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Ошибка загрузки")
+        } finally {
+            setUploading(false)
+        }
+    }
     const signedUploadedAt = p?.specialistSignedContractUploadedAt
         ? new Date(p.specialistSignedContractUploadedAt).toLocaleString("ru-RU")
         : null
@@ -120,57 +167,67 @@ export function PlatformContractCard({
                     </div>
                 )}
 
-                <form
-                    onSubmit={async (e) => {
-                        e.preventDefault()
-                        const el = e.currentTarget
-                        const fd = new FormData(el)
-                        const res = await fetch(`/api/admin/specialists/${specialist.id}/framework-contract`, {
-                            method: "POST",
-                            body: fd
-                        })
-                        if (res.ok) {
-                            el.reset()
-                            await onRefresh?.()
-                        } else {
-                            const err = await res.json().catch(() => ({}))
-                            alert(typeof err.error === "string" ? err.error : "Ошибка загрузки")
-                        }
-                    }}
-                    style={{display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start"}}
-                >
-                    <input type="file" name="file" accept=".pdf,application/pdf" required
-                           style={{fontSize: "0.78rem", maxWidth: "100%"}}/>
-                    <input
-                        name="number"
-                        placeholder="Номер договора (необязательно)"
-                        style={{
-                            width: "100%",
-                            maxWidth: 320,
-                            padding: "6px 10px",
-                            borderRadius: 6,
-                            border: "1px solid var(--adm-sidebar-border)",
-                            background: "var(--adm-outer)",
-                            color: "var(--adm-text)",
-                            fontSize: "0.8rem",
+                <div style={{display: "flex", flexDirection: "column", gap: 8}}>
+                    <DocumentUpload
+                        tone="admin"
+                        size="sm"
+                        label={uploadOpen && p?.specialistContractS3Key ? "Новая версия договора (PDF)" : "Исходный PDF договора"}
+                        file={file}
+                        onFileChange={(f) => {
+                            setFile(f)
+                            setError(null)
+                        }}
+                        disabled={uploading}
+                        progress={uploading ? progress : null}
+                        error={error}
+                        submitted={uploadOpen ? null : {
+                            title: "Договор отправлен специалисту",
+                            submittedAt: p?.specialistContractUploadedAt ?? null,
+                            hint: CONTRACT_LOCK_HINT[p?.specialistContractStatus ?? ""] ?? "Загрузка новой версии закрыта",
+                            onDownload: () => void openContract("source"),
                         }}
                     />
-                    <button
-                        type="submit"
-                        style={{
-                            padding: "6px 14px",
-                            borderRadius: 6,
-                            border: "none",
-                            background: "var(--adm-active-color)",
-                            color: "#fff",
-                            fontWeight: 600,
-                            fontSize: "0.78rem",
-                            cursor: "pointer",
-                        }}
-                    >
-                        Загрузить / заменить исходный PDF
-                    </button>
-                </form>
+                    {uploadOpen && (
+                        <>
+                            <input
+                                value={number}
+                                onChange={(e) => setNumber(e.target.value)}
+                                disabled={uploading}
+                                placeholder="Номер договора (необязательно)"
+                                style={{
+                                    width: "100%",
+                                    maxWidth: 320,
+                                    padding: "6px 10px",
+                                    borderRadius: 6,
+                                    border: "1px solid var(--adm-sidebar-border)",
+                                    background: "var(--adm-outer)",
+                                    color: "var(--adm-text)",
+                                    fontSize: "0.8rem",
+                                }}
+                            />
+                            <div>
+                                <button
+                                    type="button"
+                                    disabled={!file || uploading}
+                                    onClick={() => void uploadSource()}
+                                    style={{
+                                        padding: "6px 14px",
+                                        borderRadius: 6,
+                                        border: "none",
+                                        background: "var(--adm-active-color)",
+                                        color: "#fff",
+                                        fontWeight: 600,
+                                        fontSize: "0.78rem",
+                                        cursor: !file || uploading ? "not-allowed" : "pointer",
+                                        opacity: !file || uploading ? 0.6 : 1,
+                                    }}
+                                >
+                                    {uploading ? "Отправка…" : "Отправить договор специалисту"}
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     )

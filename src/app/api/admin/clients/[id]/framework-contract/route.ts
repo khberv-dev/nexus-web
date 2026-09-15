@@ -5,6 +5,7 @@ import {isStorageConfigured, putObject, validateFile} from "@/lib/s3"
 import {ClientFrameworkContractStatus} from "@prisma/client"
 import {sendEmail} from "@/lib/email"
 import {notify} from "@/lib/notifications"
+import {ADMIN_CONTRACT_UPLOAD_LOCKED_ERROR, canAdminUploadClientContract} from "@/lib/contract-upload-lock"
 
 export async function POST(req: NextRequest, {params}: { params: Promise<{ id: string }> }) {
     const user = await getSessionUser()
@@ -17,6 +18,9 @@ export async function POST(req: NextRequest, {params}: { params: Promise<{ id: s
         include: {clientProfile: true},
     })
     if (!db?.clientProfile) return NextResponse.json({error: "Client not found"}, {status: 404})
+    if (!canAdminUploadClientContract(db.clientProfile.frameworkContractStatus, Boolean(db.clientProfile.frameworkContractS3Key))) {
+        return NextResponse.json({error: ADMIN_CONTRACT_UPLOAD_LOCKED_ERROR}, {status: 409})
+    }
 
     const form = await req.formData()
     const file = form.get("file")

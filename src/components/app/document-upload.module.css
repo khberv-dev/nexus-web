@@ -21,6 +21,19 @@
     --du-danger: var(--dash-danger, #f87171);
 }
 
+/* Админка: светлая по умолчанию, тёмная по prefers-color-scheme — цвета из --adm-*. */
+.admin {
+    --du-text: var(--adm-text, #111827);
+    --du-muted: var(--adm-muted, #6b7280);
+    --du-border: var(--adm-sidebar-border, #e5e7eb);
+    --du-surface: var(--adm-outer, #f3f4f6);
+    --du-accent: var(--adm-active-color, #6366f1);
+    --du-accent-bg: var(--adm-active-bg, rgba(99, 102, 241, 0.1));
+    --du-success: #16a34a;
+    --du-success-bg: rgba(22, 163, 74, 0.08);
+    --du-danger: #dc2626;
+}
+
 .label {
     font-size: 0.78rem;
     font-weight: 600;
