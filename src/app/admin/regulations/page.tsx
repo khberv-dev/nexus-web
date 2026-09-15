@@ -1,7 +1,7 @@
 import {redirect} from "next/navigation"
 import {getSessionUser} from "@/lib/session"
 import {AdminLayout} from "@/components/admin/AdminLayout"
-import {buildDefaultRegulationsMarkdown, getRegulationsDocument} from "@/lib/regulations"
+import {getRegulationsDocument} from "@/lib/regulations"
 import RegulationsEditorClient from "./RegulationsEditorClient"
 
 export const dynamic = "force-dynamic"
@@ -15,7 +15,7 @@ export default async function AdminRegulationsPage() {
 
     return (
         <AdminLayout>
-            <RegulationsEditorClient document={document} defaultContent={buildDefaultRegulationsMarkdown()}/>
+            <RegulationsEditorClient document={document}/>
         </AdminLayout>
     )
 }
