@@ -9,6 +9,9 @@
     background: rgba(255, 255, 255, 0.07);
     /* Только стандартное свойство: при паре с -webkit- сборщик CSS выкидывал обе декларации. */
     backdrop-filter: blur(20px) saturate(140%);
+    /* Родитель (.auth-form-shell) двигает карточку через GSAP transform; свой compositing-слой
+       не даёт браузеру откладывать пересчёт backdrop-filter до конца анимации предка. */
+    transform: translateZ(0);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 18px;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);

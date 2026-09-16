@@ -8,17 +8,14 @@ import Link from "next/link"
 
 export default function AuthLayout({children}: { children: React.ReactNode }) {
     const bgRef = useRef<HTMLDivElement>(null)
-    const formRef = useRef<HTMLDivElement>(null)
     const navRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const tl = gsap.timeline()
         gsap.set(bgRef.current, {scale: 1.08, opacity: 0})
         gsap.set(navRef.current, {opacity: 0, y: -16})
-        gsap.set(formRef.current, {opacity: 0, y: 32})
         tl.to(bgRef.current, {scale: 1, opacity: 1, duration: 1.2, ease: "power3.out"})
         tl.to(navRef.current, {opacity: 1, y: 0, duration: 0.7, ease: "power2.out"}, "-=0.7")
-        tl.to(formRef.current, {opacity: 1, y: 0, duration: 0.8, ease: "power3.out"}, "-=0.4")
     }, [])
 
     return (
@@ -47,7 +44,6 @@ export default function AuthLayout({children}: { children: React.ReactNode }) {
             </div>
 
             <div
-                ref={formRef}
                 className="auth-form-shell relative z-10 w-full"
                 style={{maxWidth: 440, padding: "0 1.5rem"}}
             >
