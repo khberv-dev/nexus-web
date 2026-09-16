@@ -8,12 +8,14 @@ import {ConfirmDialog} from "@/components/Community/ConfirmDialog"
 export function SignOutButton({
                                   children,
                                   className,
+                                  style,
                                   title = "Выйти",
                                   dataTour,
                                   onOpen,
                               }: {
     children: ReactNode
     className?: string
+    style?: React.CSSProperties
     title?: string
     dataTour?: string
     onOpen?: () => void
@@ -40,7 +42,7 @@ export function SignOutButton({
                 title={title}
                 data-tour={dataTour}
                 onClick={openDialog}
-                style={{border: 0, font: "inherit", cursor: "pointer"}}
+                style={{border: 0, font: "inherit", cursor: "pointer", ...style}}
             >
                 {children}
             </button>

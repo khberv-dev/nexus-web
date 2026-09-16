@@ -2,6 +2,7 @@
 
 import {useState} from "react"
 import {useRouter} from "next/navigation"
+import {DashActionLink} from "@/components/dashboard-ui/DashActionLink"
 import {DashEmptyState} from "@/components/dashboard-ui/DashEmptyState"
 import {DashSectionCard} from "@/components/dashboard-ui/DashSectionCard"
 import {specialistSectionHref} from "@/lib/cabinet-shell"
@@ -49,7 +50,7 @@ export function SpecialistPortfolioSection() {
 
 export function SpecialistLandingSection() {
     const router = useRouter()
-    const {formData, about, featuredOnLanding, landingWorkPos, avatarUrl} = useSpecialistCabinet()
+    const {formData, about, featuredOnLanding, landingWorkPos, avatarUrl, portfolioProjectsCount} = useSpecialistCabinet()
     const [landingReadiness, setLandingReadiness] = useState({
         avatar: Boolean(avatarUrl),
         work: false,
@@ -58,6 +59,21 @@ export function SpecialistLandingSection() {
         specialty: !!(formData?.specialty?.trim() || formData?.specialization?.trim()),
         about: !!about?.trim(),
     })
+
+    if (portfolioProjectsCount === 0) {
+        return (
+            <div style={{gridColumn: "1 / -1"}}>
+                <DashEmptyState
+                    iconClass="bx-image-alt"
+                    message="Сначала создайте проект портфолио — лендинг собирается из его материалов."
+                >
+                    <DashActionLink href={specialistSectionHref("portfolio")} iconClass="bx-plus">
+                        Создать проект портфолио
+                    </DashActionLink>
+                </DashEmptyState>
+            </div>
+        )
+    }
 
     return (
         <>
