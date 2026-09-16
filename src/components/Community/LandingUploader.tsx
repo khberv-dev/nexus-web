@@ -6,7 +6,7 @@ import {LandingUploaderStyles} from "./landing-uploader/LandingUploaderStyles"
 import {ConfirmDialog} from "./ConfirmDialog"
 import {getPreviewUrl, uploadFile} from "./landing-uploader/api"
 import type {UploadItem} from "@/components/app/UploadingCard"
-import {MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
+import {DEFAULT_WORK_POS, MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
 
@@ -54,33 +54,29 @@ export default function LandingUploader({
     const isEditable = activeBundle?.status === "DRAFT" || activeBundle?.status === "REJECTED"
 
     // --- files (same as before) ---
-    const [workFiles, setWorkFiles] = useState<LandingFile[]>([])
-    const [workUrls, setWorkUrls] = useState<Record<string, string>>({})
     const [selectedWorkId, setSelectedWorkId] = useState<string | null>(null)
-    const [workPos, setWorkPos] = useState(initialWorkPos ?? "center center")
-    const workRef = useRef<HTMLInputElement>(null)
+    const [workPos, setWorkPos] = useState(initialWorkPos ?? DEFAULT_WORK_POS)
 
-    const [bundleSpecialty, setBundleSpecialty] = useState(specialty ?? "")
-    const [bundleAbout, setBundleAbout] = useState(about ?? "")
+    const [bundleSpecialty, setBundleSpecialty] = useState("")
+    const [bundleAbout, setBundleAbout] = useState("")
 
     const [introVideoFiles, setIntroVideoFiles] = useState<LandingFile[]>([])
     const [introVideoUrls, setIntroVideoUrls] = useState<Record<string, string>>({})
     const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null)
     const videoRef = useRef<HTMLInputElement>(null)
 
-    const portfolioRef = useRef<HTMLInputElement>(null)
     const [portfolioFiles, setPortfolioFiles] = useState<LandingFile[]>([])
     const [portfolioUrls, setPortfolioUrls] = useState<Record<string, string>>({})
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
 
     const [uploading, setUploading] = useState<string | null>(null)
     const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
-    const [toast, setToast] = useState<string | null>(null)
+    const [toast, setToast] = useState<{ message: string; variant: "success" | "error" } | null>(null)
     const [confirmDeleteBundleId, setConfirmDeleteBundleId] = useState<string | null>(null)
     const [confirmDeleteFileId, setConfirmDeleteFileId] = useState<string | null>(null)
     const [preview, setPreview] = useState<PreviewState>(null)
 
-    const showToast = (msg: string) => setToast(msg)
+    const showToast = (message: string, variant: "success" | "error" = "error") => setToast({message, variant})
 
     const safeFetch = async (url: string) => {
         const r = await fetch(url)
@@ -109,10 +105,6 @@ export default function LandingUploader({
 
     // --- load files ---
     const loadFiles = useCallback(async () => {
-        const works: LandingFile[] = await safeFetch("/api/files?category=LANDING_WORK")
-        setWorkFiles(works)
-        setWorkUrls(await resolveUrls(works))
-
         const videos: LandingFile[] = await safeFetch("/api/files?category=INTRO_VIDEO")
         setIntroVideoFiles(videos)
         setIntroVideoUrls(await resolveUrls(videos))
@@ -128,9 +120,9 @@ export default function LandingUploader({
         if (!activeBundle) return
         setSelectedWorkId(activeBundle.workFileId)
         setSelectedVideoId(activeBundle.videoFileId)
-        setWorkPos(activeBundle.workPos ?? "center center")
-        setBundleSpecialty(activeBundle.specialty ?? specialty ?? "")
-        setBundleAbout(activeBundle.about ?? about ?? "")
+        setWorkPos(activeBundle.workPos ?? DEFAULT_WORK_POS)
+        setBundleSpecialty(activeBundle.specialty ?? "")
+        setBundleAbout(activeBundle.about ?? "")
         setSelectedIds(new Set(activeBundle.items.map((i) => i.fileId)))
     }, [activeBundle?.id, activeBundle?.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -185,7 +177,7 @@ export default function LandingUploader({
         if (res.ok) {
             const updated: Bundle = await res.json()
             setBundles((prev) => prev.map((b) => (b.id === updated.id ? updated : b)))
-            showToast("Сборка отправлена на модерацию")
+            showToast("Сборка отправлена на модерацию", "success")
         } else {
             const err = await res.json()
             showToast(err.error ?? "Ошибка отправки")
@@ -218,24 +210,6 @@ export default function LandingUploader({
     }
 
     // --- file handlers (upload + patch bundle) ---
-    const handleWork = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file || !isEditable) return
-        try {
-            setUploading("work")
-            const saved = await runUpload(file, "LANDING_WORK")
-            setWorkFiles((prev) => [saved, ...prev])
-            setWorkUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
-            setSelectedWorkId(saved.id)
-            await patchBundle({workFileId: saved.id})
-        } catch (err) {
-            showToast((err as Error).message)
-        } finally {
-            setUploading(null);
-            if (workRef.current) workRef.current.value = ""
-        }
-    }
-
     const handleVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file || !isEditable) return
@@ -253,31 +227,6 @@ export default function LandingUploader({
         } finally {
             setUploading(null);
             if (videoRef.current) videoRef.current.value = ""
-        }
-    }
-
-    /** Загрузка фото прямо в карточку «Работы для портфолио»: раньше сюда можно было
-     *  попасть только через вкладку «Портфолио». Новые файлы сразу попадают в выбор. */
-    const handlePortfolio = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files ?? [])
-        if (files.length === 0 || !isEditable) return
-        try {
-            setUploading("portfolio")
-            const next = new Set(selectedIds)
-            for (const file of files) {
-                if (!file.type.startsWith("image/")) throw new Error(`«${file.name}» — нужен файл-изображение`)
-                const saved = await runUpload(file, "PORTFOLIO")
-                setPortfolioFiles((prev) => [saved, ...prev])
-                setPortfolioUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
-                if (next.size < MAX_LANDING_PORTFOLIO) next.add(saved.id)
-            }
-            setSelectedIds(next)
-            await patchBundle({portfolioFileIds: Array.from(next)})
-        } catch (err) {
-            showToast((err as Error).message)
-        } finally {
-            setUploading(null)
-            if (portfolioRef.current) portfolioRef.current.value = ""
         }
     }
 
@@ -321,7 +270,6 @@ export default function LandingUploader({
         }
 
         // Remove from all file lists
-        setWorkFiles((prev) => prev.filter((f) => f.id !== id))
         setIntroVideoFiles((prev) => prev.filter((f) => f.id !== id))
         setPortfolioFiles((prev) => prev.filter((f) => f.id !== id))
 
@@ -360,13 +308,13 @@ export default function LandingUploader({
     useEffect(() => {
         onReadinessChange?.({
             avatar: Boolean(avatarUrl),
-            work: workFiles.length > 0,
+            work: Boolean(selectedWorkId),
             video: introVideoFiles.length > 0,
             portfolio: selectedIds.size,
             specialty: !!specialty?.trim(),
             about: !!about?.trim(),
         })
-    }, [avatarUrl, workFiles.length, introVideoFiles.length, selectedIds.size, specialty, about, onReadinessChange])
+    }, [avatarUrl, selectedWorkId, introVideoFiles.length, selectedIds.size, specialty, about, onReadinessChange])
 
     // --- bundle sidebar ---
     const canCreate = !bundles.some((b) => b.status === "DRAFT" || b.status === "PENDING_REVIEW")
@@ -502,12 +450,9 @@ export default function LandingUploader({
                         featuredOnLanding={featuredOnLanding}
                         error={null}
                         uploading={isEditable ? uploading : null}
-                        avatarUrl={avatarUrl}
                         introVideoFiles={introVideoFiles}
                         introVideoUrls={introVideoUrls}
                         selectedVideoId={selectedVideoId}
-                        workFiles={workFiles}
-                        workUrls={workUrls}
                         selectedWorkId={selectedWorkId}
                         workPos={workPos}
                         portfolioFiles={portfolioFiles}
@@ -515,15 +460,11 @@ export default function LandingUploader({
                         selectedIds={selectedIds}
                         preview={preview}
                         videoRef={videoRef}
-                        workRef={workRef}
-                        portfolioRef={portfolioRef}
                         onVideoChange={handleVideo}
-                        onWorkChange={handleWork}
                         onSaveWorkPos={saveWorkPos}
                         onSelectVideo={selectVideo}
                         onSelectLandingWork={selectWork}
                         onTogglePortfolio={togglePortfolio}
-                        onPortfolioChange={handlePortfolio}
                         onSetPreview={setPreview}
                         onDeleteFile={(id) => setConfirmDeleteFileId(id)}
                         uploadItems={uploadItems}
@@ -665,12 +606,14 @@ export default function LandingUploader({
 
             {toast && (
                 <div style={{
-                    position: "fixed", right: 20, bottom: 20, zIndex: 1200, maxWidth: 360,
+                    position: "fixed", right: 20, top: 72, zIndex: 1200, maxWidth: 360,
                     padding: "10px 12px", borderRadius: 10,
-                    background: "rgba(234,84,85,0.14)", border: "1px solid rgba(234,84,85,0.34)",
-                    color: "#ffb5b6", fontSize: 13, backdropFilter: "blur(8px)",
+                    background: toast.variant === "success" ? "rgba(40,199,111,0.14)" : "rgba(234,84,85,0.14)",
+                    border: `1px solid ${toast.variant === "success" ? "rgba(40,199,111,0.34)" : "rgba(234,84,85,0.34)"}`,
+                    color: toast.variant === "success" ? "#8ff0bc" : "#ffb5b6",
+                    fontSize: 13, backdropFilter: "blur(8px)",
                 }}>
-                    {toast}
+                    {toast.message}
                 </div>
             )}
         </>

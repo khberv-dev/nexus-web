@@ -44,27 +44,6 @@ function blobToDataUrl(blob: Blob): Promise<string> {
     })
 }
 
-/** Вариант от ИИ приходит произвольного размера — приводим к тому же квадрату 256×256 JPEG. */
-function dataUrlToAvatarBlob(dataUrl: string): Promise<Blob> {
-    return new Promise((resolve, reject) => {
-        const image = new Image()
-        image.onload = () => {
-            const canvas = document.createElement("canvas")
-            canvas.width = AVATAR_SIZE
-            canvas.height = AVATAR_SIZE
-            const ctx = canvas.getContext("2d")!
-            // Кадрируем по центру короткой стороны, чтобы не растянуть лицо.
-            const side = Math.min(image.naturalWidth, image.naturalHeight)
-            const sx = (image.naturalWidth - side) / 2
-            const sy = (image.naturalHeight - side) / 2
-            ctx.drawImage(image, sx, sy, side, side, 0, 0, AVATAR_SIZE, AVATAR_SIZE)
-            canvas.toBlob(b => (b ? resolve(b) : reject(new Error("Не удалось обработать изображение"))), "image/jpeg", 0.9)
-        }
-        image.onerror = () => reject(new Error("Не удалось загрузить сгенерированное изображение"))
-        image.src = dataUrl
-    })
-}
-
 export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode, inputId}: AvatarUploadProps) {
     const [srcUrl, setSrcUrl] = useState<string | null>(null)
     const [crop, setCrop] = useState<Crop>()
@@ -80,6 +59,10 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
     const imgRef = useRef<HTMLImageElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
 
+    // Кроппер всегда работает по актуальной картинке: исходной или, если выбран вариант ИИ, по нему —
+    // так пользователь кадрирует результат ИИ так же, как обычное загруженное фото.
+    const cropSrc = aiResult ? aiResult.dataUrl : srcUrl
+
     useEffect(() => {
         setMounted(true)
     }, [])
@@ -89,6 +72,12 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
         setAiResult(null)
         setAiError(null)
     }, [])
+
+    /** Сбрасывает выделение кроппера — вызывается при смене картинки под ним (исходник ↔ вариант ИИ). */
+    const resetCropSelection = () => {
+        setCrop(undefined)
+        setCompletedCrop(undefined)
+    }
 
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -122,9 +111,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
         setAiError(null)
         const filename = "avatar.jpg"
         try {
-            const blob = aiResult
-                ? await dataUrlToAvatarBlob(aiResult.dataUrl)
-                : await getCroppedBlob(imgRef.current, completedCrop)
+            const blob = await getCroppedBlob(imgRef.current, completedCrop)
 
             setUploadItem({
                 id: "avatar",
@@ -133,7 +120,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                 mimeType: "image/jpeg",
                 progress: 0,
                 status: "uploading",
-                previewUrl: aiResult?.dataUrl ?? null,
+                previewUrl: URL.createObjectURL(blob),
             })
 
             // Получаем presigned URL
@@ -227,7 +214,10 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             <span style={{fontSize: "0.75rem", color: muted}}>Выбран результат ИИ</span>
                             <button
                                 type="button"
-                                onClick={() => setAiResult(null)}
+                                onClick={() => {
+                                    setAiResult(null)
+                                    resetCropSelection()
+                                }}
                                 title="Вернуть исходный кадр"
                                 style={{
                                     border: 0, background: "transparent", cursor: "pointer",
@@ -281,6 +271,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
             onApply={(result) => {
                 setAiResult(result)
                 setStudioSource(null)
+                resetCropSelection()
             }}
             onClose={() => setStudioSource(null)}
         />
@@ -331,7 +322,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                     circularCrop
                                 >
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img ref={imgRef} src={srcUrl} alt="crop" onLoad={onImageLoad}
+                                    <img key={cropSrc} ref={imgRef} src={cropSrc ?? undefined} alt="crop" onLoad={onImageLoad}
                                          style={{maxWidth: "100%"}}/>
                                 </ReactCrop>
                                 {renderAiBlock("modal")}
@@ -399,7 +390,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             circularCrop
                         >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img ref={imgRef} src={srcUrl} alt="crop" onLoad={onImageLoad} style={{maxWidth: "100%"}}/>
+                            <img key={cropSrc} ref={imgRef} src={cropSrc ?? undefined} alt="crop" onLoad={onImageLoad} style={{maxWidth: "100%"}}/>
                         </ReactCrop>
                     </div>
                     {renderAiBlock("inline")}

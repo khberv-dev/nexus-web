@@ -1339,8 +1339,8 @@ export default function NewOrderPage() {
             {/* Toast */}
             {toast && (
                 <div style={{
-                    position: "fixed", bottom: 88, right: 24, zIndex: 60,
-                    background: "var(--dash-surface, #fff)", border: "1px solid var(--dash-border)",
+                    position: "fixed", top: 72, right: 24, zIndex: 60,
+                    background: "rgba(40,199,111,0.14)", border: "1px solid rgba(40,199,111,0.34)",
                     borderRadius: 10, padding: "0.75rem 1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
                     display: "flex", alignItems: "center", gap: 10, fontSize: "0.84rem", color: "var(--dash-text)",
                     animation: "toast-in 0.3s ease",
@@ -1350,7 +1350,7 @@ export default function NewOrderPage() {
                     {toast}
                 </div>
             )}
-            <style>{`@keyframes toast-in { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }`}</style>
+            <style>{`@keyframes toast-in { from { opacity:0; transform:translateY(-12px) } to { opacity:1; transform:translateY(0) } }`}</style>
         </div>
     )
 }

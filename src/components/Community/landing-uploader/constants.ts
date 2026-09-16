@@ -1,8 +1,10 @@
 /**
  * Требований к разрешению и формату у картинок лендинга нет: дизайнер грузит то, что есть,
- * а кадрирование делает CSS (background-size: cover) и выбор позиции кадра.
+ * а кадрирование делает CSS (background-size: cover) и выбор положения кадра.
  */
 export {MAX_LANDING_PORTFOLIO, MIN_LANDING_PORTFOLIO} from "@/lib/landing/bundle-requirements"
+
+export const DEFAULT_WORK_POS = "center center"
 
 export const POS_OPTIONS = [
     {label: "Центр", value: "center center"},

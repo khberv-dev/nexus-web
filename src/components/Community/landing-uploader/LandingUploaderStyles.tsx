@@ -81,7 +81,7 @@ export function LandingUploaderStyles() {
         font-size: 0.7rem;
       }
       .landing-up-upload-tile i { font-size: 1.2rem; }
-      /* ── Положение кадра: превью сверху, схемы вариантов снизу ── */
+      /* ── Положение кадра: маленькое статичное превью 16:9, схемы вариантов снизу ── */
       .landing-up-pos {
         margin-top: 10px;
         padding: 10px;
@@ -101,7 +101,7 @@ export function LandingUploaderStyles() {
       .landing-up-pos__preview {
         display: flex; align-items: center; justify-content: center;
         aspect-ratio: 16 / 9;
-        border-radius: 8px; overflow: hidden;
+        overflow: hidden;
         margin-bottom: 10px;
         background-color: rgba(91,79,207,0.1);
         background-size: cover;
@@ -206,40 +206,6 @@ export function LandingUploaderStyles() {
         cursor: pointer;
       }
       .landing-up-tick.is-selected { color: #3ad488; }
-      /* ── Фото профиля: квадратная плитка, как карточка в карусели на главной ── */
-      .landing-up-avatar { display: flex; align-items: center; gap: 12px; }
-      .landing-up-avatar__tile {
-        width: 92px;
-        height: 92px;
-        flex-shrink: 0;
-        border-radius: 22px;
-        object-fit: cover;
-        border: 1px solid rgba(91,79,207,0.18);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-      }
-      .landing-up-avatar__tile--empty {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px dashed rgba(91,79,207,0.24);
-        background: rgba(91,79,207,0.05);
-        box-shadow: none;
-        color: #5b4fcf;
-        font-size: 1.6rem;
-      }
-      .landing-up-avatar__body { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
-      .landing-up-avatar__status {
-        display: flex;
-        align-items: flex-start;
-        gap: 5px;
-        margin: 0;
-        font-size: 0.72rem;
-        line-height: 1.4;
-        color: var(--dash-muted, #8f95b2);
-      }
-      .landing-up-avatar__status i { font-size: 0.9rem; }
-      .landing-up-avatar__status.is-done { color: var(--dash-success, #28c76f); }
-      .landing-up-avatar .landing-up-small-btn { display: inline-flex; align-items: center; padding: 5px 10px; }
       @media (max-width: 960px) {
         .landing-up-grid-2 { grid-template-columns: 1fr; }
         .landing-up-row-line { grid-template-columns: 1fr; }

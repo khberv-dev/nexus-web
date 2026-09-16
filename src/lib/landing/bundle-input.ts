@@ -12,7 +12,7 @@ export type LandingBundlePatch = {
 }
 
 const MAX_TEXT = {specialty: 120, about: 2000} as const
-const WORK_POS = /^(left|center|right) (top|center|bottom)$/
+const WORK_POS = /^center (top|center|bottom|(?:100|[1-9]?\d)%)$/
 
 function optionalId(value: unknown, field: string): string | null | undefined {
     if (value === undefined || value === null) return value
@@ -56,7 +56,8 @@ export function parseLandingBundlePatch(body: unknown): LandingBundlePatch {
 
 export async function validateLandingBundleFiles(userId: string, patch: LandingBundlePatch): Promise<void> {
     const expected = new Map<string, FileCategory>()
-    if (patch.workFileId) expected.set(patch.workFileId, "LANDING_WORK")
+    // Фото интерьера теперь выбирается из портфолио, а не загружается отдельным LANDING_WORK-файлом.
+    if (patch.workFileId) expected.set(patch.workFileId, "PORTFOLIO")
     if (patch.videoFileId) expected.set(patch.videoFileId, "INTRO_VIDEO")
     for (const id of patch.portfolioFileIds ?? []) expected.set(id, "PORTFOLIO")
     if (!expected.size) return

@@ -161,19 +161,7 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
         {
             target: '[data-tour="landing-uploader"]',
             title: "Сборка карточки",
-            text: "Каждый блок — свой материал: фото профиля, интерьер, видео и работы для галереи.",
-            before: () => goToTab("landing"),
-        },
-        {
-            target: '[data-tour="landing-avatar"]',
-            title: "Фото профиля",
-            text: "Берётся из профиля — им карточка показывается в карусели на главной. Сменить можно здесь или кликом по аватару в шапке.",
-            before: () => goToTab("landing"),
-        },
-        {
-            target: '[data-tour="btn-landing-work"]',
-            title: "Загрузить фото интерьера",
-            text: "Горизонтальный кадр работы — он раскрывается, когда карточку открывают.",
+            text: "Каждый блок — свой материал: интерьер и работы выбираются из портфолио, видео загружается отдельно.",
             before: () => goToTab("landing"),
         },
         {

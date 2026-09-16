@@ -18,7 +18,7 @@ export function MarkupToaster({
             role="status"
             style={{
                 position: "fixed",
-                bottom: 24,
+                top: 24,
                 right: 24,
                 maxWidth: 360,
                 zIndex: 9999,
@@ -33,7 +33,7 @@ export function MarkupToaster({
             }}
         >
             {toast.message}
-            <style>{`@keyframes markup-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+            <style>{`@keyframes markup-toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
         </div>
     )
 }
