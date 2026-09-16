@@ -115,15 +115,15 @@ export function buildSpecialistHintSteps(goToTab: (tab: string) => void | boolea
             before: () => goToTab("portfolio"),
         },
         {
-            target: '[data-tour="portfolio-projects"]',
+            target: '[data-tour="portfolio-works"]',
             title: "Проекты — это папки",
-            text: "Создайте проект слева и откройте его плитку, чтобы добавить внутрь работы.",
+            text: "Создайте проект и откройте его плитку, чтобы добавить внутрь работы.",
             before: () => goToTab("portfolio"),
         },
         {
             target: '[data-tour="btn-add-project"]',
             title: "Кнопка «Добавить проект»",
-            text: "Введите название папки и нажмите её — проект появится в сетке справа.",
+            text: "Откроет окно, где нужно ввести название папки — проект появится в сетке ниже.",
             before: () => goToTab("portfolio"),
         },
         {

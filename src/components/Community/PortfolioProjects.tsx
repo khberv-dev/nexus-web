@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useState} from "react"
 import {ActionButton} from "@/components/app/AppCard"
+import {CreateProjectDialog} from "./CreateProjectDialog"
 import {PortfolioCardBrowseModal} from "./PortfolioCardBrowseModal"
 import {type CardFile, type PortfolioCard, PortfolioCardEditorModal} from "./PortfolioCardEditorModal"
 import {PortfolioProjectMaterials} from "./PortfolioProjectMaterials"
@@ -64,7 +65,8 @@ export default function PortfolioProjects() {
     const [projects, setProjects] = useState<Project[]>([])
     const [loadingProjects, setLoadingProjects] = useState(false)
     const [projectsError, setProjectsError] = useState<string | null>(null)
-    const [newProjectName, setNewProjectName] = useState("")
+    const [createProjectOpen, setCreateProjectOpen] = useState(false)
+    const [createError, setCreateError] = useState<string | null>(null)
 
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
     const [cards, setCards] = useState<PortfolioCard[]>([])
@@ -105,9 +107,7 @@ export default function PortfolioProjects() {
         void loadProjects()
     }, [])
 
-    const createProject = async () => {
-        const name = newProjectName.trim()
-        if (!name) return
+    const createProject = async (name: string) => {
         try {
             const project = await fetchJson<Project>("/api/portfolio/projects", {
                 method: "POST",
@@ -115,10 +115,10 @@ export default function PortfolioProjects() {
                 body: JSON.stringify({name}),
             })
             setProjects((prev) => [project, ...prev])
-            setNewProjectName("")
-            setProjectsError(null)
+            setCreateError(null)
+            setCreateProjectOpen(false)
         } catch (error) {
-            setProjectsError((error as Error).message)
+            setCreateError((error as Error).message)
         }
     }
 
@@ -158,60 +158,15 @@ export default function PortfolioProjects() {
 
     return (
         <>
-            <div className="dash-col1" data-tour="portfolio-projects">
+            <div className="dash-col1">
                 {!selectedProject ? (
-                    <div className="card" style={cardShell}>
-                        <div className="card-body d-flex flex-column gap-3" style={{padding: 12}}>
-                            <div
-                                style={{
-                                    border: "1px solid rgba(255,255,255,0.1)",
-                                    borderRadius: 10,
-                                    background: "rgba(12,16,30,0.45)",
-                                    padding: 10,
-                                }}
-                            >
-                                <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
-                  <span className="fw-semibold" style={{fontSize: 13, color: "var(--dash-text, #f4f4f4)"}}>
-                    Новый проект
-                  </span>
-                                </div>
-                                <p className="mb-2 small text-muted" style={{lineHeight: 1.45}}>
-                                    Название папки, затем «Добавить проект».
-                                </p>
-                                <div className="d-flex flex-column gap-2">
-                                    <input
-                                        className="form-control form-control-sm"
-                                        placeholder="Например: Квартира Сокольники"
-                                        value={newProjectName}
-                                        onChange={(e) => setNewProjectName(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") void createProject()
-                                        }}
-                                        aria-label="Название нового проекта"
-                                        style={{
-                                            minHeight: 32,
-                                            background: "rgba(255,255,255,0.03)",
-                                            borderColor: "rgba(255,255,255,0.14)",
-                                            color: "var(--dash-text, #f4f4f4)",
-                                        }}
-                                    />
-                                    <ActionButton
-                                        type="button"
-                                        variant="primary"
-                                        icon="bx-folder-plus"
-                                        className="btn-sm"
-                                        onClick={() => void createProject()}
-                                        data-tour="btn-add-project"
-                                        style={{minHeight: 32}}
-                                    >
-                                        Добавить проект
-                                    </ActionButton>
-                                </div>
+                    projectsError && (
+                        <div className="card" style={cardShell}>
+                            <div className="card-body" style={{padding: 12}}>
+                                <small className="text-danger">{projectsError}</small>
                             </div>
-                            {projectsError && <small className="text-danger">{projectsError}</small>}
-
                         </div>
-                    </div>
+                    )
                 ) : (
                     <div className="card" style={cardShell}>
                         <div className="card-body d-flex flex-column gap-3" style={{padding: 12}}>
@@ -234,7 +189,12 @@ export default function PortfolioProjects() {
                 )}
             </div>
 
-            <div className="dash-col2" id="portfolio-uploader" data-tour="portfolio-works">
+            <div
+                className="dash-col2"
+                id="portfolio-uploader"
+                data-tour="portfolio-works"
+                style={!selectedProject && !projectsError ? {gridColumn: "1 / -1"} : undefined}
+            >
                 <div className="card" style={cardShell}>
                     <div className="card-body d-flex flex-column gap-3" style={{padding: 14}}>
                         <nav aria-label="Навигация по портфолио"
@@ -275,11 +235,25 @@ export default function PortfolioProjects() {
                                     </>
                                 )}
                             </div>
-                            {selectedProject && (
+                            {selectedProject ? (
                                 <ActionButton type="button"
                                               className="btn-sm btn-outline-secondary d-none d-md-inline-flex"
                                               onClick={goToProjectsRoot}>
                                     Все проекты
+                                </ActionButton>
+                            ) : (
+                                <ActionButton
+                                    type="button"
+                                    variant="primary"
+                                    icon="bx-folder-plus"
+                                    className="btn-sm"
+                                    onClick={() => {
+                                        setCreateError(null)
+                                        setCreateProjectOpen(true)
+                                    }}
+                                    data-tour="btn-add-project"
+                                >
+                                    Добавить проект
                                 </ActionButton>
                             )}
                         </nav>
@@ -371,8 +345,8 @@ export default function PortfolioProjects() {
                                         <i className="bx bx-folder-plus d-block mb-2"
                                            style={{fontSize: 28, opacity: 0.65}} aria-hidden/>
                                         <p className="small text-muted mb-0" style={{lineHeight: 1.55}}>
-                                            Проектов нет. Создайте папку слева кнопкой <strong>«Добавить
-                                            проект»</strong>, затем откройте её здесь.
+                                            Проектов нет. Создайте папку кнопкой <strong>«Добавить
+                                            проект»</strong> сверху, затем откройте её здесь.
                                         </p>
                                     </div>
                                 ) : (
@@ -564,6 +538,13 @@ export default function PortfolioProjects() {
                     </>
                 )}
             </div>
+
+            <CreateProjectDialog
+                open={createProjectOpen}
+                error={createError}
+                onCreate={(name) => void createProject(name)}
+                onCancel={() => setCreateProjectOpen(false)}
+            />
         </>
     )
 }
