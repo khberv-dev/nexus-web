@@ -416,6 +416,26 @@ export const SPECIALISTS_STYLES = `
   .sp-btn-danger-solid { background: #ef4444; color: #fff; border-color: #ef4444; }
   .sp-btn-danger-solid:hover:not(:disabled) { background: #dc2626; border-color: #dc2626; }
 
+  .sp-reject-dropdown { position: relative; }
+  .sp-reject-menu {
+    position: absolute; top: calc(100% + 6px); right: 0; z-index: 10;
+    min-width: 220px;
+    background: var(--adm-sidebar);
+    border: 1px solid var(--adm-sidebar-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    padding: 4px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sp-reject-menu[hidden] { display: none; }
+  .sp-reject-menu__item {
+    display: block; width: 100%; text-align: left;
+    padding: 8px 10px; border: none; border-radius: 6px;
+    background: transparent; color: var(--adm-text);
+    font-size: 0.82rem; font-family: inherit; cursor: pointer;
+  }
+  .sp-reject-menu__item:hover { background: rgba(239,68,68,0.10); color: #ef4444; }
+
   .sp-modal-body { padding: 4px 0; }
   .sp-modal-title { margin: 0 0 16px; font-size: 1rem; font-weight: 600; }
   .sp-modal-empty { text-align: center; padding: 24px; color: var(--adm-muted); }

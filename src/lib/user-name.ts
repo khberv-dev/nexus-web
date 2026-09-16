@@ -20,6 +20,12 @@ export function formatUserName(user: UserNameParts | null | undefined): string {
     return [clean(user.firstName), clean(user.lastName)].filter(Boolean).join(" ")
 }
 
+/** «Фамилия Имя»; пустая строка, если обе части пусты. */
+export function formatUserNameLastFirst(user: UserNameParts | null | undefined): string {
+    if (!user) return ""
+    return [clean(user.lastName), clean(user.firstName)].filter(Boolean).join(" ")
+}
+
 /** Имя для интерфейса: «Имя Фамилия», иначе почта, иначе запасная подпись. */
 export function userDisplayName(
     user: (UserNameParts & { email?: string | null }) | null | undefined,

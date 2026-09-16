@@ -28,6 +28,7 @@ interface RecentOrder {
 
 interface SpecialistDashboardProps {
     name: string
+    avatarInitial: string
     email: string
     activeOrders: number
     completedOrders: number
@@ -55,6 +56,7 @@ const STAGE_STATUS_LABELS: Record<string, { label: string; color: string }> = {
 
 export default function SpecialistDashboard({
                                                 name,
+                                                avatarInitial,
                                                 email,
                                                 activeOrders,
                                                 completedOrders,
@@ -66,7 +68,7 @@ export default function SpecialistDashboard({
                                                 onboardingStatus,
                                                 profileCompleteness,
                                             }: SpecialistDashboardProps) {
-    const initials = name[0]?.toUpperCase() ?? "?"
+    const initials = avatarInitial?.toUpperCase() ?? "?"
     const [hintsOpen, setHintsOpen] = useState(false)
     const hintSteps = useMemo(() => buildSpecialistDashboardHintSteps(), [])
     const getOrderTitle = (briefData: unknown) => {
@@ -98,7 +100,7 @@ export default function SpecialistDashboard({
                 <div className="spec-dashboard__greeting">
                     <div className="spec-dashboard__avatar">{initials}</div>
                     <div>
-                        <h1 className="spec-dashboard__title">Добро пожаловать, {name.split(" ")[0]}!</h1>
+                        <h1 className="spec-dashboard__title">Добро пожаловать, {name}!</h1>
                         <p className="spec-dashboard__subtitle">Статус: {onboardingStatus === "ACTIVE" ? "✓ Активный" : "Онбординг"}</p>
                     </div>
                 </div>

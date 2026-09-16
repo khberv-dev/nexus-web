@@ -48,9 +48,9 @@ export function SpecialistPortfolioSection() {
     return <PortfolioProjects/>
 }
 
-export function SpecialistLandingSection() {
+export function SpecialistLandingSection({portfolioProjectsCount}: { portfolioProjectsCount: number }) {
     const router = useRouter()
-    const {formData, about, featuredOnLanding, landingWorkPos, avatarUrl, portfolioProjectsCount} = useSpecialistCabinet()
+    const {formData, about, featuredOnLanding, landingWorkPos, avatarUrl} = useSpecialistCabinet()
     const [landingReadiness, setLandingReadiness] = useState({
         avatar: Boolean(avatarUrl),
         work: false,

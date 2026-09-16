@@ -1,3 +1,6 @@
+"use client"
+
+import {useEffect, useRef, useState} from "react"
 import {StatusBadge} from "@/components/app/AppCard"
 import {
     ONBOARDING_STATUS_LABEL,
@@ -47,6 +50,31 @@ export function SpecialistDetailHeader({
     const isArchived = !!sp.archivedAt
     const edoLabel = formatEdoProvidersLabel(typeof fd?.edoProviders === "string" ? fd.edoProviders : undefined)
     const isRevoking = acting === sp.id + "revoke-session"
+
+    const [rejectMenuOpen, setRejectMenuOpen] = useState(false)
+    const rejectMenuRef = useRef<HTMLDivElement>(null)
+    const isRejecting = acting === sp.id + "reject_no_education" || acting === sp.id + "reject_no_experience"
+
+    useEffect(() => {
+        if (!rejectMenuOpen) return
+        const onPointerDown = (e: PointerEvent) => {
+            if (!rejectMenuRef.current?.contains(e.target as Node)) setRejectMenuOpen(false)
+        }
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setRejectMenuOpen(false)
+        }
+        document.addEventListener("pointerdown", onPointerDown)
+        document.addEventListener("keydown", onKey)
+        return () => {
+            document.removeEventListener("pointerdown", onPointerDown)
+            document.removeEventListener("keydown", onKey)
+        }
+    }, [rejectMenuOpen])
+
+    const selectRejectReason = (action: SpecialistOnboardingAdminAction) => {
+        setRejectMenuOpen(false)
+        onAct(sp.id, action)
+    }
 
     return (
         <div className="sp-detail-sticky">
@@ -106,24 +134,38 @@ export function SpecialistDetailHeader({
                             </>
                         )}
                         {canReject && status === "PENDING" && (
-                            <>
+                            <div className="sp-reject-dropdown" ref={rejectMenuRef}>
                                 <button
-                                    onClick={() => onAct(sp.id, "reject_no_education")}
+                                    type="button"
+                                    onClick={() => setRejectMenuOpen(v => !v)}
                                     disabled={acting !== null}
-                                    className="sp-btn sp-btn-danger"
-                                    title="Отклонить анкету по причине отсутствия профильного образования"
+                                    className="sp-btn sp-btn-danger-solid"
+                                    aria-haspopup="menu"
+                                    aria-expanded={rejectMenuOpen}
+                                    title="Отклонить анкету"
                                 >
-                                    {acting === sp.id + "reject_no_education" ? "..." : "Отклонить — нет образования"}
+                                    {isRejecting ? "..." : "Отклонить"}
+                                    <i className="bx bx-chevron-down" style={{marginLeft: 4}}/>
                                 </button>
-                                <button
-                                    onClick={() => onAct(sp.id, "reject_no_experience")}
-                                    disabled={acting !== null}
-                                    className="sp-btn sp-btn-danger"
-                                    title="Отклонить анкету по причине недостаточного опыта"
-                                >
-                                    {acting === sp.id + "reject_no_experience" ? "..." : "Отклонить — нет опыта"}
-                                </button>
-                            </>
+                                <div className="sp-reject-menu" role="menu" hidden={!rejectMenuOpen}>
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        className="sp-reject-menu__item"
+                                        onClick={() => selectRejectReason("reject_no_education")}
+                                    >
+                                        Нет профильного образования
+                                    </button>
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        className="sp-reject-menu__item"
+                                        onClick={() => selectRejectReason("reject_no_experience")}
+                                    >
+                                        Недостаточно опыта
+                                    </button>
+                                </div>
+                            </div>
                         )}
                         {canReject && status !== "PENDING" && (
                             <button onClick={() => onAct(sp.id, "reject")} disabled={acting !== null}

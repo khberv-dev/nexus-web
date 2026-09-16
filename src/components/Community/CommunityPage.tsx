@@ -40,7 +40,6 @@ interface CommunityProps {
     payments?: PaymentWithRelations[]
     contracts?: SpecContract[]
     acts?: SpecAct[]
-    portfolioProjectsCount?: number
     formData?: Record<string, string> | null
     onboardingSteps?: OnboardingStep[]
     avatarUrl?: string | null
@@ -63,7 +62,6 @@ export default function CommunityPage({
                                           payments = [],
                                           contracts = [],
                                           acts = [],
-                                          portfolioProjectsCount = 0,
                                           formData,
                                           onboardingSteps = [],
                                           avatarUrl: initialAvatarUrl,
@@ -135,7 +133,7 @@ export default function CommunityPage({
 
     const cabinetData: SpecialistCabinetData = {
         name, email, city, experience, software, about, status,
-        orders, payments, contracts, acts, portfolioProjectsCount, formData, onboardingSteps,
+        orders, payments, contracts, acts, formData, onboardingSteps,
         featuredOnLanding, landingWorkPos, avatarUrl,
     }
 

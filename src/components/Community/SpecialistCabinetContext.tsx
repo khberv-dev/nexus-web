@@ -22,7 +22,6 @@ export interface SpecialistCabinetData {
     payments: PaymentWithRelations[]
     contracts: SpecContract[]
     acts: SpecAct[]
-    portfolioProjectsCount: number
     formData?: Record<string, string> | null
     onboardingSteps: OnboardingStep[]
     featuredOnLanding?: boolean

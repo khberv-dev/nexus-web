@@ -10,7 +10,7 @@ import SpecialistDashboard from "@/components/Dashboard/SpecialistDashboard"
 import type {Prisma} from "@prisma/client"
 import {sortStages} from "@/lib/stage-order"
 import {getProfileCompleteness} from "@/lib/profile-completeness"
-import {formatUserName} from "@/lib/user-name"
+import {formatUserName, formatUserNameLastFirst, userInitial} from "@/lib/user-name"
 
 export default async function WorkDashboard() {
     const user = await getSessionUser()
@@ -111,7 +111,8 @@ export default async function WorkDashboard() {
             />
             <DashMainLayout>
                 <SpecialistDashboard
-                    name={formatUserName(user) || user.email}
+                    name={formatUserNameLastFirst(user) || user.email}
+                    avatarInitial={userInitial(user)}
                     email={user.email}
                     activeOrders={activeOrders}
                     completedOrders={completedOrders}

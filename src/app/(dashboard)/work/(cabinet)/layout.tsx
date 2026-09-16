@@ -101,8 +101,6 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
         }))
     )
 
-    const portfolioProjectsCount = dbUser ? await prisma.portfolioProject.count({where: {userId: dbUser.id}}) : 0
-
     return (
         <CommunityPage
             name={userDisplayName(user)}
@@ -116,7 +114,6 @@ export default async function SpecialistCabinetLayout({children}: { children: Re
             payments={payments}
             contracts={contracts}
             acts={acts}
-            portfolioProjectsCount={portfolioProjectsCount}
             formData={formData}
             onboardingSteps={dbUser?.specialistProfile?.steps ?? []}
             avatarUrl={avatarUrl}
