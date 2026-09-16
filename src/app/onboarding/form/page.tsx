@@ -133,6 +133,7 @@ export default function OnboardingFormPage() {
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [profileLocks, setProfileLocks] = useState({name: false, email: false})
+    const [innNotFound, setInnNotFound] = useState(false)
 
     // Имя и почта из регистрации в анкете только для чтения.
     const isFieldLocked = (field: string) =>
@@ -150,6 +151,7 @@ export default function OnboardingFormPage() {
     // Переключение программы в поле software
     const lookupInn = async (inn: string) => {
         setForm(f => ({...f, inn}))
+        setInnNotFound(false)
         const cleanInn = inn.replace(/\D/g, "")
         const isIpInn = form.taxStatus === "IP" && cleanInn.length === 12
         const isOooInn = form.taxStatus === "OOO" && cleanInn.length === 10
@@ -173,11 +175,28 @@ export default function OnboardingFormPage() {
                                 legalAddress: data.address ?? "",
                             }),
                     }))
+                } else if (data.degraded) {
+                    toast.error("Сервис проверки ИНН временно недоступен. Заполните реквизиты вручную.")
+                } else {
+                    setInnNotFound(true)
                 }
             } catch {
                 toast.error("Не удалось загрузить данные по ИНН. Заполните реквизиты вручную.")
             }
         }
+    }
+
+    // Реквизиты (ИНН, КПП, ОГРН и т.д.) относятся к конкретному налоговому статусу —
+    // при переключении вкладки старые значения уже не соответствуют новой форме.
+    const switchTaxStatus = (value: string) => {
+        setInnNotFound(false)
+        setForm(f => ({
+            ...f,
+            taxStatus: value,
+            inn: "", kpp: "", ogrn: "", legalAddress: "", companyName: "",
+            ipName: "", ogrnip: "", ipRegDate: "",
+            bankName: "", bankBik: "", corrAccount: "",
+        }))
     }
 
     const lookupBik = async (bik: string) => {
@@ -664,7 +683,7 @@ export default function OnboardingFormPage() {
                             <div style={{display: "flex", gap: "0.5rem"}}>
                                 {TAX_STATUSES.map(s => (
                                     <button key={s.value} type="button"
-                                            onClick={() => setForm(f => ({...f, taxStatus: s.value}))} style={{
+                                            onClick={() => switchTaxStatus(s.value)} style={{
                                         flex: 1,
                                         padding: "0.7em",
                                         borderRadius: 8,
@@ -739,6 +758,11 @@ export default function OnboardingFormPage() {
                                             color: "#34d399",
                                             marginTop: 2
                                         }}>{form.companyName}</div>}
+                                        {innNotFound && <div style={{
+                                            fontSize: "0.75rem",
+                                            color: "#f87171",
+                                            marginTop: 2
+                                        }}>Компания с таким ИНН не найдена. Заполните реквизиты вручную.</div>}
                                     </div>
                                     {form.taxStatus === "IP" && (
                                         <>
