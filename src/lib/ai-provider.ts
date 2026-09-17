@@ -1,4 +1,4 @@
-import {geminiEditImage, geminiGenerate, isGeminiConfigured} from "@/lib/gemini-ai"
+import {geminiEditImage, geminiGenerate, geminiGenerateImage, isGeminiConfigured} from "@/lib/gemini-ai"
 import {isYandexAiConfigured, yandexChat, yandexGenerateImage, type YandexMessage} from "@/lib/yandex-ai"
 
 export type AiProvider = "gemini" | "yandex"
@@ -37,6 +37,11 @@ export function aiSupportsImageEditing(): boolean {
 /** Редактирование изображения по текстовому запросу. На yandex исходник игнорируется — см. aiSupportsImageEditing. */
 export async function aiEditImage(prompt: string, image: {data: string; mimeType: string}) {
     return getAiProvider() === "yandex" ? yandexGenerateImage(prompt) : geminiEditImage(prompt, image)
+}
+
+/** Генерация изображения с нуля, без исходного фото (например, интерьер по описанию из брифа). */
+export async function aiGenerateImage(prompt: string) {
+    return getAiProvider() === "yandex" ? yandexGenerateImage(prompt) : geminiGenerateImage(prompt)
 }
 
 export function stripJsonFences(raw: string): string {

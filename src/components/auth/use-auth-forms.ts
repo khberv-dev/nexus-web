@@ -103,7 +103,8 @@ export function useSignUpForm(role: AuthRoleSlug) {
         const email = normalizeEmail(fields.email)
         if (!email.includes("@")) return setError({message: "Введите корректный email"})
         const phone = fields.phone.trim()
-        if (phone && !isValidPhoneNumber(phone)) return setError({message: "Введите корректный номер телефона"})
+        if (!phone) return setError({message: "Введите номер телефона"})
+        if (!isValidPhoneNumber(phone)) return setError({message: "Введите корректный номер телефона"})
         if (fields.password.length < MIN_PASSWORD_LENGTH) {
             return setError({message: `Пароль должен быть не короче ${MIN_PASSWORD_LENGTH} символов`})
         }

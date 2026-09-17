@@ -9,7 +9,6 @@ import {ClientDashFooter} from "@/components/Client/ClientDashFooter"
 import {DashPageTitle} from "@/components/dashboard-ui/DashPageTitle"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
-import {BriefWizardAIDrawer} from "@/components/app/BriefWizardAIDrawer"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {buildClientCabinetNavItems} from "@/components/Client/client-cabinet/constants"
@@ -584,6 +583,105 @@ function StepReview({d}: { d: D }) {
     </>
 }
 
+type AiPreviewImage = { id: string; url: string }
+
+/** Иллюстративный превью интерьера от ИИ по данным брифа — не итог, просто пример «как это может выглядеть». */
+function AiInteriorPreview({orderId}: { orderId: string }) {
+    const [images, setImages] = useState<AiPreviewImage[]>([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        let cancelled = false
+        fetch(`/api/orders/${orderId}/brief/ai-preview`)
+            .then(r => r.ok ? r.json() : {images: []})
+            .then((body: { images?: AiPreviewImage[] }) => {
+                if (!cancelled) setImages(body.images ?? [])
+            })
+            .catch(() => {
+            })
+        return () => {
+            cancelled = true
+        }
+    }, [orderId])
+
+    const generate = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+            const res = await fetch(`/api/orders/${orderId}/brief/ai-preview`, {method: "POST"})
+            const body = await res.json().catch(() => ({})) as { images?: AiPreviewImage[]; error?: string }
+            if (!res.ok) throw new Error(body.error ?? "Не удалось сгенерировать изображения")
+            setImages(body.images ?? [])
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Ошибка генерации")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <div style={{
+            marginTop: 20,
+            paddingTop: 20,
+            borderTop: "1px solid var(--dash-border)",
+        }}>
+            <h3 style={{fontSize: "0.9rem", fontWeight: 600, color: "var(--dash-text)", margin: "0 0 6px"}}>
+                <i className="bx bx-planet" style={{marginRight: 6, color: "var(--dash-accent)"}}/>
+                Предсказанный дизайн от ИИ
+            </h3>
+            <p style={{fontSize: "0.78rem", lineHeight: 1.5, color: "var(--dash-warn, #ff9f43)", margin: "0 0 12px"}}>
+                Это не готовый продукт, а лишь иллюстративный пример по вашему брифу. Финальный результат
+                специалиста может отличаться.
+            </p>
+
+            <button
+                type="button"
+                onClick={() => void generate()}
+                disabled={loading}
+                style={{
+                    padding: "0.55em 1.2em",
+                    borderRadius: 8,
+                    border: "1px solid var(--dash-accent-border, rgba(121,40,202,0.35))",
+                    background: "var(--dash-accent-bg, rgba(121,40,202,0.08))",
+                    color: "var(--dash-accent)",
+                    fontSize: "0.82rem",
+                    fontWeight: 600,
+                    fontFamily: "inherit",
+                    cursor: loading ? "default" : "pointer",
+                    opacity: loading ? 0.7 : 1,
+                }}
+            >
+                <i className={`bx ${loading ? "bx-loader-alt bx-spin" : "bx-planet"}`} style={{marginRight: 6}}/>
+                {loading ? "Генерируем 4 варианта…" : images.length > 0 ? "Сгенерировать заново" : "Показать, как это может выглядеть"}
+            </button>
+
+            {error && (
+                <p style={{marginTop: 10, fontSize: "0.8rem", color: "var(--dash-danger)"}}>{error}</p>
+            )}
+
+            {images.length > 0 && (
+                <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: 10,
+                    marginTop: 14,
+                }}>
+                    {images.map(img => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            key={img.id}
+                            src={img.url}
+                            alt="Пример интерьера от ИИ"
+                            style={{width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: 10}}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
+
 // ── Main ──
 
 export default function NewOrderPage() {
@@ -1033,23 +1131,10 @@ export default function NewOrderPage() {
                             <div className="dash-main__scroll"
                                  style={{display: "flex", justifyContent: "center", flex: 1, minHeight: 0}}>
                                 <div style={{maxWidth: 640, width: "100%", padding: "2rem 1rem 4rem"}}>
-                                    <div
-                                        style={{
-                                            marginBottom: "1.5rem",
-                                            display: "flex",
-                                            alignItems: "flex-start",
-                                            justifyContent: "space-between",
-                                            gap: "1rem",
-                                            flexWrap: "wrap",
-                                        }}
-                                    >
+                                    <div style={{marginBottom: "1.5rem"}}>
                                         <DashPageTitle subtitle={`Шаг ${step + 1} из ${STEPS.length}`}>
                                             {STEPS[step].label}
                                         </DashPageTitle>
-                                        {orderId && step < STEPS.length - 1 ? (
-                                            <BriefWizardAIDrawer briefData={data} stepKey={STEPS[step].key}
-                                                                 onApply={(field, value) => set(field, value)}/>
-                                        ) : null}
                                     </div>
 
                                     <DashSurfaceCard className="dash-surface-card--pad-lg dash-surface-card--mb">
@@ -1074,6 +1159,7 @@ export default function NewOrderPage() {
                                         {step === 5 && (
                                             <>
                                                 <StepReview d={data}/>
+                                                {orderId && <AiInteriorPreview orderId={orderId}/>}
                                                 <label style={{
                                                     display: "flex",
                                                     alignItems: "flex-start",

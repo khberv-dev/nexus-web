@@ -23,7 +23,7 @@ const valid = {
     role: "CLIENT",
     firstName: " Анна ",
     lastName: "Смирнова",
-    phone: "",
+    phone: "+79990001122",
     formData: {email: "anna@example.com"},
 }
 
@@ -54,6 +54,16 @@ describe("POST /api/auth/register", () => {
         const noLast = await POST(makeReq("/api/auth/register", "POST", {...valid, lastName: undefined}))
         expect(noLast.status).toBe(400)
         expect((await noLast.json()).error).toBe("Введите фамилию")
+        expect(create).not.toHaveBeenCalled()
+    })
+
+    it("требует телефон", async () => {
+        const empty = await POST(makeReq("/api/auth/register", "POST", {...valid, phone: ""}))
+        expect(empty.status).toBe(400)
+        expect((await empty.json()).error).toBe("Введите корректный номер телефона")
+
+        const invalid = await POST(makeReq("/api/auth/register", "POST", {...valid, phone: "12345"}))
+        expect(invalid.status).toBe(400)
         expect(create).not.toHaveBeenCalled()
     })
 

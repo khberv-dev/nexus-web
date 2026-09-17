@@ -109,6 +109,18 @@ function classifyImageError(err: unknown): GeminiImageError {
     return new GeminiImageError("FAILED", raw.slice(0, 300))
 }
 
+function firstImageFromResponse(response: GeminiResponse): GeneratedImage {
+    const parts = response.candidates?.[0]?.content?.parts ?? []
+    for (const part of parts) {
+        const inline = part.inlineData
+        if (inline?.data) {
+            const mimeType = inline.mimeType ?? "image/png"
+            return {dataUrl: `data:${mimeType};base64,${inline.data}`, mimeType}
+        }
+    }
+    throw new GeminiImageError("EMPTY", "Модель не вернула изображение")
+}
+
 /**
  * Image-to-image: на вход фото, на выход — переработанный вариант.
  * Возвращает первую картинку из ответа; текстовые части модели игнорируем.
@@ -138,13 +150,26 @@ export async function geminiEditImage(
         throw classifyImageError(err)
     }
 
-    const parts = response.candidates?.[0]?.content?.parts ?? []
-    for (const part of parts) {
-        const inline = part.inlineData
-        if (inline?.data) {
-            const mimeType = inline.mimeType ?? "image/png"
-            return {dataUrl: `data:${mimeType};base64,${inline.data}`, mimeType}
-        }
+    return firstImageFromResponse(response)
+}
+
+/**
+ * Text-to-image: без исходного фото — генерация с нуля по текстовому описанию
+ * (например, интерьер по брифу, до того как есть какая-либо картинка-референс).
+ */
+export async function geminiGenerateImage(prompt: string): Promise<GeneratedImage> {
+    if (!isGeminiConfigured()) {
+        throw new GeminiImageError("NOT_CONFIGURED", "GEMINI_API_KEY не задан")
     }
-    throw new GeminiImageError("EMPTY", "Модель не вернула изображение")
+
+    let response
+    try {
+        response = await generateContent(imageModelId(), {
+            contents: [{role: "user", parts: [{text: prompt}]}],
+        })
+    } catch (err) {
+        throw classifyImageError(err)
+    }
+
+    return firstImageFromResponse(response)
 }

@@ -104,12 +104,9 @@ function SignUpForm({role}: { role: AuthRoleSlug }) {
                     onChange={(e) => setField("email", e.target.value)}
                 />
             </Field>
-            <div className={styles.field}>
-                <span className={styles.label}>
-                    Телефон<span className={styles.optional}> (необязательно)</span>
-                </span>
+            <Field label="Телефон" required>
                 <PhoneField value={fields.phone} onChange={(v) => setField("phone", v)} className="onb-phone"/>
-            </div>
+            </Field>
             <Field label="Пароль" required>
                 <input
                     className={styles.input}

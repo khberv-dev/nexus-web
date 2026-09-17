@@ -1,5 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import {OnboardingStatus, Prisma, Role} from "@prisma/client";
+import {isValidPhoneNumber} from "react-phone-number-input";
 import {prisma} from "@/lib/db/prisma";
 import {hashPassword} from "@/lib/auth/password";
 import {omitNameFields, parseNameParts} from "@/lib/user-name";
@@ -7,8 +8,8 @@ import {omitNameFields, parseNameParts} from "@/lib/user-name";
 const MIN_PASSWORD_LENGTH = 8;
 
 /**
- * Прямая регистрация клиента/специалиста: email + пароль, без magic-link письма и без
- * обязательного телефона. Аккаунт создаётся сразу активным — фронт логинится через
+ * Прямая регистрация клиента/специалиста: email + пароль, телефон обязателен.
+ * Аккаунт создаётся сразу активным — фронт логинится через
  * signIn("credentials", ...) сразу после успешного ответа этого роута.
  */
 export async function POST(req: NextRequest) {
@@ -54,7 +55,10 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    const phone = typeof body.phone === "string" ? body.phone.trim() || null : null;
+    const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+    if (!phone || !isValidPhoneNumber(phone)) {
+        return NextResponse.json({error: "Введите корректный номер телефона"}, {status: 400});
+    }
     // Имя хранится в User — из анкеты его убираем, даже если клиент прислал.
     const rawFormData = omitNameFields(
         body.formData != null && typeof body.formData === "object"

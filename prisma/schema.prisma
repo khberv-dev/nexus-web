@@ -239,6 +239,7 @@ model UserFile {
   createdAt    DateTime     @default(now())
   briefVideoForOrder        Order?                          @relation("OrderBriefVideo")
   briefAttachments          OrderBriefAttachment[]          @relation("OrderBriefAttachmentFile")
+  briefAiPreviews           OrderBriefAiPreview[]           @relation("OrderBriefAiPreviewFile")
   mainForCard               PortfolioCard?                  @relation("PortfolioCardMainFile")
   cardLinks                 PortfolioCardAttachment[]         @relation("PortfolioCardAttachmentFile")
   portfolioAttachmentAnchors PortfolioCardAttachment[]      @relation("PortfolioCardAttachmentLinkedVisual")
@@ -364,6 +365,7 @@ model Order {
   briefVideoFileId    String?        @unique
   briefVideoFile      UserFile?      @relation("OrderBriefVideo", fields: [briefVideoFileId], references: [id])
   briefAttachments    OrderBriefAttachment[]
+  briefAiPreviews     OrderBriefAiPreview[]
   deletedAt           DateTime?
   createdAt           DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -388,6 +390,21 @@ model OrderBriefAttachment {
   createdAt DateTime @default(now())
 
   @@unique([orderId, fileId])
+  @@index([orderId, createdAt])
+  @@index([fileId])
+}
+
+/// Иллюстративные интерьеры, сгенерированные ИИ по брифу — не итог работы, просто превью
+/// на последнем шаге мастера заказа. Отдельная таблица от OrderBriefAttachment (те — файлы,
+/// которые загрузил сам клиент), чтобы не путать сгенерированное с материалами клиента.
+model OrderBriefAiPreview {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fileId    String
+  file      UserFile @relation("OrderBriefAiPreviewFile", fields: [fileId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
   @@index([orderId, createdAt])
   @@index([fileId])
 }

@@ -102,6 +102,20 @@
     }
 }
 
+/* Нативный календарик у <input type="date"> по умолчанию тёмный — на тёмном фоне почти
+   не виден (используется на брифе заказа, анкете специалиста). `filter: invert()` на
+   ::-webkit-calendar-picker-indicator красит иконку в Chrome, но Safari отрисовывает этот
+   контрол нативно и в основном игнорирует его стилизацию — там работает только
+   стандартное `color-scheme`, которое просит браузер сам подобрать светлую иконку/чрому
+   под тёмный фон. Указываем оба способа, чтобы получить белую иконку в обоих движках. */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
 /* Sneat dashboard isolation — reset Tailwind overrides inside layout-wrapper.
    `.layout-wrapper`'s own font-family always beats the `body { font-family: ... }`
    override in admin/(dashboard) layouts (inheritance loses to any rule matching
