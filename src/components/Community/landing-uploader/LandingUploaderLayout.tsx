@@ -1,8 +1,8 @@
 "use client"
 
-import React from "react"
+import React, {useRef, useState} from "react"
 import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
-import {MAX_LANDING_PORTFOLIO, POS_OPTIONS, posBandStyle} from "./constants"
+import {MAX_LANDING_PORTFOLIO, percentToWorkPos, workPosToPercent} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 
@@ -62,6 +62,54 @@ export function LandingUploaderLayout(props: LayoutProps) {
     )
 
     const portfolioImages = portfolioFiles.filter((f) => f.mimeType?.startsWith("image/"))
+
+    // --- «Положение кадра»: перетаскивание фото внутри рамки-вьюпорта (16:9).
+    // Двигаем на дельту курсора от точки нажатия, а не прыгаем в абсолютную точку клика —
+    // так фото ведёт себя как объект, который тащат, а не телепортируют под курсор.
+    const posPreviewRef = useRef<HTMLDivElement>(null)
+    const dragOriginRef = useRef<{
+        startX: number
+        startY: number
+        startPos: { x: number; y: number }
+        rectWidth: number
+        rectHeight: number
+    } | null>(null)
+    const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null)
+    const currentPos = dragPos ?? workPosToPercent(workPos)
+
+    const handlePosPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (disabled) return
+        const rect = posPreviewRef.current?.getBoundingClientRect()
+        if (!rect) return
+        e.currentTarget.setPointerCapture(e.pointerId)
+        dragOriginRef.current = {
+            startX: e.clientX,
+            startY: e.clientY,
+            startPos: currentPos,
+            rectWidth: rect.width,
+            rectHeight: rect.height,
+        }
+        setDragPos(currentPos)
+    }
+    const handlePosPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+        const origin = dragOriginRef.current
+        if (!origin) return
+        const clamp = (n: number) => Math.min(Math.max(Math.round(n), 0), 100)
+        // background-position% растёт вправо/вниз по картинке, а не по видимому окну —
+        // при увеличении X видимая часть смещается влево, поэтому дельту курсора вычитаем.
+        const dxPercent = ((e.clientX - origin.startX) / origin.rectWidth) * 100
+        const dyPercent = ((e.clientY - origin.startY) / origin.rectHeight) * 100
+        setDragPos({
+            x: clamp(origin.startPos.x - dxPercent),
+            y: clamp(origin.startPos.y - dyPercent),
+        })
+    }
+    const commitPosDrag = () => {
+        if (!dragOriginRef.current) return
+        dragOriginRef.current = null
+        if (dragPos !== null) onSaveWorkPos(percentToWorkPos(dragPos))
+        setDragPos(null)
+    }
 
     const isPreviewPrimary = !!preview?.fileId && (
         (preview.category === "INTRO_VIDEO" && selectedVideoId === preview.fileId) ||
@@ -261,43 +309,28 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                 <div>
                                     <h5 className="landing-up-pos__title">Положение кадра</h5>
                                     <p className="landing-up-pos__sub">
-                                        На главной фото растянуто во весь экран — выберите, какая часть останется
-                                        в кадре
+                                        Рамка — вьюпорт браузера на главной. Перетащите фото внутри неё, чтобы
+                                        выбрать, какая часть останется в кадре.
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Живое превью в масштабе главной (16:9), но в фиксированном небольшом размере — так удобнее калибровать. */}
+                            {/* Рамка — пропорции вьюпорта браузера (16:9); фото внутри крупнее рамки на 20%
+                                по каждой стороне, чтобы было куда его двигать при перетаскивании. */}
                             <div
-                                className="landing-up-pos__preview"
+                                ref={posPreviewRef}
+                                className={`landing-up-pos__preview ${dragPos !== null ? "is-dragging" : ""}`}
                                 style={portfolioUrls[selectedWorkId] ? {
                                     backgroundImage: `url('${portfolioUrls[selectedWorkId]}')`,
-                                    backgroundPosition: workPos,
+                                    backgroundSize: "120% 120%",
+                                    backgroundPosition: `${currentPos.x}% ${currentPos.y}%`,
                                 } : undefined}
+                                onPointerDown={handlePosPointerDown}
+                                onPointerMove={handlePosPointerMove}
+                                onPointerUp={commitPosDrag}
+                                onPointerCancel={commitPosDrag}
                             >
                                 {!portfolioUrls[selectedWorkId] && <i className="bx bx-image"/>}
-                            </div>
-
-                            <div className="landing-up-pos__grid">
-                                {POS_OPTIONS.map((o) => {
-                                    const active = workPos === o.value
-                                    return (
-                                        <button
-                                            key={o.value}
-                                            type="button"
-                                            className={`landing-up-pos__card ${active ? "is-active" : ""}`}
-                                            onClick={() => onSaveWorkPos(o.value)}
-                                            aria-pressed={active}
-                                            title={`Кадр: ${o.label}`}
-                                        >
-                                            {/* Схема: рамка — всё фото, подсветка — видимая часть. */}
-                                            <span className="landing-up-pos__scheme" aria-hidden>
-                                                <span className="landing-up-pos__band" style={posBandStyle(o.value)}/>
-                                            </span>
-                                            <span className="landing-up-pos__label">{o.label}</span>
-                                        </button>
-                                    )
-                                })}
                             </div>
                         </div>
                     )}

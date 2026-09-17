@@ -12,7 +12,10 @@ export type LandingBundlePatch = {
 }
 
 const MAX_TEXT = {specialty: 120, about: 2000} as const
-const WORK_POS = /^center (top|center|bottom|(?:100|[1-9]?\d)%)$/
+// Двумерный `background-position`: "37% 62%" (текущий калибратор) или легаси-значения
+// вида "center 20%"/"center center" из старой версии кадрирования.
+const WORK_POS_AXIS = "(?:left|center|right|top|bottom|(?:100|[1-9]?\\d)%)"
+const WORK_POS = new RegExp(`^${WORK_POS_AXIS} ${WORK_POS_AXIS}$`)
 
 function optionalId(value: unknown, field: string): string | null | undefined {
     if (value === undefined || value === null) return value

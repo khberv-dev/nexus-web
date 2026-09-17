@@ -1,36 +1,44 @@
-import {POS_OPTIONS, posBandStyle} from "@/components/Community/landing-uploader/constants"
+import {percentToWorkPos, workPosToPercent} from "@/components/Community/landing-uploader/constants"
 
-describe("posBandStyle", () => {
-    it("центрирует полосу для «center»", () => {
-        // Полоса занимает 45 % кадра, значит по центру её верх — на 27.5 %.
-        expect(posBandStyle("center center")).toEqual({top: "27.5%", height: "45%"})
+describe("workPosToPercent", () => {
+    it("переводит ключевые слова в проценты по обеим осям", () => {
+        expect(workPosToPercent("left top")).toEqual({x: 0, y: 0})
+        expect(workPosToPercent("center center")).toEqual({x: 50, y: 50})
+        expect(workPosToPercent("right bottom")).toEqual({x: 100, y: 100})
     })
 
-    it("сдвигает полосу вверх и вниз пропорционально проценту", () => {
-        expect(posBandStyle("center 20%").top).toBe("11%")
-        expect(posBandStyle("center 80%").top).toBe("44%")
+    it("переводит явные проценты по X и Y независимо", () => {
+        expect(workPosToPercent("20% 80%")).toEqual({x: 20, y: 80})
+        expect(workPosToPercent("70% 30%")).toEqual({x: 70, y: 30})
     })
 
-    it("поддерживает ключевые слова top/bottom", () => {
-        expect(posBandStyle("center top").top).toBe("0%")
-        expect(posBandStyle("center bottom").top).toBe("55%")
+    it("округляет и ограничивает диапазон 0..100 по каждой оси", () => {
+        expect(workPosToPercent("33.6% 150%")).toEqual({x: 34, y: 100})
+        expect(workPosToPercent("-20% 40%")).toEqual({x: 0, y: 40})
     })
 
-    it("падает в центр на мусорном значении", () => {
-        expect(posBandStyle("center ???")).toEqual(posBandStyle("center center"))
-        expect(posBandStyle("center")).toEqual(posBandStyle("center center"))
+    it("падает в центр на мусорном или неполном значении", () => {
+        expect(workPosToPercent("center ???")).toEqual({x: 50, y: 50})
+        expect(workPosToPercent("center")).toEqual({x: 50, y: 50})
+        expect(workPosToPercent("")).toEqual({x: 50, y: 50})
+    })
+})
+
+describe("percentToWorkPos", () => {
+    it("собирает валидную строку background-position из двух осей", () => {
+        expect(percentToWorkPos({x: 37, y: 62})).toBe("37% 62%")
+        expect(percentToWorkPos({x: 0, y: 0})).toBe("0% 0%")
+        expect(percentToWorkPos({x: 100, y: 100})).toBe("100% 100%")
     })
 
-    it("даёт различимые позиции для всех вариантов интерфейса", () => {
-        const tops = POS_OPTIONS.map((o) => posBandStyle(o.value).top)
-        expect(new Set(tops).size).toBe(POS_OPTIONS.length)
+    it("округляет и ограничивает диапазон 0..100 по каждой оси", () => {
+        expect(percentToWorkPos({x: 33.6, y: -20})).toBe("34% 0%")
+        expect(percentToWorkPos({x: 150, y: 50})).toBe("100% 50%")
     })
 
-    it("не выпускает полосу за пределы кадра", () => {
-        for (const {value} of POS_OPTIONS) {
-            const {top, height} = posBandStyle(value)
-            expect(Number.parseFloat(top) + Number.parseFloat(height)).toBeLessThanOrEqual(100)
-            expect(Number.parseFloat(top)).toBeGreaterThanOrEqual(0)
+    it("является обратной операцией для workPosToPercent", () => {
+        for (const pos of [{x: 0, y: 0}, {x: 12, y: 87}, {x: 50, y: 50}, {x: 100, y: 0}]) {
+            expect(workPosToPercent(percentToWorkPos(pos))).toEqual(pos)
         }
     })
 })

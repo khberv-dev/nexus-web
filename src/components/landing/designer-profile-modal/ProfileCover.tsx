@@ -18,7 +18,7 @@ export function ProfileCover({designer, onClose}: ProfileCoverProps) {
                 height: 200,
                 flexShrink: 0,
                 background: hasCover
-                    ? `url('${designer.work}') center ${designer.workPos ?? "center"} / cover no-repeat`
+                    ? `url('${designer.work}') ${designer.workPos ?? "center"} / cover no-repeat`
                     : "linear-gradient(135deg, #24204d 0%, #43246a 52%, #18243f 100%)",
             }}
         >
