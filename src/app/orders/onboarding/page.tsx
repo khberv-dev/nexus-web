@@ -67,6 +67,7 @@ export default function ClientOnboardingPage() {
     const [saved, setSaved] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dadataLoading, setDadataLoading] = useState(false)
+    const [innNotFound, setInnNotFound] = useState(false)
     const [profileLocks, setProfileLocks] = useState({name: false, email: false})
 
     useEffect(() => {
@@ -107,6 +108,7 @@ export default function ClientOnboardingPage() {
 
     const lookupInn = async (inn: string) => {
         setForm(f => ({...f, inn}))
+        setInnNotFound(false)
         const clean = inn.replace(/\D/g, "")
         if ((isIP && clean.length === 12) || (isLegal && clean.length === 10)) {
             setDadataLoading(true)
@@ -124,6 +126,8 @@ export default function ClientOnboardingPage() {
                         ogrn: data.ogrn ?? "",
                         legalAddress: data.address ?? "",
                     }))
+                } else if (!data.degraded) {
+                    setInnNotFound(true)
                 }
             } catch { /* ignore */
             } finally {
@@ -238,7 +242,10 @@ export default function ClientOnboardingPage() {
                             <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
                                 {LEGAL_FORM_CHIPS.map(c => (
                                     <Chip key={c} label={c} active={form.legalForm === c}
-                                          onClick={() => setForm(f => ({...f, legalForm: c}))}/>
+                                          onClick={() => {
+                                              setInnNotFound(false)
+                                              setForm(f => ({...f, legalForm: c}))
+                                          }}/>
                                 ))}
                             </div>
                             <p style={{fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", margin: "8px 0 0"}}>
@@ -249,6 +256,44 @@ export default function ClientOnboardingPage() {
 
                         {(isLegal || isIP) && (
                             <>
+                                <Field label="ИНН" required>
+                                    <div style={{position: "relative"}}>
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder={isIP ? "123456789012" : "7707083893"}
+                                            value={form.inn || ""}
+                                            onChange={e => lookupInn(e.target.value)}
+                                            style={highlightedAutoFillInputStyle}
+                                            maxLength={isIP ? 12 : 10}
+                                            inputMode="numeric"
+                                        />
+                                        <div style={{
+                                            fontSize: "0.72rem",
+                                            color: "rgba(255,255,255,0.38)",
+                                            marginTop: 6
+                                        }}>
+                                            Подтянем данные автоматически после ввода ИНН.
+                                        </div>
+                                        {innNotFound && (
+                                            <div style={{
+                                                fontSize: "0.75rem",
+                                                color: "#f87171",
+                                                marginTop: 2
+                                            }}>
+                                                Компания с таким ИНН не найдена. Заполните реквизиты вручную.
+                                            </div>
+                                        )}
+                                        {dadataLoading && <span style={{
+                                            position: "absolute",
+                                            right: 12,
+                                            top: 14,
+                                            fontSize: "0.75rem",
+                                            color: "rgba(255,255,255,0.3)"
+                                        }}>⏳</span>}
+                                    </div>
+                                </Field>
+
                                 <Field label={isIP ? "Наименование / ФИО ИП" : "Наименование организации"} required>
                                     <input
                                         type="text"
@@ -259,80 +304,50 @@ export default function ClientOnboardingPage() {
                                         style={inputStyle}
                                     />
                                 </Field>
-                                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0 1rem"}}>
-                                    <Field label="ИНН" required>
-                                        <div style={{position: "relative"}}>
+
+                                {isLegal && (
+                                    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
+                                        <Field label="КПП" required>
                                             <input
                                                 type="text"
                                                 required
-                                                placeholder={isIP ? "123456789012" : "7707083893"}
-                                                value={form.inn || ""}
-                                                onChange={e => lookupInn(e.target.value)}
-                                                style={highlightedAutoFillInputStyle}
-                                                maxLength={isIP ? 12 : 10}
-                                                inputMode="numeric"
-                                            />
-                                            <div style={{
-                                                fontSize: "0.72rem",
-                                                color: "rgba(255,255,255,0.38)",
-                                                marginTop: 6
-                                            }}>
-                                                Подтянем данные автоматически после ввода ИНН.
-                                            </div>
-                                            {dadataLoading && <span style={{
-                                                position: "absolute",
-                                                right: 12,
-                                                top: 14,
-                                                fontSize: "0.75rem",
-                                                color: "rgba(255,255,255,0.3)"
-                                            }}>⏳</span>}
-                                        </div>
-                                    </Field>
-
-                                    {isLegal && (
-                                        <>
-                                            <Field label="КПП" required>
-                                                <input
-                                                    type="text"
-                                                    required
-                                                    placeholder="770701001"
-                                                    value={form.kpp || ""}
-                                                    onChange={e => setForm(f => ({...f, kpp: e.target.value}))}
-                                                    style={inputStyle}
-                                                    maxLength={9}
-                                                    inputMode="numeric"
-                                                />
-                                            </Field>
-                                            <Field label="ОГРН" required>
-                                                <input
-                                                    type="text"
-                                                    required
-                                                    placeholder="1027700132195"
-                                                    value={form.ogrn || ""}
-                                                    onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
-                                                    style={inputStyle}
-                                                    maxLength={13}
-                                                    inputMode="numeric"
-                                                />
-                                            </Field>
-                                        </>
-                                    )}
-
-                                    {isIP && (
-                                        <Field label="ОГРНИП" required>
-                                            <input
-                                                type="text"
-                                                required
-                                                placeholder="304770000000000"
-                                                value={form.ogrn || ""}
-                                                onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
+                                                placeholder="770701001"
+                                                value={form.kpp || ""}
+                                                onChange={e => setForm(f => ({...f, kpp: e.target.value}))}
                                                 style={inputStyle}
-                                                maxLength={15}
+                                                maxLength={9}
                                                 inputMode="numeric"
                                             />
                                         </Field>
-                                    )}
-                                </div>
+                                        <Field label="ОГРН" required>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="1027700132195"
+                                                value={form.ogrn || ""}
+                                                onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
+                                                style={inputStyle}
+                                                maxLength={13}
+                                                inputMode="numeric"
+                                            />
+                                        </Field>
+                                    </div>
+                                )}
+
+                                {isIP && (
+                                    <Field label="ОГРНИП" required>
+                                        <input
+                                            type="text"
+                                            required
+                                            placeholder="304770000000000"
+                                            value={form.ogrn || ""}
+                                            onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
+                                            style={inputStyle}
+                                            maxLength={15}
+                                            inputMode="numeric"
+                                        />
+                                    </Field>
+                                )}
 
                                 <Field label={isIP ? "Адрес регистрации" : "Юридический адрес"} required>
                                     <input type="text" required placeholder="г. Москва, ул. Примерная, д. 1"

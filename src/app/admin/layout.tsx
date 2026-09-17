@@ -16,8 +16,8 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
         body { margin: 0; overflow: hidden; }
 
         :root {
-          --bs-font-sans-serif: var(--font-inter), 'Inter', -apple-system, sans-serif;
-          --bs-body-font-family: var(--font-inter), 'Inter', -apple-system, sans-serif;
+          --bs-font-sans-serif: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
+          --bs-body-font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
           --bs-primary: #6366f1;
           --bs-primary-rgb: 99,102,241;
           --bs-primary-text-emphasis: #4f46e5;

@@ -23,12 +23,15 @@ export default async function DashboardRootLayout({children}: { children: ReactN
             <link rel="stylesheet" href="/sneat/core.css"/>
             <link rel="stylesheet" href="/sneat/demo.css"/>
             <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css"/>
-            {/* Переопределяем Bootstrap font — убираем Public Sans, используем Inter */}
+            {/* Переопределяем Bootstrap font на платформенный (PP Neue Montreal); фактический
+                перебой Public Sans — в globals.css у .layout-wrapper, эти переменные это
+                значение не перебивают, но должны совпадать для компонентов Bootstrap,
+                которые ссылаются на них напрямую. */}
             <style>{`
         :root {
           /* Шрифт */
-          --bs-font-sans-serif: var(--font-inter), 'Inter', -apple-system, sans-serif;
-          --bs-body-font-family: var(--font-inter), 'Inter', -apple-system, sans-serif;
+          --bs-font-sans-serif: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
+          --bs-body-font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;
 
           /* NEXUS brand */
           --nexus-accent: #201d1d;
@@ -44,7 +47,7 @@ export default async function DashboardRootLayout({children}: { children: ReactN
           --bs-link-color: #201d1d;
           --bs-link-hover-color: #403a3a;
         }
-        body { font-family: var(--font-inter), 'Inter', -apple-system, sans-serif; }
+        body { font-family: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif; }
 
         /* Heading font — PP Neue Montreal */
         h1, h2, h3, h4, h5, h6, .card-title {
