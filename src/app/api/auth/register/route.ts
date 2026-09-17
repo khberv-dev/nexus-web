@@ -1,6 +1,11 @@
 import {NextRequest, NextResponse} from "next/server";
 import {OnboardingStatus, Prisma, Role} from "@prisma/client";
-import {isValidPhoneNumber} from "react-phone-number-input";
+// react-phone-number-input's root export pulls in its React component tree, which fails to
+// evaluate in a server (Node) context — "Super expression must either be null or a function".
+// Its own isValidPhoneNumber is just a thin wrapper around this exact libphonenumber-js/min
+// build (see react-phone-number-input/min/index.js), so importing it directly here is
+// pure-JS, has no React dependency, and validates identically to the client-side check.
+import {isValidPhoneNumber} from "libphonenumber-js/min";
 import {prisma} from "@/lib/db/prisma";
 import {hashPassword} from "@/lib/auth/password";
 import {omitNameFields, parseNameParts} from "@/lib/user-name";

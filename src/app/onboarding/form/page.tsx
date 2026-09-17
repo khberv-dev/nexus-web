@@ -8,6 +8,7 @@ import {AppCard} from "@/components/app/AppCard"
 import {PhoneField} from "@/components/ui/PhoneField"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {MultiSelectField} from "@/components/ui/MultiSelectField"
+import {Switch} from "@/components/ui/switch"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 import {AiIcon} from "@/components/app/AiIcon"
 
@@ -153,9 +154,11 @@ export default function OnboardingFormPage() {
         setForm(f => ({...f, inn}))
         setInnNotFound(false)
         const cleanInn = inn.replace(/\D/g, "")
-        const isIpInn = form.taxStatus === "IP" && cleanInn.length === 12
+        // ИП и самозанятый — оба физлица с 12-значным ИНН для DaData; отличается только
+        // то, что самозанятый не показывает ОГРНИП (его у него просто нет).
+        const isIndividualInn = (form.taxStatus === "IP" || form.taxStatus === "SZ") && cleanInn.length === 12
         const isOooInn = form.taxStatus === "OOO" && cleanInn.length === 10
-        if (isIpInn || isOooInn) {
+        if (isIndividualInn || isOooInn) {
             try {
                 const res = await fetch("/api/dadata/party", {
                     method: "POST",
@@ -166,14 +169,14 @@ export default function OnboardingFormPage() {
                 if (data.found) {
                     setForm(f => ({
                         ...f,
-                        ...(form.taxStatus === "IP"
-                            ? {ogrnip: data.ogrn ?? f.ogrnip ?? "", ipName: data.fullName ?? ""}
-                            : {
+                        ...(form.taxStatus === "OOO"
+                            ? {
                                 companyName: data.name ?? f.companyName ?? "",
                                 kpp: data.kpp ?? "",
                                 ogrn: data.ogrn ?? "",
                                 legalAddress: data.address ?? "",
-                            }),
+                            }
+                            : {ogrnip: data.ogrn ?? f.ogrnip ?? "", ipName: data.fullName ?? ""}),
                     }))
                 } else if (data.degraded) {
                     toast.error("Сервис проверки ИНН временно недоступен. Заполните реквизиты вручную.")
@@ -209,7 +212,9 @@ export default function OnboardingFormPage() {
                     body: JSON.stringify({bik: bik.replace(/\D/g, "")})
                 })
                 const data = await res.json()
-                if (data.found) setForm(f => ({...f, bankName: data.bankName ?? ""}))
+                if (data.found) {
+                    setForm(f => ({...f, bankName: data.bankName ?? "", corrAccount: data.corrAccount ?? f.corrAccount ?? ""}))
+                }
             } catch {
                 toast.error("Не удалось загрузить данные банка по БИК. Заполните вручную.")
             }
@@ -368,9 +373,9 @@ export default function OnboardingFormPage() {
                 return
             }
         }
-        if (form.taxStatus === "IP") {
+        if (form.taxStatus === "IP" || form.taxStatus === "SZ") {
             if ((form.inn ?? "").replace(/\D/g, "").length !== 12) {
-                setError("Укажите ИНН ИП (12 цифр).")
+                setError(form.taxStatus === "IP" ? "Укажите ИНН ИП (12 цифр)." : "Укажите ИНН (12 цифр).")
                 return
             }
         }
@@ -474,27 +479,28 @@ export default function OnboardingFormPage() {
                                                 hintStyle={{fontSize: "0.75rem", color: "rgba(255,255,255,0.38)"}}
                                             />
                                         ) : field.type === "toggle" ? (
-                                            <button
-                                                type="button"
-                                                onClick={() => setForm(f => ({
-                                                    ...f,
-                                                    [field.name]: f[field.name] === "true" ? "false" : "true"
-                                                }))}
-                                                style={{
-                                                    padding: "0.5em 1.2em",
-                                                    borderRadius: 8,
+                                            <label style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 10,
+                                                minHeight: "2.6em",
+                                                cursor: "pointer",
+                                            }}>
+                                                <Switch
+                                                    checked={form[field.name] === "true"}
+                                                    onChange={() => setForm(f => ({
+                                                        ...f,
+                                                        [field.name]: f[field.name] === "true" ? "false" : "true"
+                                                    }))}
+                                                />
+                                                <span style={{
                                                     fontSize: "0.85rem",
-                                                    cursor: "pointer",
                                                     fontFamily: "inherit",
-                                                    border: form[field.name] === "true" ? "1.5px solid rgba(52,211,153,0.5)" : "1.5px solid rgba(255,255,255,0.1)",
-                                                    background: form[field.name] === "true" ? "rgba(52,211,153,0.12)" : "rgba(255,255,255,0.04)",
                                                     color: form[field.name] === "true" ? "#34d399" : "rgba(255,255,255,0.5)",
-                                                    width: "100%",
-                                                    textAlign: "center",
-                                                }}
-                                            >
-                                                {form[field.name] === "true" ? "✓ Да" : "Нет"}
-                                            </button>
+                                                }}>
+                                                    {form[field.name] === "true" ? "Да" : "Нет"}
+                                                </span>
+                                            </label>
                                         ) : field.type === "multiselect" ? (
                                             <MultiSelectField
                                                 value={form[field.name] || ""}
@@ -748,7 +754,7 @@ export default function OnboardingFormPage() {
                                         }}>
                                             Подтянем данные автоматически после ввода ИНН.
                                         </div>
-                                        {form.taxStatus === "IP" && form.ipName && <div style={{
+                                        {(form.taxStatus === "IP" || form.taxStatus === "SZ") && form.ipName && <div style={{
                                             fontSize: "0.75rem",
                                             color: "#34d399",
                                             marginTop: 2
@@ -866,30 +872,6 @@ export default function OnboardingFormPage() {
                                             color: "rgba(255,255,255,0.5)",
                                             fontSize: "0.8rem",
                                             fontWeight: 500
-                                        }}>{form.taxStatus === "SZ" ? "Счет карты / р/с" : "Расчетный счет"}</label>
-                                        <input type="text" value={form.bankAccount || ""}
-                                               onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
-                                               style={inputStyle} maxLength={20} placeholder="40802810000000000000"
-                                               onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
-                                    </div>
-                                    <div className="flex flex-col gap-1.5">
-                                        <label style={{
-                                            color: "rgba(255,255,255,0.5)",
-                                            fontSize: "0.8rem",
-                                            fontWeight: 500
-                                        }}>Банк</label>
-                                        <input type="text" value={form.bankName || ""}
-                                               onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
-                                               style={inputStyle} placeholder="АО «Т-Банк»"
-                                               onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
-                                    </div>
-                                    <div className="flex flex-col gap-1.5">
-                                        <label style={{
-                                            color: "rgba(255,255,255,0.5)",
-                                            fontSize: "0.8rem",
-                                            fontWeight: 500
                                         }}>БИК</label>
                                         <input type="text" value={form.bankBik || ""}
                                                onChange={e => lookupBik(e.target.value)}
@@ -905,6 +887,18 @@ export default function OnboardingFormPage() {
                                             Подтянем банк автоматически после ввода БИК.
                                         </div>
                                     </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label style={{
+                                            color: "rgba(255,255,255,0.5)",
+                                            fontSize: "0.8rem",
+                                            fontWeight: 500
+                                        }}>Банк</label>
+                                        <input type="text" value={form.bankName || ""}
+                                               onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
+                                               style={inputStyle} placeholder="АО «Т-Банк»"
+                                               onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
+                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                    </div>
                                     {form.taxStatus === "OOO" && (
                                         <div className="flex flex-col gap-1.5">
                                             <label style={{
@@ -919,6 +913,18 @@ export default function OnboardingFormPage() {
                                                    onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
                                         </div>
                                     )}
+                                    <div className="flex flex-col gap-1.5">
+                                        <label style={{
+                                            color: "rgba(255,255,255,0.5)",
+                                            fontSize: "0.8rem",
+                                            fontWeight: 500
+                                        }}>{form.taxStatus === "SZ" ? "Счет карты / р/с" : "Расчетный счет"}</label>
+                                        <input type="text" value={form.bankAccount || ""}
+                                               onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
+                                               style={inputStyle} maxLength={20} placeholder="40802810000000000000"
+                                               onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
+                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                    </div>
                                 </div>
                             )}
                         </div>
