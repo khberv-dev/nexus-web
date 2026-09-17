@@ -1,3 +1,4 @@
+import {Switch} from "@/components/ui/switch"
 import type {OnboardingStatus} from "@/components/app/SpecialistCard"
 import type {RawSpecialist} from "../../../types"
 
@@ -58,8 +59,7 @@ export function RatingLandingCard({
                         cursor: isActiveSpec ? "pointer" : "default",
                         fontSize: "0.82rem"
                     }}>
-                        <input
-                            type="checkbox"
+                        <Switch
                             checked={profile?.featuredOnLanding ?? false}
                             onChange={() => onUpdateProfile(specialistId, {featuredOnLanding: !profile?.featuredOnLanding})}
                             disabled={ratingUpdating || !isActiveSpec}
