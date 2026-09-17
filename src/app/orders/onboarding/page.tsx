@@ -68,6 +68,7 @@ export default function ClientOnboardingPage() {
     const [error, setError] = useState<string | null>(null)
     const [dadataLoading, setDadataLoading] = useState(false)
     const [innNotFound, setInnNotFound] = useState(false)
+    const [bikNotFound, setBikNotFound] = useState(false)
     const [profileLocks, setProfileLocks] = useState({name: false, email: false})
 
     useEffect(() => {
@@ -138,6 +139,7 @@ export default function ClientOnboardingPage() {
 
     const lookupBik = async (bik: string) => {
         setForm(f => ({...f, bankBik: bik}))
+        setBikNotFound(false)
         if (bik.replace(/\D/g, "").length === 9) {
             try {
                 const res = await fetch("/api/dadata/bank", {
@@ -147,6 +149,8 @@ export default function ClientOnboardingPage() {
                 const data = await res.json()
                 if (data.found) {
                     setForm(f => ({...f, bankName: data.bankName ?? "", corrAccount: data.corrAccount ?? ""}))
+                } else if (!data.degraded) {
+                    setBikNotFound(true)
                 }
             } catch { /* ignore */
             }
@@ -356,19 +360,7 @@ export default function ClientOnboardingPage() {
                                            style={inputStyle}/>
                                 </Field>
 
-                                <Field label="Расчетный счет" required>
-                                    <input type="text" required placeholder="40702810000000000000"
-                                           value={form.bankAccount || ""}
-                                           onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
-                                           style={inputStyle} maxLength={20}/>
-                                </Field>
                                 <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
-                                    <Field label="Банк" required>
-                                        <input type="text" required placeholder="АО «Т-Банк»"
-                                               value={form.bankName || ""}
-                                               onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
-                                               style={inputStyle}/>
-                                    </Field>
                                     <Field label="БИК" required>
                                         <input type="text" required placeholder="044525974" value={form.bankBik || ""}
                                                onChange={e => lookupBik(e.target.value)}
@@ -380,12 +372,33 @@ export default function ClientOnboardingPage() {
                                         }}>
                                             Подтянем банк автоматически после ввода БИК.
                                         </div>
+                                        {bikNotFound && (
+                                            <div style={{
+                                                fontSize: "0.75rem",
+                                                color: "#f87171",
+                                                marginTop: 2
+                                            }}>
+                                                Банк с таким БИК не найден. Заполните реквизиты вручную.
+                                            </div>
+                                        )}
+                                    </Field>
+                                    <Field label="Банк" required>
+                                        <input type="text" required placeholder="АО «Т-Банк»"
+                                               value={form.bankName || ""}
+                                               onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
+                                               style={inputStyle}/>
                                     </Field>
                                 </div>
                                 <Field label="Корр. счет" required>
                                     <input type="text" required placeholder="30101810000000000000"
                                            value={form.corrAccount || ""}
                                            onChange={e => setForm(f => ({...f, corrAccount: e.target.value}))}
+                                           style={inputStyle} maxLength={20}/>
+                                </Field>
+                                <Field label="Расчетный счет" required>
+                                    <input type="text" required placeholder="40702810000000000000"
+                                           value={form.bankAccount || ""}
+                                           onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
                                            style={inputStyle} maxLength={20}/>
                                 </Field>
                             </>

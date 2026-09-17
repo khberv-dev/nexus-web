@@ -1,6 +1,7 @@
 "use client"
 
 import {useEffect, useRef} from "react"
+import Image from "next/image"
 import {gsap} from "gsap"
 import {DesignerSlider} from "@/components/landing/DesignerSlider"
 import type {DesignerSlide} from "@/components/landing/designer-profile-modal/types"
@@ -54,34 +55,38 @@ export function OsmoHero({visible, slides, onBrightnessChange}: OsmoHeroProps) {
  */
 function EmptyRoster() {
     return (
-        <div
-            style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                padding: "0 1.5em",
-                color: "#f4f4f4",
-            }}
-        >
-            <p style={{fontSize: "clamp(1.4rem, 4vw, 2.6rem)", fontWeight: 600, margin: 0, lineHeight: 1.2}}>
-                Идёт отбор дизайнеров
-            </p>
-            <p
+        <div style={{position: "absolute", inset: 0}}>
+            <Image src="/interior.jpg" alt="" fill className="object-cover" priority/>
+            <div style={{position: "absolute", inset: 0, background: "rgba(0,0,0,0.55)"}}/>
+            <div
                 style={{
-                    marginTop: "0.8em",
-                    maxWidth: "34rem",
-                    fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)",
-                    lineHeight: 1.55,
-                    color: "rgba(255,255,255,0.6)",
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    padding: "0 1.5em",
+                    color: "#f4f4f4",
                 }}
             >
-                Здесь появятся дизайнеры NEXUS, прошедшие квалификацию, — с подтверждённым уровнем и портфолио
-                реализованных проектов.
-            </p>
+                <p style={{fontSize: "clamp(1.4rem, 4vw, 2.6rem)", fontWeight: 600, margin: 0, lineHeight: 1.2}}>
+                    Идёт отбор дизайнеров
+                </p>
+                <p
+                    style={{
+                        marginTop: "0.8em",
+                        maxWidth: "34rem",
+                        fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)",
+                        lineHeight: 1.55,
+                        color: "rgba(255,255,255,0.6)",
+                    }}
+                >
+                    Здесь появятся дизайнеры NEXUS, прошедшие квалификацию, — с подтверждённым уровнем и портфолио
+                    реализованных проектов.
+                </p>
+            </div>
         </div>
     )
 }

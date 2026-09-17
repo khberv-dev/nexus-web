@@ -74,8 +74,8 @@
     width: calc((100% - 8px) / var(--tab-count));
     box-sizing: border-box;
     border-radius: 9px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid #fff;
+    background: #fff;
     transform: translateX(calc(100% * var(--tab-index)));
     transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
@@ -109,7 +109,7 @@
 
 .tabActive,
 .tabActive:hover {
-    color: #f4f4f4;
+    color: #000;
 }
 
 /* ── Поля ── */
