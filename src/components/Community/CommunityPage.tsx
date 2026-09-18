@@ -14,10 +14,9 @@ import {
     type SpecialistCabinetSection,
     specialistSectionHref,
 } from "@/lib/cabinet-shell"
-import AvatarUpload from "./AvatarUpload"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildSpecialistHintSteps} from "@/components/app/hint-tour-steps"
-import {SPECIALIST_AVATAR_INPUT_ID, SpecialistCabinetContext, type SpecialistCabinetData} from "./SpecialistCabinetContext"
+import {SpecialistCabinetContext, type SpecialistCabinetData} from "./SpecialistCabinetContext"
 import type {
     OnboardingStep,
     OrderWithRelations,
@@ -67,7 +66,6 @@ export default function CommunityPage({
                                           avatarUrl: initialAvatarUrl,
                                           featuredOnLanding,
                                           landingWorkPos,
-                                          rating,
                                           children,
                                       }: CommunityProps) {
     const router = useRouter()
@@ -91,8 +89,6 @@ export default function CommunityPage({
     const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl ?? null)
     const [hintsOpen, setHintsOpen] = useState(false)
     const specialistHintSteps = useMemo(() => buildSpecialistHintSteps(setActiveTab), [setActiveTab])
-
-    const initials = name[0]?.toUpperCase() ?? "?"
 
     const totalEarned = payments.filter(p => p.status === "RELEASED").reduce((sum, p) => sum + p.amount, 0)
 
@@ -134,7 +130,7 @@ export default function CommunityPage({
     const cabinetData: SpecialistCabinetData = {
         name, email, city, experience, software, about, status,
         orders, payments, contracts, acts, formData, onboardingSteps,
-        featuredOnLanding, landingWorkPos, avatarUrl,
+        featuredOnLanding, landingWorkPos, avatarUrl, onAvatarChange: setAvatarUrl,
     }
 
     return (
@@ -159,64 +155,11 @@ export default function CommunityPage({
             <DashMainLayout>
                 {/* Hero */}
                 <DashHeroFrame>
-                    <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "stretch"}}>
-
-                        {/* LEFT — identity */}
-                        <div data-tour="hero-profile" style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 10,
-                            padding: "18px 20px",
-                            borderRadius: 12,
-                            background: "rgba(255,255,255,0.03)",
-                            border: "1px solid var(--dash-border2)"
-                        }}>
-                            <div style={{display: "flex", alignItems: "center", gap: 14}}>
-                                <AvatarUpload heroMode initials={initials} currentUrl={avatarUrl}
-                                              inputId={SPECIALIST_AVATAR_INPUT_ID} onUploaded={setAvatarUrl}/>
-                                <div style={{minWidth: 0}}>
-                                    <h2 className="dash-hero__name" style={{marginBottom: 4}}>{name}</h2>
-                                    {specialistLevel && (
-                                        <span style={{
-                                            display: "inline-flex",
-                                            alignItems: "center",
-                                            gap: 5,
-                                            padding: "2px 10px",
-                                            borderRadius: 999,
-                                            fontSize: 11,
-                                            fontWeight: 700,
-                                            letterSpacing: "0.06em",
-                                            border: "1px solid rgba(52,211,153,0.4)",
-                                            background: "rgba(52,211,153,0.12)",
-                                            color: "#6ee7b7"
-                                        }}>
-                      <i className="bx bx-trophy" style={{fontSize: 11}}/> {specialistLevel}
-                    </span>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="dash-hero__rating">
-                                {[1, 2, 3, 4, 5].map(n => (
-                                    <i key={n}
-                                       className={`bx ${rating != null && n <= Math.round(rating) ? "bxs-star" : "bx-star"}`}/>
-                                ))}
-                                <span
-                                    className="dash-hero__rating-value">{rating != null ? rating.toFixed(1) : "—"}</span>
-                            </div>
-                            {about && <p className="dash-hero__bio" style={{margin: 0}}>{about}</p>}
-                            <p className="dash-hero__sub" style={{margin: 0}}>
-                                <span>{email}</span>{city && <span> · {city}</span>}
-                                {experience && <span> · {experience} лет опыта</span>}
-                            </p>
-                        </div>
-
-                        {/* RIGHT — 2×2 stats grid */}
-                        <div style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr",
-                            gridTemplateRows: "1fr 1fr",
-                            gap: 8
-                        }}>
+                    <div className="rwd-grid-2" style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(4, 1fr)",
+                        gap: 8
+                    }}>
 
                             {/* Верификация */}
                             <div style={{
@@ -346,7 +289,6 @@ export default function CommunityPage({
                                 </div>
                             </div>
 
-                        </div>
                     </div>
                 </DashHeroFrame>
 

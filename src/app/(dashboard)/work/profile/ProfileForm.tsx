@@ -5,6 +5,7 @@ import {toast} from "sonner"
 import {EDO_PROVIDER_OPTIONS, parseEdoProviders} from "@/lib/edo-providers"
 import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {MultiSelectField} from "@/components/ui/MultiSelectField"
+import {Switch} from "@/components/ui/switch"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 
 const FIELDS = [
@@ -245,35 +246,22 @@ export default function ProfileForm({
                 ))}
             </div>
 
-            <div style={{display: "flex", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap"}}>
+            <div style={{display: "flex", gap: "1.5rem", marginBottom: "1rem", flexWrap: "wrap"}}>
                 {TOGGLE_FIELDS.map((f) => (
-                    <div key={f.name}>
-                        <label style={{
-                            display: "block",
-                            fontSize: "0.68rem",
-                            fontWeight: 600,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.06em",
-                            color: "var(--dash-muted)",
-                            marginBottom: 6
-                        }}>{f.label}</label>
-                        <button
-                            type="button"
-                            onClick={() => setForm((p) => ({...p, [f.name]: p[f.name] === "true" ? "false" : "true"}))}
-                            style={{
-                                padding: "0.4em 1em",
-                                borderRadius: 6,
-                                fontSize: "0.82rem",
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                                border: form[f.name] === "true" ? "1.5px solid var(--dash-success)" : "1.5px solid var(--dash-border)",
-                                background: form[f.name] === "true" ? "var(--dash-success-bg)" : "transparent",
-                                color: form[f.name] === "true" ? "var(--dash-success)" : "var(--dash-muted)",
-                            }}
-                        >
-                            {form[f.name] === "true" ? "✓ Да" : "Нет"}
-                        </button>
-                    </div>
+                    <label key={f.name} style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        cursor: "pointer",
+                    }}>
+                        <Switch
+                            checked={form[f.name] === "true"}
+                            onChange={() => setForm((p) => ({...p, [f.name]: p[f.name] === "true" ? "false" : "true"}))}
+                        />
+                        <span style={{fontSize: "0.85rem", fontFamily: "inherit", color: "var(--dash-text)"}}>
+                            {f.label}
+                        </span>
+                    </label>
                 ))}
             </div>
 

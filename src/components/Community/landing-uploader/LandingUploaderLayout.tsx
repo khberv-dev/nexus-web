@@ -21,6 +21,8 @@ interface LayoutProps {
     preview: PreviewState
     videoRef: React.RefObject<HTMLInputElement | null>
     onVideoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    photoRef: React.RefObject<HTMLInputElement | null>
+    onPhotoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     onSaveWorkPos: (pos: string) => void
     onSelectVideo: (id: string) => void
     onSelectLandingWork: (id: string) => void
@@ -48,8 +50,8 @@ export function LandingUploaderLayout(props: LayoutProps) {
         introVideoFiles, introVideoUrls, selectedVideoId,
         selectedWorkId, workPos,
         portfolioFiles, portfolioUrls, selectedIds, preview,
-        videoRef,
-        onVideoChange, onSaveWorkPos,
+        videoRef, photoRef,
+        onVideoChange, onPhotoChange, onSaveWorkPos,
         onSelectVideo, onSelectLandingWork, onTogglePortfolio, onSetPreview,
         uploadItems,
         onDeleteFile,
@@ -216,18 +218,22 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
             {card(
                 <>
-                    {cardTitle("bx-image", "Фото интерьера", "Выберите фото из портфолио — лучше горизонтальное")}
-                    {portfolioImages.length === 0 ? (
-                        <p style={{fontSize: "0.78rem", color: "var(--dash-muted, #aaa)", margin: 0}}>
-                            Сначала добавьте фото во вкладке «Портфолио».
-                        </p>
-                    ) : (
-                        <div style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-                            gap: 8
-                        }}>
-                            {portfolioImages.map((f) => {
+                    {cardTitle("bx-image", "Фото интерьера", "Выберите фото из портфолио или загрузите новое — лучше горизонтальное")}
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                        gap: 8
+                    }}>
+                        {!disabled && (
+                            <button type="button" className="landing-up-upload-tile"
+                                    data-tour="btn-landing-photo"
+                                    style={{aspectRatio: "4/3"}}
+                                    onClick={() => photoRef.current?.click()}>
+                                <i className={`bx ${uploading === "photo" ? "bx-loader-alt bx-spin" : "bx-image-add"}`}/>
+                                <span>Загрузить</span>
+                            </button>
+                        )}
+                        {portfolioImages.map((f) => {
                                 const selected = selectedWorkId === f.id
                                 const url = portfolioUrls[f.id]
                                 return (
@@ -300,8 +306,9 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                     </div>
                                 )
                             })}
-                        </div>
-                    )}
+                    </div>
+                    <input ref={photoRef} type="file" accept="image/*" style={{display: "none"}}
+                           onChange={onPhotoChange}/>
                     {selectedWorkId && !disabled && (
                         <div className="landing-up-pos">
                             <div className="landing-up-pos__head">

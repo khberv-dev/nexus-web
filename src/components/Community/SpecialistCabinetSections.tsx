@@ -142,14 +142,17 @@ export function SpecialistPaymentsSection() {
 }
 
 export function SpecialistSettingsSection() {
-    const {name, email, city, experience, software, about, status, onboardingSteps, formData, featuredOnLanding} =
-        useSpecialistCabinet()
+    const {
+        name, email, city, experience, software, about, status, onboardingSteps, formData, featuredOnLanding,
+        avatarUrl, onAvatarChange,
+    } = useSpecialistCabinet()
     return (
         <>
             <div className="dash-col1" data-tour="settings-overview">
                 <SettingsCol1 name={name} email={email} city={city} experience={experience}
                               software={software} about={about} status={status}
-                              onboardingSteps={onboardingSteps}/>
+                              onboardingSteps={onboardingSteps}
+                              avatarUrl={avatarUrl} onAvatarChange={onAvatarChange}/>
             </div>
             <div className="dash-col2" data-tour="settings-form">
                 <SettingsCol2 name={name} email={email} formData={formData ?? null} status={status}

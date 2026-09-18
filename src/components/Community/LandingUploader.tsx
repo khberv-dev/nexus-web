@@ -68,6 +68,7 @@ export default function LandingUploader({
     const [portfolioFiles, setPortfolioFiles] = useState<LandingFile[]>([])
     const [portfolioUrls, setPortfolioUrls] = useState<Record<string, string>>({})
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+    const photoRef = useRef<HTMLInputElement>(null)
 
     const [uploading, setUploading] = useState<string | null>(null)
     const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
@@ -227,6 +228,28 @@ export default function LandingUploader({
         } finally {
             setUploading(null);
             if (videoRef.current) videoRef.current.value = ""
+        }
+    }
+
+    // Кастомное фото для обложки: грузится как обычное фото портфолио (валидация workFileId
+    // требует именно эту категорию) и сразу выбирается на главную — без похода во вкладку «Портфолио».
+    const handlePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file || !isEditable) return
+        try {
+            if (!file.type.startsWith("image/")) throw new Error("Нужно изображение")
+            if (file.size > 20 * 1024 * 1024) throw new Error("Максимум 20 МБ")
+            setUploading("photo")
+            const saved = await runUpload(file, "PORTFOLIO")
+            setPortfolioFiles((prev) => [saved, ...prev])
+            setPortfolioUrls((prev) => ({...prev, [saved.id]: URL.createObjectURL(file)}))
+            setSelectedWorkId(saved.id)
+            await patchBundle({workFileId: saved.id})
+        } catch (err) {
+            showToast((err as Error).message)
+        } finally {
+            setUploading(null)
+            if (photoRef.current) photoRef.current.value = ""
         }
     }
 
@@ -461,6 +484,8 @@ export default function LandingUploader({
                         preview={preview}
                         videoRef={videoRef}
                         onVideoChange={handleVideo}
+                        photoRef={photoRef}
+                        onPhotoChange={handlePhoto}
                         onSaveWorkPos={saveWorkPos}
                         onSelectVideo={selectVideo}
                         onSelectLandingWork={selectWork}

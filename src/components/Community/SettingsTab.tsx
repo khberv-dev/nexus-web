@@ -1,15 +1,21 @@
 "use client"
 
 import ProfileForm from "@/app/(dashboard)/work/profile/ProfileForm"
+import AvatarUpload from "./AvatarUpload"
 import type {OnboardingStep} from "./types"
 import {ONBOARDING_STEPS} from "./types"
 
-export function SettingsCol1({name, email, city, experience, software, about, status, onboardingSteps}: {
+export function SettingsCol1({
+                                 name, email, city, experience, software, about, status, onboardingSteps,
+                                 avatarUrl, onAvatarChange,
+                             }: {
     name: string; email: string; city?: string; experience?: string; software?: string
     about?: string; status?: string; onboardingSteps: OnboardingStep[]
+    avatarUrl: string | null; onAvatarChange: (url: string) => void
 }) {
     const isActive = status === "ACTIVE"
     const passedSteps = new Set(onboardingSteps.filter(s => s.status === "PASSED").map(s => s.type))
+    const initials = name[0]?.toUpperCase() ?? "?"
 
     const metaItems = [
         {label: "Email", value: email, icon: "bx-envelope"},
@@ -28,6 +34,10 @@ export function SettingsCol1({name, email, city, experience, software, about, st
         <>
             <div className="dash-list-heading-wrap">
                 <h2 className="dash-list-heading">Профиль</h2>
+            </div>
+            <div style={{display: "flex", alignItems: "center", gap: 12, marginBottom: 14}}>
+                <AvatarUpload initials={initials} currentUrl={avatarUrl} onUploaded={onAvatarChange}/>
+                <span style={{fontSize: 12.5, color: "var(--dash-muted)"}}>Нажмите на фото, чтобы изменить</span>
             </div>
             <ul className="dash-list">
                 {metaItems.map(item => (
