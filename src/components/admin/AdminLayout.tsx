@@ -134,6 +134,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           --adm-active-color:   #6366f1;
           --adm-hover-bg:       rgba(99,102,241,0.06);
           --adm-content-bg:     #ffffff;
+          --adm-card-bg:        #f7f8fa;
           --adm-name-color:     #4b5563;
         }
         @media (prefers-color-scheme: dark) {
@@ -147,6 +148,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
             --adm-active-color:   #818cf8;
             --adm-hover-bg:       rgba(129,140,248,0.10);
             --adm-content-bg:     #0f172a;
+            --adm-card-bg:        #16213c;
             --adm-name-color:     #cbd5e1;
           }
         }
@@ -206,7 +208,6 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
         .adm-header-icon-btn i { line-height: 1; }
         .adm-header-icon-btn:hover,
         .adm-header-icon-btn[aria-expanded="true"] {
-          border-color: var(--adm-active-color);
           box-shadow: 0 0 0 3px var(--adm-hover-bg);
         }
         .adm-header-icon-btn:focus-visible { outline: 2px solid var(--adm-active-color); outline-offset: 2px; }
@@ -216,7 +217,7 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           color: var(--adm-muted);
         }
         .adm-header-bell:hover,
-        .adm-header-bell[aria-expanded="true"] { color: var(--adm-active-color); background: var(--adm-hover-bg); }
+        .adm-header-bell[aria-expanded="true"] { color: var(--adm-active-color); background: var(--adm-hover-bg); box-shadow: none; }
         /* Счётчик непрочитанных — на краю круга, а не внутри. */
         .adm-header-bell > span { top: -3px !important; right: -3px !important; }
         .adm-profile { position: relative; }
@@ -228,10 +229,8 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
           position: absolute; top: calc(100% + 8px); right: 0; z-index: 1100;
           min-width: 180px; padding: 6px;
           display: flex; flex-direction: column;
-          background: var(--adm-content-bg);
-          border: 1px solid var(--adm-sidebar-border);
+          background: var(--adm-card-bg);
           border-radius: 10px;
-          box-shadow: 0 12px 32px rgba(15,23,42,0.16);
         }
         .adm-profile-menu[hidden] { display: none; }
         .adm-profile-menu__user {

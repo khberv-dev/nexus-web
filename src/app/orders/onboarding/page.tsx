@@ -13,14 +13,13 @@ const LEGAL_FORM_CHIPS = ["ООО", "АО", "ПАО", "ИП"]
 const inputStyle: React.CSSProperties = {
     width: "100%", padding: "0.65em 0.875em", borderRadius: 8, fontSize: "0.85rem", fontFamily: "inherit",
     outline: "none", boxSizing: "border-box",
-    background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", color: "#f4f4f4",
+    background: "rgba(255,255,255,0.08)", color: "#f4f4f4",
 }
 
 const highlightedAutoFillInputStyle: React.CSSProperties = {
     ...inputStyle,
-    background: "rgba(99,102,241,0.10)",
-    border: "1px solid rgba(99,102,241,0.38)",
-    boxShadow: "0 0 0 3px rgba(99,102,241,0.06)",
+    background: "rgba(99,102,241,0.14)",
+    border: "none",
 }
 
 function Chip({label, active, onClick}: { label: string; active: boolean; onClick: () => void }) {

@@ -50,16 +50,7 @@
 }
 
 .dash-glass-panel {
-    /* background: var(--dash-glass-bg); */
-    border: 1px solid var(--dash-glass-border);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-@supports (backdrop-filter: blur(10px)) {
-    .dash-glass-panel {
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-    }
 }
 
 .dash {
@@ -323,9 +314,7 @@
     display: flex;
     flex-direction: column;
     background: var(--dash-surface, #0d1230);
-    border: 1px solid var(--dash-border);
     border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .dash-profile__menu[hidden] {
@@ -555,8 +544,6 @@
     /* Непрозрачный фон: без color-mix / полупрозрачных токенов, чтобы контент под панелью не просвечивал */
     background-color: hsl(268, 44%, 10%);
     background-image: linear-gradient(180deg, hsl(270, 48%, 7%) 0%, hsl(268, 44%, 11%) 55%, hsl(266, 42%, 12%) 100%);
-    border-right: 1px solid var(--dash-border);
-    box-shadow: 8px 0 40px rgba(0, 0, 0, 0.45);
     animation: dash-drawer-panel-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -836,9 +823,7 @@
 
 .dash-hero-surface {
     background: linear-gradient(180deg, hsla(247, 36%, 22%, 0.62), hsla(247, 36%, 18%, 0.4));
-    border: 1px solid hsla(247, 36%, 44%, 0.25);
     border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     padding: 16px 18px;
 }
 

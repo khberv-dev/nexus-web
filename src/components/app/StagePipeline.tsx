@@ -59,7 +59,7 @@ export function StagePipeline({stages, compact = false}: { stages: Stage[]; comp
                 return (
                     <div
                         key={stage.type}
-                        className={`p-3 rounded border ${isDone ? "border-success bg-label-success" : isActive ? "border-primary" : "border-secondary"}`}
+                        className={`p-3 rounded ${isDone ? "bg-label-success" : isActive ? "border border-primary" : "border border-secondary"}`}
                         style={{opacity: !isActive && i > 0 ? 0.5 : 1}}
                     >
                         <div className="d-flex align-items-center justify-content-between">

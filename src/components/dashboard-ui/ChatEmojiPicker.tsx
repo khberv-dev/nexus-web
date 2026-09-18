@@ -96,10 +96,8 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                         bottom: "calc(100% + 8px)",
                         zIndex: 20,
                         width: "min(320px, calc(100vw - 32px))",
-                        border: "1px solid var(--dash-border)",
                         borderRadius: 10,
                         background: "var(--dash-surface2)",
-                        boxShadow: "0 12px 32px rgba(0, 0, 0, 0.2)",
                         overflow: "hidden",
                     }}
                 >

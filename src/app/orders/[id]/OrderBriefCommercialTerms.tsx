@@ -65,9 +65,8 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                 background: "var(--dash-surface)",
                 borderRadius: 10,
                 padding: "14px 16px",
-                border: `1px solid ${highlightPayment ? "var(--dash-accent)" : "var(--dash-border)"}`,
                 boxShadow: highlightPayment ? "0 0 0 3px var(--dash-accent-bg), 0 0 24px var(--dash-accent-bg)" : undefined,
-                transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+                transition: "box-shadow 0.25s ease",
             }}
         >
             <div className="dash-list-heading-wrap" style={{marginBottom: 10}}>

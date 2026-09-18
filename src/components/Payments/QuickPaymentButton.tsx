@@ -122,7 +122,6 @@ export function QuickPaymentButton({
                             padding: "24px",
                             maxWidth: "400px",
                             width: "90%",
-                            boxShadow: "0 20px 25px rgba(0, 0, 0, 0.15)",
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >

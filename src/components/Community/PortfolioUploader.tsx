@@ -840,7 +840,6 @@ export default function PortfolioUploader() {
           </span>
                 </div>
                 <div className="card mb-0" style={{
-                    border: "1px solid rgba(255,255,255,0.08)",
                     boxShadow: "none",
                     background: "rgba(20,25,40,0.28)"
                 }}>

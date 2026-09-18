@@ -115,9 +115,7 @@ export function AppModal({open, onClose, children, maxWidth = 900, variant = "li
                         ? {
                             background: "linear-gradient(165deg, rgba(26,31,58,0.98) 0%, rgba(15,19,38,0.99) 100%)",
                             color: "#e8eaf4",
-                            border: "1px solid rgba(255,255,255,0.12)",
                             borderRadius: 16,
-                            boxShadow: "0 24px 80px rgba(0,0,0,0.55)",
                             width: "100%",
                             maxWidth,
                             maxHeight: "92vh",
@@ -129,7 +127,6 @@ export function AppModal({open, onClose, children, maxWidth = 900, variant = "li
                         : {
                             background: "#fff",
                             borderRadius: 16,
-                            boxShadow: "0 24px 80px rgba(0,0,0,0.35)",
                             width: "100%",
                             maxWidth,
                             maxHeight: "92vh",

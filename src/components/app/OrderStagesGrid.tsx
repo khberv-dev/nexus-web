@@ -194,10 +194,10 @@ export function OrderStagesGrid({
 
                     const cardFrame = cn(
                         "group relative flex h-full min-h-0 flex-col overflow-hidden transition-all duration-200",
-                        locked && "border-dashed border-muted-foreground/25 bg-muted/25 shadow-none",
-                        !locked && isDone && "border-primary/35 bg-primary/[0.06] shadow-sm",
-                        !locked && !isDone && isActive && "border-primary/20 shadow-md ring-1 ring-primary/15",
-                        !locked && !isDone && !isActive && "border-border shadow-sm",
+                        locked && "bg-muted/25 shadow-none",
+                        !locked && isDone && "bg-primary/[0.06] shadow-none",
+                        !locked && !isDone && isActive && "shadow-md",
+                        !locked && !isDone && !isActive && "border border-border",
                         isSelected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
                     )
 

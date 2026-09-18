@@ -165,8 +165,6 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                     flexDirection: "column",
                     borderRadius: 16,
                     background: "linear-gradient(165deg, rgba(26,31,58,0.98) 0%, rgba(15,19,38,0.99) 100%)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
                     color: "#e8eaf4",
                 }}
             >

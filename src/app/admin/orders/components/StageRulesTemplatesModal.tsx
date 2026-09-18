@@ -284,7 +284,7 @@ export function StageRulesTemplatesModal({open, onClose, order, stage, onChanged
                         <CardContent className="grid gap-3">
                             {stageTemplate ? (
                                 <div
-                                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-muted/20 p-3">
+                                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-muted/20 p-3">
                                     <div className="min-w-0">
                                         <div className="font-medium">{stageTemplate.title}</div>
                                         <div className="text-sm text-muted-foreground">{stageTemplate.filename}</div>

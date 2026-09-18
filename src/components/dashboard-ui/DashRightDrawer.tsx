@@ -107,12 +107,10 @@ export function DashRightDrawer({
                     maxWidth: "100%",
                     boxSizing: "border-box",
                     background: "var(--dash-surface, #fff)",
-                    borderLeft: "1px solid var(--dash-border, rgba(0,0,0,0.12))",
                     display: "flex",
                     flexDirection: "column",
                     transform: open ? "translateX(0)" : "translateX(100%)",
                     transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
-                    boxShadow: "-12px 0 40px rgba(0,0,0,0.12)",
                     fontFamily: "inherit",
                     paddingRight: "env(safe-area-inset-right, 0)",
                 }}

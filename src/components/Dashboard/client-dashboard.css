@@ -65,13 +65,11 @@
     gap: 16px;
     padding: 20px;
     background: var(--dash-bg);
-    border: 1px solid var(--dash-border);
     border-radius: 8px;
     transition: all 0.2s ease;
 }
 
 .client-dashboard__stat-card:hover {
-    border-color: #7928ca;
     box-shadow: 0 2px 8px rgba(121, 40, 202, 0.1);
 }
 
@@ -112,7 +110,6 @@
 
 .client-dashboard__section {
     background: var(--dash-bg);
-    border: 1px solid var(--dash-border);
     border-radius: 8px;
     padding: 24px;
 }
@@ -165,7 +162,6 @@
     gap: 8px;
     padding: 16px;
     background: var(--dash-bg-alt);
-    border: 1px solid var(--dash-border);
     border-radius: 8px;
     text-decoration: none;
     color: var(--dash-text);
@@ -243,14 +239,12 @@
     gap: 12px;
     padding: 16px;
     background: var(--dash-bg-alt);
-    border: 1px solid var(--dash-border);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .client-dashboard__order-card:hover {
-    border-color: #7928ca;
     box-shadow: 0 4px 12px rgba(121, 40, 202, 0.1);
     transform: translateY(-2px);
 }

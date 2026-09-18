@@ -151,8 +151,7 @@ export function MultiSelectField({
                     boxSizing: "border-box",
                     padding: "0.45em 2em 0.45em 0.75em",
                     borderRadius: 8,
-                    border: `1px solid ${open ? p.borderStrong : p.border}`,
-                    background: p.controlBg,
+                    background: open ? p.hoverBg : p.controlBg,
                     color: p.text,
                     fontSize: "0.85rem",
                     fontFamily: "inherit",
@@ -172,7 +171,6 @@ export function MultiSelectField({
                             borderRadius: 100,
                             fontSize: "0.75rem",
                             background: p.chipBg,
-                            border: `1px solid ${p.chipBorder}`,
                             color: p.chipText,
                         }}
                     >
@@ -214,9 +212,7 @@ export function MultiSelectField({
                         left: 0,
                         right: 0,
                         borderRadius: 8,
-                        border: `1px solid ${p.border}`,
                         background: p.panelBg,
-                        boxShadow: p.shadow,
                         overflow: "hidden",
                     }}
                 >
@@ -238,7 +234,6 @@ export function MultiSelectField({
                                 boxSizing: "border-box",
                                 padding: "0.45em 0.7em",
                                 borderRadius: 6,
-                                border: `1px solid ${p.border}`,
                                 background: p.controlBg,
                                 color: p.text,
                                 fontSize: "0.82rem",

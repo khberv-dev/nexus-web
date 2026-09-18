@@ -47,7 +47,7 @@ function normalizeBriefData(raw: unknown): D {
 }
 
 const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "0.65em 0.875em", border: "1px solid var(--dash-border)", borderRadius: 8,
+    width: "100%", padding: "0.65em 0.875em", borderRadius: 8,
     fontSize: "0.85rem", color: "var(--dash-text)", background: "var(--dash-surface2)", fontFamily: "inherit",
     outline: "none", boxSizing: "border-box",
 }
@@ -1320,12 +1320,11 @@ export default function NewOrderPage() {
                         bottom: 96,
                         zIndex: 55,
                         color: "var(--dash-text)",
-                        border: "1px solid var(--dash-border)",
+                        background: "rgba(20, 25, 40, 0.92)",
                         borderRadius: 10,
                         padding: "8px 12px",
                         fontSize: "0.78rem",
                         lineHeight: 1.3,
-                        boxShadow: "0 8px 20px rgba(0,0,0,0.24)",
                         maxWidth: 230,
                         opacity: showHelpHint ? 1 : 0,
                         transform: showHelpHint ? "translateY(0)" : "translateY(6px)",
@@ -1342,8 +1341,6 @@ export default function NewOrderPage() {
                             width: 14,
                             height: 14,
                             background: "rgba(20, 25, 40, 0.92)",
-                            borderRight: "1px solid var(--dash-border)",
-                            borderBottom: "1px solid var(--dash-border)",
                             transform: "rotate(45deg)",
                         }}
                     />
@@ -1403,7 +1400,6 @@ export default function NewOrderPage() {
                     background: !orderId || helpRequested ? "var(--dash-border)" : confirmHelp ? "var(--dash-warn)" : "var(--dash-accent)",
                     color: !orderId || helpRequested ? "var(--dash-muted)" : "#fff",
                     border: "none",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
                     cursor: !orderId || helpRequested ? "not-allowed" : "pointer",
                     display: "flex",
                     alignItems: "center",
@@ -1413,10 +1409,14 @@ export default function NewOrderPage() {
                     opacity: !orderId ? 0.85 : 1,
                 }}
                 onMouseEnter={e => {
-                    if (orderId && !helpRequested) e.currentTarget.style.transform = "scale(1.1)"
+                    if (orderId && !helpRequested) {
+                        e.currentTarget.style.transform = "scale(1.1)"
+                        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)"
+                    }
                 }}
                 onMouseLeave={e => {
                     e.currentTarget.style.transform = "scale(1)"
+                    e.currentTarget.style.boxShadow = "none"
                 }}
             >
                 <i className={`bx ${helpRequested ? "bx-check-circle" : confirmHelp ? "bx-error" : "bx-help-circle"}`}/>
@@ -1426,8 +1426,8 @@ export default function NewOrderPage() {
             {toast && (
                 <div style={{
                     position: "fixed", top: 72, right: 24, zIndex: 60,
-                    background: "rgba(40,199,111,0.14)", border: "1px solid rgba(40,199,111,0.34)",
-                    borderRadius: 10, padding: "0.75rem 1.25rem", boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+                    background: "rgba(40,199,111,0.14)",
+                    borderRadius: 10, padding: "0.75rem 1.25rem",
                     display: "flex", alignItems: "center", gap: 10, fontSize: "0.84rem", color: "var(--dash-text)",
                     animation: "toast-in 0.3s ease",
                 }}>

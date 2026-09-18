@@ -282,8 +282,7 @@
     margin-bottom: 8px;
 }
 
-.dash-settings-card { /* background: var(--dash-surface); */
-    border: 1px solid var(--dash-border);
+.dash-settings-card {
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 14px;
@@ -408,10 +407,8 @@
 
 .dash-crop-panel {
     background: hsl(247, 40%, 14%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 18px;
     width: min(480px, 100%);
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -714,12 +711,10 @@
 }
 
 .dash-finance-card {
-    border: 1px solid var(--dash-border);
     border-radius: 12px;
     padding: 12px 14px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
     rgba(20, 25, 40, 0.45);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .dash-finance-card__row {
@@ -979,20 +974,9 @@
 .dash-stage-card {
     border-radius: 16px;
     padding: 1.25rem 1.5rem;
-    /* background:
-       linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%),
-       rgba(20, 25, 40, 0.58); */
     margin-bottom: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.16);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-@supports (backdrop-filter: blur(10px)) {
-    .dash-stage-card {
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
 }
 
 .dash-stage-card__head {
@@ -1195,8 +1179,6 @@
     padding: 10px 12px;
     border-radius: 12px;
     background: rgba(20, 25, 40, 0.58);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .dash-progress-track--top {

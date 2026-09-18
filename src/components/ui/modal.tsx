@@ -44,12 +44,6 @@ export function Modal({open, onClose, children, maxWidth = 720, theme, variant =
             ? (isDark ? "rgba(17, 18, 24, 0.35)" : "rgba(255, 255, 255, 0.65)")
             : (isDark ? "var(--adm-sidebar, #1e293b)" : "var(--adm-sidebar, #fff)")
 
-    const panelBorder = isTransparent
-        ? "none"
-        : isGlass
-            ? (isDark ? "1px solid rgba(255, 255, 255, 0.14)" : "1px solid rgba(0, 0, 0, 0.08)")
-            : (isDark ? "1px solid var(--adm-sidebar-border, rgba(255,255,255,0.08))" : "1px solid rgba(0,0,0,0.06)")
-
     return createPortal(
         <div
             onClick={onClose}
@@ -74,15 +68,12 @@ export function Modal({open, onClose, children, maxWidth = 720, theme, variant =
                     flexDirection: "column",
                     overflow: isTransparent ? "visible" : "hidden",
                     borderRadius: 16,
-                    boxShadow: isGlass
-                        ? "0 32px 80px rgba(0,0,0,0.45)"
-                        : isDark
-                            ? "0 32px 80px rgba(0,0,0,0.7)"
-                            : "0 24px 80px rgba(0,0,0,0.35)",
+                    boxShadow: isTransparent
+                        ? (isDark ? "0 32px 80px rgba(0,0,0,0.7)" : "0 24px 80px rgba(0,0,0,0.35)")
+                        : undefined,
                     background: panelBackground,
                     backdropFilter: isGlass ? "blur(24px) saturate(1.15)" : undefined,
                     WebkitBackdropFilter: isGlass ? "blur(24px) saturate(1.15)" : undefined,
-                    border: panelBorder,
                     color: isDark ? "var(--adm-text, #f1f5f9)" : "var(--adm-text, #111827)",
                     animation: "modal-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
                 }}

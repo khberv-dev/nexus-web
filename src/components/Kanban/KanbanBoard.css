@@ -12,7 +12,6 @@
     min-width: 280px;
     max-width: 300px;
     padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     flex-shrink: 0;
 }
 
@@ -47,11 +46,9 @@
 
 .kanban-card {
     background: #fff;
-    border: 1px solid #e9ecef;
     border-radius: 8px;
     padding: 14px;
     cursor: grab;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.2s;
 }
 

@@ -96,12 +96,10 @@ export const SPECIALISTS_STYLES = `
   .sp-user-card {
     margin: 0 10px 8px;
     padding: 12px 14px;
-    background: var(--adm-sidebar);
+    background: var(--adm-card-bg);
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
-    border: 2px solid transparent;
+    transition: box-shadow 0.2s, transform 0.15s;
     text-align: left;
   }
   .sp-user-card:first-child { margin-top: 4px; }
@@ -110,7 +108,6 @@ export const SPECIALISTS_STYLES = `
     transform: translateX(2px);
   }
   .sp-user-card--on {
-    border-color: var(--adm-active-color);
     box-shadow: 0 4px 16px rgba(99,102,241,0.2);
     transform: translateX(2px);
   }
@@ -354,7 +351,7 @@ export const SPECIALISTS_STYLES = `
     .sp-wrap { flex-direction: column; }
   }
 
-  .sp-card { background: var(--adm-sidebar); border: 1px solid var(--adm-sidebar-border); border-radius: 8px; margin-bottom: 12px; }
+  .sp-card { background: var(--adm-card-bg); border-radius: 8px; margin-bottom: 12px; }
   .sp-card-hd { padding: 7px 14px; border-bottom: 1px solid var(--adm-sidebar-border); }
   .sp-card-bd { padding: 12px 14px; }
 

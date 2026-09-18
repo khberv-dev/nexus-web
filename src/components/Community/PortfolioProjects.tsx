@@ -9,7 +9,6 @@ import {PortfolioProjectMaterials} from "./PortfolioProjectMaterials"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 
 const cardShell: React.CSSProperties = {
-    border: "1px solid rgba(255,255,255,0.08)",
     background: "rgba(20,25,40,0.22)",
     boxShadow: "none",
 }

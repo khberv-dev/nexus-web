@@ -107,8 +107,8 @@ const AI_SERVICE_SUGGESTIONS = [
 ]
 
 const inputStyle: React.CSSProperties = {
-    background: "rgba(255,255,255,0.05)",
-    border: "1px solid rgba(255,255,255,0.1)",
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid transparent",
     borderRadius: 8,
     color: "#f4f4f4",
     fontSize: "0.9rem",
@@ -122,9 +122,8 @@ const inputStyle: React.CSSProperties = {
 
 const highlightedAutoFillInputStyle: React.CSSProperties = {
     ...inputStyle,
-    background: "rgba(99,102,241,0.08)",
-    border: "1px solid rgba(99,102,241,0.35)",
-    boxShadow: "0 0 0 3px rgba(99,102,241,0.06)",
+    background: "rgba(99,102,241,0.14)",
+    border: "none",
 }
 
 export default function OnboardingFormPage() {
@@ -436,16 +435,18 @@ export default function OnboardingFormPage() {
                                         className="flex flex-col gap-1.5"
                                         style={isWide ? {gridColumn: "1 / -1"} : undefined}
                                     >
-                                        <label style={{
-                                            color: "rgba(255,255,255,0.5)",
-                                            fontSize: "0.8rem",
-                                            fontWeight: 500
-                                        }}>
-                                            {field.label}
-                                            {lockedFromProfile ? (
-                                                <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
-                                            ) : null}
-                                        </label>
+                                        {field.type !== "toggle" ? (
+                                            <label style={{
+                                                color: "rgba(255,255,255,0.5)",
+                                                fontSize: "0.8rem",
+                                                fontWeight: 500
+                                            }}>
+                                                {field.label}
+                                                {lockedFromProfile ? (
+                                                    <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
+                                                ) : null}
+                                            </label>
+                                        ) : null}
 
                                         {field.name === "portfolio" ? (
                                             <PortfolioLinksField
@@ -496,9 +497,12 @@ export default function OnboardingFormPage() {
                                                 <span style={{
                                                     fontSize: "0.85rem",
                                                     fontFamily: "inherit",
-                                                    color: form[field.name] === "true" ? "#34d399" : "rgba(255,255,255,0.5)",
+                                                    color: "rgba(255,255,255,0.85)",
                                                 }}>
-                                                    {form[field.name] === "true" ? "Да" : "Нет"}
+                                                    {field.label}
+                                                    {lockedFromProfile ? (
+                                                        <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
+                                                    ) : null}
                                                 </span>
                                             </label>
                                         ) : field.type === "multiselect" ? (
@@ -564,7 +568,7 @@ export default function OnboardingFormPage() {
                                                     onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
                                                     style={inputStyle}
                                                     onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                    onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                                                    onBlur={e => (e.target.style.borderColor = "transparent")}
                                                 />
                                                 <div style={{
                                                     display: "flex",
@@ -610,7 +614,7 @@ export default function OnboardingFormPage() {
                                                     onChange={e => setForm(f => ({...f, [field.name]: e.target.value}))}
                                                     style={inputStyle}
                                                     onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                    onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                                                    onBlur={e => (e.target.style.borderColor = "transparent")}
                                                 />
                                                 <div style={{
                                                     display: "flex",
@@ -666,7 +670,7 @@ export default function OnboardingFormPage() {
                                                     if (!lockedFromProfile) e.target.style.borderColor = "rgba(255,255,255,0.35)"
                                                 }}
                                                 onBlur={e => {
-                                                    if (!lockedFromProfile) e.target.style.borderColor = "rgba(255,255,255,0.1)"
+                                                    if (!lockedFromProfile) e.target.style.borderColor = "transparent"
                                                 }}
                                                 required={field.required}
                                             />
@@ -746,7 +750,7 @@ export default function OnboardingFormPage() {
                                             maxLength={form.taxStatus === "OOO" ? 10 : 12}
                                             placeholder={form.taxStatus === "OOO" ? "7707083893" : "123456789012"}
                                             onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                            onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                            onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                         <div style={{
                                             fontSize: "0.72rem",
                                             color: "rgba(255,255,255,0.38)",
@@ -782,7 +786,7 @@ export default function OnboardingFormPage() {
                                                        onChange={e => setForm(f => ({...f, ipName: e.target.value}))}
                                                        style={inputStyle} placeholder="ИП Иванов Иван Иванович"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
                                                 <label style={{
@@ -794,7 +798,7 @@ export default function OnboardingFormPage() {
                                                        onChange={e => setForm(f => ({...f, ogrnip: e.target.value}))}
                                                        style={inputStyle} maxLength={15} placeholder="304770000000000"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
                                                 <label style={{
@@ -806,7 +810,7 @@ export default function OnboardingFormPage() {
                                                        onChange={e => setForm(f => ({...f, ipRegDate: e.target.value}))}
                                                        style={{...inputStyle, colorScheme: "dark"}}
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                         </>
                                     )}
@@ -824,7 +828,7 @@ export default function OnboardingFormPage() {
                                                            companyName: e.target.value
                                                        }))} style={inputStyle} placeholder="ООО «Пространство»"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
                                                 <label style={{
@@ -836,7 +840,7 @@ export default function OnboardingFormPage() {
                                                        onChange={e => setForm(f => ({...f, kpp: e.target.value}))}
                                                        style={inputStyle} maxLength={9} placeholder="770701001"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                             <div className="flex flex-col gap-1.5">
                                                 <label style={{
@@ -848,7 +852,7 @@ export default function OnboardingFormPage() {
                                                        onChange={e => setForm(f => ({...f, ogrn: e.target.value}))}
                                                        style={inputStyle} maxLength={13} placeholder="1027700132195"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                             <div className="flex flex-col gap-1.5" style={{gridColumn: "1 / -1"}}>
                                                 <label style={{
@@ -863,7 +867,7 @@ export default function OnboardingFormPage() {
                                                        }))} style={inputStyle}
                                                        placeholder="г. Москва, ул. Примерная, д. 1"
                                                        onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                       onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                       onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                             </div>
                                         </>
                                     )}
@@ -878,7 +882,7 @@ export default function OnboardingFormPage() {
                                                style={highlightedAutoFillInputStyle} maxLength={9}
                                                placeholder="044525974"
                                                onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                               onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                         <div style={{
                                             fontSize: "0.72rem",
                                             color: "rgba(255,255,255,0.38)",
@@ -897,7 +901,7 @@ export default function OnboardingFormPage() {
                                                onChange={e => setForm(f => ({...f, bankName: e.target.value}))}
                                                style={inputStyle} placeholder="АО «Т-Банк»"
                                                onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                               onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                     </div>
                                     {form.taxStatus === "OOO" && (
                                         <div className="flex flex-col gap-1.5">
@@ -910,7 +914,7 @@ export default function OnboardingFormPage() {
                                                    onChange={e => setForm(f => ({...f, corrAccount: e.target.value}))}
                                                    style={inputStyle} maxLength={20} placeholder="30101810000000000000"
                                                    onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                                   onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                                   onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                         </div>
                                     )}
                                     <div className="flex flex-col gap-1.5">
@@ -923,7 +927,7 @@ export default function OnboardingFormPage() {
                                                onChange={e => setForm(f => ({...f, bankAccount: e.target.value}))}
                                                style={inputStyle} maxLength={20} placeholder="40802810000000000000"
                                                onFocus={e => (e.target.style.borderColor = "rgba(255,255,255,0.35)")}
-                                               onBlur={e => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}/>
+                                               onBlur={e => (e.target.style.borderColor = "transparent")}/>
                                     </div>
                                 </div>
                             )}

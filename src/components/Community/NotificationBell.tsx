@@ -130,10 +130,8 @@ export default function NotificationBell({buttonClassName}: {
                     width: 340,
                     maxHeight: 420,
                     overflowY: "auto",
-                    background: "var(--dash-surface, #0d1230)",
-                    border: "1px solid var(--dash-border, rgba(255,255,255,0.1))",
+                    background: "var(--dash-surface3, #211d3d)",
                     borderRadius: 12,
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
                     zIndex: 100
                 }}>
                     <div style={{
