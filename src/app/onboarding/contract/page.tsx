@@ -128,6 +128,12 @@ export default function OnboardingContractPage() {
             setUploadError("Выберите подписанный PDF")
             return
         }
+        const ok = await confirmDialog({
+            title: "Отправить подписанный договор?",
+            description: "Это действие нельзя отменить — после отправки файл уйдёт администратору на проверку.",
+            variant: "warning",
+        })
+        if (!ok) return
         setBusy(true)
         setUploadError(null)
         setUploadProgress(0)

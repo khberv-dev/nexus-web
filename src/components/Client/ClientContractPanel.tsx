@@ -3,6 +3,7 @@
 import {useState} from "react"
 import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
+import {confirmDialog} from "@/lib/dialog-store"
 
 interface Props {
     contract: Contract | null
@@ -49,6 +50,12 @@ function UploadModal({
 
     const handleSubmit = async () => {
         if (!file || !onUpload) return
+        const ok = await confirmDialog({
+            title: "Отправить подписанный договор?",
+            description: "Это действие нельзя отменить.",
+            variant: "warning",
+        })
+        if (!ok) return
         setLoading(true)
         setError(null)
         const result = await onUpload(file)

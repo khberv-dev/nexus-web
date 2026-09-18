@@ -95,7 +95,8 @@ export function FrameworkContractSection({
     const respond = async (action: "sign" | "decline") => {
         const ok = await confirmDialog({
             title: action === "sign" ? "Подтвердить подписание договора?" : "Отказаться от договора? Менеджер свяжется с вами.",
-            variant: action === "decline" ? "destructive" : "default",
+            description: action === "sign" ? "Это действие нельзя отменить." : undefined,
+            variant: action === "decline" ? "destructive" : "warning",
         })
         if (!ok) return
         setBusy(true)

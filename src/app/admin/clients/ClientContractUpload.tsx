@@ -4,6 +4,7 @@ import {useState} from "react"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {canAdminUploadClientContract} from "@/lib/contract-upload-lock"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {confirmDialog} from "@/lib/dialog-store"
 
 const CONTRACT_LOCK_HINT: Record<string, string> = {
     AWAITING_SIGNATURE: "Ожидает подписи заказчика — новую версию можно загрузить после отказа",
@@ -43,6 +44,12 @@ export function ClientContractUpload({
 
     const upload = async () => {
         if (!file) return
+        const ok = await confirmDialog({
+            title: "Отправить договор заказчику?",
+            description: "Это действие нельзя отменить.",
+            variant: "warning",
+        })
+        if (!ok) return
         setUploading(true)
         setProgress(0)
         setError(null)

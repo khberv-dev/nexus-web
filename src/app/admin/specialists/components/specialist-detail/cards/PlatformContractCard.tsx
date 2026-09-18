@@ -32,6 +32,12 @@ export function PlatformContractCard({
 
     const uploadSource = async () => {
         if (!file) return
+        const ok = await confirmDialog({
+            title: "Отправить договор специалисту?",
+            description: "Это действие нельзя отменить.",
+            variant: "warning",
+        })
+        if (!ok) return
         setUploading(true)
         setProgress(0)
         setError(null)
@@ -140,7 +146,8 @@ export function PlatformContractCard({
                             onClick={async () => {
                                 if (!(await confirmDialog({
                                     title: "Подтвердить подписание договора?",
-                                    description: "Этап «Договор» будет закрыт.",
+                                    description: "Этап «Договор» будет закрыт. Это действие нельзя отменить.",
+                                    variant: "warning",
                                 }))) return
                                 const res = await fetch(`/api/admin/specialists/${specialist.id}/framework-contract/sign`, {method: "POST"})
                                 const data = await res.json().catch(() => ({}))

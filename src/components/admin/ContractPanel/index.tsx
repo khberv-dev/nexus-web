@@ -22,6 +22,12 @@ export function ContractPanel({
     const [generating, setGenerating] = useState(false)
 
     const handleGenerate = async () => {
+        const ok = await confirmDialog({
+            title: "Создать и отправить договор дизайнеру?",
+            description: "Это действие нельзя отменить.",
+            variant: "warning",
+        })
+        if (!ok) return
         setGenerating(true)
         try {
             await onGenerate()
@@ -31,7 +37,12 @@ export function ContractPanel({
     }
 
     const handleSendToClient = async () => {
-        if (await confirmDialog({title: "Отправить договор заказчику для подписания?"})) {
+        const ok = await confirmDialog({
+            title: "Отправить договор заказчику для подписания?",
+            description: "Это действие нельзя отменить.",
+            variant: "warning",
+        })
+        if (ok) {
             await onSendToClient()
         }
     }
@@ -39,6 +50,7 @@ export function ContractPanel({
     const handleConfirm = async () => {
         const ok = await confirmDialog({
             title: "Подтвердить договор и активировать заказ?",
+            description: "Это действие нельзя отменить.",
             variant: "destructive",
         })
         if (ok) {
