@@ -390,7 +390,7 @@ export default function OnboardingTestPage() {
                 )}
 
                 {gate === "error" && (
-                    <AppCard>
+                    <AppCard glass>
                         <p style={{color: "#fca5a5", fontSize: "0.9rem", margin: 0}}>{gateMessage}</p>
                         <p style={{color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", marginTop: "0.75em"}}>
                             {gateCode === "AWAITING_ADMIN"
@@ -476,7 +476,7 @@ export default function OnboardingTestPage() {
                         </div>
                         {payload.resume && payload.resume.answeredCount > 0 ? (
                             <div className="flex flex-col gap-3">
-                                <AppCard>
+                                <AppCard glass>
                                     <p style={{
                                         color: "rgba(255,255,255,0.75)",
                                         fontSize: "0.88rem",
@@ -642,7 +642,7 @@ export default function OnboardingTestPage() {
                             })}
                         </div>
 
-                        <AppCard key={current.id}>
+                        <AppCard glass key={current.id}>
                             <div
                                 role="presentation"
                                 data-nexus-quiz-protected="1"
@@ -840,7 +840,7 @@ export default function OnboardingTestPage() {
                 )}
 
                 {phase === "result" && resultFail && (
-                    <AppCard>
+                    <AppCard glass>
                         <h2 style={{color: "#fca5a5", fontSize: "1.1rem", margin: "0 0 0.5rem"}}>Тест не пройден</h2>
                         <p style={{color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.5, margin: 0}}>
                             Набрано {resultFail.correctCount} из {resultFail.total} ({resultFail.percent}%). Необходимо
@@ -882,7 +882,7 @@ export default function OnboardingTestPage() {
                 )}
 
                 {phase === "result" && resultExhausted && (
-                    <AppCard style={{
+                    <AppCard glass style={{
                         border: resultExhausted.onboardingStatus === "INTERVIEW_INVITED"
                             ? "1px solid rgba(52,211,153,0.25)"
                             : "1px solid rgba(248,113,113,0.25)",
@@ -948,7 +948,7 @@ export default function OnboardingTestPage() {
                 )}
 
                 {phase === "result" && resultOk && (
-                    <AppCard style={{border: "1px solid rgba(52,211,153,0.25)", background: "rgba(52,211,153,0.06)"}}>
+                    <AppCard glass style={{border: "1px solid rgba(52,211,153,0.25)", background: "rgba(52,211,153,0.06)"}}>
                         <h2 style={{color: "#6ee7b7", fontSize: "1.1rem", margin: "0 0 0.5rem"}}>
                             {payload ? `${payload.levelTitle} пройден!` : "Тест пройден"}
                         </h2>

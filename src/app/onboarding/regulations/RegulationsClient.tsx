@@ -397,7 +397,7 @@ export default function RegulationsClient({
                             }}/>
                         </div>
 
-                        <AppCard key={q.index}>
+                        <AppCard glass key={q.index}>
                             <div style={{
                                 display: "inline-block",
                                 fontSize: "0.72rem",
@@ -526,7 +526,7 @@ export default function RegulationsClient({
                 {/* ── RESULT ── */}
                 {phase === "result" && shown && (
                     <>
-                        <AppCard style={{
+                        <AppCard glass style={{
                             border: shown.passed ? "1px solid rgba(52,211,153,0.25)" : "1px solid rgba(248,113,113,0.25)",
                             background: shown.passed ? "rgba(52,211,153,0.06)" : "rgba(248,113,113,0.06)"
                         }}>

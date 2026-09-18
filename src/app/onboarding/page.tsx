@@ -92,6 +92,22 @@ export default async function OnboardingPage() {
     const levelLabels: Record<string, string> = LEVEL_TITLE
     const highestPassedLevel = (quizState?.passedLevels ?? []).sort().at(-1) ?? null
 
+    // Шаги, где специалист сам отправляет данные и затем ждёт решения администратора —
+    // отличаем это состояние от «ещё не начато», иначе снова показывается кнопка «Заполнить».
+    // formData не годится как признак «анкета отправлена»: регистрация уже кладёт туда
+    // {phone}, так что объект никогда не пуст. taxStatus, наоборот, проверяется и требуется
+    // именно в /api/onboarding/apply — его наличие однозначно значит, что анкету отправили.
+    const formTaxStatus = (dbUser?.specialistProfile?.formData as Record<string, unknown> | null)?.taxStatus
+    const formAwaitingReview =
+        onboardingStatus === "PENDING" &&
+        (formTaxStatus === "IP" || formTaxStatus === "SZ" || formTaxStatus === "OOO")
+    const testAwaitingReview = quizState?.phase === "awaiting_admin"
+    const contractAwaitingReview = onboardingStatus === "CONTRACT" && dbUser?.specialistProfile?.specialistContractStatus === "SIGNED_BY_SPECIALIST"
+    const isAwaitingReview = (key: string) =>
+        (key === "FORM" && formAwaitingReview) ||
+        (key === "TEST" && testAwaitingReview) ||
+        (key === "CONTRACT" && contractAwaitingReview)
+
     return (
         <OnboardingShell title="Онбординг" withBg>
             {onboardingStatus === "REGULATIONS" && <OnboardingStatusPoller currentStatus={onboardingStatus}/>}
@@ -115,9 +131,10 @@ export default async function OnboardingPage() {
                         const isDone = isDoneByIndex(i)
                         const isCurrent = !allDone && i === currentStep
                         const isPending = !allDone && i > currentStep
+                        const awaitingReview = isCurrent && isAwaitingReview(step.key)
 
                         return (
-                            <AppCard key={step.key}
+                            <AppCard glass key={step.key}
                                      style={{opacity: isPending ? 0.45 : 1, cursor: isPending ? "default" : "auto"}}>
                                 <div className="flex items-start gap-4">
                                     <div
@@ -140,8 +157,8 @@ export default async function OnboardingPage() {
                                                 fontWeight: 500
                                             }}>{step.label}</span>
                                             <StatusBadge
-                                                variant={isDone ? "done" : isCurrent ? "current" : "pending"}
-                                                label={isDone ? "Готово" : isCurrent ? "Текущий" : "Ожидает"}
+                                                variant={isDone ? "done" : awaitingReview ? "active" : isCurrent ? "current" : "pending"}
+                                                label={isDone ? "Готово" : awaitingReview ? "На проверке" : isCurrent ? "Текущий" : "Ожидает"}
                                             />
                                         </div>
                                         <p style={{
@@ -150,7 +167,7 @@ export default async function OnboardingPage() {
                                             marginTop: "0.35em"
                                         }}>{step.desc}</p>
 
-                                        {isCurrent && step.href && (step.key !== "TEST" || testUnlocked) && (
+                                        {isCurrent && step.href && !awaitingReview && (step.key !== "TEST" || testUnlocked) && (
                                             <a
                                                 href={step.href}
                                                 style={{
@@ -170,6 +187,17 @@ export default async function OnboardingPage() {
                                             >
                                                 {step.action}
                                             </a>
+                                        )}
+
+                                        {awaitingReview && (
+                                            <p style={{
+                                                color: "rgba(255,255,255,0.5)",
+                                                fontSize: "0.8rem",
+                                                marginTop: "0.5em",
+                                                fontStyle: "italic"
+                                            }}>
+                                                Отправлено на проверку, ждите ответа администратора.
+                                            </p>
                                         )}
 
                                         {isCurrent && (step.key === "TEST" && !testUnlocked) && (
@@ -203,7 +231,7 @@ export default async function OnboardingPage() {
 
                 {allDone && (
                     <div style={{marginTop: "2rem", display: "flex", flexDirection: "column", gap: 12}}>
-                        <AppCard
+                        <AppCard glass
                             style={{background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.2)"}}>
                             <div style={{display: "flex", alignItems: "center", gap: 12}}>
                                 <div style={{

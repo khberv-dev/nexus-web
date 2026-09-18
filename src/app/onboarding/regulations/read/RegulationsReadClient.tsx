@@ -54,7 +54,7 @@ export default function RegulationsReadClient({title, content}: { title: string;
                     </p>
                 </div>
 
-                <AppCard>
+                <AppCard glass>
                     <div
                         ref={wrapRef}
                         onScroll={onScroll}

@@ -201,8 +201,18 @@ export default function ClientOnboardingPage() {
                     </p>
                 </div>
 
-                <AppCard>
-                    <form onSubmit={handleSubmit} noValidate>
+                <AppCard glass>
+                    <form
+                        onSubmit={handleSubmit}
+                        noValidate
+                        onKeyDown={(e) => {
+                            // Enter в любом однострочном поле не должен незаметно отправлять анкету —
+                            // только явный клик по кнопке «Отправить».
+                            if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+                                e.preventDefault()
+                            }
+                        }}
+                    >
                         <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 1rem"}}>
                             {([["firstName", "Имя", "Иван"], ["lastName", "Фамилия", "Иванов"]] as const).map(([key, label, ph]) => (
                                 <Field key={key} label={label} required>

@@ -7,9 +7,31 @@ interface AppCardProps {
     children: React.ReactNode
     className?: string
     style?: React.CSSProperties
+    /**
+     * Стеклянная карточка (полупрозрачный фон + блюр фона позади неё), не завязанная на
+     * `sneat/core.css` — нужна на страницах онбординга, где этот стиль не подключён.
+     */
+    glass?: boolean
 }
 
-export function AppCard({children, className = "", style}: AppCardProps) {
+export function AppCard({children, className = "", style, glass = false}: AppCardProps) {
+    if (glass) {
+        return (
+            <div
+                className={className}
+                style={{
+                    background: "rgba(10,14,32,0.55)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    borderRadius: 16,
+                    padding: "1.5rem",
+                    ...style,
+                }}
+            >
+                {children}
+            </div>
+        )
+    }
     return (
         <div className={`card ${className}`} style={style}>
             <div className="card-body">

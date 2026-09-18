@@ -184,12 +184,12 @@ export default function OnboardingContractPage() {
                 </div>
 
                 {loading ? (
-                    <AppCard>
+                    <AppCard glass>
                         <p style={{color: "rgba(255,255,255,0.5)", margin: 0}}>Загрузка...</p>
                     </AppCard>
                 ) : (
                     <>
-                        <AppCard style={{marginBottom: "1.25rem"}}>
+                        <AppCard glass style={{marginBottom: "1.25rem"}}>
                             <div style={{
                                 color: "rgba(255,255,255,0.35)",
                                 fontSize: "0.7rem",
@@ -224,7 +224,7 @@ export default function OnboardingContractPage() {
                         </AppCard>
 
                         {state.hasFile && (
-                            <AppCard style={{marginBottom: "1.25rem"}}>
+                            <AppCard glass style={{marginBottom: "1.25rem"}}>
                                 <div style={{color: "#f4f4f4", fontWeight: 500, marginBottom: 12}}>Исходный PDF
                                     договора
                                 </div>
@@ -251,7 +251,7 @@ export default function OnboardingContractPage() {
                         )}
 
                         {state.hasFile && (awaitingSignature || signedSubmitted) && (
-                            <AppCard style={{marginBottom: "1.25rem"}}>
+                            <AppCard glass style={{marginBottom: "1.25rem"}}>
                                 {awaitingSignature && (
                                     <>
                                         <label style={{

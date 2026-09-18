@@ -416,8 +416,18 @@ export default function OnboardingFormPage() {
                     </p>
                 </div>
 
-                <AppCard>
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                <AppCard glass>
+                    <form
+                        onSubmit={handleSubmit}
+                        onKeyDown={(e) => {
+                            // Enter в любом однострочном поле не должен незаметно отправлять анкету —
+                            // только явный клик по кнопке «Отправить».
+                            if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+                                e.preventDefault()
+                            }
+                        }}
+                        className="flex flex-col gap-5"
+                    >
                         <div
                             className="onb-grid-2"
                             style={{
