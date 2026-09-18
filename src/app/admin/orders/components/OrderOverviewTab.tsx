@@ -26,9 +26,30 @@ export function OrderOverviewTab({
     onConfirmContract: (orderId: string) => void
 }) {
     const bd = order.briefData
+    const hasContract = order.contracts.length > 0
 
     return (
         <>
+            {!hasContract && (
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        background: "rgba(234,179,8,0.10)",
+                        border: "1px solid rgba(234,179,8,0.30)",
+                        color: "#ca8a04",
+                        borderRadius: 6,
+                        padding: "8px 12px",
+                        fontSize: "0.82rem",
+                        marginBottom: 12,
+                    }}
+                >
+                    <i className="bx bx-error"/>
+                    По этому заказу ещё нет договора со специалистом
+                </div>
+            )}
+
             <AdminBriefSummaryPanel
                 orderId={order.id}
                 briefData={bd}
@@ -38,6 +59,25 @@ export function OrderOverviewTab({
                 showWizardStep={order.status === "DRAFT"}
                 onOpenFullEditor={onOpenBriefEditor}
             />
+
+            {order.status === "BRIEF_REVIEW" && (
+                <div className="sp-brief-actions">
+                    <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
+                        <i className="bx bx-file" style={{color: "var(--adm-active-color)", fontSize: "1.1rem"}}/>
+                        <span style={{fontWeight: 500, fontSize: "0.85rem"}}>Бриф на проверке</span>
+                    </div>
+                    <div style={{display: "flex", gap: 8}}>
+                        <button onClick={() => onBriefApprove(order.id)} disabled={acting !== null}
+                                className="sp-btn sp-btn-success">
+                            {acting === "brief-approve" ? "…" : "Одобрить бриф"}
+                        </button>
+                        <button onClick={() => onBriefReject(order.id)} disabled={acting !== null}
+                                className="sp-btn sp-btn-danger">
+                            Вернуть бриф
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {order.status !== "DRAFT" && (
                 <ContractPanel
@@ -79,25 +119,6 @@ export function OrderOverviewTab({
                                 </div>
                             ) : null
                         })}
-                    </div>
-                </div>
-            )}
-
-            {order.status === "BRIEF_REVIEW" && (
-                <div className="sp-brief-actions">
-                    <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                        <i className="bx bx-file" style={{color: "var(--adm-active-color)", fontSize: "1.1rem"}}/>
-                        <span style={{fontWeight: 500, fontSize: "0.85rem"}}>Бриф на проверке</span>
-                    </div>
-                    <div style={{display: "flex", gap: 8}}>
-                        <button onClick={() => onBriefApprove(order.id)} disabled={acting !== null}
-                                className="sp-btn sp-btn-success">
-                            {acting === "brief-approve" ? "…" : "Одобрить бриф"}
-                        </button>
-                        <button onClick={() => onBriefReject(order.id)} disabled={acting !== null}
-                                className="sp-btn sp-btn-danger">
-                            Вернуть бриф
-                        </button>
                     </div>
                 </div>
             )}
