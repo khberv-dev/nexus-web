@@ -19,6 +19,8 @@ import {
 // но реэкспортируется отсюда: на него уже ссылаются соседние компоненты.
 import type {SpecialistOnboardingAdminAction} from "../onboarding-confirm"
 import {userDisplayName} from "@/lib/user-name"
+import {confirmDialog, promptDialog} from "@/lib/dialog-store"
+import {toast} from "sonner"
 
 export type {SpecialistOnboardingAdminAction}
 
@@ -61,13 +63,17 @@ export function SpecialistDetail({
 
     const handleQuizDraftReset = useCallback(async () => {
         if (!specialistId || !onRefresh) return
-        if (!confirm("Удалить сохраненный прогресс теста? Специалист начнет квиз с первого вопроса.")) return
+        if (!(await confirmDialog({
+            title: "Удалить сохраненный прогресс теста?",
+            description: "Специалист начнет квиз с первого вопроса.",
+            variant: "destructive",
+        }))) return
         setQuizResetting(true)
         try {
             const res = await fetch(`/api/admin/specialists/${specialistId}/quiz-reset`, {method: "POST"})
             const data = await res.json().catch(() => ({}))
             if (!res.ok) {
-                alert(typeof data.error === "string" ? data.error : "Не удалось сбросить прогресс")
+                toast.error(typeof data.error === "string" ? data.error : "Не удалось сбросить прогресс")
                 return
             }
             await onRefresh()
@@ -78,13 +84,13 @@ export function SpecialistDetail({
 
     const handleQuizLevelApprove = useCallback(async () => {
         if (!specialistId || !onRefresh) return
-        if (!confirm("Подтвердить пройденный уровень теста и открыть следующий?")) return
+        if (!(await confirmDialog({title: "Подтвердить пройденный уровень теста и открыть следующий?"}))) return
         setQuizApproving(true)
         try {
             const res = await fetch(`/api/admin/specialists/${specialistId}/quiz-approve`, {method: "POST"})
             const data = await res.json().catch(() => ({}))
             if (!res.ok) {
-                alert(typeof data.error === "string" ? data.error : "Не удалось подтвердить уровень")
+                toast.error(typeof data.error === "string" ? data.error : "Не удалось подтвердить уровень")
                 return
             }
             await onRefresh()
@@ -96,8 +102,15 @@ export function SpecialistDetail({
     /** Закрывает шаг теста без сдачи — специалист сразу переходит к интервью. */
     const handleQuizBypass = useCallback(async () => {
         if (!specialistId || !onRefresh) return
-        if (!confirm("Пропустить квалификационный тест? Шаг будет отмечен пройденным без сдачи, откроется этап интервью.")) return
-        const reason = prompt("Причина пропуска теста (попадёт в историю и в уведомление специалисту):", "")
+        if (!(await confirmDialog({
+            title: "Пропустить квалификационный тест?",
+            description: "Шаг будет отмечен пройденным без сдачи, откроется этап интервью.",
+            variant: "destructive",
+        }))) return
+        const reason = await promptDialog({
+            title: "Причина пропуска теста",
+            description: "Попадёт в историю и в уведомление специалисту.",
+        })
         if (reason === null) return
         setQuizBypassing(true)
         try {
@@ -108,7 +121,7 @@ export function SpecialistDetail({
             })
             const data = await res.json().catch(() => ({}))
             if (!res.ok) {
-                alert(typeof data.error === "string" ? data.error : "Не удалось пропустить тест")
+                toast.error(typeof data.error === "string" ? data.error : "Не удалось пропустить тест")
                 return
             }
             await onRefresh()
@@ -120,8 +133,15 @@ export function SpecialistDetail({
     /** Назначение квалификационного уровня без сдачи теста (уровни кумулятивные). */
     const handleSetLevel = useCallback(async (level: string) => {
         if (!specialistId || !onRefresh) return
-        if (!confirm(`Назначить уровень ${level} без сдачи теста? Все уровни ниже будут отмечены пройденными, выше — сняты.`)) return
-        const reason = prompt("Причина (попадёт в историю и в письмо специалисту):", "")
+        if (!(await confirmDialog({
+            title: `Назначить уровень ${level} без сдачи теста?`,
+            description: "Все уровни ниже будут отмечены пройденными, выше — сняты.",
+            variant: "destructive",
+        }))) return
+        const reason = await promptDialog({
+            title: "Причина",
+            description: "Попадёт в историю и в письмо специалисту.",
+        })
         if (reason === null) return
         setLevelSetting(true)
         try {
@@ -132,7 +152,7 @@ export function SpecialistDetail({
             })
             const data = await res.json().catch(() => ({}))
             if (!res.ok) {
-                alert(typeof data.error === "string" ? data.error : "Не удалось назначить уровень")
+                toast.error(typeof data.error === "string" ? data.error : "Не удалось назначить уровень")
                 return
             }
             await onRefresh()

@@ -228,9 +228,9 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
             const res = await fetch(`/api/admin/users/${userId}/revoke-session`, {method: "POST"})
             if (!res.ok) {
                 const err = await res.json().catch(() => ({error: "Ошибка при отзыве сессий"}))
-                alert(typeof err.error === "string" ? err.error : "Ошибка при отзыве сессий")
+                toast.error(typeof err.error === "string" ? err.error : "Ошибка при отзыве сессий")
             } else {
-                alert("Сессии отозваны. Специалист будет перенаправлен на вход при следующем обращении.")
+                toast.success("Сессии отозваны. Специалист будет перенаправлен на вход при следующем обращении.")
             }
         } finally {
             setActing(null)

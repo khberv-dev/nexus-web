@@ -1,6 +1,8 @@
 "use client"
 
 import Link from "next/link"
+import {toast} from "sonner"
+import {confirmDialog} from "@/lib/dialog-store"
 import {StatusBadge} from "@/components/app/AppCard"
 import {AuditTimeline} from "@/components/admin/AuditTimeline"
 import {AdminClientProfileAccordion} from "@/components/admin/AdminClientProfileAccordion"
@@ -95,8 +97,12 @@ export function ClientDetailRoute({id}: { id: string }) {
                     <div style={{display: "flex", alignItems: "center"}}>
                         <button
                             type="button"
-                            onClick={() => {
-                                if (!confirm(client.archivedAt ? "Восстановить клиента из архива?" : "Перенести клиента в архив?")) return
+                            onClick={async () => {
+                                const ok = await confirmDialog({
+                                    title: client.archivedAt ? "Восстановить клиента из архива?" : "Перенести клиента в архив?",
+                                    variant: client.archivedAt ? "default" : "destructive",
+                                })
+                                if (!ok) return
                                 void toggleArchive(client.id, !client.archivedAt)
                             }}
                             style={{
@@ -151,15 +157,19 @@ export function ClientDetailRoute({id}: { id: string }) {
                                     <button
                                         type="button"
                                         onClick={async () => {
-                                            if (!confirm("Зафиксировать подписание договора? Черновики и брифы этого заказчика с заполненными данными перейдут в статус «Активен» — можно назначать специалистов.")) return
+                                            const ok = await confirmDialog({
+                                                title: "Зафиксировать подписание договора? Черновики и брифы этого заказчика с заполненными данными перейдут в статус «Активен» — можно назначать специалистов.",
+                                                variant: "destructive",
+                                            })
+                                            if (!ok) return
                                             const res = await fetch(`/api/admin/clients/${client.id}/framework-contract/sign`, {method: "POST"})
                                             const data = await res.json().catch(() => ({}))
                                             if (!res.ok) {
-                                                alert(typeof data.error === "string" ? data.error : "Ошибка")
+                                                toast.error(typeof data.error === "string" ? data.error : "Ошибка")
                                                 return
                                             }
                                             const n = typeof data.promotedCount === "number" ? data.promotedCount : 0
-                                            alert(n > 0 ? `Готово. Переведено заказов в «Активен»: ${n}.` : "Статус договора обновлен.")
+                                            toast.success(n > 0 ? `Готово. Переведено заказов в «Активен»: ${n}.` : "Статус договора обновлен.")
                                             load()
                                         }}
                                         style={{

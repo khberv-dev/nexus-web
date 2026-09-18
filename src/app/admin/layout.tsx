@@ -9,10 +9,13 @@ export default async function AdminLayout({children}: { children: ReactNode }) {
 
     return (
         <>
-            <link rel="stylesheet" href="/sneat/core.css"/>
-            <link rel="stylesheet" href="/sneat/demo.css"/>
             <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css"/>
             <style>{`
+        /* layer(sneat) — вендорный Bootstrap-ресет не должен перебивать Tailwind-утилиты
+           (см. порядок слоёв в globals.css). */
+        @import url("/sneat/core.css") layer(sneat);
+        @import url("/sneat/demo.css") layer(sneat);
+
         body { margin: 0; overflow: hidden; }
 
         :root {

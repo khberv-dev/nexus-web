@@ -4,6 +4,8 @@ import type {CSSProperties} from "react"
 import {useCallback, useEffect, useState} from "react"
 import Link from "next/link"
 import {useRouter} from "next/navigation"
+import {toast} from "sonner"
+import {confirmDialog} from "@/lib/dialog-store"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
 import {SPECIALIST_CABINET_HOME_HREF} from "@/lib/cabinet-shell"
@@ -97,7 +99,11 @@ export default function OnboardingContractPage() {
     }
 
     const decline = async () => {
-        if (!confirm("Отказаться от договора? Менеджер свяжется с вами.")) return
+        const ok = await confirmDialog({
+            title: "Отказаться от договора? Менеджер свяжется с вами.",
+            variant: "destructive",
+        })
+        if (!ok) return
         setBusy(true)
         try {
             const r = await fetch("/api/specialist/framework-contract", {
@@ -107,7 +113,7 @@ export default function OnboardingContractPage() {
             })
             if (!r.ok) {
                 const e = await r.json().catch(() => ({}))
-                alert(typeof e.error === "string" ? e.error : "Ошибка")
+                toast.error(typeof e.error === "string" ? e.error : "Ошибка")
                 return
             }
             await load()

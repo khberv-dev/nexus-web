@@ -1,6 +1,7 @@
 "use client"
 
 import {useState} from "react"
+import {confirmDialog} from "@/lib/dialog-store"
 
 const ROLES = [
     {
@@ -70,7 +71,12 @@ export default function DemoPage() {
             setError("Введите ключ доступа");
             return
         }
-        if (!confirm("Удалить все demo-аккаунты (заказчик + специалист) и их данные? Это необратимо.")) return
+        const ok = await confirmDialog({
+            title: "Удалить все demo-аккаунты (заказчик + специалист) и их данные?",
+            description: "Это необратимо.",
+            variant: "destructive",
+        })
+        if (!ok) return
         setResetting(true);
         setError(null);
         setResetDone(false)

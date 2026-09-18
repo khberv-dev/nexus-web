@@ -6,6 +6,7 @@ import StarterKit from "@tiptap/starter-kit"
 import {Markdown} from "@tiptap/markdown"
 import {TableKit} from "@tiptap/extension-table"
 import styles from "./regulations-rich-editor.module.css"
+import {promptDialog} from "@/lib/dialog-store"
 
 // Вне компонента: новые экземпляры на каждом рендере заставляли бы useEditor вызывать setOptions при каждом нажатии.
 const EXTENSIONS = [
@@ -68,9 +69,9 @@ export function RegulationsRichEditor({initialMarkdown, onReady, onChange}: Prop
 
     const chain = () => editor.chain().focus()
 
-    const editLink = () => {
+    const editLink = async () => {
         const prev = editor.getAttributes("link").href as string | undefined
-        const href = window.prompt("Адрес ссылки (пусто — убрать ссылку)", prev ?? "https://")
+        const href = await promptDialog({title: "Адрес ссылки (пусто — убрать ссылку)", defaultValue: prev ?? "https://"})
         if (href === null) return
         if (!href.trim()) {
             chain().extendMarkRange("link").unsetLink().run()

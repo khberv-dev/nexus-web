@@ -2,6 +2,7 @@
 
 import {useState} from "react"
 import {useRouter} from "next/navigation"
+import {toast} from "sonner"
 import {DashActionLink} from "@/components/dashboard-ui/DashActionLink"
 import {DashEmptyState} from "@/components/dashboard-ui/DashEmptyState"
 import {DashSectionCard} from "@/components/dashboard-ui/DashSectionCard"
@@ -32,7 +33,7 @@ export function SpecialistOrdersSection() {
     const signAct = async (stageId: string) => {
         const res = await fetch(`/api/stages/${stageId}/act/sign`, {method: "POST"})
         if (res.ok) window.location.reload()
-        else alert("Ошибка подписания акта")
+        else toast.error("Ошибка подписания акта")
     }
 
     return (

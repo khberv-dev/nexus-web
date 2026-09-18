@@ -12,6 +12,7 @@ import {ADVANCE_LABEL, ONBOARDING_STEPS_UI} from "./constants"
 import type {RawSpecialist, SpecialistDetailTab} from "../../types"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import type {SpecialistOnboardingAdminAction} from "../SpecialistDetail"
+import {confirmDialog} from "@/lib/dialog-store"
 
 export function SpecialistDetailHeader({
                                            specialist,
@@ -175,8 +176,11 @@ export function SpecialistDetailHeader({
                         )}
                         <button
                             type="button"
-                            onClick={() => {
-                                if (!confirm(isArchived ? "Восстановить специалиста из архива?" : "Перенести специалиста в архив?")) return
+                            onClick={async () => {
+                                if (!(await confirmDialog({
+                                    title: isArchived ? "Восстановить специалиста из архива?" : "Перенести специалиста в архив?",
+                                    variant: "destructive",
+                                }))) return
                                 onToggleArchive(sp.id, !isArchived)
                             }}
                             disabled={acting !== null}
@@ -186,8 +190,12 @@ export function SpecialistDetailHeader({
                         </button>
                         <button
                             type="button"
-                            onClick={() => {
-                                if (!confirm("Отозвать все сессии этого специалиста? Он будет перенаправлен на вход.")) return
+                            onClick={async () => {
+                                if (!(await confirmDialog({
+                                    title: "Отозвать все сессии этого специалиста?",
+                                    description: "Он будет перенаправлен на вход.",
+                                    variant: "destructive",
+                                }))) return
                                 onRevokeSession(sp.id)
                             }}
                             disabled={acting !== null}

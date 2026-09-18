@@ -10,6 +10,7 @@ import {
     AdminTableRow,
     AdminTableWrapper,
 } from "@/components/admin/AdminTable"
+import {promptDialog} from "@/lib/dialog-store"
 
 type ReqChange = {
     id: string
@@ -44,7 +45,7 @@ export function RequisiteChangesCard({userId}: { userId: string }) {
     }, [userId])
 
     const handleAction = async (id: string, action: "approve" | "reject") => {
-        const comment = action === "reject" ? prompt("Причина отклонения:") : undefined
+        const comment = action === "reject" ? await promptDialog({title: "Причина отклонения"}) : undefined
         if (action === "reject" && comment === null) return
         await fetch("/api/admin/requisite-changes", {
             method: "PATCH",

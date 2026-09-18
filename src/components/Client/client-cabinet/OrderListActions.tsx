@@ -2,6 +2,7 @@
 
 import {useState} from "react"
 import {useRouter} from "next/navigation"
+import {toast} from "sonner"
 
 export function HelpButton({
                                orderId,
@@ -109,13 +110,13 @@ export function DeleteButton({
             const res = await fetch(`/api/orders/${orderId}`, {method: "DELETE"})
             if (!res.ok) {
                 const err = await res.json().catch(() => null)
-                alert(err?.error ?? "Не удалось удалить черновик")
+                toast.error(err?.error ?? "Не удалось удалить черновик")
                 return
             }
             onDeleted?.()
             router.refresh()
         } catch {
-            alert("Ошибка сети при удалении черновика")
+            toast.error("Ошибка сети при удалении черновика")
         } finally {
             setDeleting(false)
         }

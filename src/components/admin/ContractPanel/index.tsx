@@ -7,6 +7,7 @@ import type {ContractFileLinkProps, ContractPanelProps} from "./types"
 import {CONTRACT_ACTIONS} from "./types"
 import {formatDate} from "./utils"
 import {ContractFileLink} from "./ContractFileLink"
+import {confirmDialog} from "@/lib/dialog-store"
 
 export function ContractPanel({
                                   contract,
@@ -30,13 +31,17 @@ export function ContractPanel({
     }
 
     const handleSendToClient = async () => {
-        if (confirm("Отправить договор заказчику для подписания?")) {
+        if (await confirmDialog({title: "Отправить договор заказчику для подписания?"})) {
             await onSendToClient()
         }
     }
 
     const handleConfirm = async () => {
-        if (confirm("Подтвердить договор и активировать заказ?")) {
+        const ok = await confirmDialog({
+            title: "Подтвердить договор и активировать заказ?",
+            variant: "destructive",
+        })
+        if (ok) {
             await onConfirm()
         }
     }

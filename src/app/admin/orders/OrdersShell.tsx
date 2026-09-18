@@ -2,6 +2,7 @@
 
 import {type ComponentProps, createContext, type ReactNode, useCallback, useContext, useEffect, useState} from "react"
 import {useParams, useRouter, useSearchParams} from "next/navigation"
+import {toast} from "sonner"
 import {useRegisterAdminRefresh} from "@/components/admin/AdminRefreshContext"
 import {Modal} from "@/components/ui/modal"
 import type {Order, OrderStatus, SpecialistForAssignment} from "./types"
@@ -262,7 +263,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             const file = (e.target as HTMLInputElement).files?.[0]
             if (!file) return
             if (file.size > 10 * 1024 * 1024) {
-                alert("Размер файла не должен превышать 10МБ")
+                toast.error("Размер файла не должен превышать 10МБ")
                 return
             }
             setContractGenerating(orderId)
@@ -276,7 +277,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
                 await load()
             } else {
                 const err = await res.json()
-                alert(err.error || "Ошибка генерации договора")
+                toast.error(err.error || "Ошибка генерации договора")
             }
             setContractGenerating(null)
         }
@@ -289,7 +290,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             await load()
         } else {
             const err = await res.json()
-            alert(err.error || "Ошибка отправки договора")
+            toast.error(err.error || "Ошибка отправки договора")
         }
     }
 
@@ -299,7 +300,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             await load()
         } else {
             const err = await res.json()
-            alert(err.error || "Ошибка подтверждения договора")
+            toast.error(err.error || "Ошибка подтверждения договора")
         }
     }
 
@@ -314,7 +315,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             await load()
         } else {
             const err = await res.json()
-            alert(err.error || "Ошибка одобрения акта")
+            toast.error(err.error || "Ошибка одобрения акта")
         }
     }
 
@@ -328,7 +329,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             await load()
         } else {
             const err = await res.json()
-            alert(err.error || "Ошибка отклонения акта")
+            toast.error(err.error || "Ошибка отклонения акта")
         }
     }
 
@@ -338,7 +339,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
             await load()
         } else {
             const err = await res.json()
-            alert(err.error || "Ошибка подтверждения акта")
+            toast.error(err.error || "Ошибка подтверждения акта")
         }
     }
 

@@ -1,7 +1,9 @@
 "use client"
 
+import {toast} from "sonner"
 import type {Stage} from "../types"
 import {STAGE_LABEL} from "../types"
+import {confirmDialog} from "@/lib/dialog-store"
 
 export function StageExtraPaymentActions({
                                              stage,
@@ -25,10 +27,14 @@ export function StageExtraPaymentActions({
             </button>
             <button
                 onClick={async () => {
-                    if (!confirm("Разблокировать этап без оплаты? Специалист сможет продолжить работу.")) return
+                    const ok = await confirmDialog({
+                        title: "Разблокировать этап без оплаты? Специалист сможет продолжить работу.",
+                        variant: "destructive",
+                    })
+                    if (!ok) return
                     const res = await fetch(`/api/admin/stages/${stage.id}/unlock`, {method: "POST"})
                     if (res.ok) window.location.reload()
-                    else alert("Ошибка разблокировки")
+                    else toast.error("Ошибка разблокировки")
                 }}
                 disabled={acting !== null}
                 className="sp-btn sp-btn-primary sp-btn-sm"

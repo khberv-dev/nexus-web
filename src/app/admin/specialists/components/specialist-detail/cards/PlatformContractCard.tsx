@@ -4,6 +4,8 @@ import {canAdminUploadSpecialistContract} from "@/lib/contract-upload-lock"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {SPEC_CONTRACT_STATUS_LABEL} from "../constants"
 import type {RawSpecialist} from "../../../types"
+import {confirmDialog} from "@/lib/dialog-store"
+import {toast} from "sonner"
 
 const CONTRACT_LOCK_HINT: Record<string, string> = {
     AWAITING_SIGNATURE: "Ожидает подписи специалиста — новую версию можно загрузить после отказа",
@@ -136,11 +138,14 @@ export function PlatformContractCard({
                         <button
                             type="button"
                             onClick={async () => {
-                                if (!confirm("Подтвердить подписание договора? Этап «Договор» будет закрыт.")) return
+                                if (!(await confirmDialog({
+                                    title: "Подтвердить подписание договора?",
+                                    description: "Этап «Договор» будет закрыт.",
+                                }))) return
                                 const res = await fetch(`/api/admin/specialists/${specialist.id}/framework-contract/sign`, {method: "POST"})
                                 const data = await res.json().catch(() => ({}))
                                 if (!res.ok) {
-                                    alert(typeof data.error === "string" ? data.error : "Ошибка")
+                                    toast.error(typeof data.error === "string" ? data.error : "Ошибка")
                                     return
                                 }
                                 await onRefresh?.()

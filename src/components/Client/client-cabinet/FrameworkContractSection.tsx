@@ -1,6 +1,7 @@
 "use client"
 
 import {useEffect, useState} from "react"
+import {confirmDialog} from "@/lib/dialog-store"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {StatusBadge} from "@/components/app/AppCard"
 import {FRAMEWORK_CONTRACT_BADGE} from "./constants"
@@ -92,7 +93,11 @@ export function FrameworkContractSection({
     }
 
     const respond = async (action: "sign" | "decline") => {
-        if (!confirm(action === "sign" ? "Подтвердить подписание договора?" : "Отказаться от договора? Менеджер свяжется с вами.")) return
+        const ok = await confirmDialog({
+            title: action === "sign" ? "Подтвердить подписание договора?" : "Отказаться от договора? Менеджер свяжется с вами.",
+            variant: action === "decline" ? "destructive" : "default",
+        })
+        if (!ok) return
         setBusy(true)
         setError(null)
         try {

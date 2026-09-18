@@ -1,7 +1,9 @@
 "use client"
 
 import {useState} from "react"
+import {toast} from "sonner"
 import {StatusBadge} from "@/components/app/AppCard"
+import {confirmDialog} from "@/lib/dialog-store"
 import type {ActStatus, Stage, StageAct} from "@/app/admin/orders/types"
 import {ACT_STATUS_LABEL, ACT_STATUS_VARIANT} from "@/app/admin/orders/types"
 
@@ -60,7 +62,7 @@ export function StageActAdminCard({
     const variant = ACT_STATUS_VARIANT[act.status as ActStatus] || "pending"
 
     const handleApprove = async () => {
-        if (!confirm("Одобрить акт и отправить заказчику для подписания?")) return
+        if (!(await confirmDialog({title: "Одобрить акт и отправить заказчику для подписания?"}))) return
         setActing(true)
         try {
             await onApproveAct(stage.id, act.id)
@@ -71,7 +73,7 @@ export function StageActAdminCard({
 
     const submitReject = async () => {
         if (!rejectComment.trim()) {
-            alert("Пожалуйста, укажите причину отклонения")
+            toast.error("Пожалуйста, укажите причину отклонения")
             return
         }
         setActing(true)
@@ -84,7 +86,11 @@ export function StageActAdminCard({
     }
 
     const handleConfirm = async () => {
-        if (!confirm("Подтвердить акт? Это активирует следующий этап (если есть).")) return
+        const ok = await confirmDialog({
+            title: "Подтвердить акт? Это активирует следующий этап (если есть).",
+            variant: "destructive",
+        })
+        if (!ok) return
         setActing(true)
         try {
             await onConfirmAct(stage.id, act.id)

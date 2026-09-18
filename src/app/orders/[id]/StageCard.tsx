@@ -1,6 +1,7 @@
 "use client"
 
 import {useEffect, useState} from "react"
+import {toast} from "sonner"
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {OrderStage, STAGE_LABEL, STAGE_STATUS, type StageAct} from "./types"
 import {isStagePaymentsDisabledPublic} from "@/lib/payments/flags"
@@ -84,11 +85,11 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
                 if (paymentUrl) window.location.href = paymentUrl
             } else {
                 const err = await res.json()
-                alert(err.error || "Ошибка инициализации платежа")
+                toast.error(err.error || "Ошибка инициализации платежа")
             }
         } catch (e) {
             console.error(e)
-            alert("Не удалось связаться с сервисом оплаты")
+            toast.error("Не удалось связаться с сервисом оплаты")
         } finally {
             setActing(false)
         }

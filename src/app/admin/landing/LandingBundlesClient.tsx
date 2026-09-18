@@ -1,6 +1,7 @@
 "use client"
 
 import {useCallback, useEffect, useState} from "react"
+import {toast} from "sonner"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {userDisplayName} from "@/lib/user-name"
 
@@ -90,7 +91,7 @@ export default function LandingBundlesClient() {
     const review = async (action: "approve" | "reject") => {
         if (!selected) return
         if (action === "reject" && !rejectReason.trim()) {
-            alert("Укажите причину отказа");
+            toast.error("Укажите причину отказа");
             return
         }
         setActing(true)
@@ -105,7 +106,7 @@ export default function LandingBundlesClient() {
             await load()
         } else {
             const err = await res.json().catch(() => null)
-            alert(err?.error ?? "Ошибка")
+            toast.error(err?.error ?? "Ошибка")
         }
         setActing(false)
     }

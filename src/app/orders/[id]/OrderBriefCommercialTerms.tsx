@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import {useCallback, useMemo, useState} from "react"
+import {toast} from "sonner"
 import {StatusBadge} from "@/components/app/AppCard"
 import {INV_BADGE} from "@/components/Client/client-cabinet/constants"
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
@@ -48,10 +49,10 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                 else if (data.skipped) window.location.reload()
             } else {
                 const err = await res.json().catch(() => ({}))
-                alert(typeof err.error === "string" ? err.error : "Не удалось начать оплату")
+                toast.error(typeof err.error === "string" ? err.error : "Не удалось начать оплату")
             }
         } catch {
-            alert("Не удалось связаться с платёжным сервисом")
+            toast.error("Не удалось связаться с платёжным сервисом")
         } finally {
             setPayingStageId(null)
         }

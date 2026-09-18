@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react"
 import type {AnnotationBody, AnnotoriousImageAnnotator, ImageAnnotation, PopupProps} from "@annotorious/react"
 import {useAnnotator} from "@annotorious/react"
+import {confirmDialog} from "@/lib/dialog-store"
 import {commentPopupRoot} from "./constants"
 import type {MarkupToastVariant} from "./types"
 
@@ -54,14 +55,14 @@ export function CommentPopup(props: CommentPopupProps) {
         else showToast?.("Введите текст комментария и нажмите «Сохранить»", "info")
     }
 
-    const onDeleteArea = () => {
+    const onDeleteArea = async () => {
         if (!anno || !canEdit) return
-        if (
-            !window.confirm(
-                "Удалить эту область и комментарий к ней? Отправить изменения дизайнеру можно кнопкой «Сохранить пометки» под изображением.",
-            )
-        )
-            return
+        const ok = await confirmDialog({
+            title: "Удалить эту область и комментарий к ней?",
+            description: "Отправить изменения дизайнеру можно кнопкой «Сохранить пометки» под изображением.",
+            variant: "destructive",
+        })
+        if (!ok) return
         anno.removeAnnotation(annotation.id)
         anno.cancelSelected()
         showToast?.("Область удалена. Чтобы дизайнер увидел изменения, нажмите «Сохранить пометки» под изображением.", "info")

@@ -20,14 +20,17 @@ export default async function DashboardRootLayout({children}: { children: ReactN
 
     return (
         <>
-            <link rel="stylesheet" href="/sneat/core.css"/>
-            <link rel="stylesheet" href="/sneat/demo.css"/>
             <link rel="stylesheet" href="/sneat/fonts/iconify-icons.css"/>
             {/* Переопределяем Bootstrap font на платформенный (PP Neue Montreal); фактический
                 перебой Public Sans — в globals.css у .layout-wrapper, эти переменные это
                 значение не перебивают, но должны совпадать для компонентов Bootstrap,
                 которые ссылаются на них напрямую. */}
             <style>{`
+        /* layer(sneat) — вендорный Bootstrap-ресет не должен перебивать Tailwind-утилиты
+           (см. порядок слоёв в globals.css). */
+        @import url("/sneat/core.css") layer(sneat);
+        @import url("/sneat/demo.css") layer(sneat);
+
         :root {
           /* Шрифт */
           --bs-font-sans-serif: 'PP Neue Montreal', var(--font-inter), 'Inter', -apple-system, sans-serif;

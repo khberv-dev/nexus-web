@@ -1,6 +1,7 @@
 "use client"
 
 import {useState} from "react"
+import {toast} from "sonner"
 import {StatusBadge} from "@/components/app/AppCard"
 import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import type {PaymentWithRelations, SpecAct, SpecContract} from "./types"
@@ -46,12 +47,12 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                 : `/api/contracts/${c.id}/download`
             const res = await fetch(url)
             if (!res.ok) {
-                alert("Ошибка скачивания");
+                toast.error("Ошибка скачивания");
                 return
             }
             const fileUrl = pick(await res.json())
             if (fileUrl) window.open(fileUrl, "_blank")
-            else alert("Файл недоступен")
+            else toast.error("Файл недоступен")
         } finally {
             setLoading(false)
         }

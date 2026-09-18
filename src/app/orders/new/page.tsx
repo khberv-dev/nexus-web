@@ -11,6 +11,7 @@ import {DashSurfaceCard} from "@/components/dashboard-ui/DashSurfaceCard"
 import {DashTopHeader} from "@/components/dashboard-ui/DashTopHeader"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {confirmDialog} from "@/lib/dialog-store"
 import {buildClientCabinetNavItems} from "@/components/Client/client-cabinet/constants"
 import {CLIENT_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import {Button} from "@/components/ui/button"
@@ -426,8 +427,9 @@ function StepFiles({
                                     size="sm"
                                     disabled={uploading}
                                     style={dangerBtnStyle}
-                                    onClick={() => {
-                                        if (!confirm("Удалить файл из брифа?")) return
+                                    onClick={async () => {
+                                        const ok = await confirmDialog({title: "Удалить файл из брифа?", variant: "destructive"})
+                                        if (!ok) return
                                         onDeleteFile(f.id)
                                     }}
                                 >
@@ -1237,7 +1239,8 @@ export default function NewOrderPage() {
                                             disabled={!orderId || helpRequested}
                                             onClick={async () => {
                                                 if (!orderId) return
-                                                if (!confirm("Отправить запрос менеджеру? Он свяжется с вами и поможет заполнить бриф.")) return
+                                                const ok = await confirmDialog({title: "Отправить запрос менеджеру? Он свяжется с вами и поможет заполнить бриф."})
+                                                if (!ok) return
                                                 setSaving(true)
                                                 try {
                                                     await fetch(`/api/orders/${orderId}/brief`, {

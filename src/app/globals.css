@@ -1,3 +1,11 @@
+/* Явный порядок cascade layers: без него неслоистые правила (наш вендорный
+   /sneat/core.css, подключаемый через @import ... layer(sneat) в admin/(dashboard)
+   layout) забивали бы Tailwind-утилиты на пересекающихся элементах (например,
+   h1-h6 у DialogTitle) — по спецификации неслоистый CSS всегда выигрывает у
+   слоистого, независимо от специфичности. Слой sneat объявлен здесь первым —
+   значит, он ниже theme/utilities и больше не может их перебить. */
+@layer sneat, theme, utilities;
+
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 @import "tw-animate-css";
@@ -81,6 +89,27 @@
     --card-foreground: #ffffff;
     --primary: #00c6fb;
     --primary-foreground: #ffffff;
+}
+
+/*
+ * DialogHost (src/components/ui/confirm-dialog.tsx) is the one place in the app that renders a
+ * fully shadcn-token-driven surface today, and it can appear over both the admin section's light
+ * theme and the rest of the app's permanently-dark theme — so unlike the app default above, it
+ * needs to actually follow the OS preference (same as the admin --adm-* tokens already do via
+ * this same media query) rather than always rendering dark. Scoped to .dialog-surface so it
+ * doesn't touch --background/--popover for the rest of the app, which assumes the dark defaults.
+ */
+@media (prefers-color-scheme: light) {
+    .dialog-surface {
+        --background: #ffffff;
+        --foreground: #0f172a;
+        --popover: #ffffff;
+        --popover-foreground: #0f172a;
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
+        --border: rgba(15, 23, 42, 0.12);
+        --input: rgba(15, 23, 42, 0.12);
+    }
 }
 
 @layer base {

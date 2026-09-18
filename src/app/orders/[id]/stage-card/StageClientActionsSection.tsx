@@ -1,6 +1,7 @@
 "use client"
 
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
+import {confirmDialog} from "@/lib/dialog-store"
 import type {OrderStage} from "../types"
 
 export function StageClientActionsSection({
@@ -52,9 +53,14 @@ export function StageClientActionsSection({
                         {acting ? "…" : "✓ Принять этап"}
                     </button>
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             if (stage.clientRound >= MAX_FREE_CLIENT_REVISIONS - 1) {
-                                if (!confirm("Это последний бесплатный раунд правок. После него потребуется доплата. Продолжить?")) return
+                                const ok = await confirmDialog({
+                                    title: "Это последний бесплатный раунд правок",
+                                    description: "После него потребуется доплата. Продолжить?",
+                                    variant: "warning",
+                                })
+                                if (!ok) return
                             }
                             onOpenRevisionChat?.()
                             setShowRevision(true)
