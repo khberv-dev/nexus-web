@@ -147,8 +147,8 @@
     display: none;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
     border: 1px solid var(--dash-border);
     border-radius: 10px;
@@ -194,7 +194,8 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 12px;
+    height: 36px;
+    padding: 0 12px;
     border-radius: 10px;
     font-size: 12px;
     font-weight: 600;
@@ -409,7 +410,8 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 7px 12px;
+    height: 36px;
+    padding: 0 12px;
     border-radius: var(--dash-radius-md);
     font-size: 12px;
     font-weight: 600;
@@ -441,7 +443,7 @@
 
 /** Заметная кнопка действия (напр. «Чат по этапу») — акцент, тень, объём */
 .dash-header__btn--accent {
-    padding: 9px 16px;
+    padding: 0 16px;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.02em;

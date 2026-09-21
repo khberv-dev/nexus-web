@@ -170,11 +170,11 @@ function AdminLayoutShell({children, noPadding}: AdminLayoutProps) {
         }
         .adm-tabs {
           display: flex; height: 100%;
-          align-items: stretch; gap: 0;
+          align-items: center; gap: 0;
         }
         .adm-tab {
           display: inline-flex; align-items: center;
-          padding: 0 16px; height: 100%;
+          padding: 0 16px; height: 36px;
           text-decoration: none; color: var(--adm-muted);
           border-bottom: 2px solid transparent;
           font-size: 0.85rem; font-weight: 500;
