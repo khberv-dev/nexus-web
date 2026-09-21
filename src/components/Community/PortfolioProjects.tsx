@@ -1,7 +1,9 @@
 "use client"
 
 import {useEffect, useMemo, useState} from "react"
+import {toast} from "sonner"
 import {ActionButton} from "@/components/app/AppCard"
+import {promptDialog} from "@/lib/dialog-store"
 import {CreateProjectDialog} from "./CreateProjectDialog"
 import {PortfolioCardBrowseModal} from "./PortfolioCardBrowseModal"
 import {type CardFile, type PortfolioCard, PortfolioCardEditorModal} from "./PortfolioCardEditorModal"
@@ -118,6 +120,28 @@ export default function PortfolioProjects() {
             setCreateProjectOpen(false)
         } catch (error) {
             setCreateError((error as Error).message)
+        }
+    }
+
+    const renameProject = async (project: Project) => {
+        const name = await promptDialog({
+            title: "Переименовать проект",
+            defaultValue: project.name,
+            placeholder: "Название проекта",
+            confirmLabel: "Сохранить",
+        })
+        const trimmed = name?.trim()
+        if (!trimmed || trimmed === project.name) return
+        try {
+            const updated = await fetchJson<Project>(`/api/portfolio/projects/${project.id}`, {
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({name: trimmed}),
+            })
+            setProjects((prev) => prev.map((p) => (p.id === project.id ? {...p, name: updated.name} : p)))
+            setSelectedProject((prev) => (prev?.id === project.id ? {...prev, name: updated.name} : prev))
+        } catch (error) {
+            toast.error((error as Error).message)
         }
     }
 
@@ -320,7 +344,7 @@ export default function PortfolioProjects() {
               }
               .pf-port-grid__foot {
                 position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 8px 8px;
-                display: flex; justify-content: flex-end; align-items: center;
+                display: flex; justify-content: flex-end; align-items: center; gap: 6px;
                 pointer-events: none;
               }
               .pf-port-grid__foot > button { pointer-events: auto; }
@@ -393,6 +417,17 @@ export default function PortfolioProjects() {
                               <span className="badge bg-label-secondary" style={{fontSize: "0.65rem", fontWeight: 600}}>
                                 {worksLabel}
                               </span>
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-sm btn-light"
+                                                                aria-label="Переименовать проект"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    void renameProject(project)
+                                                                }}
+                                                            >
+                                                                <i className="bx bx-pencil" aria-hidden/>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 )

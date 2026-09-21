@@ -168,8 +168,9 @@ function CustomCountrySelect({value, onChange, options}: {
                         style={{
                             width: "100%",
                             padding: "8px 10px",
+                            border: "none",
                             borderRadius: 10,
-                            border: "1px solid rgba(255,255,255,0.12)",
+                            background: "rgba(255,255,255,0.06)",
                             color: "#f4f4f4",
                             fontSize: "0.85rem",
                             outline: "none",
@@ -225,10 +226,11 @@ function CustomCountrySelect({value, onChange, options}: {
                     minHeight: 48,
                     padding: "0 12px",
                     boxSizing: "border-box",
-                    border: "1px solid rgba(255,255,255,0.14)",
+                    border: "none",
                     borderRadius: 12,
                     cursor: "pointer",
                     color: "#f4f4f4",
+                    background: "transparent",
                 }}
             >
                 {flag && (

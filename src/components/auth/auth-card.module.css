@@ -12,7 +12,7 @@
     /* Родитель (.auth-form-shell) двигает карточку через GSAP transform; свой compositing-слой
        не даёт браузеру откладывать пересчёт backdrop-filter до конца анимации предка. */
     transform: translateZ(0);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: none;
     border-radius: 18px;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
     font-family: "PP Neue Montreal", "Inter", Arial, sans-serif;
@@ -147,14 +147,14 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0.75em 1em;
+    border: none;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(255, 255, 255, 0.06);
     color: #f4f4f4;
     font-family: inherit;
     font-size: 0.9rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: background 0.2s;
 }
 
 .input::placeholder {
@@ -162,7 +162,7 @@
 }
 
 .input:focus {
-    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .consent {
@@ -205,6 +205,7 @@
 .secondary {
     width: 100%;
     min-height: 48px;
+    border: none;
     border-radius: 12px;
     color: #f4f4f4;
     font-family: inherit;
@@ -214,13 +215,11 @@
 
 .primary {
     margin-top: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
     background: rgba(255, 255, 255, 0.12);
     font-weight: 600;
 }
 
 .secondary {
-    border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(255, 255, 255, 0.05);
     font-weight: 500;
 }

@@ -188,7 +188,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     min-height: 48px;
     height: auto;
     background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border: none !important;
     border-radius: 12px;
     color: #f4f4f4 !important;
     -webkit-text-fill-color: #f4f4f4;
@@ -209,7 +209,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .onb-phone input.PhoneInputInput:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
     box-shadow: 0 0 0 1000px rgba(28, 28, 32, 0.95) inset !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border: none !important;
 }
 
 /* ── Адаптив форм ────────────────────────────────────────────────────────
