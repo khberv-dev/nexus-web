@@ -83,6 +83,22 @@ Resources and sections live in the path; only list filters go in the query. Neve
 - Old URLs (`?highlight=`, `?tab=`, `/work/community`, `/work/:id`) still redirect, because notification links already stored in the DB use them — keep those redirect stubs.
 - Hint tours switch sections by navigating: a step's `before()` returns `true` when it started a navigation, and `HintTour` then waits for the target to appear.
 
+### Frontend styling — three systems, one shared gotcha
+
+UI styling is split across three independent systems that don't share components:
+
+- **shadcn/Tailwind** (`src/components/ui/*` — `Button`, `Dialog`, `Card`, `Input`, etc.) — the only layer with real design tokens (CSS variables in `src/app/globals.css`, `:root`/`.dark`).
+- **Sneat** (vendored Bootstrap-based admin template, `public/sneat/core.css`) — consumed via `AppCard` (`@/components/app/AppCard`) and raw `.card`/`.btn`/`.sp-*` classes across admin and the specialist/client cabinet.
+- **A hand-rolled `--dash-*` token system** (`src/components/dashboard-ui/styles/*.css`) for the specialist/client cabinet's own components (`DashTopHeader`, `DashOrderCard`, etc.).
+
+`sneat/core.css` is loaded only by `src/app/admin/layout.tsx` and `src/app/(dashboard)/layout.tsx` — **not** the root layout — so it's absent on `/onboarding`, `/orders/onboarding`, and the public landing page (`src/app/page.tsx`, its own separate "Osmo" look with hardcoded `#201d1d`/`#f4f4f4`). Outside those two layouts, `AppCard` needs the `glass` prop (`<AppCard glass>`) — a self-contained inline-styled card — since the plain `.card` class has no CSS to render there at all.
+
+Both layouts import Sneat via `@import url("/sneat/core.css") layer(sneat)`, never a plain `<link>`: `globals.css` opens with `@layer sneat, theme, utilities;` to pin Sneat below Tailwind's own layers. This matters because CSS gives *any* unlayered rule priority over *any* layered one regardless of specificity — a plain `<link>` for Sneat would silently clobber Tailwind utility classes on elements it also targets (e.g. Bootstrap's raw `h1`-`h6` font-size reset overriding a shadcn `DialogTitle`). Keep new vendor CSS imports inside a named layer for the same reason.
+
+`next-themes` is a dependency and `useTheme()` is called (`src/components/ui/sonner.tsx`), but no `<ThemeProvider>` is ever mounted — the app is dark-first by default, and the only real light/dark switching is the admin's own `--adm-*` tokens (`src/components/admin/AdminLayout.tsx`) via `@media (prefers-color-scheme: dark)`.
+
+Replace `window.confirm()` / `alert()` / `prompt()` with `confirmDialog()` / `promptDialog()` (`src/lib/dialog-store.ts`) — rendered by the single `<DialogHost/>` mounted in `src/app/providers.tsx` — and one-shot notices with `sonner`'s `toast()`.
+
 ### Stage state machine — `src/lib/stage-machine.ts`
 
 The core domain model. An `Order` moves `DRAFT → BRIEFING → BRIEF_REVIEW → ACTIVE → DONE` (or `CANCELLED`); an `ACTIVE` order has sequential `ProjectStage`s (`CONCEPT` → `PLANNING` → `VISUALIZATION` → `DOCUMENTATION` → `SPECIFICATION`, order in `STAGE_ORDER`). **All** `ProjectStage.status` changes must go through `transition(stageId, action, actorRole, ...)` — never write `status` directly via Prisma elsewhere.
