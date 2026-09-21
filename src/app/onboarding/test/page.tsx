@@ -82,6 +82,7 @@ export default function OnboardingTestPage() {
     const [cooldownLeft, setCooldownLeft] = useState<number>(0)
     const [lastAttemptTimestamp, setLastAttemptTimestamp] = useState<number | null>(null)
     const revealInFlightRef = useRef(false)
+    const advanceInFlightRef = useRef(false)
     const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
     const stopQuestionTimer = useCallback(() => {
@@ -192,7 +193,7 @@ export default function OnboardingTestPage() {
             opts?.freshTimer || !hasResumeDeadline || !hasQuestionInResume
                 ? QUESTION_TIME_LIMIT_SEC
                 : Math.max(0, Math.floor((resumeDeadline - Date.now()) / 1000))
-        setTimeLeft(resumeTimeLeft > 0 ? resumeTimeLeft : QUESTION_TIME_LIMIT_SEC)
+        setTimeLeft(resumeTimeLeft)
         setPhase("quiz")
     }, [])
 
@@ -309,7 +310,8 @@ export default function OnboardingTestPage() {
     }, [cooldownLeft])
 
     const goNext = useCallback(() => {
-        if (!revealed || qIndex >= total - 1) return
+        if (!revealed || qIndex >= total - 1 || advanceInFlightRef.current) return
+        advanceInFlightRef.current = true
         stopQuestionTimer()
         setQIndex((i) => i + 1)
         setTimeLeft(QUESTION_TIME_LIMIT_SEC)
@@ -317,8 +319,13 @@ export default function OnboardingTestPage() {
         setRevealFb(null)
     }, [revealed, qIndex, total, stopQuestionTimer])
 
+    useEffect(() => {
+        advanceInFlightRef.current = false
+    }, [qIndex])
+
     const finishQuiz = useCallback(async () => {
-        if (!revealed || qIndex < total - 1) return
+        if (!revealed || qIndex < total - 1 || advanceInFlightRef.current) return
+        advanceInFlightRef.current = true
         setSubmitting(true)
         setServerError(null)
         const bodyAnswers: Record<string, number> = {}
@@ -357,6 +364,7 @@ export default function OnboardingTestPage() {
             return
         }
         if (!res.ok) {
+            advanceInFlightRef.current = false
             setServerError(typeof data.error === "string" ? data.error : "Ошибка отправки")
             return
         }
