@@ -14,6 +14,7 @@
     "db:reset": "prisma migrate reset --force",
     "db:reset:demo": "DEMO_SEED=1 prisma migrate reset --force",
     "db:seed": "DEMO_SEED=1 tsx -r dotenv/config prisma/seed.ts",
+    "db:seed:dummy": "tsx -r dotenv/config dummy-seed/seed.ts",
     "db:generate": "prisma generate"
   },
   "dependencies": {

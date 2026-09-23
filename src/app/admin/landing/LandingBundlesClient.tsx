@@ -3,6 +3,7 @@
 import {useCallback, useEffect, useState} from "react"
 import {toast} from "sonner"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
+import {DesignerProfileModal, type DesignerSlide} from "@/components/landing/designer-profile-modal"
 import {userDisplayName} from "@/lib/user-name"
 
 interface BundleItem {
@@ -49,6 +50,8 @@ export default function LandingBundlesClient() {
     const [previews, setPreviews] = useState<Record<string, string>>({})
     const [rejectReason, setRejectReason] = useState("")
     const [acting, setActing] = useState(false)
+    const [previewDesigner, setPreviewDesigner] = useState<DesignerSlide | null>(null)
+    const [previewLoading, setPreviewLoading] = useState(false)
 
     const load = useCallback(async () => {
         setLoading(true)
@@ -109,6 +112,22 @@ export default function LandingBundlesClient() {
             toast.error(err?.error ?? "Ошибка")
         }
         setActing(false)
+    }
+
+    const openPreview = async () => {
+        if (!selected) return
+        setPreviewLoading(true)
+        try {
+            const res = await fetch(`/api/admin/landing-bundles/${selected}/preview`)
+            if (!res.ok) {
+                const err = await res.json().catch(() => null)
+                toast.error(err?.error ?? "Не удалось собрать предпросмотр")
+                return
+            }
+            setPreviewDesigner(await res.json())
+        } finally {
+            setPreviewLoading(false)
+        }
     }
 
     const filters: { value: Filter; label: string }[] = [
@@ -204,12 +223,22 @@ export default function LandingBundlesClient() {
                     {selectedBundle && (
                         <div className="col-md-7">
                             <div className="card">
-                                <div className="card-header d-flex align-items-center justify-content-between">
+                                <div className="card-header d-flex align-items-center justify-content-between gap-2">
                   <span className="fw-semibold" style={{fontSize: "0.88rem"}}>
                     {userDisplayName(selectedBundle.user)}
                   </span>
-                                    <span
-                                        className={`badge ${STATUS_CLASS[selectedBundle.status]}`}>{STATUS_LABEL[selectedBundle.status]}</span>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm btn-outline-primary"
+                                            onClick={() => void openPreview()}
+                                            disabled={previewLoading}
+                                        >
+                                            <i className="bx bx-show"/> {previewLoading ? "Собираем…" : "Предпросмотр карточки"}
+                                        </button>
+                                        <span
+                                            className={`badge ${STATUS_CLASS[selectedBundle.status]}`}>{STATUS_LABEL[selectedBundle.status]}</span>
+                                    </div>
                                 </div>
                                 <div className="card-body">
                                     {/* Reject reason */}
@@ -395,6 +424,8 @@ export default function LandingBundlesClient() {
                     )}
                 </div>
             )}
+
+            <DesignerProfileModal designer={previewDesigner} onClose={() => setPreviewDesigner(null)}/>
         </div>
     )
 }
