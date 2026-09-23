@@ -1,5 +1,6 @@
 "use client"
 
+import {Fragment, useState} from "react"
 import {Modal} from "@/components/ui/modal"
 import {
     AdminTable,
@@ -10,6 +11,7 @@ import {
     AdminTableRow,
     AdminTableWrapper,
 } from "@/components/admin/AdminTable"
+import {AdminAccordion} from "@/components/admin/AdminAccordion"
 import type {TestModalData} from "../types"
 import {getLevelBank, QUIZ_LEVEL_ORDER, toOriginalOptionIndex} from "@/lib/onboarding/levels/banks"
 import type {QuizLevelAttempt, QuizLevelCode} from "@/lib/onboarding/levels/types"
@@ -50,6 +52,15 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
     testModal: TestModalData | null;
     onClose: () => void
 }>) {
+    const [expandedLevels, setExpandedLevels] = useState<Set<QuizLevelCode>>(new Set())
+    const toggleLevel = (code: QuizLevelCode) => {
+        setExpandedLevels((prev) => {
+            const next = new Set(prev)
+            if (next.has(code)) next.delete(code)
+            else next.add(code)
+            return next
+        })
+    }
     const state = parseState(testModal?.comment)
     const attempts = state?.attempts ?? []
     const passedLevels = new Set(state?.passedLevels ?? [])
@@ -69,8 +80,8 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
 
     return (
         <Modal open={!!testModal} onClose={onClose} maxWidth={620}>
-            <div className="sp-modal-body">
-                <h5 className="sp-modal-title">Квалификационный тест (по уровням)</h5>
+            <div className="sp-modal-body" style={{padding: "16px 18px"}}>
+                <h5 className="sp-modal-title" style={{color: "#fff"}}>Квалификационный тест (по уровням)</h5>
 
                 {attempts.length === 0 ? (
                     <div className="sp-modal-empty">
@@ -81,136 +92,160 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
                     </div>
                 ) : (
                     <>
-                        {/* Summary per level */}
-                        <div style={{display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 16}}>
-                            {QUIZ_LEVEL_ORDER.map(code => {
-                                const la = attempts.filter(a => a.level === code)
-                                const passed = passedLevels.has(code)
-                                const best = la.length ? Math.max(...la.map(a => a.percent)) : null
-                                const badgeClass = passed ? "sp-badge" : la.length ? "sp-badge sp-badge--danger" : "sp-badge"
-                                return (
-                                    <div key={code} className="sp-card" style={{textAlign: "center", padding: 8}}>
-                                        <div className="sp-label">{code}</div>
-                                        <div style={{
-                                            fontSize: "0.78rem",
-                                            color: "var(--adm-muted)"
-                                        }}>{LEVEL_LABELS[code]}</div>
-                                        {la.length > 0 ? (
-                                            <>
-                                                <span className={badgeClass}
-                                                      style={{marginTop: 4}}>{passed ? "✓ Сдан" : "✗ Не сдан"}</span>
-                                                <div style={{
-                                                    fontSize: "0.7rem",
-                                                    color: "var(--adm-muted)",
-                                                    marginTop: 2
-                                                }}>
-                                                    {la.length}/3 · {best}%
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div style={{color: "var(--adm-muted)", fontSize: "0.8rem"}}>—</div>
-                                        )}
-                                    </div>
-                                )
-                            })}
-                        </div>
-
-                        {/* Attempts table */}
+                        {/* Уровни — раскрываются в попытки того же уровня, если они есть */}
                         <AdminTableWrapper>
                             <AdminTable>
                                 <AdminTableHeader>
                                     <AdminTableRow>
-                                        <AdminTableHead>#</AdminTableHead>
                                         <AdminTableHead>Уровень</AdminTableHead>
-                                        <AdminTableHead>Результат</AdminTableHead>
-                                        <AdminTableHead>Балл</AdminTableHead>
-                                        <AdminTableHead>Дата</AdminTableHead>
+                                        <AdminTableHead>Статус</AdminTableHead>
+                                        <AdminTableHead>Попыток</AdminTableHead>
+                                        <AdminTableHead>Лучший балл</AdminTableHead>
                                     </AdminTableRow>
                                 </AdminTableHeader>
                                 <AdminTableBody>
-                                    {attempts.map((a, i) => (
-                                        <AdminTableRow key={i}>
-                                            <AdminTableCell>{i + 1}</AdminTableCell>
-                                            <AdminTableCell>{a.level} — {LEVEL_LABELS[a.level as QuizLevelCode] ?? a.level}</AdminTableCell>
-                                            <AdminTableCell>
-                        <span className={a.passed ? "sp-badge" : "sp-badge sp-badge--danger"}>
-                          {a.passed ? "Сдано" : "Не сдано"}
-                        </span>
-                                            </AdminTableCell>
-                                            <AdminTableCell>{a.correctCount}/{a.total} ({a.percent}%)</AdminTableCell>
-                                            <AdminTableCell muted>
-                                                {a.finishedAt ? new Date(a.finishedAt).toLocaleString("ru-RU") : "—"}
-                                            </AdminTableCell>
-                                        </AdminTableRow>
-                                    ))}
+                                    {QUIZ_LEVEL_ORDER.map(code => {
+                                        const la = attempts.filter(a => a.level === code)
+                                        const passed = passedLevels.has(code)
+                                        const best = la.length ? Math.max(...la.map(a => a.percent)) : null
+                                        const expandable = la.length > 0
+                                        const expanded = expandable && expandedLevels.has(code)
+                                        return (
+                                            <Fragment key={code}>
+                                                <AdminTableRow
+                                                    onClick={expandable ? () => toggleLevel(code) : undefined}
+                                                    style={{cursor: expandable ? "pointer" : "default"}}
+                                                >
+                                                    <AdminTableCell>
+                                                        <span style={{display: "flex", alignItems: "center", gap: 6}}>
+                                                            {expandable && (
+                                                                <Icon
+                                                                    name={expanded ? "chevron-up" : "chevron-down"}
+                                                                    style={{fontSize: "0.8rem", color: "var(--adm-muted, #94a3b8)", flexShrink: 0}}
+                                                                />
+                                                            )}
+                                                            {code} — {LEVEL_LABELS[code]}
+                                                        </span>
+                                                    </AdminTableCell>
+                                                    <AdminTableCell>
+                                                        {la.length > 0 ? (
+                                                            <span className={passed ? "sp-badge" : "sp-badge sp-badge--danger"}>
+                                                                {passed ? "Сдан" : "Не сдан"}
+                                                            </span>
+                                                        ) : (
+                                                            <span style={{color: "var(--adm-muted)"}}>—</span>
+                                                        )}
+                                                    </AdminTableCell>
+                                                    <AdminTableCell muted>{la.length}/3</AdminTableCell>
+                                                    <AdminTableCell muted>{best !== null ? `${best}%` : "—"}</AdminTableCell>
+                                                </AdminTableRow>
+                                                {expanded && (
+                                                    <AdminTableRow>
+                                                        <AdminTableCell colSpan={4} style={{padding: 0}}>
+                                                            <div style={{padding: "2px 8px 10px 34px", background: "rgba(0,0,0,0.15)"}}>
+                                                                <AdminTable>
+                                                                    <AdminTableHeader>
+                                                                        <AdminTableRow>
+                                                                            <AdminTableHead>#</AdminTableHead>
+                                                                            <AdminTableHead>Результат</AdminTableHead>
+                                                                            <AdminTableHead>Балл</AdminTableHead>
+                                                                            <AdminTableHead>Дата</AdminTableHead>
+                                                                        </AdminTableRow>
+                                                                    </AdminTableHeader>
+                                                                    <AdminTableBody>
+                                                                        {la.map((a, i) => (
+                                                                            <AdminTableRow key={i}>
+                                                                                <AdminTableCell>{i + 1}</AdminTableCell>
+                                                                                <AdminTableCell>
+                                                                                    <span className={a.passed ? "sp-badge" : "sp-badge sp-badge--danger"}>
+                                                                                        {a.passed ? "Сдано" : "Не сдано"}
+                                                                                    </span>
+                                                                                </AdminTableCell>
+                                                                                <AdminTableCell>{a.correctCount}/{a.total} ({a.percent}%)</AdminTableCell>
+                                                                                <AdminTableCell muted>
+                                                                                    {a.finishedAt ? new Date(a.finishedAt).toLocaleString("ru-RU") : "—"}
+                                                                                </AdminTableCell>
+                                                                            </AdminTableRow>
+                                                                        ))}
+                                                                    </AdminTableBody>
+                                                                </AdminTable>
+                                                            </div>
+                                                        </AdminTableCell>
+                                                    </AdminTableRow>
+                                                )}
+                                            </Fragment>
+                                        )
+                                    })}
                                 </AdminTableBody>
                             </AdminTable>
                         </AdminTableWrapper>
 
                         {detailQuestions.length > 0 && Object.keys(detailAnswers).length > 0 && (
                             <div style={{marginTop: 16}}>
-                                <div className="sp-label" style={{marginBottom: 8}}>
-                                    Ответы по
-                                    вопросам{detailLevel ? ` (${detailLevel} — ${LEVEL_LABELS[detailLevel]})` : ""}
-                                </div>
-                                <div
-                                    style={{
-                                        maxHeight: 280,
-                                        overflowY: "auto",
-                                        border: "1px solid var(--adm-sidebar-border)",
-                                        borderRadius: 8,
-                                        padding: "8px 10px",
-                                        fontSize: "0.78rem",
-                                    }}
+                                <AdminAccordion
+                                    icon="bx-list-check"
+                                    title={`Ответы по вопросам${detailLevel ? ` (${detailLevel} — ${LEVEL_LABELS[detailLevel]})` : ""}`}
+                                    badge={`${Object.keys(detailAnswers).length}/${detailQuestions.length}`}
                                 >
-                                    {detailQuestions.map((q) => {
-                                        // detailAnswers хранит индекс КАК ПОКАЗАН на экране (после
-                                        // перемешивания) — транслируем в исходный индекс банка для
-                                        // корректного сравнения/отображения.
-                                        const saved = detailAnswers[String(q.id)]
-                                        const original =
-                                            typeof saved === "number"
-                                                ? toOriginalOptionIndex(detailOptionOrder?.[String(q.id)], saved)
-                                                : saved
-                                        const ok = original === q.correct
-                                        const timedOut = original === -1
-                                        const picked =
-                                            typeof original === "number" && original >= 0 ? q.options[original] : null
-                                        return (
-                                            <div
-                                                key={q.id}
-                                                style={{
-                                                    padding: "6px 0",
-                                                    borderBottom: "1px solid var(--adm-sidebar-border)",
-                                                    color: "var(--adm-text)",
-                                                }}
-                                            >
-                                                <div style={{fontWeight: 600, marginBottom: 2}}>
-                                                    {q.id}. {q.section}
-                                                    <span
-                                                        style={{
-                                                            marginLeft: 8,
-                                                            color: ok ? "var(--adm-success, #28c76f)" : "var(--adm-danger, #ea5455)",
-                                                        }}
-                                                    >
-                            {saved === undefined ? "—" : timedOut ? "время" : ok ? "верно" : "неверно"}
-                          </span>
+                                    <div
+                                        style={{
+                                            maxHeight: 280,
+                                            overflowY: "auto",
+                                            border: "1px solid var(--adm-sidebar-border)",
+                                            borderRadius: 8,
+                                            padding: "8px 10px",
+                                            fontSize: "0.78rem",
+                                        }}
+                                    >
+                                        {detailQuestions.map((q) => {
+                                            // detailAnswers хранит индекс КАК ПОКАЗАН на экране (после
+                                            // перемешивания) — транслируем в исходный индекс банка для
+                                            // корректного сравнения/отображения.
+                                            const saved = detailAnswers[String(q.id)]
+                                            const original =
+                                                typeof saved === "number"
+                                                    ? toOriginalOptionIndex(detailOptionOrder?.[String(q.id)], saved)
+                                                    : saved
+                                            const ok = original === q.correct
+                                            const timedOut = original === -1
+                                            const picked =
+                                                typeof original === "number" && original >= 0 ? q.options[original] : null
+                                            return (
+                                                <div
+                                                    key={q.id}
+                                                    style={{
+                                                        padding: "6px 0",
+                                                        borderBottom: "1px solid var(--adm-sidebar-border)",
+                                                        color: "var(--adm-text)",
+                                                    }}
+                                                >
+                                                    <div style={{fontWeight: 600, marginBottom: 2}}>
+                                                        {q.id}. {q.section}
+                                                        <span
+                                                            style={{
+                                                                marginLeft: 8,
+                                                                color: ok ? "var(--adm-success, #28c76f)" : "var(--adm-danger, #ea5455)",
+                                                            }}
+                                                        >
+                                                            {saved === undefined ? "—" : timedOut ? "время" : ok ? "верно" : "неверно"}
+                                                        </span>
+                                                    </div>
+                                                    <div style={{color: "var(--adm-muted)", lineHeight: 1.4}}>{q.text}</div>
+                                                    {picked && (
+                                                        <div style={{marginTop: 2}}>
+                                                            Выбрано ({LETTERS[original]}): {picked}
+                                                        </div>
+                                                    )}
+                                                    {!timedOut && original !== undefined && !ok && (
+                                                        <div style={{marginTop: 2, color: "var(--adm-muted)"}}>
+                                                            Верно ({LETTERS[q.correct]}): {q.options[q.correct]}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                <div style={{color: "var(--adm-muted)", lineHeight: 1.4}}>{q.text}</div>
-                                                {picked && (
-                                                    <div style={{marginTop: 2}}>
-                                                        Выбрано ({LETTERS[original]}): {picked}
-                                                    </div>
-                                                )}
-                                                {!timedOut && original !== undefined && !ok && (
-                                                    <div style={{marginTop: 2, color: "var(--adm-muted)"}}>
-                                                        Верно ({LETTERS[q.correct]}): {q.options[q.correct]}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </AdminAccordion>
                             </div>
                         )}
                     </>

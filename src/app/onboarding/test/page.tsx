@@ -4,6 +4,7 @@ import {type CSSProperties, useCallback, useEffect, useMemo, useRef, useState} f
 import {useRouter} from "next/navigation"
 import {OnboardingShell} from "@/components/app/OnboardingShell"
 import {AppCard} from "@/components/app/AppCard"
+import {confirmDialog} from "@/lib/dialog-store"
 import {type DecodedQuizQuestion, decodeQuizQuestionWire, type NexusQuizQuestionWire,} from "@/lib/onboarding/quiz-wire"
 import {logQuizAnswerHint} from "@/lib/dev-quiz-hint"
 import type {QuizLevelCode, QuizLevelMeta} from "@/lib/onboarding/levels/types"
@@ -11,6 +12,8 @@ import type {QuizLevelCode, QuizLevelMeta} from "@/lib/onboarding/levels/types"
 const LETTERS = ["А", "Б", "В", "Г"]
 const QUESTION_TIME_LIMIT_SEC = 30
 const RETRY_COOLDOWN_SEC = 60
+/** Доля неверных ответов от общего числа вопросов, после которой тест прерывается досрочно — дальше уже не сдать. */
+const EARLY_FAIL_WRONG_RATIO = 0.2
 
 const protectQuizSurface: CSSProperties = {
     userSelect: "none",
@@ -81,8 +84,11 @@ export default function OnboardingTestPage() {
     } | null>(null)
     const [cooldownLeft, setCooldownLeft] = useState<number>(0)
     const [lastAttemptTimestamp, setLastAttemptTimestamp] = useState<number | null>(null)
+    /** Неверные ответы, унаследованные из сохранённого прогресса при возобновлении (там нет результата по вопросу, только сводный liveCorrect). */
+    const [baselineWrongCount, setBaselineWrongCount] = useState(0)
     const revealInFlightRef = useRef(false)
     const advanceInFlightRef = useRef(false)
+    const earlyFailTriggeredRef = useRef(false)
     const questionTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
     const stopQuestionTimer = useCallback(() => {
@@ -143,6 +149,7 @@ export default function OnboardingTestPage() {
         setQIndex(0)
         setAnswers({})
         setAnswerResults({})
+        setBaselineWrongCount(0)
         setLiveScore(0)
         setRevealed(false)
         setRevealFb(null)
@@ -151,14 +158,17 @@ export default function OnboardingTestPage() {
         setResultFail(null)
         setResultOk(null)
         setResultExhausted(null)
+        earlyFailTriggeredRef.current = false
     }, [lastAttemptTimestamp])
 
     const applyResume = useCallback((p: QuizPayload, opts?: { freshTimer?: boolean }) => {
         const r = p.resume
+        earlyFailTriggeredRef.current = false
         if (!r) {
             setQIndex(0)
             setAnswers({})
             setAnswerResults({})
+            setBaselineWrongCount(0)
             setLiveScore(0)
             setRevealed(false)
             setRevealFb(null)
@@ -172,9 +182,13 @@ export default function OnboardingTestPage() {
             for (const [k, v] of Object.entries(r.answers)) ans[Number(k)] = v
             setAnswers(ans)
             setLiveScore(r.liveCorrect)
+            // Сохранённый прогресс не хранит верно/неверно по каждому вопросу — только сводный
+            // liveCorrect, поэтому неверные из прошлой сессии переносим как единое число.
+            setBaselineWrongCount(Math.max(0, r.answeredCount - r.liveCorrect))
         } else {
             setAnswers({})
             setAnswerResults({})
+            setBaselineWrongCount(0)
             setLiveScore(0)
         }
         const idxByCurrent = p.questions.findIndex((q) => q.id === r.currentQuestionId)
@@ -260,6 +274,75 @@ export default function OnboardingTestPage() {
         await submitReveal(optionIdx)
     }
 
+    const wrongCount = useMemo(
+        () => baselineWrongCount + Object.values(answerResults).filter((v) => v === false).length,
+        [baselineWrongCount, answerResults],
+    )
+
+    const handleEarlyFail = useCallback(async () => {
+        stopQuestionTimer()
+        await confirmDialog({
+            title: "Тест уже не пройти",
+            description: "Слишком много неверных ответов — минимальный проходной балл больше недостижим. Попробуйте снова.",
+            confirmLabel: "Понятно",
+            cancelLabel: "Понятно",
+            variant: "destructive",
+        })
+        setSubmitting(true)
+        setServerError(null)
+        const bodyAnswers: Record<string, number> = {}
+        for (const q of questions) {
+            bodyAnswers[String(q.id)] = answers[q.id] ?? -1
+        }
+        const res = await fetch("/api/onboarding/step", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({type: "TEST", level: payload?.level ?? selectedLevel, answers: bodyAnswers}),
+        })
+        const data = await res.json().catch(() => ({}))
+        setSubmitting(false)
+        if (res.status === 422 && data) {
+            setLastAttemptTimestamp(Date.now())
+            setCooldownLeft(RETRY_COOLDOWN_SEC)
+            setPhase("result")
+            if (data.exhausted && data.onboardingStatus) {
+                setResultExhausted({
+                    level: (data.level as QuizLevelCode) ?? selectedLevel,
+                    onboardingStatus: data.onboardingStatus,
+                    comment: typeof data.comment === "string" ? data.comment : undefined,
+                })
+            } else {
+                setResultFail({
+                    correctCount: Number(data.correctCount),
+                    total: Number(data.total),
+                    percent: Number(data.percent),
+                    passPercent: Number(data.passPercent),
+                    attemptsLeft: Number(data.attemptsLeft ?? 0),
+                })
+            }
+            return
+        }
+        if (!res.ok) {
+            setServerError(typeof data.error === "string" ? data.error : "Ошибка отправки")
+            return
+        }
+        // На практике недостижимо при 20%+ неверных, но на случай смены порога/бонусов — не оставляем экран пустым.
+        setPhase("result")
+        setResultOk({
+            percent: Number(data.percent),
+            transitionText: typeof data.transitionText === "string" ? data.transitionText : undefined,
+        })
+        setTimeout(() => router.push("/onboarding"), 1800)
+    }, [questions, answers, payload, selectedLevel, router, stopQuestionTimer])
+
+    useEffect(() => {
+        if (phase !== "quiz" || total === 0 || earlyFailTriggeredRef.current) return
+        const threshold = Math.ceil(total * EARLY_FAIL_WRONG_RATIO)
+        if (wrongCount < threshold) return
+        earlyFailTriggeredRef.current = true
+        void handleEarlyFail()
+    }, [wrongCount, phase, total, handleEarlyFail])
+
     // Dev: правильный вариант текущего вопроса — в консоль браузера.
     useEffect(() => {
         if (phase !== "quiz" || !current) return
@@ -274,7 +357,10 @@ export default function OnboardingTestPage() {
     }, [phase, current, qIndex, total, payload])
 
     useEffect(() => {
-        if (phase !== "quiz" || !current || revealed || submitting) return
+        // earlyFailTriggeredRef: досрочный провал уже остановил таймер и показывает диалог —
+        // не даём этому эффекту снова его завести (может сработать сразу при возобновлении,
+        // если унаследованных неверных уже хватает на порог).
+        if (phase !== "quiz" || !current || revealed || submitting || earlyFailTriggeredRef.current) return
         stopQuestionTimer()
         const id = setInterval(() => {
             setTimeLeft((prev) => {
@@ -377,7 +463,9 @@ export default function OnboardingTestPage() {
     }, [revealed, qIndex, total, questions, answers, router, payload, selectedLevel])
 
     useEffect(() => {
-        if (phase !== "quiz" || !revealed || !isCurrentTimedOut || submitting) return
+        // earlyFailTriggeredRef: досрочный провал (20%+ неверных) уже показывает свой диалог и сам
+        // отправляет попытку — обычный переход к следующему вопросу/завершению здесь не нужен.
+        if (phase !== "quiz" || !revealed || !isCurrentTimedOut || submitting || earlyFailTriggeredRef.current) return
         const timeoutId = setTimeout(() => {
             if (qIndex >= total - 1) {
                 void finishQuiz()
