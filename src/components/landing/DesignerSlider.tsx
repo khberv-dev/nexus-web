@@ -1,6 +1,7 @@
 "use client"
 
 import {useCallback, useEffect, useRef, useState} from "react"
+import {Icon} from "@/components/ui/icon"
 import {DesignerProfileModal, type DesignerSlide} from "./DesignerProfileModal"
 
 function sampleBrightness(src: string, cb: (lightBg: boolean) => void) {
@@ -233,8 +234,12 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
                 )}
 
                 {slides.length > 1 && <div className="ds-nav">
-                    <button className="ds-btn ds-btn-prev" onClick={handlePrev}>◁</button>
-                    <button className="ds-btn ds-btn-next" onClick={handleNext}>▷</button>
+                    <button className="ds-btn ds-btn-prev" onClick={handlePrev} aria-label="Предыдущий дизайнер">
+                        <Icon name="left-arrow-alt" size={20}/>
+                    </button>
+                    <button className="ds-btn ds-btn-next" onClick={handleNext} aria-label="Следующий дизайнер">
+                        <Icon name="right-arrow-alt" size={20}/>
+                    </button>
                 </div>}
 
             </div>
@@ -438,6 +443,9 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         .ds-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           width: 52px;
           height: 46px;
           border-radius: 12px;
@@ -448,7 +456,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           backdrop-filter: blur(8px);
           box-shadow: 0 4px 16px rgba(0,0,0,0.2);
           pointer-events: auto;
-          font-size: 17px;
           color: #201d1d;
         }
 
@@ -468,8 +475,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           transform: scale(1.02);
         }
 
-        .ds-btn-next { padding: 0 0 0 3px; }
-        .ds-btn-prev { padding: 0 3px 0 0; }
 
         /* Explicit state-driven layout: one active specialist + up to three previews. */
         .ds-slide .ds-slide-item--active {
@@ -558,6 +563,21 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
 
         .ds-slide .ds-preview-rail .ds-slide-item--preview:hover {
           transform: translateY(-3%);
+        }
+
+        /* Больше одной карточки в очереди — первую в DOM (row-reverse кладёт её крайней у правого края экрана)
+           уводим наполовину за край, подсказка, что список длиннее видимого. CSS-свойство translate отдельное
+           от transform, поэтому не перетирается анимацией ds-preview-in (она анимирует именно transform) и
+           складывается с ней и с hover. */
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:not(:only-child):first-child {
+          translate: 50% 0;
+        }
+
+        /* Средняя карточка (когда их три) — сдвигается следом, но мягче, чтобы не открыть разрыв
+           за ушедшей крайней, и не сдвинуться так же сильно, как она сама. Последняя (ближайшая
+           к активному дизайнеру) остаётся на месте — якорь ряда. */
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2):not(:last-child) {
+          translate: 20% 0;
         }
 
         @keyframes ds-active-in {
