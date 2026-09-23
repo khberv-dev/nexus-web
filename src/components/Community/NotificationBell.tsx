@@ -2,6 +2,7 @@
 
 import {useEffect, useRef, useState} from "react"
 import {useRouter} from "next/navigation"
+import {Icon} from "@/components/ui/icon"
 
 interface NotificationItem {
     id: string;
@@ -100,7 +101,7 @@ export default function NotificationBell({buttonClassName}: {
                 color: "inherit",
                 fontSize: "1.3rem"
             }} aria-label="Уведомления" aria-expanded={open}>
-                <i className="bx bx-bell"/>
+                <Icon name="bell"/>
                 {unread > 0 && (
                     <span style={{
                         position: "absolute",

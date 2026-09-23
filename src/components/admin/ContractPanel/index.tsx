@@ -8,6 +8,8 @@ import {CONTRACT_ACTIONS} from "./types"
 import {formatDate} from "./utils"
 import {ContractFileLink} from "./ContractFileLink"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function ContractPanel({
                                   contract,
@@ -105,7 +107,7 @@ export function ContractPanel({
                         fontSize: "0.85rem",
                     }}
                 >
-                    <i className={`bx ${icon}`}/>
+                    <Icon name={stripBx(icon)}/>
                     <span style={{color: "var(--adm-muted)"}}>{label}</span>
                 </div>
 

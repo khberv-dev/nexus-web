@@ -3,6 +3,7 @@
 import {useState} from "react"
 import type {OrderStage} from "@/app/orders/[id]/types"
 import {ACT_STATUS_LABEL, STAGE_LABEL} from "@/app/orders/[id]/types"
+import {Icon} from "@/components/ui/icon"
 
 interface Props {
     stage: OrderStage
@@ -94,7 +95,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                <i className="bx bx-file-blank" style={{fontSize: "1.1rem", color: "var(--dash-muted)"}}/>
+                <Icon name="file-blank" style={{fontSize: "1.1rem", color: "var(--dash-muted)"}}/>
                 <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--dash-text)"}}>
           Акт · {STAGE_LABEL[stage.type]}
         </span>
@@ -139,7 +140,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                             fontFamily: "inherit",
                         }}
                     >
-                        <i className="bx bx-upload"/>
+                        <Icon name="upload"/>
                         {uploading ? "Загрузка..." : "Загрузить подписанный акт (PDF)"}
                     </label>
                 </div>
@@ -154,7 +155,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                     fontSize: "0.78rem",
                     color: "var(--dash-danger)"
                 }}>
-                    <i className="bx bx-error-circle" style={{marginRight: 4}}/>
+                    <Icon name="error-circle" style={{marginRight: 4}}/>
                     {error}
                 </div>
             )}
@@ -163,7 +164,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
             <div style={{fontSize: "0.78rem", color: "var(--dash-muted)", marginTop: 8}}>
                 {act.specialistActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <i className="bx bx-file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
                         <span>Акт от дизайнера</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -178,7 +179,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                                 gap: 4
                             }}
                         >
-                            <i className="bx bx-download"/>
+                            <Icon name="download"/>
                             Скачать
                         </a>
                         <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
@@ -188,7 +189,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                 )}
                 {act.clientActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <i className="bx bx-file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
                         <span>Акт от заказчика</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -203,7 +204,7 @@ export function ClientActSection({stage, onUploadSigned}: Props) {
                                 gap: 4
                             }}
                         >
-                            <i className="bx bx-download"/>
+                            <Icon name="download"/>
                             Скачать
                         </a>
                         <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>

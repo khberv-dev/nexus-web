@@ -1,6 +1,8 @@
 "use client"
 
 import type {ReactNode} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function DashEmptyState({
                                    iconClass,
@@ -17,7 +19,7 @@ export function DashEmptyState({
 }) {
     return (
         <div className={className ?? "dash-empty"} style={style}>
-            <i className={`bx ${iconClass}`}/>
+            <Icon name={stripBx(iconClass)}/>
             <p style={{margin: 0, fontSize: 13}}>{message}</p>
             {children}
         </div>

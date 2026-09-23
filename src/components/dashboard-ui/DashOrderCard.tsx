@@ -1,5 +1,7 @@
 import type {ReactNode} from "react"
 import {DashProjectCard} from "./DashProjectCard"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function DashOrderCard({
                                   hue,
@@ -92,7 +94,7 @@ export function DashOrderCard({
                             title={`Статус: ${statusLabel}`}
                             aria-label={`Статус: ${statusLabel}`}
                         >
-              <i className={`bx ${STATUS_ICON_BY_VARIANT[statusVariant ?? "pending"]}`}/>
+              <Icon name={stripBx(STATUS_ICON_BY_VARIANT[statusVariant ?? "pending"])}/>
             </span>
                     ) : null}
                     {helpBadge}

@@ -3,6 +3,7 @@
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {confirmDialog} from "@/lib/dialog-store"
 import type {OrderStage} from "../types"
+import {Icon} from "@/components/ui/icon"
 
 export function StageClientActionsSection({
                                               stage,
@@ -118,7 +119,7 @@ export function StageClientActionsSection({
                             gap: 6,
                         }}
                     >
-                        <i className="bx bx-message-dots" aria-hidden/>
+                        <Icon name="message-dots" aria-hidden/>
                         Открыть чат
                     </button>
                     <div style={{display: "flex", gap: "0.5rem", marginTop: "0.85rem", flexWrap: "wrap"}}>

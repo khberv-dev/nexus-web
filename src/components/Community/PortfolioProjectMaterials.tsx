@@ -5,6 +5,7 @@ import {ActionButton} from "@/components/app/AppCard"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {Icon} from "@/components/ui/icon"
 
 export type ProjectMaterialRow = {
     id: string
@@ -188,7 +189,7 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
             {error && <small className="text-danger d-block mb-2">{error}</small>}
             {loading ? (
                 <span className="small text-muted">
-          <i className="bx bx-loader-alt bx-spin me-1" aria-hidden/>
+          <Icon name="loader-alt" className="bx-spin me-1" aria-hidden/>
           Загрузка…
         </span>
             ) : rows.length === 0 ? (
@@ -234,7 +235,7 @@ export function PortfolioProjectMaterials({projectId, disabled}: PortfolioProjec
                                 </button>
                                 <button type="button" className="btn btn-sm btn-outline-danger"
                                         onClick={() => void remove(r.id)} title="Убрать из проекта">
-                                    <i className="bx bx-trash" aria-hidden/>
+                                    <Icon name="trash" aria-hidden/>
                                 </button>
                             </div>
                         </div>

@@ -1,5 +1,8 @@
 "use client"
 
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
+
 export function DocSection({
                                title,
                                icon,
@@ -12,7 +15,7 @@ export function DocSection({
     return (
         <div className="dash-doc-section dash-glass-panel">
             <h3 className="dash-doc-section__title">
-                <i className={`bx ${icon}`}/>
+                <Icon name={stripBx(icon)}/>
                 {title}
             </h3>
             {children}

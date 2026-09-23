@@ -18,6 +18,7 @@ import {normalizeStagesFromOrdersApiPayload} from "@/lib/normalize-order-stages-
 import {STAGE_ORDER} from "@/lib/stage-constants"
 import {ProjectWorkflowInstructions} from "@/components/app/ProjectWorkflowInstructions"
 import {stageStatusLabelForViewer} from "@/lib/stage-status-ui"
+import {Icon} from "@/components/ui/icon"
 
 function stageStatusLabelForUI(type: StageType, status: OrderStage["status"]): string {
     return stageStatusLabelForViewer({viewerRole: "CLIENT", stageType: type, status})
@@ -231,10 +232,10 @@ export default function OrderWorkStageClient({
                             fontWeight: 700,
                             color: "var(--dash-text)"
                         }}>
-                          <i className="bx bx-book-open" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
+                          <Icon name="book-open" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
                           Инструкции по этапу
                         </span>
-                                                <i className="bx bx-chevron-down" style={{color: "var(--dash-muted)"}}/>
+                                                <Icon name="chevron-down" style={{color: "var(--dash-muted)"}}/>
                                             </summary>
                                             <div style={{padding: "10px 12px"}}>
                                                 <a
@@ -251,7 +252,7 @@ export default function OrderWorkStageClient({
                                                         fontWeight: 600
                                                     }}
                                                 >
-                                                    <i className="bx bx-file"/>
+                                                    <Icon name="file"/>
                                                     Скачать PDF с правилами
                                                 </a>
                                                 <div style={{
@@ -285,7 +286,7 @@ export default function OrderWorkStageClient({
                                         <div style={{display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
                                             <Link href={`/orders/${order.id}`}
                                                   className="dash-header__btn dash-header__btn--primary">
-                                                <i className="bx bx-left-arrow-alt" aria-hidden/>
+                                                <Icon name="left-arrow-alt" aria-hidden/>
                                                 К брифу
                                             </Link>
                                         </div>
@@ -315,7 +316,7 @@ export default function OrderWorkStageClient({
                                                         }}
                                                     >
                                                         <div style={{display: "flex", alignItems: "center", gap: 10}}>
-                                                            <i className="bx bx-check-circle" style={{
+                                                            <Icon name="check-circle" style={{
                                                                 color: "var(--dash-success)",
                                                                 fontSize: "1.15rem"
                                                             }} aria-hidden/>

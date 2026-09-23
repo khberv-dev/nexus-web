@@ -15,6 +15,7 @@ import {
 import {arrayMove, SortableContext, useSortable, verticalListSortingStrategy} from "@dnd-kit/sortable"
 import {CSS} from "@dnd-kit/utilities"
 import "./KanbanBoard.css"
+import {Icon} from "@/components/ui/icon"
 
 interface Card {
     id: string
@@ -200,7 +201,7 @@ function CardModal({card, onClose}: { card: Card; onClose: () => void }) {
                             <ul className="list-unstyled mb-3">
                                 {card.tasks.map((t, i) => (
                                     <li key={i} className="d-flex align-items-start gap-2 mb-2">
-                                        <i className="bx bx-check-circle text-success mt-1" style={{flexShrink: 0}}/>
+                                        <Icon name="check-circle" className="text-success mt-1" style={{flexShrink: 0}}/>
                                         <span className="small">{t}</span>
                                     </li>
                                 ))}
@@ -208,14 +209,14 @@ function CardModal({card, onClose}: { card: Card; onClose: () => void }) {
 
                             {card.reuse && (
                                 <div className="alert alert-primary py-2 mb-3">
-                                    <i className="bx bx-recycle me-2"/>
+                                    <Icon name="recycle" className="me-2"/>
                                     <strong>Повторное использование:</strong> {card.reuse}
                                 </div>
                             )}
 
                             {card.warning && (
                                 <div className="alert alert-warning py-2 mb-0">
-                                    <i className="bx bx-error me-2"/>
+                                    <Icon name="error" className="me-2"/>
                                     {card.warning}
                                 </div>
                             )}

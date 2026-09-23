@@ -7,6 +7,7 @@ import {StatusBadge} from "@/components/app/AppCard"
 import {FRAMEWORK_CONTRACT_BADGE} from "./constants"
 import {DocSection} from "./DocSection"
 import {FrameworkContractClientGuide} from "./FrameworkContractClientGuide"
+import {Icon} from "@/components/ui/icon"
 
 const SCAN_ACCEPT = ".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
 /** После ответа на договор скан больше не принимается — форма показывается заблокированной. */
@@ -157,7 +158,7 @@ export function FrameworkContractSection({
                         ...buttonBase, cursor: "pointer", opacity: 1,
                         border: "1px solid var(--dash-accent)", background: "var(--dash-accent-bg)", color: "var(--dash-accent)",
                     }}>
-                        <i className="bx bx-download" style={{marginRight: 4}}/>Скачать PDF
+                        <Icon name="download" style={{marginRight: 4}}/>Скачать PDF
                     </button>
                 </div>
             )}

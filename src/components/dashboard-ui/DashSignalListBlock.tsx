@@ -1,6 +1,8 @@
 "use client"
 
 import type {ReactNode} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function DashSignalListBlock({
                                         className,
@@ -18,7 +20,7 @@ export function DashSignalListBlock({
     return (
         <div className={className}>
             <div className={`${className}__hd`}>
-                <i className={`bx ${iconClass}`}/>
+                <Icon name={stripBx(iconClass)}/>
                 {title}
                 <span className={`${className}__count`}>{count}</span>
             </div>

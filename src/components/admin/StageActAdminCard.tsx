@@ -6,6 +6,7 @@ import {StatusBadge} from "@/components/app/AppCard"
 import {confirmDialog} from "@/lib/dialog-store"
 import type {ActStatus, Stage, StageAct} from "@/app/admin/orders/types"
 import {ACT_STATUS_LABEL, ACT_STATUS_VARIANT} from "@/app/admin/orders/types"
+import {Icon} from "@/components/ui/icon"
 
 function formatDate(dateString: string | null): string {
     if (!dateString) return "—"
@@ -34,7 +35,7 @@ function ActFileLink({stageId, s3Key, label}: { stageId: string; s3Key: string |
                 textDecoration: "none",
             }}
         >
-            <i className="bx bx-download"/>
+            <Icon name="download"/>
             {label}
         </a>
     )
@@ -126,7 +127,7 @@ export function StageActAdminCard({
                     }}
                 >
                     <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                        <i className="bx bx-file-blank" style={{fontSize: "1.1rem", color: "var(--adm-muted)"}}/>
+                        <Icon name="file-blank" style={{fontSize: "1.1rem", color: "var(--adm-muted)"}}/>
                         <span style={{fontWeight: 600, fontSize: "0.88rem"}}>Акт этапа</span>
                     </div>
                     <StatusBadge variant={variant} label={statusLabel}/>

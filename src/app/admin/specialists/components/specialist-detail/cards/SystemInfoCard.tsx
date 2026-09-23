@@ -1,4 +1,6 @@
 import type {RawSpecialist} from "../../../types"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function SystemInfoCard({specialist}: { specialist: RawSpecialist }) {
     const prof = specialist.specialistProfile
@@ -35,7 +37,7 @@ export function SystemInfoCard({specialist}: { specialist: RawSpecialist }) {
                     {rows.map((item) => (
                         <div key={item.label} className="sp-info-item">
                             <div className="sp-info-icon" style={{background: `${item.color}18`, color: item.color}}>
-                                <i className={`bx ${item.icon}`}/>
+                                <Icon name={stripBx(item.icon)}/>
                             </div>
                             <div style={{minWidth: 0}}>
                                 <div className="sp-info-label">{item.label}</div>

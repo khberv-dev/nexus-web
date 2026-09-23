@@ -3,6 +3,7 @@
 import {AdminBriefSummaryPanel} from "@/components/admin/AdminBriefSummaryPanel"
 import {ContractPanel} from "@/components/admin/ContractPanel"
 import type {Order} from "../types"
+import {Icon} from "@/components/ui/icon"
 
 export function OrderOverviewTab({
                                      order,
@@ -45,7 +46,7 @@ export function OrderOverviewTab({
                         marginBottom: 12,
                     }}
                 >
-                    <i className="bx bx-error"/>
+                    <Icon name="error"/>
                     По этому заказу ещё нет договора со специалистом
                 </div>
             )}
@@ -63,7 +64,7 @@ export function OrderOverviewTab({
             {order.status === "BRIEF_REVIEW" && (
                 <div className="sp-brief-actions">
                     <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                        <i className="bx bx-file" style={{color: "var(--adm-active-color)", fontSize: "1.1rem"}}/>
+                        <Icon name="file" style={{color: "var(--adm-active-color)", fontSize: "1.1rem"}}/>
                         <span style={{fontWeight: 500, fontSize: "0.85rem"}}>Бриф на проверке</span>
                     </div>
                     <div style={{display: "flex", gap: 8}}>

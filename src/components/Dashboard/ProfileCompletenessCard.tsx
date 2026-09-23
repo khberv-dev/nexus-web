@@ -1,5 +1,7 @@
 import Link from "next/link"
 import type {ProfileCompleteness} from "@/lib/profile-completeness"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export default function ProfileCompletenessCard({completeness}: { completeness: ProfileCompleteness }) {
     const {steps, doneCount, percent} = completeness
@@ -10,7 +12,7 @@ export default function ProfileCompletenessCard({completeness}: { completeness: 
             <div className="spec-dashboard__section-header spec-completeness__header">
                 <div>
                     <h2 className="spec-dashboard__section-title">
-                        <i className="bx bx-user-check"/> Заполните профиль
+                        <Icon name="user-check"/> Заполните профиль
                     </h2>
                     <p className="spec-completeness__subtitle">
                         Осталось несколько шагов, чтобы клиенты увидели ваш профиль целиком
@@ -36,14 +38,14 @@ export default function ProfileCompletenessCard({completeness}: { completeness: 
                     const icon = step.done ? "bx-check" : step.pending ? "bx-time-five" : "bx-plus"
                     return (
                         <li key={step.id} className={`spec-completeness__step spec-completeness__step--${state}`}>
-                            <span className="spec-completeness__icon" aria-hidden><i className={`bx ${icon}`}/></span>
+                            <span className="spec-completeness__icon" aria-hidden><Icon name={stripBx(icon)}/></span>
                             <div className="spec-completeness__text">
                                 <div className="spec-completeness__label">{step.label}</div>
                                 {!step.done && <div className="spec-completeness__desc">{step.description}</div>}
                             </div>
                             {state === "todo" && (
                                 <Link href={step.href} className="spec-completeness__action">
-                                    Заполнить <i className="bx bx-chevron-right"/>
+                                    Заполнить <Icon name="chevron-right"/>
                                 </Link>
                             )}
                             {state === "pending" && <span className="spec-completeness__tag">На модерации</span>}

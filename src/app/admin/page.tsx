@@ -4,6 +4,8 @@ import {prisma} from "@/lib/db/prisma"
 import {AdminLayout} from "@/components/admin/AdminLayout"
 import {StatusBadge} from "@/components/app/AppCard"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const ORDER_STATUS_VARIANT = {
     DRAFT: "pending", BRIEFING: "pending", BRIEF_REVIEW: "current",
@@ -62,7 +64,7 @@ export default async function AdminPage() {
                 <div className="card border-warning mb-4" style={{borderLeft: "4px solid var(--bs-warning)"}}>
                     <div className="card-body py-3">
                         <div className="d-flex align-items-center gap-2 mb-2">
-                            <i className="bx bx-error-circle text-warning fs-5"/>
+                            <Icon name="error-circle" className="text-warning fs-5"/>
                             <strong>Требует внимания — {urgentCount}</strong>
                         </div>
                         <div className="d-flex flex-wrap gap-3" style={{fontSize: "0.85rem"}}>
@@ -147,7 +149,7 @@ export default async function AdminPage() {
                                 <div className="d-flex align-items-center justify-content-between mb-2">
                                     <span className="text-muted" style={{fontSize: "0.78rem"}}>{s.label}</span>
                                     <span className={`badge bg-label-${s.color} rounded-pill`}>
-                    <i className={`bx ${s.icon}`}/>
+                    <Icon name={stripBx(s.icon)}/>
                   </span>
                                 </div>
                                 <h3 className="mb-1 fw-semibold" style={{fontSize: "1.25rem"}}>{s.value}</h3>
@@ -176,7 +178,7 @@ export default async function AdminPage() {
                         <a href={item.href} className="card text-decoration-none h-100"
                            style={{transition: "box-shadow 0.15s"}}>
                             <div className="card-body py-3">
-                                <i className={`bx ${item.icon} fs-3 mb-2 text-primary d-block`}/>
+                                <Icon name={stripBx(item.icon)} className="fs-3 mb-2 text-primary d-block"/>
                                 <h6 className="card-title mb-1">{item.label}</h6>
                                 <p className="text-muted mb-0" style={{fontSize: "0.78rem"}}>{item.desc}</p>
                             </div>
@@ -232,7 +234,7 @@ export default async function AdminPage() {
                                             </a>
                                         ) : (
                                             <span className="text-danger" style={{fontSize: "0.78rem"}}>
-                          <i className="bx bx-user-plus me-1"/>не назначен
+                          <Icon name="user-plus" className="me-1"/>не назначен
                         </span>
                                         )}
                                     </td>

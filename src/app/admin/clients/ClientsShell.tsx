@@ -10,6 +10,7 @@ import {adminClientHref} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import type {ClientOrder, RawClient} from "./client-types"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 type ClientsShellContextValue = {
     clients: RawClient[]
@@ -130,7 +131,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
                         </button>
                     </div>
                     <div className="cl-search">
-                        <i className="bx bx-search cl-search-icon"/>
+                        <Icon name="search" className="cl-search-icon"/>
                         <input className="cl-search-input" placeholder="Поиск…" value={search}
                                onChange={e => setSearch(e.target.value)}/>
                     </div>
@@ -171,7 +172,7 @@ export function ClientsShell({children}: { children: ReactNode }) {
                                     )}
                                 </div>
                                 <div className="cl-card__edo" title={edoLabel || "не указано"}>
-                                    <i className="bx bx-transfer-alt"/>
+                                    <Icon name="transfer-alt"/>
                                     ЭДО: {edoLabel || "—"}
                                 </div>
                             </div>

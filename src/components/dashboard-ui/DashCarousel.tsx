@@ -2,6 +2,7 @@
 
 import type {ReactNode} from "react"
 import {useEffect, useRef, useState} from "react"
+import {Icon} from "@/components/ui/icon"
 
 export function DashCarousel({
                                  children,
@@ -85,7 +86,7 @@ export function DashCarousel({
             {canLeft && (
                 <button type="button" className="dash-carousel__nav dash-carousel__nav--left"
                         onClick={() => scroll("left")} aria-label="Прокрутить влево">
-                    <i className="bx bx-chevron-left"/>
+                    <Icon name="chevron-left"/>
                 </button>
             )}
             <div
@@ -109,7 +110,7 @@ export function DashCarousel({
             {canRight && (
                 <button type="button" className="dash-carousel__nav dash-carousel__nav--right"
                         onClick={() => scroll("right")} aria-label="Прокрутить вправо">
-                    <i className="bx bx-chevron-right"/>
+                    <Icon name="chevron-right"/>
                 </button>
             )}
         </div>

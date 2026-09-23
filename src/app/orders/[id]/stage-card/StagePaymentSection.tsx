@@ -1,5 +1,7 @@
 "use client"
 
+import {Icon} from "@/components/ui/icon"
+
 export function StagePaymentSection({
                                         acting,
                                         skipPayments,
@@ -22,7 +24,7 @@ export function StagePaymentSection({
                 textAlign: "center",
             }}
         >
-            <i className="bx bx-wallet"
+            <Icon name="wallet"
                style={{fontSize: "2rem", color: "var(--dash-accent)", marginBottom: "0.5rem"}}/>
             <h3 style={{margin: "0 0 4px", fontSize: "1rem", color: "var(--dash-text)"}}>
                 {skipPayments ? "Оплата отключена" : "Ожидается аванс"}

@@ -3,6 +3,7 @@
 import {useState} from "react"
 import {DesignerProfileModal} from "@/components/landing/designer-profile-modal/DesignerProfileModal"
 import type {OrderData} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 export function OrderSpecialist({specialist}: {
     specialist: NonNullable<OrderData["specialist"]>
@@ -62,7 +63,7 @@ export function OrderSpecialist({specialist}: {
                 fontSize: "0.78rem",
                 fontWeight: 500
             }}>
-                <i className="bx bx-check-circle"/>Назначен
+                <Icon name="check-circle"/>Назначен
             </div>
             {specialist.profile && (
                 <>
@@ -80,11 +81,11 @@ export function OrderSpecialist({specialist}: {
                         )}
                         <div style={{display: "flex", flexWrap: "wrap", gap: "6px 14px"}}>
                             <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
-                                <i className="bx bx-briefcase" style={{marginRight: 5}}/>
+                                <Icon name="briefcase" style={{marginRight: 5}}/>
                                 {specialist.profile.experience} лет опыта
                             </span>
                             <span style={{fontSize: "0.76rem", color: "var(--dash-muted)"}}>
-                                <i className="bx bx-area" style={{marginRight: 5}}/>
+                                <Icon name="area" style={{marginRight: 5}}/>
                                 {specialist.profile.sqm} м² реализовано
                             </span>
                         </div>

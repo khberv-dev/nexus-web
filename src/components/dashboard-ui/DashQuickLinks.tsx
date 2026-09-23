@@ -1,6 +1,8 @@
 "use client"
 
 import Link from "next/link"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type QuickLinkItem = {
     href: string
@@ -34,7 +36,7 @@ export function DashQuickLinks({
                                     className="dash-discover__more-icon"
                                     style={{background: `linear-gradient(20deg, hsl(${link.h1},72%,52%), hsl(${link.h2},72%,44%))`}}
                                 >
-                                    <i className={`bx ${link.icon}`}/>
+                                    <Icon name={stripBx(link.icon)}/>
                                 </div>
                             </div>
                         </Link>

@@ -11,6 +11,7 @@ import {StagePaymentSection} from "./stage-card/StagePaymentSection"
 import {StageClientActionsSection} from "./stage-card/StageClientActionsSection"
 import {StageExtraPaymentSection} from "./stage-card/StageExtraPaymentSection"
 import {StageActSection} from "./stage-card/StageActSection"
+import {Icon} from "@/components/ui/icon"
 
 export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisionChat, revisionViaChatOnly}: {
     stage: OrderStage
@@ -144,7 +145,7 @@ export function StageCard({stage, onAction, onActSigned, embedded, onOpenRevisio
                             fontWeight: 700,
                         }}
                     >
-                        <i className="bx bx-book-open" style={{color: "var(--dash-accent)"}} aria-hidden/>
+                        <Icon name="book-open" style={{color: "var(--dash-accent)"}} aria-hidden/>
                         Правила этапа (PDF)
                     </a>
                 </div>

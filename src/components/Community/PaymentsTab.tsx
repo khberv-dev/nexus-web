@@ -9,6 +9,8 @@ import {DISCOVER_HUES, PAYMENT_BADGE, STAGE_LABELS} from "./types"
 import type {StageType} from "@prisma/client"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const CON_BADGE: Record<string, { variant: "done" | "pending" | "current" | "rejected"; label: string }> = {
     DRAFT: {variant: "pending", label: "Черновик"}, SIGNED_CLIENT: {variant: "current", label: "Подписан"},
@@ -23,7 +25,7 @@ function Section({title, icon, children}: { title: string; icon: string; childre
     return (
         <DashSurfaceCard padding="md" className="dash-surface-card--mb">
             <h3 style={{fontSize: "0.82rem", fontWeight: 600, margin: "0 0 10px", color: "var(--dash-text)"}}>
-                <i className={`bx ${icon}`} style={{marginRight: 6, color: "var(--dash-accent)"}}/>{title}
+                <Icon name={stripBx(icon)} style={{marginRight: 6, color: "var(--dash-accent)"}}/>{title}
             </h3>
             {children}
         </DashSurfaceCard>
@@ -105,7 +107,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                         color: "var(--dash-accent, #5b4fcf)",
                         fontFamily: "inherit"
                     }}>
-                        <i className="bx bx-download" style={{marginRight: 4}}/>{loading ? "..." : "Скачать"}
+                        <Icon name="download" style={{marginRight: 4}}/>{loading ? "..." : "Скачать"}
                     </button>
                 </div>
             )}
@@ -142,7 +144,7 @@ function ContractActions({contract: c}: { contract: SpecContract }) {
                                 fontFamily: "inherit",
                                 fontWeight: 600
                             }}>
-                        <i className="bx bx-send" style={{marginRight: 4}}/>
+                        <Icon name="send" style={{marginRight: 4}}/>
                         {loading && progress !== null ? "Отправка…" : "Отправить подписанный"}
                     </button>
                 </div>
@@ -202,8 +204,8 @@ export function PaymentsCol1({payments, formData, contracts, acts}: {
                 <div className="dash-stats-row" style={{marginBottom: 12}}>
                     {stats.map(s => (
                         <div key={s.label} className="dash-stat-card">
-                            <div className="dash-stat-card__icon" style={{background: s.bg, color: s.color}}><i
-                                className={`bx ${s.icon}`}/></div>
+                            <div className="dash-stat-card__icon" style={{background: s.bg, color: s.color}}>
+                                <Icon name={stripBx(s.icon)}/></div>
                             <div><p className="dash-stat-card__value">{(s.value / 100).toLocaleString("ru-RU")} руб.</p>
                                 <p className="dash-stat-card__label">{s.label}</p></div>
                         </div>
@@ -351,7 +353,7 @@ export function PaymentsCol2({payments}: { payments: PaymentWithRelations[] }) {
                         {label: "Транзакций", value: String(payments.length), hue: 247, icon: "bx-receipt"},
                     ].map(s => (
                         <li key={s.label} className="dash-card" style={{"--hue": s.hue} as React.CSSProperties}>
-                            <div className="dash-card__img"><i className={`bx ${s.icon}`}/></div>
+                            <div className="dash-card__img"><Icon name={stripBx(s.icon)}/></div>
                             <div className="dash-card__img-overlay"/>
                             <div className="dash-card__body"><h3 className="dash-card__heading">{s.value}</h3><p
                                 className="dash-card__sub">{s.label}</p></div>
@@ -370,7 +372,7 @@ export function PaymentsCol2({payments}: { payments: PaymentWithRelations[] }) {
                             <div className="dash-discover__more">
                                 <div className="dash-discover__more-icon"
                                      style={{background: `linear-gradient(20deg, hsl(${DISCOVER_HUES[i % DISCOVER_HUES.length].h1},72%,52%), hsl(${DISCOVER_HUES[i % DISCOVER_HUES.length].h2},72%,44%))`}}>
-                                    <i className={`bx ${item.icon}`}/>
+                                    <Icon name={stripBx(item.icon)}/>
                                 </div>
                             </div>
                         </li>

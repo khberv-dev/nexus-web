@@ -9,6 +9,7 @@ import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {isStagePaymentsDisabledPublic} from "@/lib/payments/flags"
 import type {OrderData} from "./types"
 import {STAGE_LABEL} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 /** Блок под брифом: правила правок, счета по проекту, оплата доп. правок, ссылка в раздел «Оплата». */
 export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
@@ -114,7 +115,7 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                         gap: 6
                     }}
                 >
-                    <i className="bx bx-credit-card" aria-hidden/>
+                    <Icon name="credit-card" aria-hidden/>
                     Перейти в оплату и счета
                 </Link>
             </div>
@@ -180,7 +181,7 @@ export function OrderBriefCommercialTerms({order, highlightPayment = false}: {
                                                     gap: 4,
                                                 }}
                                             >
-                                                <i className="bx bx-download"/>
+                                                <Icon name="download"/>
                                                 Скачать счёт
                                             </a>
                                         ) : null}

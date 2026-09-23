@@ -7,6 +7,8 @@ import {Markdown} from "@tiptap/markdown"
 import {TableKit} from "@tiptap/extension-table"
 import styles from "./regulations-rich-editor.module.css"
 import {promptDialog} from "@/lib/dialog-store"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 // Вне компонента: новые экземпляры на каждом рендере заставляли бы useEditor вызывать setOptions при каждом нажатии.
 const EXTENSIONS = [
@@ -135,7 +137,7 @@ function ToolButton({label, icon, active, disabled, onClick, children}: {
             onMouseDown={(e) => e.preventDefault()}
             onClick={onClick}
         >
-            {icon ? <i className={`bx ${icon}`}/> : children}
+            {icon ? <Icon name={stripBx(icon)}/> : children}
         </button>
     )
 }

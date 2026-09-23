@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic"
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
 import {isVideoFilename} from "./utils"
+import {Icon} from "@/components/ui/icon"
 
 const StageImageMarkup = dynamic(() => import("@/components/stage/StageImageMarkup"), {ssr: false})
 
@@ -109,7 +110,7 @@ export function FilePreviewModal({
                                     textAlign: "center",
                                 }}
                             >
-                                <i className="bx bx-file"
+                                <Icon name="file"
                                    style={{fontSize: "3rem", marginBottom: 12, display: "block"}}/>
                                 <p style={{margin: "0 0 16px"}}>{filename}</p>
                                 <a

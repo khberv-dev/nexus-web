@@ -2,6 +2,8 @@
 
 import {useState} from "react"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const ROLES = [
     {
@@ -167,7 +169,7 @@ export default function DemoPage() {
                                 e.currentTarget.style.transform = "translateY(0)"
                             }}
                         >
-                            <i className={`bx ${r.icon}`}
+                            <Icon name={stripBx(r.icon)}
                                style={{fontSize: "2rem", color: r.color, display: "block", marginBottom: 12}}/>
                             <div style={{
                                 color: "#f4f4f4",
@@ -211,7 +213,7 @@ export default function DemoPage() {
                             cursor: resetting ? "wait" : "pointer", fontFamily: "inherit",
                         }}
                     >
-                        <i className="bx bx-trash" style={{marginRight: 6}}/>
+                        <Icon name="trash" style={{marginRight: 6}}/>
                         {resetting ? "Удаление…" : "Сбросить demo-данные"}
                     </button>
                 </div>

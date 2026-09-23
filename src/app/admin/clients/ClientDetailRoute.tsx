@@ -17,6 +17,7 @@ import {FW_CONTRACT_STATUS_LABEL, ORDER_LABEL, ORDER_VARIANT} from "./client-typ
 import {useClientsShell} from "./ClientsShell"
 import {ClientContractUpload} from "./ClientContractUpload"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 /** Карточка заказчика по адресу /admin/clients/:id; данные и действия — из списка в layout. */
 export function ClientDetailRoute({id}: { id: string }) {
@@ -26,7 +27,7 @@ export function ClientDetailRoute({id}: { id: string }) {
     if (!client) {
         return (
             <div className="cl-detail-empty">
-                <i className="bx bx-user"/>
+                <Icon name="user"/>
                 <p>{loading ? "Загрузка…" : "Заказчик не найден"}</p>
             </div>
         )
@@ -65,7 +66,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                         архиве</div>}
                     {fd?.company &&
                         <div style={{fontSize: "0.78rem", color: "var(--adm-muted)", marginTop: 2}}>
-                            <i className="bx bx-buildings" style={{marginRight: 3}}/>{fd.company}
+                            <Icon name="buildings" style={{marginRight: 3}}/>{fd.company}
                         </div>}
                     <div style={{
                         fontSize: "0.78rem",
@@ -73,7 +74,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                         marginTop: 4,
                         lineHeight: 1.35
                     }} title={clientEdo || undefined}>
-                        <i className="bx bx-transfer-alt" style={{marginRight: 4}}/>
+                        <Icon name="transfer-alt" style={{marginRight: 4}}/>
                         ЭДО: {clientEdo || "не указано"}
                     </div>
                 </div>
@@ -346,7 +347,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                         gap: 3
                                                     }}
                                                 >
-                                                    <i className="bx bx-file"/>Бриф
+                                                    <Icon name="file"/>Бриф
                                                 </button>
                                             )}
                                         </div>
@@ -397,7 +398,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                 color: "#ea5455",
                                                 fontWeight: 500
                                             }}>
-                                                <i className="bx bx-support"
+                                                <Icon name="support"
                                                    style={{marginRight: 4}}/>Запрошена помощь
                                                 менеджера
                                             </div>
@@ -418,7 +419,7 @@ export function ClientDetailRoute({id}: { id: string }) {
                             gap: 6,
                             marginBottom: 10
                         }}>
-                            <i className="bx bx-history"
+                            <Icon name="history"
                                style={{color: "var(--adm-active-color)"}}/>
                             <span style={{
                                 fontSize: "0.72rem",

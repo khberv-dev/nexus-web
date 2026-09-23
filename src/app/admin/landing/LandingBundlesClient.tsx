@@ -5,6 +5,7 @@ import {toast} from "sonner"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {DesignerProfileModal, type DesignerSlide} from "@/components/landing/designer-profile-modal"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 interface BundleItem {
     id: string;
@@ -234,7 +235,7 @@ export default function LandingBundlesClient() {
                                             onClick={() => void openPreview()}
                                             disabled={previewLoading}
                                         >
-                                            <i className="bx bx-show"/> {previewLoading ? "Собираем…" : "Предпросмотр карточки"}
+                                            <Icon name="show"/> {previewLoading ? "Собираем…" : "Предпросмотр карточки"}
                                         </button>
                                         <span
                                             className={`badge ${STATUS_CLASS[selectedBundle.status]}`}>{STATUS_LABEL[selectedBundle.status]}</span>
@@ -277,7 +278,7 @@ export default function LandingBundlesClient() {
                                                     }}/></ImageLightbox>
                                                     : <div
                                                         className="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                        <i className="bx bx-user" style={{fontSize: 28}}/></div>}
+                                                        <Icon name="user" style={{fontSize: 28}}/></div>}
                                             </div>
                                         </div>
                                         {/* Work */}
@@ -308,7 +309,7 @@ export default function LandingBundlesClient() {
                                                     }}/></ImageLightbox>
                                                     : <div
                                                         className="d-flex align-items-center justify-content-center h-100 text-muted">
-                                                        <i className="bx bx-image" style={{fontSize: 28}}/></div>}
+                                                        <Icon name="image" style={{fontSize: 28}}/></div>}
                                                 {selectedBundle.workPos && (
                                                     <span style={{
                                                         position: "absolute",
@@ -376,7 +377,7 @@ export default function LandingBundlesClient() {
                                                             }}/></ImageLightbox>
                                                             : <div
                                                                 className="d-flex align-items-center justify-content-center h-100 text-muted"
-                                                                style={{fontSize: 14}}><i className="bx bx-image"/>
+                                                                style={{fontSize: 14}}><Icon name="image"/>
                                                             </div>}
                                                     </div>
                                                 ))}
@@ -409,11 +410,11 @@ export default function LandingBundlesClient() {
                                             <div className="d-flex gap-2">
                                                 <button className="btn btn-sm btn-success"
                                                         onClick={() => review("approve")} disabled={acting}>
-                                                    <i className="bx bx-check"/> Одобрить
+                                                    <Icon name="check"/> Одобрить
                                                 </button>
                                                 <button className="btn btn-sm btn-danger"
                                                         onClick={() => review("reject")} disabled={acting}>
-                                                    <i className="bx bx-x"/> Отклонить
+                                                    <Icon name="x"/> Отклонить
                                                 </button>
                                             </div>
                                         </div>

@@ -3,6 +3,8 @@
 import Link from "next/link"
 import {usePathname} from "next/navigation"
 import {SignOutButton} from "@/components/auth/SignOutButton"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export interface NavItem {
     href: string
@@ -64,7 +66,7 @@ export function DashboardSidebar({items}: { items: NavItem[] }) {
                 </Link>
 
                 <a href="#" className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                    <i className="bx bx-chevron-left align-middle"/>
+                    <Icon name="chevron-left" className="align-middle"/>
                 </a>
             </div>
 
@@ -77,7 +79,7 @@ export function DashboardSidebar({items}: { items: NavItem[] }) {
                     return (
                         <li key={item.href} className={`menu-item${active ? " active" : ""}`}>
                             <Link href={item.href} className="menu-link">
-                                <i className={`menu-icon tf-icons bx ${item.icon}`}/>
+                                <Icon name={stripBx(item.icon)} className="menu-icon tf-icons"/>
                                 <div className="text-truncate">{item.label}</div>
                             </Link>
                         </li>
@@ -86,7 +88,7 @@ export function DashboardSidebar({items}: { items: NavItem[] }) {
 
                 <li className="menu-item">
                     <SignOutButton className="menu-link">
-                        <i className="menu-icon tf-icons bx bx-power-off"/>
+                        <Icon name="power-off" className="menu-icon tf-icons"/>
                         <div className="text-truncate">Выйти</div>
                     </SignOutButton>
                 </li>

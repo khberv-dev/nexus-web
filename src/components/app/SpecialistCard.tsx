@@ -4,6 +4,8 @@ import type {StatusVariant} from "./AppCard"
 import {InfoRow, SectionLabel, StatusBadge} from "./AppCard"
 import {splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {formatUserName, userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 // ── Типы ──────────────────────────────────────────────────────────────────────
 
@@ -107,7 +109,7 @@ function StepProgress({
                                 flexShrink: 0,
                                 transition: "all 0.2s",
                             }}>
-                                {done ? <i className="bx bx-check" style={{fontSize: "0.85rem"}}/> : i + 1}
+                                {done ? <Icon name="check" style={{fontSize: "0.85rem"}}/> : i + 1}
                             </div>
                             <span style={{
                                 fontSize: "0.62rem", whiteSpace: "nowrap",
@@ -173,7 +175,7 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                         />
                         {portfolioCount > 0 && (
                             <span className="badge bg-label-info rounded-pill" style={{fontSize: "0.62rem"}}>
-                <i className="bx bx-images me-1"/>{portfolioCount} фото
+                <Icon name="images" className="me-1"/>{portfolioCount} фото
               </span>
                         )}
                         {!hasForm && onboardingStatus === "PENDING" && (
@@ -187,7 +189,7 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                     </small>
                 </div>
 
-                <i className={`bx ${expanded ? "bx-chevron-up" : "bx-chevron-down"} text-muted fs-5 flex-shrink-0`}/>
+                <Icon name={stripBx(expanded ? "bx-chevron-up" : "bx-chevron-down")} className="text-muted fs-5 flex-shrink-0"/>
             </div>
 
             {/* ── Раскрытое содержимое ── */}
@@ -228,7 +230,7 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                                         {fd?.portfolio && (
                                             <div className="col-sm-6">
                                                 <div className="d-flex align-items-start gap-2 mb-2">
-                                                    <i className="bx bx-link-external text-muted mt-1"/>
+                                                    <Icon name="link-external" className="text-muted mt-1"/>
                                                     <div>
                                                         <div className="text-uppercase text-muted"
                                                              style={{fontSize: "0.7rem", letterSpacing: "0.05em"}}>Портфолио</div>
@@ -287,7 +289,7 @@ export function SpecialistCard({specialist, expanded, onToggle, actions}: Specia
                         ) : (
                             <div className="alert alert-warning d-flex align-items-center gap-2 mb-4"
                                  style={{fontSize: "0.875rem"}}>
-                                <i className="bx bx-info-circle fs-5"/>
+                                <Icon name="info-circle" className="fs-5"/>
                                 Специалист еще не заполнил анкету
                             </div>
                         )}

@@ -9,6 +9,8 @@ import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import {buildClientRevisionVariants} from "@/lib/stage-client-revision-variants"
 import {buildAdminStageReleaseWaves} from "@/lib/stage-admin-release-waves"
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const isVideoFilename = (name: string) => /\.(mp4|webm|mov)$/i.test(name.replace(/^🎬\s*/, ""))
 
@@ -65,7 +67,7 @@ function FileThumbnail({stageId, file, onClick}: {
                     justifyContent: "center",
                     background: "rgba(0,0,0,0.4)"
                 }}>
-                    <i className="bx bx-play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
+                    <Icon name="play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
                 </div>
             )}
             <div style={{position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.15s"}}
@@ -146,7 +148,7 @@ function ActSection({stage, onUploadAct}: {
             border: act.status === "REJECTED" ? "1px solid rgba(234,84,85,0.2)" : act.status === "CONFIRMED" ? "1px solid rgba(46,184,92,0.2)" : "1px solid var(--dash-border)",
         }}>
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 8}}>
-                <i className={`bx ${statusInfo.icon}`} style={{fontSize: "1.1rem", color: statusInfo.color}}/>
+                <Icon name={stripBx(statusInfo.icon)} style={{fontSize: "1.1rem", color: statusInfo.color}}/>
                 <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--dash-text)"}}>
           Акт по этапу
         </span>
@@ -164,7 +166,7 @@ function ActSection({stage, onUploadAct}: {
                     fontSize: "0.78rem",
                     color: "var(--dash-danger)"
                 }}>
-                    <i className="bx bx-info-circle" style={{marginRight: 4}}/>
+                    <Icon name="info-circle" style={{marginRight: 4}}/>
                     Акт требует доработки
                 </div>
             )}
@@ -195,7 +197,7 @@ function ActSection({stage, onUploadAct}: {
                             fontFamily: "inherit",
                         }}
                     >
-                        <i className="bx bx-upload"/>
+                        <Icon name="upload"/>
                         {uploading ? "Загрузка..." : "Загрузить акт (PDF)"}
                     </label>
                 </div>
@@ -210,7 +212,7 @@ function ActSection({stage, onUploadAct}: {
                     fontSize: "0.78rem",
                     color: "var(--dash-danger)"
                 }}>
-                    <i className="bx bx-error-circle" style={{marginRight: 4}}/>
+                    <Icon name="error-circle" style={{marginRight: 4}}/>
                     {error}
                 </div>
             )}
@@ -218,7 +220,7 @@ function ActSection({stage, onUploadAct}: {
             <div style={{marginTop: 8, fontSize: "0.78rem", color: "var(--dash-muted)"}}>
                 {act.specialistActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <i className="bx bx-file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "#e74c3c", fontSize: "0.9rem"}}/>
                         <span>Акт от дизайнера</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -233,7 +235,7 @@ function ActSection({stage, onUploadAct}: {
                                 gap: 4
                             }}
                         >
-                            <i className="bx bx-download"/>
+                            <Icon name="download"/>
                             Скачать
                         </a>
                         <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
@@ -243,7 +245,7 @@ function ActSection({stage, onUploadAct}: {
                 )}
                 {act.clientActS3Key && (
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap"}}>
-                        <i className="bx bx-file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
+                        <Icon name="file-pdf" style={{color: "#27ae60", fontSize: "0.9rem"}}/>
                         <span>Акт от заказчика</span>
                         <a
                             href={`/api/stages/${stage.id}/act/download`}
@@ -258,7 +260,7 @@ function ActSection({stage, onUploadAct}: {
                                 gap: 4
                             }}
                         >
-                            <i className="bx bx-download"/>
+                            <Icon name="download"/>
                             Скачать
                         </a>
                         <span style={{color: "var(--dash-muted)", fontSize: "0.7rem"}}>
@@ -313,10 +315,10 @@ function ConceptRules({stageType}: { stageType: string }) {
                 gap: 8
             }}>
         <span style={{display: "flex", alignItems: "center", gap: 6}}>
-          <i className="bx bx-book-open" style={{color: "var(--dash-accent)", fontSize: "1rem"}}/>
+          <Icon name="book-open" style={{color: "var(--dash-accent)", fontSize: "1rem"}}/>
             {rules.title}
         </span>
-                <i className={`bx ${open ? "bx-chevron-up" : "bx-chevron-down"}`} style={{color: "var(--dash-muted)"}}/>
+                <Icon name={stripBx(open ? "bx-chevron-up" : "bx-chevron-down")} style={{color: "var(--dash-muted)"}}/>
             </button>
             {open && (
                 <ol style={{
@@ -471,7 +473,7 @@ export function SpecialistStageWorkBody({
           </span>
                     <a href={`/api/stages/${stage.id}/files/${file.id}/download`} target="_blank" rel="noreferrer"
                        className="dash-file-link">
-                        <i className="bx bx-paperclip"/>
+                        <Icon name="paperclip"/>
                         {file.filename}
                     </a>
                     <span
@@ -500,7 +502,7 @@ export function SpecialistStageWorkBody({
                             }}
                             title="Есть пометки от заказчика"
                         >
-              <i className="bx bx-note"/>
+              <Icon name="note"/>
               пометки
             </span>
                     ) : null}
@@ -591,7 +593,7 @@ export function SpecialistStageWorkBody({
                                     title="Открыть пометки на изображении"
                                 >
                   <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
-                    <i className="bx bx-note" style={{color: "var(--dash-warn)"}}/>
+                    <Icon name="note" style={{color: "var(--dash-warn)"}}/>
                     <span
                         style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>{f.filename}</span>
                   </span>
@@ -678,7 +680,7 @@ export function SpecialistStageWorkBody({
                                                     className="dash-file-link"
                                                     style={{fontSize: "0.82rem"}}
                                                 >
-                                                    <i className="bx bx-paperclip"/>
+                                                    <Icon name="paperclip"/>
                                                     {f.filename}
                                                 </a>
                                             ))}
@@ -700,7 +702,7 @@ export function SpecialistStageWorkBody({
                                 background: "rgba(245, 158, 11, 0.08)"
                             }}>
                                 <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                                    <i className="bx bx-error-circle" style={{color: "var(--dash-warn)"}}/>
+                                    <Icon name="error-circle" style={{color: "var(--dash-warn)"}}/>
                                     <div style={{fontSize: "0.78rem", fontWeight: 800, color: "var(--dash-warn)"}}>
                                         Правки администратора (нужно доработать)
                                     </div>
@@ -724,7 +726,7 @@ export function SpecialistStageWorkBody({
                                 background: "rgba(34, 197, 94, 0.08)"
                             }}>
                                 <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                                    <i className="bx bx-check-circle" style={{color: "var(--dash-success)"}}/>
+                                    <Icon name="check-circle" style={{color: "var(--dash-success)"}}/>
                                     <div style={{fontSize: "0.78rem", fontWeight: 800, color: "var(--dash-success)"}}>
                                         Одобрено администратором
                                     </div>
@@ -755,7 +757,7 @@ export function SpecialistStageWorkBody({
                                     flexWrap: "wrap"
                                 }}>
                                     <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                                        <i className="bx bx-revision" style={{color: "rgba(56, 189, 248, 0.95)"}}/>
+                                        <Icon name="revision" style={{color: "rgba(56, 189, 248, 0.95)"}}/>
                                         <div style={{
                                             fontSize: "0.78rem",
                                             fontWeight: 800,
@@ -842,7 +844,7 @@ export function SpecialistStageWorkBody({
                             flexWrap: "wrap"
                         }}>
           <span style={{display: "inline-flex", alignItems: "center", gap: 6}}>
-            <i className="bx bx-book-open"/>
+            <Icon name="book-open"/>
             <a
                 href={`/api/stages/${stage.id}/rules`}
                 target="_blank"
@@ -1615,7 +1617,7 @@ export function SpecialistStageWorkBody({
                                 fontWeight: 600,
                                 color: "var(--dash-danger, #ea5455)"
                             }}>
-                                <i className="bx bx-receipt" style={{marginRight: 4}}/>Дополнительные правки
+                                <Icon name="receipt" style={{marginRight: 4}}/>Дополнительные правки
                             </p>
                             {stage.extraPayments.map(ep => (
                                 <div key={ep.id} style={{
@@ -1638,7 +1640,7 @@ export function SpecialistStageWorkBody({
 
                     {isWaiting && (
                         <div className="dash-waiting-note">
-                            <i className="bx bx-time-five"/>Ожидайте результата проверки
+                            <Icon name="time-five"/>Ожидайте результата проверки
                         </div>
                     )}
 

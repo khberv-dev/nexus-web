@@ -19,6 +19,7 @@ import {SPECIALISTS_STYLES} from "./styles"
 import {adminSpecialistHref, parseTabSegment, ADMIN_SPECIALIST_TABS} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 const STATUS_FILTERS = [
     {value: "ALL", label: "Все"},
@@ -338,7 +339,7 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                         </button>
                     </div>
                     <div className="sp-search">
-                        <i className="bx bx-search sp-search-icon"/>
+                        <Icon name="search" className="sp-search-icon"/>
                         <input
                             type="text"
                             className="sp-search-input"
@@ -404,12 +405,12 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                                 </div>
                                 {s.phone && (
                                     <div className="sp-user-card__edo" title={s.phone}>
-                                        <i className="bx bx-phone"/>
+                                        <Icon name="phone"/>
                                         {s.phone}
                                     </div>
                                 )}
                                 <div className="sp-user-card__edo" title={edoLabel || "не указано"}>
-                                    <i className="bx bx-transfer-alt"/>
+                                    <Icon name="transfer-alt"/>
                                     ЭДО: {edoLabel || "—"}
                                 </div>
                             </button>

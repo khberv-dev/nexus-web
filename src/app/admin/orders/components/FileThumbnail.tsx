@@ -2,6 +2,7 @@
 
 import {isStageImageFilename} from "@/lib/stage-file-helpers"
 import {isVideoFilename} from "./media"
+import {Icon} from "@/components/ui/icon"
 
 export function FileThumbnail({
                                   stageId,
@@ -59,7 +60,7 @@ export function FileThumbnail({
                         background: "rgba(0,0,0,0.4)",
                     }}
                 >
-                    <i className="bx bx-play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
+                    <Icon name="play-circle" style={{fontSize: "2rem", color: "#fff"}}/>
                 </div>
             )}
             <div

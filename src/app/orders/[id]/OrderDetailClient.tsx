@@ -19,6 +19,8 @@ import {OrderBriefCommercialTerms} from "./OrderBriefCommercialTerms"
 import {STAGE_ORDER} from "@/lib/stage-constants"
 import {normalizeStagesFromOrdersApiPayload} from "@/lib/normalize-order-stages-from-api"
 import {ProjectWorkflowInstructions} from "@/components/app/ProjectWorkflowInstructions"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export default function OrderDetailClient({
                                               order: initialOrder,
@@ -270,7 +272,7 @@ export default function OrderDetailClient({
                                 fontSize: "0.85rem",
                                 lineHeight: 1.45
                             }}>
-                                <i className="bx bx-mail-send" style={{
+                                <Icon name="mail-send" style={{
                                     color: "var(--dash-accent)",
                                     fontSize: "1.15rem",
                                     flexShrink: 0,
@@ -292,7 +294,7 @@ export default function OrderDetailClient({
                                 fontSize: "0.85rem",
                                 lineHeight: 1.45
                             }}>
-                                <i className="bx bx-bell" style={{
+                                <Icon name="bell" style={{
                                     color: "var(--dash-warn)",
                                     fontSize: "1.15rem",
                                     flexShrink: 0,
@@ -403,7 +405,7 @@ export default function OrderDetailClient({
                                                     gap: 8,
                                                     alignItems: "center"
                                                 }}>
-                                                    <i className="bx bx-check-circle"
+                                                    <Icon name="check-circle"
                                                        style={{color: "var(--dash-success)"}}/>
                                                     <span style={{
                                                         fontSize: "0.82rem",
@@ -448,7 +450,7 @@ export default function OrderDetailClient({
                                                     cursor: helpRequested ? "default" : "pointer",
                                                     fontFamily: "inherit"
                                                 }}>
-                                            <i className={`bx ${helpRequested ? "bx-check" : "bx-support"}`}
+                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}
                                                style={{marginRight: 6, verticalAlign: "middle"}}/>
                                             {helpRequested ? "Менеджер уведомлен" : "Помощь менеджера"}
                                         </button>
@@ -485,7 +487,7 @@ export default function OrderDetailClient({
                                         border: "1px solid var(--dash-border)",
                                         marginBottom: 16
                                     }}>
-                                        <i className="bx bx-user-plus"
+                                        <Icon name="user-plus"
                                            style={{fontSize: 32, color: "var(--dash-muted)", opacity: 0.4}}/>
                                         <p style={{
                                             color: "var(--dash-muted)",

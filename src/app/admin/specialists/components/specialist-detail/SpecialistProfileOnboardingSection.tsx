@@ -6,6 +6,7 @@ import {levelByCode} from "@/lib/landing/specialist-level"
 import {getQuizMicroTick, parseQuizProgress, parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 import type {RawSpecialist, TestModalData} from "../../types"
 import {ONBOARDING_STEPS_UI} from "./constants"
+import {Icon} from "@/components/ui/icon"
 
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
@@ -123,12 +124,12 @@ export function SpecialistProfileOnboardingSection({
                                     setTestModal({answers, comment: testStep.comment, meta})
                                 }}
                             >
-                                <div className="sp-onboarding-step__dot">{done ? <i className="bx bx-check"/> :
+                                <div className="sp-onboarding-step__dot">{done ? <Icon name="check"/> :
                                     <span>{i + 1}</span>}</div>
                                 <span className="sp-onboarding-step__label">
                   {step.label}
                                     {testReviewable &&
-                                        <i className="bx bx-show" style={{marginLeft: 3, fontSize: "0.7rem"}}/>}
+                                        <Icon name="show" style={{marginLeft: 3, fontSize: "0.7rem"}}/>}
                 </span>
                             </button>
                         )
@@ -149,7 +150,7 @@ export function SpecialistProfileOnboardingSection({
                     background: "var(--adm-sidebar)",
                 }}>
                     <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
-                        <i className="bx bx-medal" style={{marginRight: 6, color: "var(--adm-active-color)"}}/>
+                        <Icon name="medal" style={{marginRight: 6, color: "var(--adm-active-color)"}}/>
                         Квалификационный уровень:{" "}
                         <strong style={{color: "var(--adm-text)"}}>
                             {currentLevel ? `${currentLevel.title} (${currentLevel.code})` : "не присвоен"}
@@ -198,7 +199,7 @@ export function SpecialistProfileOnboardingSection({
                     background: "rgba(245,158,11,0.08)",
                 }}>
                     <span style={{fontSize: "0.78rem", color: "var(--adm-muted)", lineHeight: 1.45}}>
-                        <i className="bx bx-fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                        <Icon name="fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
                         Тест можно закрыть без сдачи: шаг будет отмечен пройденным, откроется этап интервью.
                     </span>
                     <button
@@ -224,7 +225,7 @@ export function SpecialistProfileOnboardingSection({
                     color: "var(--adm-muted)",
                     lineHeight: 1.45,
                 }}>
-                    <i className="bx bx-fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
+                    <Icon name="fast-forward" style={{marginRight: 6, color: "#f59e0b"}}/>
                     Квалификационный тест пропущен администратором
                     {" "}({new Date(adminBypass.at).toLocaleString("ru-RU")})
                     {adminBypass.reason ? `. Причина: ${adminBypass.reason}` : ""}
@@ -307,7 +308,7 @@ export function SpecialistProfileOnboardingSection({
                             setTestModal({answers, comment: testStepRecord.comment, meta})
                         }}
                     >
-                        <i className="bx bx-show" style={{marginRight: 6}}/>
+                        <Icon name="show" style={{marginRight: 6}}/>
                         {testStepRecord.status === "IN_PROGRESS" ? "Ответы (текущий прогресс)" : "Ответы квалификационного теста"}
                     </button>
                 </div>

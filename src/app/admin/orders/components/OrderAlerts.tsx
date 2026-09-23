@@ -1,6 +1,7 @@
 "use client"
 
 import {formatBriefWizardProgress} from "@/lib/clientBriefDisplay"
+import {Icon} from "@/components/ui/icon"
 
 export function OrderAlerts({
                                 needsAssign,
@@ -17,19 +18,19 @@ export function OrderAlerts({
         <>
             {needsAssign && (
                 <div className="sp-alert sp-alert--warn">
-                    <i className="bx bx-user-plus"/>
+                    <Icon name="user-plus"/>
                     <span>Специалист не назначен</span>
                 </div>
             )}
             {modStagesCount > 0 && (
                 <div className="sp-alert sp-alert--info">
-                    <i className="bx bx-time"/>
+                    <Icon name="time"/>
                     <span>{modStagesCount} этап(а) ожидают модерации</span>
                 </div>
             )}
             {briefHelpRequested && (
                 <div className="sp-alert sp-alert--warn">
-                    <i className="bx bx-support"/>
+                    <Icon name="support"/>
                     <span>
             Заказчик запросил помощь с брифом. Текущий этап: {formatBriefWizardProgress(briefStep)}
           </span>

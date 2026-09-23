@@ -2,6 +2,7 @@
 
 import {type ChangeEvent, useRef, useState} from "react"
 import type {FileUploadModalProps} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 export function FileUploadModal({
                                     open,
@@ -124,7 +125,7 @@ export function FileUploadModal({
                         minHeight: 48,
                     }}
                 >
-                    <i className="bx bx-upload"/>
+                    <Icon name="upload"/>
                     {file ? file.name : "Выберите файл (PDF, до 10МБ)"}
                 </button>
                 {error && <p style={{color: "#f44336", fontSize: "0.85rem", marginBottom: 12}}>{error}</p>}

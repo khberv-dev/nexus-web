@@ -12,6 +12,7 @@ import type {StageType} from "@prisma/client"
 import type {ActItem, OrderWithRelations, UrgentItem} from "./types"
 import {DISCOVER_HUES, ORDER_HUE, ORDER_STATUS_MAP, STAGE_LABELS} from "./types"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 const QUICK_LINKS = [
     {href: "/work/portfolio", label: "Портфолио", sub: "Фото и рендеры", icon: "bx-image-alt"},
@@ -50,7 +51,7 @@ function StageProgress({stages}: { stages: OrderWithRelations["stages"] }) {
                             className={`dash-card__stage-line dash-card__stage-line--${state === "none" ? "none" : stageMap[STAGE_ORDER[i - 1]] === "APPROVED" ? "done" : "none"}`}/>}
                         <div className={`dash-card__stage-dot dash-card__stage-dot--${state}`}
                              title={`${STAGE_LABELS[type]}: ${stageMap[type] ?? "не начат"}`}>
-                            {state === "done" ? <i className="bx bx-check"/> : STAGE_SHORT[type]}
+                            {state === "done" ? <Icon name="check"/> : STAGE_SHORT[type]}
                         </div>
                     </React.Fragment>
                 )
@@ -74,7 +75,7 @@ function ActsBlock({items, onSign}: { items: ActItem[]; onSign: (stageId: string
                         </div>
                         <button className="dash-acts__action" data-tour="btn-sign-act" onClick={() => onSign(stage.id)}
                                 style={{background: "none", border: "none", cursor: "pointer", fontFamily: "inherit"}}>
-                            Подписать <i className="bx bx-pen"/>
+                            Подписать <Icon name="pen"/>
                         </button>
                     </li>
                 ))}

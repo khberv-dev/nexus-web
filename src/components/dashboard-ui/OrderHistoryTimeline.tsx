@@ -2,6 +2,8 @@
 
 import {useCallback, useEffect, useState} from "react"
 import {usePathname} from "next/navigation"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type Anchor =
     | { kind: "hash"; hash: string }
@@ -401,7 +403,7 @@ export function OrderHistoryTimeline({
                                             fontSize: "0.8rem",
                                             fontWeight: 600
                                         }}>
-                                            <i className={`bx ${meta.icon}`}
+                                            <Icon name={stripBx(meta.icon)}
                                                style={{color: meta.color, fontSize: "0.9rem"}}/>
                                             {meta.label}
                                         </div>

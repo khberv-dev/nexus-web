@@ -15,6 +15,7 @@ import {getLevelBank, QUIZ_LEVEL_ORDER, toOriginalOptionIndex} from "@/lib/onboa
 import type {QuizLevelAttempt, QuizLevelCode} from "@/lib/onboarding/levels/types"
 import {parseStoredTestComment} from "@/lib/onboarding/nexus-quiz"
 import {LEVEL_TITLE} from "@/lib/onboarding/levels/titles"
+import {Icon} from "@/components/ui/icon"
 
 const LEVEL_LABELS = LEVEL_TITLE
 
@@ -73,7 +74,7 @@ export function TestAnswersModal({testModal, onClose}: Readonly<{
 
                 {attempts.length === 0 ? (
                     <div className="sp-modal-empty">
-                        <i className="bx bx-info-circle"/>
+                        <Icon name="info-circle"/>
                         <p className="sp-modal-empty__title">Попыток не найдено</p>
                         <p className="sp-modal-empty__sub">Специалист ещё не проходил тест или данные в старом
                             формате.</p>

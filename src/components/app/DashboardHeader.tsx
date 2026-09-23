@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react"
 import Link from "next/link"
 import {SignOutButton} from "@/components/auth/SignOutButton"
+import {Icon} from "@/components/ui/icon"
 
 export function DashboardHeader({
                                     userName,
@@ -38,7 +39,7 @@ export function DashboardHeader({
         >
             <div className="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
                 <a className="nav-item nav-link px-0 me-xl-6" href="#">
-                    <i className="icon-base bx bx-menu icon-md"/>
+                    <Icon name="menu" className="icon-base icon-md"/>
                 </a>
             </div>
 
@@ -96,7 +97,7 @@ export function DashboardHeader({
                                     <li>
                                         <Link className="dropdown-item" href="/work/settings"
                                               onClick={() => setOpen(false)}>
-                                            <i className="icon-base bx bx-user icon-md me-3"/>Профиль
+                                            <Icon name="user" className="icon-base icon-md me-3"/>Профиль
                                         </Link>
                                     </li>
                                     <li>
@@ -104,7 +105,7 @@ export function DashboardHeader({
                                     </li>
                                     <li>
                                         <SignOutButton className="dropdown-item" onOpen={() => setOpen(false)}>
-                                            <i className="icon-base bx bx-power-off icon-md me-3"/>Выйти
+                                            <Icon name="power-off" className="icon-base icon-md me-3"/>Выйти
                                         </SignOutButton>
                                     </li>
                                 </ul>

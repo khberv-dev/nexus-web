@@ -1,6 +1,7 @@
 "use client"
 
 import {type CSSProperties, useEffect, useMemo, useState} from "react"
+import {Icon} from "@/components/ui/icon"
 
 function isImageMime(mimeType: string | null | undefined, filename?: string) {
     if (mimeType?.startsWith("image/")) return true
@@ -87,7 +88,7 @@ export function PortfolioRemoteFilePreview({
     if (loading && !url) {
         return (
             <div style={{...boxStyle}}>
-                <i className="bx bx-loader-alt bx-spin" style={{fontSize: 22, color: "rgba(255,255,255,0.5)"}}
+                <Icon name="loader-alt" className="bx-spin" style={{fontSize: 22, color: "rgba(255,255,255,0.5)"}}
                    aria-hidden/>
             </div>
         )
@@ -133,8 +134,8 @@ export function PortfolioRemoteFilePreview({
 
     return (
         <div style={{...boxStyle, flexDirection: "column", gap: 4}} className="d-flex">
-            <i
-                className={`bx ${isVideoMime(mimeType, filename) ? "bx-movie-play" : "bx-file"}`}
+            <Icon
+                name={isVideoMime(mimeType, filename) ? "movie-play" : "file"}
                 style={{
                     fontSize: Math.min(32, (fillParent ? 120 : size) * 0.28),
                     opacity: 0.75,
@@ -171,7 +172,7 @@ export function PortfolioLocalFilePreview({file, size = 112}: { file: File; size
 
     return (
         <div style={{...boxStyle, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <i className="bx bx-file" style={{fontSize: 28, opacity: 0.7, color: "rgba(255,255,255,0.75)"}}
+            <Icon name="file" style={{fontSize: 28, opacity: 0.7, color: "rgba(255,255,255,0.75)"}}
                aria-hidden/>
         </div>
     )

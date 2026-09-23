@@ -30,6 +30,8 @@ import {
     TASKS,
 } from "./briefConfig"
 import {ADMIN_BRIEF_FIELD_GROUPS} from "@/lib/adminBriefFields"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type D = Record<string, string>
 
@@ -127,7 +129,7 @@ function StepObject({d, set}: { d: D; set: (k: string, v: string) => void }) {
                         color: d.objectType === t.label ? "var(--dash-accent)" : "var(--dash-text2)",
                         fontSize: "0.8rem",
                     }}>
-                        <div style={{fontSize: "1.4rem", marginBottom: 4}}><i className={t.icon}/></div>
+                        <div style={{fontSize: "1.4rem", marginBottom: 4}}><Icon name={stripBx(t.icon)}/></div>
                         {t.label}
                     </button>
                 ))}
@@ -362,7 +364,7 @@ function StepFiles({
                 aria-disabled={uploading}
             >
                 <div style={{display: "flex", alignItems: "center", gap: 10}}>
-                    <i className="bx bx-cloud-upload" style={{fontSize: "1.4rem", color: "var(--dash-muted)"}}/>
+                    <Icon name="cloud-upload" style={{fontSize: "1.4rem", color: "var(--dash-muted)"}}/>
                     <div style={{minWidth: 0}}>
                         <div style={{fontSize: "0.85rem", fontWeight: 600, color: "var(--dash-text)"}}>
                             Нажмите или перетащите файлы сюда
@@ -397,7 +399,7 @@ function StepFiles({
                             }}
                         >
                             <div style={{display: "flex", alignItems: "center", gap: 8, minWidth: 0}}>
-                                <i className="bx bx-file" style={{color: "var(--dash-accent)"}}/>
+                                <Icon name="file" style={{color: "var(--dash-accent)"}}/>
                                 <div style={{minWidth: 0}}>
                                     <div style={{
                                         fontSize: "0.82rem",
@@ -496,7 +498,7 @@ function StepFiles({
                             marginBottom: 8
                         }}>
                             <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                                <i className="bx bx-video" style={{color: "var(--dash-accent)"}}/>
+                                <Icon name="video" style={{color: "var(--dash-accent)"}}/>
                                 <div>
                                     <div style={{fontSize: "0.82rem", fontWeight: 600}}>Прикреплено</div>
                                     <div style={{
@@ -573,7 +575,7 @@ function StepReview({d}: { d: D }) {
                         alignItems: "center",
                         gap: 6
                     }}>
-                        <i className={`bx ${group.icon}`} style={{fontSize: "0.9rem"}}/>{group.label}
+                        <Icon name={stripBx(group.icon)} style={{fontSize: "0.9rem"}}/>{group.label}
                     </h3>
                     {filled.map(f => row(f.key, f.label, d[f.key]))}
                 </div>
@@ -629,7 +631,7 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
             borderTop: "1px solid var(--dash-border)",
         }}>
             <h3 style={{fontSize: "0.9rem", fontWeight: 600, color: "var(--dash-text)", margin: "0 0 6px"}}>
-                <i className="bx bx-planet" style={{marginRight: 6, color: "var(--dash-accent)"}}/>
+                <Icon name="planet" style={{marginRight: 6, color: "var(--dash-accent)"}}/>
                 Предсказанный дизайн от ИИ
             </h3>
             <p style={{fontSize: "0.78rem", lineHeight: 1.5, color: "var(--dash-warn, #ff9f43)", margin: "0 0 12px"}}>
@@ -654,7 +656,7 @@ function AiInteriorPreview({orderId}: { orderId: string }) {
                     opacity: loading ? 0.7 : 1,
                 }}
             >
-                <i className={`bx ${loading ? "bx-loader-alt bx-spin" : "bx-planet"}`} style={{marginRight: 6}}/>
+                <Icon name={stripBx(loading ? "bx-loader-alt bx-spin" : "bx-planet")} style={{marginRight: 6}}/>
                 {loading ? "Генерируем 4 варианта…" : images.length > 0 ? "Сгенерировать заново" : "Показать, как это может выглядеть"}
             </button>
 
@@ -1269,7 +1271,7 @@ export default function NewOrderPage() {
                                                 fontFamily: "inherit",
                                             }}
                                         >
-                                            <i className={`bx ${helpRequested ? "bx-check" : "bx-support"}`}
+                                            <Icon name={stripBx(helpRequested ? "bx-check" : "bx-support")}
                                                style={{marginRight: 4, verticalAlign: "middle"}}/>
                                             {helpRequested ? "Менеджер уведомлен" : "Нужна помощь менеджера"}
                                         </button>
@@ -1422,7 +1424,7 @@ export default function NewOrderPage() {
                     e.currentTarget.style.boxShadow = "none"
                 }}
             >
-                <i className={`bx ${helpRequested ? "bx-check-circle" : confirmHelp ? "bx-error" : "bx-help-circle"}`}/>
+                <Icon name={stripBx(helpRequested ? "bx-check-circle" : confirmHelp ? "bx-error" : "bx-help-circle")}/>
             </button>
 
             {/* Toast */}
@@ -1434,7 +1436,7 @@ export default function NewOrderPage() {
                     display: "flex", alignItems: "center", gap: 10, fontSize: "0.84rem", color: "var(--dash-text)",
                     animation: "toast-in 0.3s ease",
                 }}>
-                    <i className="bx bx-check-circle"
+                    <Icon name="check-circle"
                        style={{color: "var(--dash-success, #2d6a2d)", fontSize: "1.2rem"}}/>
                     {toast}
                 </div>

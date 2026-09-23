@@ -1,6 +1,8 @@
 "use client"
 import Link from "next/link"
 import {usePathname} from "next/navigation"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const navItems = [
     {href: "/work", icon: "bx bx-briefcase", label: "Мои заказы"},
@@ -26,7 +28,7 @@ export default function Sidebar() {
                 {navItems.map(({href, icon, label}) => (
                     <li key={href} className={`menu-item${pathname === href ? " active" : ""}`}>
                         <Link href={href} className="menu-link">
-                            <i className={`menu-icon tf-icons ${icon}`}/>
+                            <Icon name={stripBx(icon)} className="menu-icon tf-icons"/>
                             <div className="text-truncate">{label}</div>
                         </Link>
                     </li>

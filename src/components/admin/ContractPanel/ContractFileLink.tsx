@@ -1,6 +1,7 @@
 "use client"
 
 import type {ContractFileLinkProps} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 export function ContractFileLink({contractId, s3Key, label}: ContractFileLinkProps) {
     if (!s3Key) return null
@@ -18,7 +19,7 @@ export function ContractFileLink({contractId, s3Key, label}: ContractFileLinkPro
                 textDecoration: "none",
             }}
         >
-            <i className="bx bx-download"/>
+            <Icon name="download"/>
             {label}
         </a>
     )

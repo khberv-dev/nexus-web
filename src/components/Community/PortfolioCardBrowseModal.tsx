@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useState} from "react"
 import type {CardAttachment, CardFile, PortfolioCard} from "./PortfolioCardEditorModal"
+import {Icon} from "@/components/ui/icon"
 
 async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     const res = await fetch(input, init)
@@ -126,13 +127,13 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                 {u && isPdf(a.file) && (
                     <a href={u} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-light"
                        download>
-                        <i className="bx bx-download me-1"/>
+                        <Icon name="download" className="me-1"/>
                         Скачать PDF
                     </a>
                 )}
                 {u && !isImage(a.file) && !isVideo(a.file) && !isPdf(a.file) && (
                     <a href={u} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline-light">
-                        <i className="bx bx-link-external me-1"/>
+                        <Icon name="link-external" className="me-1"/>
                         Скачать / открыть
                     </a>
                 )}
@@ -189,7 +190,7 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                     </div>
                     <div className="d-flex gap-2 flex-shrink-0">
                         <button type="button" className="btn btn-sm btn-primary" onClick={onEdit}>
-                            <i className="bx bx-edit-alt me-1"/>
+                            <Icon name="edit-alt" className="me-1"/>
                             Изменить
                         </button>
                         <button type="button" className="btn btn-sm btn-outline-light" onClick={onClose}>
@@ -216,7 +217,7 @@ export function PortfolioCardBrowseModal({card, onClose, onEdit}: PortfolioCardB
                         {c.mainFile && mainUrl && !isImage(c.mainFile) && !isVideo(c.mainFile) && (
                             <a href={mainUrl} target="_blank" rel="noopener noreferrer"
                                className="btn btn-outline-light">
-                                <i className="bx bx-link-external me-1"/>
+                                <Icon name="link-external" className="me-1"/>
                                 Открыть основной файл
                             </a>
                         )}

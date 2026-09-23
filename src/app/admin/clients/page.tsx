@@ -1,5 +1,6 @@
 import {redirect} from "next/navigation"
 import {legacyAdminClientRedirect} from "@/lib/admin-routes"
+import {Icon} from "@/components/ui/icon"
 
 export default async function AdminClientsPage({searchParams}: {
     searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -9,7 +10,7 @@ export default async function AdminClientsPage({searchParams}: {
 
     return (
         <div className="cl-detail-empty">
-            <i className="bx bx-user"/>
+            <Icon name="user"/>
             <p>Выберите заказчика</p>
         </div>
     )

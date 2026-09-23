@@ -2,6 +2,7 @@ import Link from "next/link"
 import {adminClientHref, adminOrderHref} from "@/lib/admin-routes"
 import type {SpecialistOrder} from "../../types"
 import {SPEC_ORDER_STATUS_LABEL} from "./constants"
+import {Icon} from "@/components/ui/icon"
 
 export function SpecialistOrdersTab({
                                         ordersLoading,
@@ -22,7 +23,7 @@ export function SpecialistOrdersTab({
         return (
             <div>
                 <div className="sp-orders-placeholder">
-                    <i className="bx bx-folder-open"/>
+                    <Icon name="folder-open"/>
                     <p>У специалиста пока нет заказов</p>
                 </div>
             </div>

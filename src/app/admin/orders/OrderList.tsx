@@ -6,6 +6,7 @@ import {BRIEF_WIZARD_STEP_COUNT, briefWizardStepLabel} from "@/lib/clientBriefDi
 import {orderListRowHint} from "./order-list-hint"
 import type {Order, OrderStatus} from "./types"
 import {ORDER_LABEL, ORDER_VARIANT} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 function hintStyle(kind: ReturnType<typeof orderListRowHint>["kind"]): CSSProperties {
     const base: CSSProperties = {
@@ -71,7 +72,7 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
                 <span className="sp-badge">{filtered.length}</span>
             </div>
             <div className="sp-search">
-                <i className="bx bx-search sp-search-icon"/>
+                <Icon name="search" className="sp-search-icon"/>
                 <input type="text" className="sp-search-input" placeholder="Поиск…" value={search}
                        onChange={e => onSearch(e.target.value)}/>
             </div>
@@ -151,19 +152,16 @@ export function OrderList({filtered, loading, selected, search, filter, onSelect
                                         }}
                                         title={`Этап брифа: ${briefWizardStepLabel(o.briefStep)}`}
                                     >
-                    <i className="bx bx-edit-alt" style={{marginRight: 3}}/>
+                    <Icon name="edit-alt" style={{marginRight: 3}}/>
                     бриф {Math.min(o.briefStep + 1, BRIEF_WIZARD_STEP_COUNT)}/{BRIEF_WIZARD_STEP_COUNT}
                   </span>
                                 )}
                                 {o.briefHelpRequested &&
-                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><i
-                                        className="bx bx-support" style={{marginRight: 3}}/>помощь</span>}
+                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><Icon name="support" style={{marginRight: 3}}/>помощь</span>}
                                 {modStages.length > 0 &&
-                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><i
-                                        className="bx bx-time" style={{marginRight: 3}}/>модерация</span>}
+                                    <span className="sp-badge sp-badge--danger" style={{fontSize: "0.6rem"}}><Icon name="time" style={{marginRight: 3}}/>модерация</span>}
                                 {needsAssign &&
-                                    <span className="sp-badge sp-badge--warn" style={{fontSize: "0.6rem"}}><i
-                                        className="bx bx-user-plus" style={{marginRight: 3}}/>специалист</span>}
+                                    <span className="sp-badge sp-badge--warn" style={{fontSize: "0.6rem"}}><Icon name="user-plus" style={{marginRight: 3}}/>специалист</span>}
                             </div>
                         )}
                     </div>

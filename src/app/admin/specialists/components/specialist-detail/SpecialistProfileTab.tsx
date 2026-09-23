@@ -6,6 +6,7 @@ import {AdminAccordion} from "@/components/admin/AdminAccordion"
 import {AuditTimeline} from "@/components/admin/AuditTimeline"
 import {PlatformMetaCard, QuestionnaireCard, RejectionHistoryCard, SystemInfoCard} from "./cards"
 import {RequisiteChangesCard} from "./cards/RequisiteChangesCard"
+import {Icon} from "@/components/ui/icon"
 
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
@@ -102,7 +103,7 @@ export function SpecialistProfileTab({
                                     badge={fd ? `${Object.values(fd).filter(Boolean).length} полей` : "не заполнена"}
                                     defaultOpen>
                         {fd ? <QuestionnaireCard formData={fdWithPhone}/> : (
-                            <div className="sp-warn"><i className="bx bx-info-circle" style={{marginRight: 6}}/>Анкета
+                            <div className="sp-warn"><Icon name="info-circle" style={{marginRight: 6}}/>Анкета
                                 не заполнена</div>
                         )}
                     </AdminAccordion>
@@ -144,7 +145,7 @@ export function SpecialistProfileTab({
                     padding: 14
                 }}>
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 10}}>
-                        <i className="bx bx-history" style={{color: "var(--adm-active-color)"}}/>
+                        <Icon name="history" style={{color: "var(--adm-active-color)"}}/>
                         <span style={{
                             fontSize: "0.72rem",
                             fontWeight: 600,

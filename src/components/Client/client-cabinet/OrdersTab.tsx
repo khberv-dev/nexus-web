@@ -4,6 +4,7 @@ import Link from "next/link"
 import type {ClientOrder} from "./types"
 import {DashListHeader} from "@/components/dashboard-ui/DashListHeader"
 import {OrdersListView} from "./OrdersListView"
+import {Icon} from "@/components/ui/icon"
 
 export function OrdersTab({
                               orders,
@@ -17,7 +18,7 @@ export function OrdersTab({
                 action={
                     <Link href="/orders/new" className="dash-hero-project-btn dash-cta-new-project"
                           data-tour="btn-create-order">
-                        <i className="bx bx-plus" aria-hidden/>
+                        <Icon name="plus" aria-hidden/>
                         Создать проект
                     </Link>
                 }

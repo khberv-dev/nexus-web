@@ -2,6 +2,8 @@
 
 import type {AdminPendingDraft, AdminStageReleaseWave, AudienceSetter, PreviewOpener} from "./types"
 import {WaveFiles} from "./WaveFiles"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 function formatStageDt(iso: string) {
     return new Date(iso).toLocaleString("ru-RU", {
@@ -110,13 +112,13 @@ export function WaveCardUnified({
                     }}
                 >
           <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
-            <i className="bx bx-message-square-dots" style={{color: "var(--adm-muted)"}}/>
+            <Icon name="message-square-dots" style={{color: "var(--adm-muted)"}}/>
             Замечания и решения
             <span style={{color: "var(--adm-muted)", fontWeight: 600, fontSize: "0.7rem"}}>
               · модератор {moderatorRejections.length} · заказчик {clientRejections.length}
             </span>
           </span>
-                    <i className="bx bx-chevron-down" style={{color: "var(--adm-muted)"}}/>
+                    <Icon name="chevron-down" style={{color: "var(--adm-muted)"}}/>
                 </summary>
 
                 <div style={{marginTop: 10}}>
@@ -239,7 +241,7 @@ export function WaveCardUnified({
                                         }}
                                     >
                     <span style={{display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0}}>
-                      <i className={`bx ${isRejected ? "bx-x-circle" : "bx-layer-plus"}`}
+                      <Icon name={stripBx(isRejected ? "bx-x-circle" : "bx-layer-plus")}
                          style={{color: isRejected ? "#ef4444" : "var(--adm-muted)"}}/>
                         {b.label}
                         <span style={{

@@ -6,6 +6,7 @@ import {SPEC_CONTRACT_STATUS_LABEL} from "../constants"
 import type {RawSpecialist} from "../../../types"
 import {confirmDialog} from "@/lib/dialog-store"
 import {toast} from "sonner"
+import {Icon} from "@/components/ui/icon"
 
 const CONTRACT_LOCK_HINT: Record<string, string> = {
     AWAITING_SIGNATURE: "Ожидает подписи специалиста — новую версию можно загрузить после отказа",
@@ -122,7 +123,7 @@ export function PlatformContractCard({
                             style={{fontSize: "0.78rem"}}
                             onClick={() => void openContract("source")}
                         >
-                            <i className="bx bx-download" style={{marginRight: 4}}/>
+                            <Icon name="download" style={{marginRight: 4}}/>
                             Исходный PDF
                         </button>
                     )}
@@ -133,7 +134,7 @@ export function PlatformContractCard({
                             style={{fontSize: "0.78rem"}}
                             onClick={() => void openContract("signed")}
                         >
-                            <i className="bx bx-file" style={{marginRight: 4}}/>
+                            <Icon name="file" style={{marginRight: 4}}/>
                             Подписанный PDF
                         </button>
                     )}

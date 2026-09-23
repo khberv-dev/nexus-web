@@ -4,6 +4,8 @@ import {useState} from "react"
 import type {Contract, ContractStatus} from "@/app/orders/[id]/types"
 import {DocumentUpload} from "@/components/app/DocumentUpload"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 interface Props {
     contract: Contract | null
@@ -173,7 +175,7 @@ function ContractFileLink({contractId, s3Key, label}: { contractId: string; s3Ke
                 textDecoration: "none"
             }}
         >
-            <i className="bx bx-download"/>
+            <Icon name="download"/>
             {label}
         </a>
     )
@@ -240,7 +242,7 @@ export function ClientContractPanel({contract, orderId, userRole, onUploadSigned
             </div>
 
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 12, fontSize: "0.85rem"}}>
-                <i className={`bx ${icon}`} style={{color: "var(--dash-accent)"}}/>
+                <Icon name={stripBx(icon)} style={{color: "var(--dash-accent)"}}/>
                 <span style={{color: "var(--dash-text2)"}}>{label}</span>
             </div>
 

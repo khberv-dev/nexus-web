@@ -3,6 +3,8 @@
 import type {RefObject} from "react"
 import {MediaWithLoader} from "./MediaWithLoader"
 import {MUTE_BTN_STYLE} from "./styles"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 interface IntroVideoPlayerProps {
     videoRef: RefObject<HTMLVideoElement | null>
@@ -32,7 +34,7 @@ export function IntroVideoPlayer({videoRef, src, muted, onToggleMute, objectFit 
                 aria-label={muted ? "Включить звук" : "Выключить звук"}
                 style={MUTE_BTN_STYLE}
             >
-                <i className={`bx ${muted ? "bx-volume-mute" : "bx-volume-full"}`}/>
+                <Icon name={stripBx(muted ? "bx-volume-mute" : "bx-volume-full")}/>
             </button>
         </>
     )

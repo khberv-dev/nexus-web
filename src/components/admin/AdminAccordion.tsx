@@ -1,6 +1,8 @@
 "use client"
 
 import {type ReactNode, useState} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const border = "var(--adm-sidebar-border, rgba(0,0,0,0.08))"
 const hoverBg = "var(--adm-hover-bg, rgba(0,0,0,0.03))"
@@ -41,12 +43,12 @@ export function AdminAccordion({icon, title, badge, defaultOpen = false, childre
                 }}
             >
         <span style={{display: "flex", alignItems: "center", gap: 10, minWidth: 0}}>
-          <i className={`bx ${icon}`} style={{fontSize: "1.15rem", color: "var(--adm-active-color)", flexShrink: 0}}/>
+          <Icon name={stripBx(icon)} style={{fontSize: "1.15rem", color: "var(--adm-active-color)", flexShrink: 0}}/>
           <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--adm-text)"}}>{title}</span>
             {badge && <span
                 style={{fontSize: "0.72rem", color: "var(--adm-muted)", fontWeight: 500, flexShrink: 0}}>{badge}</span>}
         </span>
-                <i className={`bx ${open ? "bx-chevron-up" : "bx-chevron-down"}`}
+                <Icon name={stripBx(open ? "bx-chevron-up" : "bx-chevron-down")}
                    style={{color: "var(--adm-muted)", flexShrink: 0}}/>
             </button>
             {open && <div style={{padding: "4px 14px 14px"}}>{children}</div>}

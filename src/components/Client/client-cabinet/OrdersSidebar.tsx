@@ -8,6 +8,7 @@ import {ORDER_HUE, ORDER_STATUS_MAP} from "./constants"
 import {DeleteButton, HelpButton} from "./OrderListActions"
 import {formatOrderObjectType, formatOrderSum, orderStageSummary,} from "./order-filter"
 import type {ClientOrder, ClientPayment} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 function OrderCardActionsMenu({
                                   order,
@@ -61,7 +62,7 @@ function OrderCardActionsMenu({
                     setOpen(v => !v)
                 }}
             >
-                <i className="bx bx-dots-horizontal-rounded"/>
+                <Icon name="dots-horizontal-rounded"/>
                 Действия
             </button>
             {open && (
@@ -162,7 +163,7 @@ export function OrdersSidebar({
                             onClick={() => scrollSection(sectionKey, "left")}
                             aria-label="Прокрутить карточки влево"
                         >
-                            <i className="bx bx-chevron-left"/>
+                            <Icon name="chevron-left"/>
                         </button>
                     )}
                     {scrollState.canRight && (
@@ -172,7 +173,7 @@ export function OrdersSidebar({
                             onClick={() => scrollSection(sectionKey, "right")}
                             aria-label="Прокрутить карточки вправо"
                         >
-                            <i className="bx bx-chevron-right"/>
+                            <Icon name="chevron-right"/>
                         </button>
                     )}
                     <ul
@@ -225,7 +226,7 @@ export function OrdersSidebar({
                                             <span className="dash-card__icon-badge dash-card__icon-badge--help"
                                                   title="Помощь менеджера: запрос отправлен"
                                                   aria-label="Помощь менеджера: запрос отправлен">
-                        <i className="bx bx-support"/>
+                        <Icon name="support"/>
                       </span>
                                         ) : undefined
                                     }
@@ -273,37 +274,37 @@ export function OrdersSidebar({
             <div className="dash-order-icons-legend" aria-label="Расшифровка иконок карточки заказа">
         <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--status dash-card__icon-badge--status-pending">
-            <i className="bx bx-edit-alt"/>
+            <Icon name="edit-alt"/>
           </span>
           <span>Черновик / ожидание</span>
         </span>
                 <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--status dash-card__icon-badge--status-current">
-            <i className="bx bx-loader-circle"/>
+            <Icon name="loader-circle"/>
           </span>
           <span>На проверке</span>
         </span>
                 <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--status dash-card__icon-badge--status-active">
-            <i className="bx bx-time-five"/>
+            <Icon name="time-five"/>
           </span>
           <span>В работе</span>
         </span>
                 <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--status dash-card__icon-badge--status-done">
-            <i className="bx bx-check-circle"/>
+            <Icon name="check-circle"/>
           </span>
           <span>Завершен</span>
         </span>
                 <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--status dash-card__icon-badge--status-rejected">
-            <i className="bx bx-x-circle"/>
+            <Icon name="x-circle"/>
           </span>
           <span>Отменен</span>
         </span>
                 <span className="dash-order-icons-legend__item">
           <span className="dash-card__icon-badge dash-card__icon-badge--help">
-            <i className="bx bx-support"/>
+            <Icon name="support"/>
           </span>
           <span>Запрос помощи менеджера</span>
         </span>

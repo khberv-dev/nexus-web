@@ -12,6 +12,7 @@ import type {OrderDetail} from "./OrderDetail"
 import {adminOrderHref} from "@/lib/admin-routes"
 import {replaceQueryParams} from "@/lib/client/url-query"
 import "./orders.css"
+import {Icon} from "@/components/ui/icon"
 
 const STATUS_FILTERS = ["ALL", "DRAFT", "BRIEFING", "BRIEF_REVIEW", "ACTIVE", "DONE", "CANCELLED"] as const
 
@@ -410,7 +411,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
                                         ? ORDER_LABEL[changePrompt.from]
                                         : STAGE_STATUS_LABEL[changePrompt.kind === "stageApprove" ? "MOD_REVIEW" : "CLIENT_REVISION"]}
                                 </span>
-                                <i className="bx bx-right-arrow-alt" aria-hidden style={{fontSize: "1.2rem"}}/>
+                                <Icon name="right-arrow-alt" aria-hidden style={{fontSize: "1.2rem"}}/>
                                 <strong style={{color: "var(--adm-text)"}}>
                                     {changePrompt.kind === "order"
                                         ? ORDER_LABEL[changePrompt.to]

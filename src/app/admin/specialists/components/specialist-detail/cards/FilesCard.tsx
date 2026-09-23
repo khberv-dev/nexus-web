@@ -1,6 +1,7 @@
 import {FILE_CATEGORY_LABEL} from "../constants"
 import {openAdminFileDownload} from "../utils"
 import type {RawSpecialist} from "../../../types"
+import {Icon} from "@/components/ui/icon"
 
 export function FilesCard({files}: { files: RawSpecialist["files"] }) {
     if (files.length === 0) return null
@@ -27,7 +28,7 @@ export function FilesCard({files}: { files: RawSpecialist["files"] }) {
                 {FILE_CATEGORY_LABEL[f.category] ?? f.category}
               </span>
                             <div style={{fontSize: "0.8rem", marginTop: 2}}>
-                                <i className="bx bx-file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
+                                <Icon name="file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
                                 {f.filename ?? "Файл"}
                             </div>
                         </div>
@@ -37,7 +38,7 @@ export function FilesCard({files}: { files: RawSpecialist["files"] }) {
                             style={{flexShrink: 0, fontSize: "0.72rem"}}
                             onClick={() => void openAdminFileDownload(f.id)}
                         >
-                            <i className="bx bx-download"/> Скачать
+                            <Icon name="download"/> Скачать
                         </button>
                     </div>
                 ))}

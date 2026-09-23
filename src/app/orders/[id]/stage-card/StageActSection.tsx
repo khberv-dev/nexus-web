@@ -6,6 +6,7 @@ import {ACT_STATUS_LABEL} from "../types"
 import {actWaitingMessage} from "./actWaitingMessage"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {Icon} from "@/components/ui/icon"
 
 export function StageActSection({
                                     stage,
@@ -48,8 +49,8 @@ export function StageActSection({
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                <i
-                    className={`bx ${clientActSubmitted ? "bx-check-circle" : clientCanUploadSignedAct ? "bx-edit" : "bx-time-five"}`}
+                <Icon
+                    name={clientActSubmitted ? "check-circle" : clientCanUploadSignedAct ? "edit" : "time-five"}
                     style={{
                         fontSize: "1.1rem",
                         color: clientActSubmitted ? "var(--dash-success)" : clientCanUploadSignedAct ? "var(--dash-accent)" : "var(--dash-muted)",
@@ -108,14 +109,14 @@ export function StageActSection({
                             gap: 8,
                             flexWrap: "wrap"
                         }}>
-                            <i className="bx bx-file-pdf" style={{color: "#e74c3c"}}/>
+                            <Icon name="file-pdf" style={{color: "#e74c3c"}}/>
                             <a
                                 href={`/api/stages/${stage.id}/act/download`}
                                 target="_blank"
                                 rel="noreferrer"
                                 style={{color: "var(--dash-accent)", textDecoration: "none", fontWeight: 500}}
                             >
-                                <i className="bx bx-download" style={{marginRight: 4}}/>
+                                <Icon name="download" style={{marginRight: 4}}/>
                                 Скачать акт от дизайнера
                             </a>
                         </div>
@@ -202,7 +203,7 @@ export function StageActSection({
                             fontFamily: "inherit",
                         }}
                     >
-                        <i className="bx bx-upload"/>
+                        <Icon name="upload"/>
                         {actUploading ? "Загрузка…" : "Загрузить подписанный акт (PDF)"}
                     </label>
                     {uploadItem ? (

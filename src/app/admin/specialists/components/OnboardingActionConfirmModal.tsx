@@ -2,6 +2,7 @@
 
 import {Modal} from "@/components/ui/modal"
 import {buildOnboardingActionConfirm, type OnboardingConfirmInput} from "../onboarding-confirm"
+import {Icon} from "@/components/ui/icon"
 
 /**
  * Красное подтверждение для ручных действий админа над онбордингом.
@@ -29,7 +30,7 @@ export function OnboardingActionConfirmModal({
             {content && request && (
                 <div className="sp-danger-modal">
                     <div className="sp-danger-modal__head">
-                        <i className="bx bx-error sp-danger-modal__icon"/>
+                        <Icon name="error" className="sp-danger-modal__icon"/>
                         <div>
                             <h5 className="sp-danger-modal__title">{content.title}</h5>
                             <p className="sp-danger-modal__sub">{content.subtitle}</p>
@@ -50,7 +51,7 @@ export function OnboardingActionConfirmModal({
                         )}
 
                         <p className="sp-danger-modal__note">
-                            <i className="bx bx-envelope" style={{marginRight: 5}}/>
+                            <Icon name="envelope" style={{marginRight: 5}}/>
                             Специалист получит письмо об этом на почту.
                         </p>
                     </div>

@@ -13,6 +13,7 @@ import type {ClientCabinetProps} from "./types"
 import {HintTour, HintTourLauncher} from "@/components/app/HintTour"
 import {buildClientHintSteps} from "@/components/app/hint-tour-steps"
 import {ClientCabinetContext} from "./ClientCabinetSections"
+import {Icon} from "@/components/ui/icon"
 
 export default function ClientCabinetPage({
                                               name,
@@ -126,7 +127,7 @@ export default function ClientCabinetPage({
                                         fontWeight: 600,
                                     }}
                                 >
-                                    <i className="bx bx-bell"/>
+                                    <Icon name="bell"/>
                                     {needsAction} проект{needsAction > 1 ? "а" : ""} ожидают решения
                                 </div>
                             )}

@@ -8,6 +8,8 @@ import {
     resolveClientProfileValue,
 } from "@/lib/clientProfileDisplay"
 import {EDO_PROVIDER_OPTIONS, parseEdoProviders} from "@/lib/edo-providers"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const border = "var(--adm-sidebar-border, rgba(0,0,0,0.08))"
 const hoverBg = "var(--adm-hover-bg, rgba(0,0,0,0.03))"
@@ -98,14 +100,14 @@ export function AdminClientProfileAccordion({
                             }}
                         >
               <span style={{display: "flex", alignItems: "center", gap: 10, minWidth: 0}}>
-                <i className={`bx ${section.icon}`}
+                <Icon name={stripBx(section.icon)}
                    style={{fontSize: "1.15rem", color: "var(--adm-active-color)", flexShrink: 0}}/>
                 <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--adm-text)"}}>{section.label}</span>
                 <span style={{fontSize: "0.72rem", color: "var(--adm-muted)", fontWeight: 500, flexShrink: 0}}>
                   {filled}/{total}
                 </span>
               </span>
-                            <i className={`bx ${expanded ? "bx-chevron-up" : "bx-chevron-down"}`}
+                            <Icon name={stripBx(expanded ? "bx-chevron-up" : "bx-chevron-down")}
                                style={{color: "var(--adm-muted)", flexShrink: 0}}/>
                         </button>
                         {expanded && (
@@ -208,14 +210,14 @@ export function AdminClientProfileAccordion({
                             }}
                         >
               <span style={{display: "flex", alignItems: "center", gap: 10, minWidth: 0}}>
-                <i className="bx bx-link-alt"
+                <Icon name="link-alt"
                    style={{fontSize: "1.15rem", color: "var(--adm-active-color)", flexShrink: 0}}/>
                 <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--adm-text)"}}>Электронный документооборот</span>
                 <span style={{fontSize: "0.72rem", color: "var(--adm-muted)", fontWeight: 500, flexShrink: 0}}>
                   {edoFilled}/{EDO_PROVIDER_OPTIONS.length}
                 </span>
               </span>
-                            <i className={`bx ${expanded ? "bx-chevron-up" : "bx-chevron-down"}`}
+                            <Icon name={stripBx(expanded ? "bx-chevron-up" : "bx-chevron-down")}
                                style={{color: "var(--adm-muted)", flexShrink: 0}}/>
                         </button>
                         {expanded && (
@@ -278,10 +280,10 @@ export function AdminClientProfileAccordion({
                     }}
                 >
           <span style={{display: "flex", alignItems: "center", gap: 10}}>
-            <i className="bx bx-cog" style={{fontSize: "1.15rem", color: "var(--adm-active-color)"}}/>
+            <Icon name="cog" style={{fontSize: "1.15rem", color: "var(--adm-active-color)"}}/>
             <span style={{fontWeight: 600, fontSize: "0.88rem", color: "var(--adm-text)"}}>Системная информация</span>
           </span>
-                    <i className={`bx ${open.system === true ? "bx-chevron-up" : "bx-chevron-down"}`}
+                    <Icon name={stripBx(open.system === true ? "bx-chevron-up" : "bx-chevron-down")}
                        style={{color: "var(--adm-muted)"}}/>
                 </button>
                 {open.system === true && (
@@ -298,7 +300,7 @@ export function AdminClientProfileAccordion({
                                     fontSize: "0.82rem",
                                 }}
                             >
-                                <i className={`bx ${row.icon}`}
+                                <Icon name={stripBx(row.icon)}
                                    style={{color: "var(--adm-muted)", width: 20, textAlign: "center", flexShrink: 0}}/>
                                 <span
                                     style={{color: "var(--adm-muted)", minWidth: 100, flexShrink: 0}}>{row.label}</span>

@@ -1,5 +1,7 @@
 "use client"
 import React, {useCallback, useEffect} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 // ─── Card ────────────────────────────────────────────────────────────────────
 
@@ -77,7 +79,7 @@ export function StatusBadge({variant, label}: { variant: StatusVariant; label: s
 export function InfoRow({icon, label, value, href}: { icon: string; label: string; value: string; href?: string }) {
     return (
         <div className="d-flex align-items-start gap-2 mb-2">
-            <i className={`bx ${icon} text-muted mt-1`}/>
+            <Icon name={stripBx(icon)} className="text-muted mt-1"/>
             <div>
                 <div className="text-uppercase text-muted"
                      style={{fontSize: "0.7rem", letterSpacing: "0.05em"}}>{label}</div>
@@ -178,7 +180,7 @@ export function ActionButton({variant = "ghost", icon, children, className = "",
     const cls = variant === "primary" ? "btn btn-primary" : variant === "danger" ? "btn btn-danger" : "btn btn-outline-secondary"
     return (
         <button {...props} className={`${cls} ${className}`}>
-            {icon && <i className={`bx ${icon} me-1`}/>}
+            {icon && <Icon name={stripBx(icon)} className="me-1"/>}
             {children}
         </button>
     )

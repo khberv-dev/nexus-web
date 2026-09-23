@@ -1,4 +1,6 @@
 import type {CSSProperties, ReactNode} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 import {DashSurfaceCard} from "./DashSurfaceCard"
 
 export function DashSettingsSection({
@@ -19,7 +21,7 @@ export function DashSettingsSection({
             {title ? (
                 <h3 style={{fontSize: "0.82rem", fontWeight: 600, margin: "0 0 12px", color: "var(--dash-text)"}}>
                     {iconClass ?
-                        <i className={iconClass} style={{marginRight: 6, color: "var(--dash-accent)"}}/> : null}
+                        <Icon name={stripBx(iconClass)} style={{marginRight: 6, color: "var(--dash-accent)"}}/> : null}
                     {title}
                 </h3>
             ) : null}

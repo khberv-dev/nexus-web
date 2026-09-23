@@ -4,6 +4,7 @@ import {FileAudienceBadge} from "@/components/app/FileAudienceBadge"
 import {FileThumbnail} from "../FileThumbnail"
 import {isMediaFilename} from "../media"
 import type {AudienceSetter, PreviewOpener, StageFileLite} from "./types"
+import {Icon} from "@/components/ui/icon"
 
 export function WaveFiles({
                               stageId,
@@ -61,7 +62,7 @@ export function WaveFiles({
                                     color: "inherit",
                                 }}
                             >
-                                <i className="bx bx-download"/>
+                                <Icon name="download"/>
                                 {f.filename}
                             </a>
                             <FileAudienceBadge audience={f.audience ?? undefined}/>

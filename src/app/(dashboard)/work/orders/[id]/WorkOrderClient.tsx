@@ -25,6 +25,7 @@ import {stagePurpose, stageStatusGuidance} from "@/app/orders/[id]/work/stageGui
 import {getOrderBriefDisplayLabels} from "@/lib/order-brief-display"
 import {SpecialistStageWorkBody} from "./SpecialistStageWorkBody"
 import {stageStatusLabelForViewer} from "@/lib/stage-status-ui"
+import {Icon} from "@/components/ui/icon"
 
 const StageImageMarkup = dynamic(() => import("@/components/stage/StageImageMarkup"), {ssr: false})
 
@@ -111,7 +112,7 @@ function FilePreviewModal({
                                 color: "#fff",
                                 textAlign: "center"
                             }}>
-                                <i className="bx bx-file"
+                                <Icon name="file"
                                    style={{fontSize: "3rem", marginBottom: 12, display: "block"}}/>
                                 <p style={{margin: "0 0 16px"}}>{filename}</p>
                                 <a href={url} target="_blank" rel="noreferrer"
@@ -447,7 +448,7 @@ export default function WorkOrderClient({
                                             lineHeight: 1.45,
                                             color: "var(--dash-text2)"
                                         }}>
-                                            <i className="bx bx-support" style={{
+                                            <Icon name="support" style={{
                                                 color: "var(--dash-warn)",
                                                 fontSize: "1.15rem",
                                                 flexShrink: 0,
@@ -476,7 +477,7 @@ export default function WorkOrderClient({
                                             style={{padding: "0.45em 0.8em", fontSize: "0.78rem"}}
                                             onClick={() => void loadBriefFiles()}
                                         >
-                                            <i className="bx bx-paperclip" aria-hidden/>
+                                            <Icon name="paperclip" aria-hidden/>
                                             {briefFilesLoaded ? "Обновить" : "Показать"}
                                         </button>
                                     </div>
@@ -508,7 +509,7 @@ export default function WorkOrderClient({
                                                         textOverflow: "ellipsis",
                                                         whiteSpace: "nowrap"
                                                     }}>{f.filename}</span>
-                                                    <i className="bx bx-download" style={{color: "var(--dash-muted)"}}
+                                                    <Icon name="download" style={{color: "var(--dash-muted)"}}
                                                        aria-hidden/>
                                                 </a>
                                             ))}
@@ -656,7 +657,7 @@ export default function WorkOrderClient({
                                                     fontWeight: 700,
                                                 }}
                                             >
-                                                <i className="bx bx-book-open"
+                                                <Icon name="book-open"
                                                    style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}
                                                    aria-hidden/>
                                                 Правила этапа (скачать)
@@ -680,7 +681,7 @@ export default function WorkOrderClient({
                                                 fontSize: "0.85rem",
                                                 fontWeight: 700
                                             }}>
-                                                <i className="bx bx-book-open"
+                                                <Icon name="book-open"
                                                    style={{color: "var(--dash-muted)", fontSize: "1.05rem"}}
                                                    aria-hidden/>
                                                 Правила этапа
@@ -702,7 +703,7 @@ export default function WorkOrderClient({
                                 <Link href={`/work/orders/${order.id}`} prefetch={false}
                                       className="dash-header__btn dash-header__btn--primary"
                                       style={{width: "100%", justifyContent: "center", boxSizing: "border-box"}}>
-                                    <i className="bx bx-left-arrow-alt" aria-hidden/>
+                                    <Icon name="left-arrow-alt" aria-hidden/>
                                     К заказу и брифу
                                 </Link>
                             </div>
@@ -720,7 +721,7 @@ export default function WorkOrderClient({
                                 }}>
                                     <Link href={`/work/orders/${order.id}`} prefetch={false}
                                           className="dash-header__btn dash-header__btn--primary">
-                                        <i className="bx bx-left-arrow-alt" aria-hidden/>
+                                        <Icon name="left-arrow-alt" aria-hidden/>
                                         К заказу
                                     </Link>
                                 </div>

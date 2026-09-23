@@ -8,6 +8,7 @@ import {SPECIALIST_CABINET_LOGO_HREF} from "@/lib/cabinet-shell"
 import AcademyPage from "@/components/Academy/AcademyPage"
 import Link from "next/link"
 import {formatUserName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 export default async function Academy() {
     const user = await getSessionUser()
@@ -37,7 +38,7 @@ export default async function Academy() {
                     textDecoration: "none",
                     marginBottom: 12
                 }}>
-                    <i className="bx bx-arrow-back"/> Кабинет
+                    <Icon name="arrow-back"/> Кабинет
                 </Link>
                 <AcademyPage/>
             </DashMainLayout>

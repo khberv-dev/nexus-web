@@ -1,7 +1,8 @@
 "use client"
 
 import {useEffect, useState} from "react"
-import {CircleCheckIcon, TriangleAlertIcon} from "lucide-react"
+import {Icon} from "@/components/ui/icon"
+import type {IconName} from "@/lib/icon-map"
 import {
     Dialog,
     DialogContent,
@@ -127,7 +128,7 @@ type Accent = {
     icon: string
     title: string
     solidButton: string
-    Icon: typeof TriangleAlertIcon
+    iconName: IconName
 }
 
 /** default — обычный нейтральный заголовок без цветной шапки (не всякий confirm() — предупреждение). */
@@ -138,21 +139,21 @@ const ACCENTS: Record<DialogVariant, Accent | null> = {
         icon: "text-amber-500",
         title: "text-amber-600 dark:text-amber-400",
         solidButton: "border-transparent bg-amber-500 text-white hover:bg-amber-600",
-        Icon: TriangleAlertIcon,
+        iconName: "error",
     },
     success: {
         band: "bg-emerald-500/10 border-emerald-500/30 dark:bg-emerald-500/15",
         icon: "text-emerald-500",
         title: "text-emerald-600 dark:text-emerald-400",
         solidButton: "border-transparent bg-emerald-500 text-white hover:bg-emerald-600",
-        Icon: CircleCheckIcon,
+        iconName: "check-circle",
     },
     destructive: {
         band: "bg-red-500/10 border-red-500/30 dark:bg-red-500/15",
         icon: "text-red-500",
         title: "text-red-600 dark:text-red-400",
         solidButton: "border-transparent bg-red-500 text-white hover:bg-red-600",
-        Icon: TriangleAlertIcon,
+        iconName: "error",
     },
 }
 
@@ -165,10 +166,9 @@ function DialogAccentHead({accent, title, description}: { accent: Accent | null;
             </DialogHeader>
         )
     }
-    const {Icon} = accent
     return (
         <div className={cn("flex items-start gap-3 border-b p-4", accent.band)}>
-            <Icon className={cn("mt-0.5 size-5 shrink-0", accent.icon)}/>
+            <Icon name={accent.iconName} className={cn("mt-0.5 size-5 shrink-0", accent.icon)}/>
             <div>
                 <DialogTitle className={cn("text-[0.95rem] font-semibold", accent.title)}>{title}</DialogTitle>
                 {description && (

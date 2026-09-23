@@ -3,6 +3,8 @@
 import {useMemo, useState} from "react"
 import {ADMIN_BRIEF_FIELD_GROUPS, getAdminBriefCompletion} from "@/lib/adminBriefFields"
 import {formatBriefWizardProgress} from "@/lib/clientBriefDisplay"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 function trunc(s: string, n: number): string {
     const t = s.replace(/\s+/g, " ").trim()
@@ -82,7 +84,7 @@ export function AdminBriefSummaryPanel({
                 <span className="sp-label">Бриф заказчика</span>
                 <button type="button" className="sp-btn sp-btn-primary" onClick={onOpenFullEditor}
                         style={{padding: "0.4em 1em", fontSize: "0.78rem"}}>
-                    <i className="bx bx-expand-alt" style={{marginRight: 4}}/>
+                    <Icon name="expand-alt" style={{marginRight: 4}}/>
                     Полный бриф
                 </button>
             </div>
@@ -126,7 +128,7 @@ export function AdminBriefSummaryPanel({
                             marginBottom: 8
                         }}>
                             <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                                <i className="bx bx-video" style={{color: "var(--adm-active-color)"}}/>
+                                <Icon name="video" style={{color: "var(--adm-active-color)"}}/>
                                 <div>
                                     <div style={{fontSize: "0.78rem", fontWeight: 600}}>Видео к брифу</div>
                                     <div style={{
@@ -142,7 +144,7 @@ export function AdminBriefSummaryPanel({
                                 className="sp-btn sp-btn-ghost"
                                 style={{fontSize: "0.72rem", padding: "0.35em 0.7em"}}
                             >
-                                <i className="bx bx-download" style={{marginRight: 4}}/>
+                                <Icon name="download" style={{marginRight: 4}}/>
                                 Скачать
                             </a>
                         </div>
@@ -168,7 +170,7 @@ export function AdminBriefSummaryPanel({
                         marginBottom: 8
                     }}>
                         <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                            <i className="bx bx-paperclip" style={{color: "var(--adm-active-color)"}}/>
+                            <Icon name="paperclip" style={{color: "var(--adm-active-color)"}}/>
                             <div>
                                 <div style={{fontSize: "0.78rem", fontWeight: 600}}>Документы к брифу</div>
                                 <div style={{fontSize: "0.72rem", color: "var(--adm-muted)"}}>
@@ -182,7 +184,7 @@ export function AdminBriefSummaryPanel({
                             style={{fontSize: "0.72rem", padding: "0.35em 0.7em"}}
                             onClick={() => void loadBriefFiles()}
                         >
-                            <i className="bx bx-refresh" style={{marginRight: 4}}/>
+                            <Icon name="refresh" style={{marginRight: 4}}/>
                             Показать
                         </button>
                     </div>
@@ -211,7 +213,7 @@ export function AdminBriefSummaryPanel({
                                         className="sp-btn sp-btn-ghost"
                                         style={{fontSize: "0.72rem", padding: "0.25em 0.6em", flexShrink: 0}}
                                     >
-                                        <i className="bx bx-download" style={{marginRight: 4}}/>
+                                        <Icon name="download" style={{marginRight: 4}}/>
                                         Скачать
                                     </a>
                                 </div>
@@ -237,7 +239,7 @@ export function AdminBriefSummaryPanel({
                             gap: 8,
                         }}
                     >
-                        <i className="bx bx-support" style={{fontSize: "1.1rem"}}/>
+                        <Icon name="support" style={{fontSize: "1.1rem"}}/>
                         <span>
               <strong>Запрошена помощь менеджера.</strong> Ниже видно, что уже введено и что осталось пустым — так проще понять, чем помочь.
             </span>
@@ -277,13 +279,13 @@ export function AdminBriefSummaryPanel({
                                 }}
                             >
                 <span style={{display: "flex", alignItems: "center", gap: 6}}>
-                  <i className={`bx ${group.icon}`} style={{color: "var(--adm-active-color)"}}/>
+                  <Icon name={stripBx(group.icon)} style={{color: "var(--adm-active-color)"}}/>
                     {group.label}
                     <span style={{fontWeight: 500, opacity: 0.85}}>
                     ({groupFilled}/{groupRows.length})
                   </span>
                 </span>
-                                <i className={`bx ${expanded ? "bx-chevron-up" : "bx-chevron-down"}`}/>
+                                <Icon name={stripBx(expanded ? "bx-chevron-up" : "bx-chevron-down")}/>
                             </button>
                             {expanded && (
                                 <div style={{padding: "6px 10px 10px"}}>

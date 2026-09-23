@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import "./client-dashboard.css"
+import {Icon} from "@/components/ui/icon"
 
 interface ClientOrder {
     id: string
@@ -77,7 +78,7 @@ export default function ClientDashboard({
             <div className="client-dashboard__stats-grid">
                 <div className="client-dashboard__stat-card">
                     <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(41, 205, 130, 0.1)"}}>
-                        <i className="bx bx-folder" style={{color: "var(--dash-success)"}}/>
+                        <Icon name="folder" style={{color: "var(--dash-success)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
                         <div className="client-dashboard__stat-value">{activeOrders}</div>
@@ -87,7 +88,7 @@ export default function ClientDashboard({
 
                 <div className="client-dashboard__stat-card">
                     <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(115, 103, 240, 0.1)"}}>
-                        <i className="bx bx-check-circle" style={{color: "var(--dash-accent)"}}/>
+                        <Icon name="check-circle" style={{color: "var(--dash-accent)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
                         <div className="client-dashboard__stat-value">{completedOrders}</div>
@@ -97,7 +98,7 @@ export default function ClientDashboard({
 
                 <div className="client-dashboard__stat-card">
                     <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(0, 207, 232, 0.1)"}}>
-                        <i className="bx bx-wallet" style={{color: "var(--dash-info)"}}/>
+                        <Icon name="wallet" style={{color: "var(--dash-info)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
                         <div className="client-dashboard__stat-value">{Math.round(totalSpent / 1000)}k ₽</div>
@@ -107,7 +108,7 @@ export default function ClientDashboard({
 
                 <div className="client-dashboard__stat-card">
                     <div className="client-dashboard__stat-icon" style={{backgroundColor: "rgba(255, 159, 67, 0.1)"}}>
-                        <i className="bx bx-time-five" style={{color: "var(--dash-warn)"}}/>
+                        <Icon name="time-five" style={{color: "var(--dash-warn)"}}/>
                     </div>
                     <div className="client-dashboard__stat-content">
                         <div className="client-dashboard__stat-value">{Math.round(pendingPayments / 1000)}k ₽</div>
@@ -122,25 +123,25 @@ export default function ClientDashboard({
                 <div className="client-dashboard__section">
                     <div className="client-dashboard__section-header">
                         <h2 className="client-dashboard__section-title">
-                            <i className="bx bx-lightning-charge"/> Быстрые действия
+                            <Icon name="lightning-charge"/> Быстрые действия
                         </h2>
                     </div>
                     <div className="client-dashboard__quick-actions">
                         <Link href="/orders/new"
                               className="client-dashboard__action-btn client-dashboard__action-btn--primary">
-                            <i className="bx bx-plus"/>
+                            <Icon name="plus"/>
                             <span>Создать проект</span>
                         </Link>
                         <Link href="/orders/payments" className="client-dashboard__action-btn">
-                            <i className="bx bx-credit-card"/>
+                            <Icon name="credit-card"/>
                             <span>Счета и оплаты</span>
                         </Link>
                         <Link href="/orders" className="client-dashboard__action-btn">
-                            <i className="bx bx-folder-open"/>
+                            <Icon name="folder-open"/>
                             <span>Мои проекты</span>
                         </Link>
                         <Link href="/orders/settings" className="client-dashboard__action-btn">
-                            <i className="bx bx-cog"/>
+                            <Icon name="cog"/>
                             <span>Профиль</span>
                         </Link>
                     </div>
@@ -150,7 +151,7 @@ export default function ClientDashboard({
                 <div className="client-dashboard__section">
                     <div className="client-dashboard__section-header">
                         <h2 className="client-dashboard__section-title">
-                            <i className="bx bx-folder-open"/> Последние проекты
+                            <Icon name="folder-open"/> Последние проекты
                         </h2>
                         <Link href="/orders" className="client-dashboard__link">
                             Все проекты →
@@ -158,7 +159,7 @@ export default function ClientDashboard({
                     </div>
                     {recentOrders.length === 0 ? (
                         <div className="client-dashboard__empty">
-                            <i className="bx bx-inbox"/>
+                            <Icon name="inbox"/>
                             <p>У вас пока нет проектов</p>
                             <Link href="/orders/new" className="client-dashboard__empty-link">
                                 Создать первый проект
@@ -189,7 +190,7 @@ export default function ClientDashboard({
                                         </div>
                                         {order.specialist && (
                                             <div className="client-dashboard__order-specialist">
-                                                <i className="bx bx-user-circle"/>
+                                                <Icon name="user-circle"/>
                                                 <span>{order.specialist.name}</span>
                                             </div>
                                         )}
@@ -212,7 +213,7 @@ export default function ClientDashboard({
                     <div className="client-dashboard__section">
                         <div className="client-dashboard__section-header">
                             <h2 className="client-dashboard__section-title">
-                                <i className="bx bx-credit-card"/> Последние платежи
+                                <Icon name="credit-card"/> Последние платежи
                             </h2>
                             <Link href="/orders/payments" className="client-dashboard__link">
                                 История платежей →

@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useRef, useState} from "react"
 import {formatMultiValue, parseMultiValue, toggleMultiValue} from "@/lib/specialist-options"
+import {Icon} from "@/components/ui/icon"
 
 type Palette = {
     controlBg: string
@@ -197,8 +198,8 @@ export function MultiSelectField({
                         </button>
                     </span>
                 ))}
-                <i
-                    className={`bx ${open ? "bx-chevron-up" : "bx-chevron-down"}`}
+                <Icon
+                    name={open ? "chevron-up" : "chevron-down"}
                     style={{position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", color: p.muted}}
                 />
             </div>
@@ -366,7 +367,7 @@ export function MultiSelectField({
                                     marginTop: 4,
                                 }}
                             >
-                                <i className="bx bx-plus"/>
+                                <Icon name="plus"/>
                                 Добавить «{trimmedQuery}»
                             </button>
                         )}

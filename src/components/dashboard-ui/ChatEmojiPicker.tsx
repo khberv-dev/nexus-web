@@ -1,6 +1,7 @@
 "use client"
 
 import {useEffect, useRef, useState} from "react"
+import {Icon} from "@/components/ui/icon"
 
 const EMOJI_CATEGORIES = [
     {
@@ -83,7 +84,7 @@ export function ChatEmojiPicker({disabled, onSelect}: ChatEmojiPickerProps) {
                     opacity: disabled ? 0.6 : 1,
                 }}
             >
-                <i className="bx bx-smile" aria-hidden/>
+                <Icon name="smile" aria-hidden/>
             </button>
 
             {open ? (

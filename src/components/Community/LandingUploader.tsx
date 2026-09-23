@@ -9,6 +9,7 @@ import type {UploadItem} from "@/components/app/UploadingCard"
 import {DEFAULT_WORK_POS, MAX_LANDING_PORTFOLIO} from "./landing-uploader/constants"
 import {missingLandingRequirements} from "@/lib/landing/bundle-requirements"
 import type {LandingFile, LandingUploaderProps, PreviewState} from "./landing-uploader/types"
+import {Icon} from "@/components/ui/icon"
 
 interface Bundle {
     id: string
@@ -356,14 +357,14 @@ export default function LandingUploader({
                             display: "inline-flex", alignItems: "center", gap: 4,
                         }}
                     >
-                        <i className="bx bx-plus"/>Новая сборка
+                        <Icon name="plus"/>Новая сборка
                     </button>
                 )}
             </div>
 
             {bundles.length === 0 && (
                 <div style={{textAlign: "center", padding: "32px 16px"}}>
-                    <i className="bx bx-globe" style={{
+                    <Icon name="globe" style={{
                         fontSize: 40,
                         color: "var(--dash-muted, #8f95b2)",
                         opacity: 0.4,
@@ -383,7 +384,7 @@ export default function LandingUploader({
                                 display: "inline-flex", alignItems: "center", gap: 6,
                             }}
                         >
-                            <i className="bx bx-plus-circle" style={{fontSize: "1.1rem"}}/>
+                            <Icon name="plus-circle" style={{fontSize: "1.1rem"}}/>
                             Создать первую сборку
                         </button>
                     )}
@@ -430,7 +431,7 @@ export default function LandingUploader({
                                     fontSize: "0.65rem", cursor: "pointer", padding: 0,
                                 }}
                             >
-                                <i className="bx bx-trash" style={{marginRight: 2}}/>Удалить
+                                <Icon name="trash" style={{marginRight: 2}}/>Удалить
                             </button>
                         )}
                     </div>
@@ -452,7 +453,7 @@ export default function LandingUploader({
                             background: "rgba(234,84,85,0.08)", border: "1px solid rgba(234,84,85,0.2)",
                             fontSize: "0.8rem", color: "#ea5455",
                         }}>
-                            <i className="bx bx-error-circle" style={{marginRight: 6}}/>
+                            <Icon name="error-circle" style={{marginRight: 6}}/>
                             <strong>Причина отказа:</strong> {activeBundle.rejectReason}
                         </div>
                     )}
@@ -464,7 +465,7 @@ export default function LandingUploader({
                             background: "rgba(91,79,207,0.06)", border: "1px solid rgba(91,79,207,0.15)",
                             fontSize: "0.8rem", color: "#5b4fcf",
                         }}>
-                            <i className="bx bx-lock-alt" style={{marginRight: 6}}/>
+                            <Icon name="lock-alt" style={{marginRight: 6}}/>
                             {activeBundle.status === "PENDING_REVIEW" ? "Сборка на модерации — редактирование заблокировано" : "Сборка одобрена — создайте новую для изменений"}
                         </div>
                     )}
@@ -565,7 +566,7 @@ export default function LandingUploader({
                                     margin: "0 0 8px", fontSize: "0.74rem", lineHeight: 1.45,
                                     color: "var(--dash-muted, #8f95b2)",
                                 }}>
-                                    <i className="bx bx-info-circle" style={{marginRight: 4}}/>
+                                    <Icon name="info-circle" style={{marginRight: 4}}/>
                                     Для отправки не хватает: {missing.join(", ")}
                                 </p>
                             )}
@@ -582,7 +583,7 @@ export default function LandingUploader({
                                     color: "#fff", fontSize: "0.8rem", fontWeight: 600,
                                 }}
                             >
-                                <i className="bx bx-send" style={{marginRight: 4}}/>
+                                <Icon name="send" style={{marginRight: 4}}/>
                                 Отправить на модерацию
                             </button>
                             <button
@@ -593,7 +594,7 @@ export default function LandingUploader({
                                     color: "#d64c67", fontSize: "0.8rem", fontWeight: 600,
                                 }}
                             >
-                                <i className="bx bx-trash" style={{marginRight: 4}}/>
+                                <Icon name="trash" style={{marginRight: 4}}/>
                                 Удалить сборку
                             </button>
                             </div>

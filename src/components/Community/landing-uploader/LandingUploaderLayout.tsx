@@ -5,6 +5,8 @@ import {DashCarousel} from "@/components/dashboard-ui/DashCarousel"
 import {MAX_LANDING_PORTFOLIO, percentToWorkPos, workPosToPercent} from "./constants"
 import {LandingFile, PreviewState} from "./types"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 interface LayoutProps {
     featuredOnLanding?: boolean
@@ -37,7 +39,7 @@ const card = (children: React.ReactNode) => <div className="landing-up-card">{ch
 const cardTitle = (icon: string, title: string, sub: string) => (
     <div className="landing-up-card__head">
         <div className="landing-up-card__title-row">
-            <i className={`bx ${icon} landing-up-card__title-icon`}/>
+            <Icon name={stripBx(icon)} className="landing-up-card__title-icon"/>
             <h4 className="landing-up-card__title">{title}</h4>
         </div>
         <p className="landing-up-card__sub">{sub}</p>
@@ -59,7 +61,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
 
     const renderSelectorMark = (selected: boolean) => (
         <span className={`landing-up-tick ${selected ? "is-selected" : ""}`}>
-      <i className={`bx ${selected ? "bx-check" : "bx-circle"}`}/>
+      <Icon name={stripBx(selected ? "bx-check" : "bx-circle")}/>
     </span>
     )
 
@@ -132,7 +134,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     border: "1px solid rgba(234,84,85,0.2)",
                     color: "#ea5455"
                 }}>
-                    <i className="bx bx-error-circle" style={{marginRight: 6}}/>
+                    <Icon name="error-circle" style={{marginRight: 6}}/>
                     {error}
                 </div>
             )}
@@ -151,7 +153,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                             <button type="button" className="landing-up-upload-tile"
                                     data-tour="btn-landing-video"
                                     onClick={() => videoRef.current?.click()}>
-                                <i className={`bx ${uploading === "video" ? "bx-loader-alt bx-spin" : "bx-play-circle"}`}/>
+                                <Icon name={stripBx(uploading === "video" ? "bx-loader-alt bx-spin" : "bx-play-circle")}/>
                                 <span>Загрузить</span>
                             </button>
                         )}
@@ -188,7 +190,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                     >
                                         {url ? <video src={url} muted playsInline preload="metadata"
                                                       style={{width: "100%", height: "100%", objectFit: "cover"}}/> :
-                                            <i className="bx bx-video"/>}
+                                            <Icon name="video"/>}
                                         {!disabled && (
                                             <span className="landing-up-thumb-actions"
                                                   onClick={(e) => e.stopPropagation()}>
@@ -200,7 +202,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                                     <button type="button" className="landing-up-select-btn"
                                                             onClick={() => onDeleteFile(f.id)} title="Удалить"
                                                             style={{marginLeft: 2}}>
-                                                        <i className="bx bx-trash"
+                                                        <Icon name="trash"
                                                            style={{fontSize: 11, color: "#d64c67"}}/>
                                                     </button>
                                                 )}
@@ -229,7 +231,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                     data-tour="btn-landing-photo"
                                     style={{aspectRatio: "4/3"}}
                                     onClick={() => photoRef.current?.click()}>
-                                <i className={`bx ${uploading === "photo" ? "bx-loader-alt bx-spin" : "bx-image-add"}`}/>
+                                <Icon name={stripBx(uploading === "photo" ? "bx-loader-alt bx-spin" : "bx-image-add")}/>
                                 <span>Загрузить</span>
                             </button>
                         )}
@@ -280,7 +282,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                             >
                                                 <button type="button" className="landing-up-select-btn"
                                                         title="Просмотреть">
-                                                    <i className="bx bx-fullscreen"/>
+                                                    <Icon name="fullscreen"/>
                                                 </button>
                                             </span>
                                         )}
@@ -312,7 +314,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                     {selectedWorkId && !disabled && (
                         <div className="landing-up-pos">
                             <div className="landing-up-pos__head">
-                                <i className="bx bx-crop landing-up-pos__head-icon"/>
+                                <Icon name="crop" className="landing-up-pos__head-icon"/>
                                 <div>
                                     <h5 className="landing-up-pos__title">Положение кадра</h5>
                                     <p className="landing-up-pos__sub">
@@ -337,7 +339,7 @@ export function LandingUploaderLayout(props: LayoutProps) {
                                 onPointerUp={commitPosDrag}
                                 onPointerCancel={commitPosDrag}
                             >
-                                {!portfolioUrls[selectedWorkId] && <i className="bx bx-image"/>}
+                                {!portfolioUrls[selectedWorkId] && <Icon name="image"/>}
                             </div>
                         </div>
                     )}

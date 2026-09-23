@@ -2,6 +2,8 @@ import {formatEdoProvidersLabel} from "@/lib/edo-providers"
 import {splitPortfolioLinks} from "@/components/ui/PortfolioLinksField"
 import {SPECIALIST_FORMDATA_KNOWN} from "../constants"
 import {boolRu} from "../utils"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function QuestionnaireCard({
                                       formData: fd,
@@ -15,7 +17,7 @@ export function QuestionnaireCard({
 
     if (!Object.values(fd).some(Boolean)) {
         return (
-            <div className="sp-warn"><i className="bx bx-info-circle" style={{marginRight: 6}}/>Анкета не заполнена
+            <div className="sp-warn"><Icon name="info-circle" style={{marginRight: 6}}/>Анкета не заполнена
             </div>
         )
     }
@@ -66,7 +68,7 @@ export function QuestionnaireCard({
                     ].map((item) => (
                         <div key={item.label} className="sp-info-item">
                             <div className="sp-info-icon" style={{background: `${item.color}18`, color: item.color}}>
-                                <i className={`bx ${item.icon}`}/>
+                                <Icon name={stripBx(item.icon)}/>
                             </div>
                             <div style={{minWidth: 0}}>
                                 <div className="sp-info-label">{item.label}</div>
@@ -79,7 +81,7 @@ export function QuestionnaireCard({
                 {fd.portfolio && (
                     <div className="sp-info-item" style={{marginTop: 10}}>
                         <div className="sp-info-icon" style={{background: "rgba(14,165,233,0.1)", color: "#0ea5e9"}}>
-                            <i className="bx bx-link"/>
+                            <Icon name="link"/>
                         </div>
                         <div style={{minWidth: 0}}>
                             <div className="sp-info-label">Портфолио</div>

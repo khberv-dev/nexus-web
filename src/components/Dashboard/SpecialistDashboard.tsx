@@ -8,6 +8,7 @@ import type {ProfileCompleteness} from "@/lib/profile-completeness"
 import ProfileCompletenessCard from "./ProfileCompletenessCard"
 import "./specialist-dashboard.css"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 interface UrgentStage {
     orderId: string
@@ -113,7 +114,7 @@ export default function SpecialistDashboard({
             <div className="spec-dashboard__stats-grid" data-tour="dash-stats">
                 <div className="spec-dashboard__stat-card">
                     <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(41, 205, 130, 0.1)"}}>
-                        <i className="bx bx-folder" style={{color: "var(--dash-success)"}}/>
+                        <Icon name="folder" style={{color: "var(--dash-success)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
                         <div className="spec-dashboard__stat-value">{activeOrders}</div>
@@ -123,7 +124,7 @@ export default function SpecialistDashboard({
 
                 <div className="spec-dashboard__stat-card">
                     <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(115, 103, 240, 0.1)"}}>
-                        <i className="bx bx-check-circle" style={{color: "var(--dash-accent)"}}/>
+                        <Icon name="check-circle" style={{color: "var(--dash-accent)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
                         <div className="spec-dashboard__stat-value">{completedOrders}</div>
@@ -133,7 +134,7 @@ export default function SpecialistDashboard({
 
                 <div className="spec-dashboard__stat-card">
                     <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(0, 207, 232, 0.1)"}}>
-                        <i className="bx bx-wallet" style={{color: "var(--dash-info)"}}/>
+                        <Icon name="wallet" style={{color: "var(--dash-info)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
                         <div className="spec-dashboard__stat-value">{Math.round(totalEarned / 1000)}k ₽</div>
@@ -143,7 +144,7 @@ export default function SpecialistDashboard({
 
                 <div className="spec-dashboard__stat-card">
                     <div className="spec-dashboard__stat-icon" style={{backgroundColor: "rgba(255, 159, 67, 0.1)"}}>
-                        <i className="bx bx-time-five" style={{color: "var(--dash-warn)"}}/>
+                        <Icon name="time-five" style={{color: "var(--dash-warn)"}}/>
                     </div>
                     <div className="spec-dashboard__stat-content">
                         <div className="spec-dashboard__stat-value">{Math.round(pendingPayments / 1000)}k ₽</div>
@@ -159,7 +160,7 @@ export default function SpecialistDashboard({
                     <div className="spec-dashboard__section" data-tour="dash-urgent">
                         <div className="spec-dashboard__section-header">
                             <h2 className="spec-dashboard__section-title">
-                                <i className="bx bx-bell"/> Требует внимания
+                                <Icon name="bell"/> Требует внимания
                             </h2>
                             <span className="spec-dashboard__badge">{urgentStages.length}</span>
                         </div>
@@ -171,7 +172,7 @@ export default function SpecialistDashboard({
                                     className="spec-dashboard__urgent-item"
                                 >
                                     <div className="spec-dashboard__urgent-icon">
-                                        <i className="bx bx-exclamation-circle"/>
+                                        <Icon name="exclamation-circle"/>
                                     </div>
                                     <div className="spec-dashboard__urgent-content">
                                         <div className="spec-dashboard__urgent-title">{item.orderTitle}</div>
@@ -183,7 +184,7 @@ export default function SpecialistDashboard({
                       </span>
                                         </div>
                                     </div>
-                                    <i className="bx bx-chevron-right"/>
+                                    <Icon name="chevron-right"/>
                                 </Link>
                             ))}
                         </div>
@@ -194,7 +195,7 @@ export default function SpecialistDashboard({
                 <div className="spec-dashboard__section" data-tour="dash-orders">
                     <div className="spec-dashboard__section-header">
                         <h2 className="spec-dashboard__section-title">
-                            <i className="bx bx-folder-open"/> Последние проекты
+                            <Icon name="folder-open"/> Последние проекты
                         </h2>
                         <Link href="/work/orders" className="spec-dashboard__link">
                             Все проекты →
@@ -202,7 +203,7 @@ export default function SpecialistDashboard({
                     </div>
                     {recentOrders.length === 0 ? (
                         <div className="spec-dashboard__empty">
-                            <i className="bx bx-inbox"/>
+                            <Icon name="inbox"/>
                             <p>Нет активных проектов</p>
                         </div>
                     ) : (
@@ -258,24 +259,24 @@ export default function SpecialistDashboard({
                 <div className="spec-dashboard__section" data-tour="dash-quick-links">
                     <div className="spec-dashboard__section-header">
                         <h2 className="spec-dashboard__section-title">
-                            <i className="bx bx-link"/> Быстрый доступ
+                            <Icon name="link"/> Быстрый доступ
                         </h2>
                     </div>
                     <div className="spec-dashboard__quick-links">
                         <Link href="/work/payments" className="spec-dashboard__quick-link">
-                            <i className="bx bx-credit-card"/>
+                            <Icon name="credit-card"/>
                             <span>Выплаты</span>
                         </Link>
                         <Link href="/work/portfolio" className="spec-dashboard__quick-link">
-                            <i className="bx bx-image-alt"/>
+                            <Icon name="image-alt"/>
                             <span>Портфолио</span>
                         </Link>
                         <Link href="/work/settings" className="spec-dashboard__quick-link">
-                            <i className="bx bx-cog"/>
+                            <Icon name="cog"/>
                             <span>Профиль</span>
                         </Link>
                         <Link href="/work/academy" className="spec-dashboard__quick-link">
-                            <i className="bx bx-book"/>
+                            <Icon name="book"/>
                             <span>Академия</span>
                         </Link>
                     </div>

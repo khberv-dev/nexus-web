@@ -6,6 +6,7 @@ import {parseQuizProgress, parseStoredTestComment} from "@/lib/onboarding/nexus-
 import {QUIZ_QUESTIONS} from "@/lib/onboarding/regulations-questions"
 import {ONBOARDING_TABLE_STEP_TYPES, STEP_STATUS_RU, STEP_TYPE_RU} from "../constants"
 import type {RawSpecialist} from "../../../types"
+import {Icon} from "@/components/ui/icon"
 
 type OnboardingStepRow = NonNullable<RawSpecialist["specialistProfile"]>["steps"][number]
 
@@ -106,7 +107,7 @@ export function OnboardingStepsTableCard({
                             <div key={t} className="sp-onb-item">
                                 <div
                                     className={`sp-onb-item__dot${rec?.status === "PASSED" ? " sp-onb-item__dot--passed" : ""}`}>
-                                    {rec?.status === "PASSED" ? <i className="bx bx-check"/> : idx + 1}
+                                    {rec?.status === "PASSED" ? <Icon name="check"/> : idx + 1}
                                 </div>
                                 <div className="sp-onb-item__content">
                                     <div className="sp-onb-item__head">

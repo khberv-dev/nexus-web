@@ -12,6 +12,7 @@ import {StageSummaryCards} from "./StageSummaryCards"
 import {StageAdminActions} from "./StageAdminActions"
 import {StageExtraPaymentActions} from "./StageExtraPaymentActions"
 import {StageRulesTemplatesModal} from "./StageRulesTemplatesModal"
+import {Icon} from "@/components/ui/icon"
 
 function formatStageDt(iso: string) {
     return new Date(iso).toLocaleString("ru-RU", {
@@ -149,7 +150,7 @@ export function OrderStagesTab({
                                         style={{fontSize: "0.65rem", padding: "0.2em 0.5em"}}
                                         onClick={() => setRulesModalStageId(stage.id)}
                                     >
-                                        <i className="bx bx-magic-wand" style={{marginRight: 3}}/>
+                                        <Icon name="magic-wand" style={{marginRight: 3}}/>
                                         Шаблоны
                                     </button>
                                 </div>

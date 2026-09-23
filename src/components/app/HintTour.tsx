@@ -2,6 +2,7 @@
 
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
 import {createPortal} from "react-dom"
+import {Icon} from "@/components/ui/icon"
 
 export type HintStep = {
     /** CSS-селектор подсвечиваемого элемента. Шаг пропускается, если элемента нет в DOM. */
@@ -326,7 +327,7 @@ export function HintTour({
                 }}
             >
                 <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                    <i className="bx bx-info-circle" style={{color: "#a78bfa", fontSize: 16}}/>
+                    <Icon name="info-circle" style={{color: "#a78bfa", fontSize: 16}}/>
                     <span style={{fontWeight: 600, fontSize: "0.9rem"}}>{step.title}</span>
                     <span style={{marginLeft: "auto", fontSize: "0.72rem", color: "rgba(255,255,255,0.45)"}}>
                         {index + 1}/{steps.length}
@@ -436,7 +437,7 @@ export function HintTourLauncher({onClick}: { onClick: () => void }) {
                 boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
             }}
         >
-            <i className="bx bx-help-circle"/>
+            <Icon name="help-circle"/>
         </button>
     )
 }

@@ -5,8 +5,8 @@ import {cn} from "@/lib/utils"
 import type {OrderStage, StageType} from "@/app/orders/[id]/types"
 import {STAGE_LABEL, STAGE_ORDER} from "@/app/orders/[id]/types"
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
-import {CheckCircle2, ChevronRight, CircleDot, Lock} from "lucide-react"
 import {stageStartOwnerHint, stageStatusLabelForViewer, type StageStatusViewerRole} from "@/lib/stage-status-ui"
+import {Icon} from "@/components/ui/icon"
 
 type MiniBadge = { key: string; label: string; variant: "default" | "secondary" | "destructive" | "outline" }
 
@@ -223,7 +223,7 @@ export function OrderStagesGrid({
                                     >
                                         <div className="flex items-start justify-between gap-2">
                                             <div className={indexBadge}>{idx + 1}</div>
-                                            <Lock className="size-5 shrink-0 text-muted-foreground/80" aria-hidden/>
+                                            <Icon name="lock" className="size-5 shrink-0 text-muted-foreground/80" aria-hidden/>
                                         </div>
                                         <div className="flex min-h-0 flex-1 flex-col gap-3">
                                             <p className="text-left text-sm font-semibold leading-snug text-foreground [overflow-wrap:anywhere] line-clamp-4">
@@ -256,12 +256,12 @@ export function OrderStagesGrid({
                                         <div className="flex items-start justify-between gap-2">
                                             <div className={indexBadge}>{idx + 1}</div>
                                             {isDone ? (
-                                                <CheckCircle2 className="size-6 shrink-0 text-primary" aria-hidden/>
+                                                <Icon name="check-circle" className="size-6 shrink-0 text-primary" aria-hidden/>
                                             ) : isActive ? (
-                                                <CircleDot className="size-6 shrink-0 text-primary" strokeWidth={2}
+                                                <Icon name="circle-dot" className="size-6 shrink-0 text-primary" strokeWidth={2}
                                                            aria-hidden/>
                                             ) : (
-                                                <ChevronRight
+                                                <Icon name="chevron-right"
                                                     className="size-5 shrink-0 text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100"
                                                     aria-hidden/>
                                             )}
@@ -312,14 +312,14 @@ export function OrderStagesGrid({
                               {new Date(activity.at).toLocaleDateString("ru-RU", {day: "2-digit", month: "2-digit"})}
                             </span>
                                                     ) : null}
-                                                    <ChevronRight
+                                                    <Icon name="chevron-right"
                                                         className="size-4 text-muted-foreground opacity-60 transition-transform group-hover:translate-x-0.5"
                                                         aria-hidden/>
                                                 </div>
                                             </div>
                                         ) : (
                                             <div className="mt-auto flex justify-end pt-2">
-                                                <ChevronRight
+                                                <Icon name="chevron-right"
                                                     className="size-4 text-muted-foreground opacity-60 transition-transform group-hover:translate-x-0.5"
                                                     aria-hidden/>
                                             </div>

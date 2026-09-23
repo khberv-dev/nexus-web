@@ -3,6 +3,8 @@
 import {useState} from "react"
 import {useRouter} from "next/navigation"
 import {toast} from "sonner"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function HelpButton({
                                orderId,
@@ -69,16 +71,16 @@ export function HelpButton({
         >
             {done ? (
                 <>
-                    <i className="bx bx-check"/>
+                    <Icon name="check"/>
                 </>
             ) : confirming ? (
                 <>
-                    <i className="bx bx-error" style={{marginRight: 4}}/>
+                    <Icon name="error" style={{marginRight: 4}}/>
                     Подтвердить запрос
                 </>
             ) : (
                 <>
-                    <i className="bx bx-help-circle" style={{marginRight: 4}}/>
+                    <Icon name="help-circle" style={{marginRight: 4}}/>
                     Нужна помощь менеджера
                 </>
             )}
@@ -130,7 +132,7 @@ export function DeleteButton({
             disabled={deleting}
             className={["dash-inline-action", "dash-inline-action--delete", confirming ? "is-confirming" : "", className ?? ""].join(" ").trim()}
         >
-            <i className={`bx ${deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash"}`}
+            <Icon name={stripBx(deleting ? "bx-loader-circle bx-spin" : confirming ? "bx-check" : "bx-trash")}
                style={{marginRight: 3}}/>
             {deleting ? "Удаление..." : confirming ? "Точно?" : "Удалить"}
         </button>

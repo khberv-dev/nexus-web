@@ -3,6 +3,8 @@
 import React, {useCallback, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export type AiImageStudioSource = {
     /** Исходник как data-url (аватар — свежий кадр из кроппера). */
@@ -160,7 +162,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                     </div>
                     <button type="button" className="ai-studio__close" onClick={onClose} disabled={busy}
                             aria-label="Закрыть">
-                        <i className="bx bx-x"/>
+                        <Icon name="x"/>
                     </button>
                 </header>
 
@@ -169,7 +171,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                     <img src={activePreview} alt="" className="ai-studio__stage-img"/>
                     {loading && (
                         <div className="ai-studio__stage-veil">
-                            <i className="bx bx-loader-alt bx-spin"/>
+                            <Icon name="loader-alt" className="bx-spin"/>
                             <span>Генерируем…</span>
                             <small>Это занимает до полуминуты</small>
                         </div>
@@ -197,8 +199,8 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
 
                 {activeTurn && <p className="ai-studio__echo" title={activeTurn.prompt}>«{activeTurn.prompt}»</p>}
 
-                {notice && <div className="ai-studio__notice"><i className="bx bx-info-circle"/>{notice}</div>}
-                {error && <div className="ai-studio__error"><i className="bx bx-error-circle"/>{error}</div>}
+                {notice && <div className="ai-studio__notice"><Icon name="info-circle"/>{notice}</div>}
+                {error && <div className="ai-studio__error"><Icon name="error-circle"/>{error}</div>}
 
                 <div className="ai-studio__suggest">
                     {SUGGESTIONS.map((s) => (
@@ -235,7 +237,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                         }}
                     />
                     <button type="submit" className="ai-studio__send" disabled={busy || prompt.trim().length === 0}>
-                        <i className={`bx ${loading ? "bx-loader-alt bx-spin" : "bx-send"}`}/>
+                        <Icon name={stripBx(loading ? "bx-loader-alt bx-spin" : "bx-send")}/>
                         <span>{loading ? "Генерируем…" : "Применить запрос"}</span>
                     </button>
                 </form>
@@ -250,7 +252,7 @@ export default function AiImageStudio({open, source, context, title, applyLabel,
                         </button>
                         <button type="button" className="ai-studio__apply" onClick={() => void handleApply()}
                                 disabled={busy || !activeTurn}>
-                            <i className={`bx ${applying ? "bx-loader-alt bx-spin" : "bx-check"}`}/>
+                            <Icon name={stripBx(applying ? "bx-loader-alt bx-spin" : "bx-check")}/>
                             {applying ? "Сохраняем…" : (applyLabel ?? "Применить")}
                         </button>
                     </div>

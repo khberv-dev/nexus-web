@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import type {ReactNode} from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function DashActionLink({
                                    href,
@@ -20,14 +22,14 @@ export function DashActionLink({
     if (native) {
         return (
             <a href={href} className={cls}>
-                {iconClass ? <i className={`bx ${iconClass}`}/> : null}
+                {iconClass ? <Icon name={stripBx(iconClass)}/> : null}
                 {children}
             </a>
         )
     }
     return (
         <Link href={href} className={cls}>
-            {iconClass ? <i className={`bx ${iconClass}`}/> : null}
+            {iconClass ? <Icon name={stripBx(iconClass)}/> : null}
             {children}
         </Link>
     )

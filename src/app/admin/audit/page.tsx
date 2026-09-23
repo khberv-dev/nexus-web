@@ -14,6 +14,7 @@ import {
 } from "@/components/admin/AdminTable"
 import {StatusBadge, type StatusVariant} from "@/components/app/AppCard"
 import {userDisplayName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
 
 interface AuditLogEntry {
     id: string
@@ -119,7 +120,7 @@ export default function AuditPage() {
                 {loading ? (
                     <div className="sp-card">
                         <div className="sp-card-bd" style={{textAlign: "center", padding: 40}}>
-                            <i className="bx bx-loader-alt bx-spin"
+                            <Icon name="loader-alt" className="bx-spin"
                                style={{fontSize: 32, color: "var(--adm-muted)"}}/>
                             <p style={{marginTop: 12, color: "var(--adm-muted)"}}>Загрузка…</p>
                         </div>
@@ -127,7 +128,7 @@ export default function AuditPage() {
                 ) : logs.length === 0 ? (
                     <div className="sp-card">
                         <div className="sp-card-bd" style={{textAlign: "center", padding: 40}}>
-                            <i className="bx bx-inbox" style={{fontSize: 48, color: "var(--adm-muted)", opacity: 0.3}}/>
+                            <Icon name="inbox" style={{fontSize: 48, color: "var(--adm-muted)", opacity: 0.3}}/>
                             <p style={{marginTop: 8, color: "var(--adm-muted)"}}>Нет записей</p>
                         </div>
                     </div>

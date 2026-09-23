@@ -14,6 +14,7 @@ import {
     SpecialistOnboardingStepsTab,
     SpecialistRatingLandingTab,
 } from "./specialist-detail/SpecialistSectionTabPages"
+import {Icon} from "@/components/ui/icon"
 
 // Тип живёт рядом с текстами подтверждений (обычный .ts — его видят тесты),
 // но реэкспортируется отсюда: на него уже ссылаются соседние компоненты.
@@ -164,7 +165,7 @@ export function SpecialistDetail({
     if (!specialist) {
         return (
             <div className="sp-detail-empty">
-                <i className="bx bx-user-circle"/>
+                <Icon name="user-circle"/>
                 <p>Выберите специалиста</p>
             </div>
         )

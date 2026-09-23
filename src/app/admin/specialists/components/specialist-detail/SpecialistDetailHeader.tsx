@@ -13,6 +13,7 @@ import type {RawSpecialist, SpecialistDetailTab} from "../../types"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import type {SpecialistOnboardingAdminAction} from "../SpecialistDetail"
 import {confirmDialog} from "@/lib/dialog-store"
+import {Icon} from "@/components/ui/icon"
 
 export function SpecialistDetailHeader({
                                            specialist,
@@ -98,19 +99,19 @@ export function SpecialistDetailHeader({
                         <span className="sp-profile-email">{sp.email}</span>
                         {sp.phone && <span className="sp-profile-email">{sp.phone}</span>}
                         {sp.files.length > 0 && (
-                            <span className="sp-badge"><i className="bx bx-paperclip"
+                            <span className="sp-badge"><Icon name="paperclip"
                                                           style={{marginRight: 3}}/>{sp.files.length} файл(ов)</span>
                         )}
                     </div>
                     {fd?.city && (
                         <div className="sp-profile-location">
-                            <i className="bx bx-map"/> {fd.city}
+                            <Icon name="map"/> {fd.city}
                             {fd.experience ? ` · ${fd.experience} лет опыта` : ""}
                             {fd.software ? ` · ${fd.software}` : ""}
                         </div>
                     )}
                     <div className="sp-profile-edo" title={edoLabel || "не указано"}>
-                        <i className="bx bx-transfer-alt"/> ЭДО: {edoLabel || "не указано"}
+                        <Icon name="transfer-alt"/> ЭДО: {edoLabel || "не указано"}
                     </div>
                 </div>
                 <div className="sp-profile-right">
@@ -146,7 +147,7 @@ export function SpecialistDetailHeader({
                                     title="Отклонить анкету"
                                 >
                                     {isRejecting ? "..." : "Отклонить"}
-                                    <i className="bx bx-chevron-down" style={{marginLeft: 4}}/>
+                                    <Icon name="chevron-down" style={{marginLeft: 4}}/>
                                 </button>
                                 <div className="sp-reject-menu" role="menu" hidden={!rejectMenuOpen}>
                                     <button
@@ -202,7 +203,7 @@ export function SpecialistDetailHeader({
                             className="sp-btn sp-btn-ghost"
                             title="Принудительно разлогинить специалиста"
                         >
-                            <i className="bx bx-log-out" style={{marginRight: 4}}/>Отозвать сессии
+                            <Icon name="log-out" style={{marginRight: 4}}/>Отозвать сессии
                         </button>
                     </div>
                     <div className="sp-profile-stat">

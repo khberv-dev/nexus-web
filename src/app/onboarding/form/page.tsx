@@ -11,6 +11,7 @@ import {MultiSelectField} from "@/components/ui/MultiSelectField"
 import {Switch} from "@/components/ui/switch"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Icon} from "@/components/ui/icon"
 
 // ─── Типы AI ─────────────────────────────────────────────────────────────────
 
@@ -453,7 +454,7 @@ export default function OnboardingFormPage() {
                                             }}>
                                                 {field.label}
                                                 {lockedFromProfile ? (
-                                                    <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
+                                                    <span title="Получено из профиля"><Icon name="lock-alt" style={{marginLeft: 5}}/></span>
                                                 ) : null}
                                             </label>
                                         ) : null}
@@ -511,7 +512,7 @@ export default function OnboardingFormPage() {
                                                 }}>
                                                     {field.label}
                                                     {lockedFromProfile ? (
-                                                        <i className="bx bx-lock-alt" title="Получено из профиля" style={{marginLeft: 5}}/>
+                                                        <span title="Получено из профиля"><Icon name="lock-alt" style={{marginLeft: 5}}/></span>
                                                     ) : null}
                                                 </span>
                                             </label>
@@ -729,7 +730,7 @@ export default function OnboardingFormPage() {
                                     fontSize: "0.78rem",
                                     color: "rgba(255,255,255,0.6)"
                                 }}>
-                                    <i className="bx bx-info-circle" style={{marginRight: 4, color: "#6366f1"}}/>
+                                    <Icon name="info-circle" style={{marginRight: 4, color: "#6366f1"}}/>
                                     Самозанятый формирует чеки в приложении «Мой налог» после каждой выплаты. Платформа
                                     является агентом.
                                     <button type="button" onClick={() => setVideoOpen(true)} style={{
@@ -737,7 +738,7 @@ export default function OnboardingFormPage() {
                                         background: "none", border: "none", cursor: "pointer", color: "#6366f1",
                                         fontSize: "0.78rem", fontFamily: "inherit", textDecoration: "underline",
                                     }}>
-                                        <i className="bx bx-play-circle"/>Видео-инструкция
+                                        <Icon name="play-circle"/>Видео-инструкция
                                     </button>
                                 </div>
                             )}
@@ -1326,7 +1327,7 @@ export default function OnboardingFormPage() {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                        }}><i className="bx bx-x"/></button>
+                        }}><Icon name="x"/></button>
                         <video src="/sz/payment_agents.mp4" controls autoPlay playsInline
                                style={{width: "100%", display: "block"}}/>
                     </div>

@@ -8,6 +8,7 @@ import {
     validateDocumentFile,
 } from "@/lib/document-file"
 import styles from "./document-upload.module.css"
+import {Icon} from "@/components/ui/icon"
 
 export type SubmittedDocument = {
     /** Имя отправленного файла, если известно. */
@@ -109,7 +110,7 @@ export function DocumentUpload({
                 {label && <span className={styles.label}>{label}</span>}
                 <div className={`${styles.box} ${styles.submitted}`} aria-disabled="true">
                     <span className={`${styles.icon} ${styles.iconDone}`} aria-hidden>
-                        <i className="bx bx-check"/>
+                        <Icon name="check"/>
                     </span>
                     <div className={styles.meta}>
                         <span className={styles.title}>{submitted.title ?? "Документ отправлен"}</span>
@@ -123,11 +124,13 @@ export function DocumentUpload({
                     </div>
                     {submitted.onDownload && (
                         <button type="button" className={styles.action} onClick={submitted.onDownload}>
-                            <i className="bx bx-download" aria-hidden/>
+                            <Icon name="download" aria-hidden/>
                             <span>Скачать</span>
                         </button>
                     )}
-                    <i className={`bx bx-lock-alt ${styles.lock}`} title="Документ отправлен — изменить нельзя" aria-hidden/>
+                    <span title="Документ отправлен — изменить нельзя">
+                        <Icon name="lock-alt" className={styles.lock} aria-hidden/>
+                    </span>
                 </div>
             </div>
         )
@@ -151,7 +154,7 @@ export function DocumentUpload({
 
             {file ? (
                 <div className={`${styles.box} ${styles.selected} ${locked ? styles.locked : ""}`}>
-                    <span className={styles.icon} aria-hidden><i className="bx bx-file"/></span>
+                    <span className={styles.icon} aria-hidden><Icon name="file"/></span>
                     <div className={styles.meta}>
                         <span className={styles.title} title={file.name}>{file.name}</span>
                         <span className={styles.sub}>
@@ -178,7 +181,7 @@ export function DocumentUpload({
                                 }}
                                 aria-label="Убрать файл"
                             >
-                                <i className="bx bx-x" aria-hidden/>
+                                <Icon name="x" aria-hidden/>
                             </button>
                         </>
                     )}
@@ -198,7 +201,7 @@ export function DocumentUpload({
                     onDragLeave={() => setDragOver(false)}
                     onDrop={onDrop}
                 >
-                    <span className={styles.icon} aria-hidden><i className="bx bx-cloud-upload"/></span>
+                    <span className={styles.icon} aria-hidden><Icon name="cloud-upload"/></span>
                     <div className={styles.meta}>
                         <span className={styles.title}>
                             Перетащите файл или <span className={styles.accent}>выберите на устройстве</span>

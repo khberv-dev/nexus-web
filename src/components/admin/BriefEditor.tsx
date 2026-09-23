@@ -3,6 +3,8 @@
 import {useState} from "react"
 import {ADMIN_BRIEF_FIELD_GROUPS} from "@/lib/adminBriefFields"
 import styles from "./BriefEditor.module.css"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export interface BriefEditorOrder {
     id: string;
@@ -126,7 +128,7 @@ export function BriefEditor({order, onClose, onSaved}: {
                     fontSize: "1.2rem",
                     color: "var(--adm-muted)",
                     padding: 0
-                }}><i className="bx bx-x"/></button>
+                }}><Icon name="x"/></button>
             </div>
 
             {order.briefHelpRequested && (
@@ -141,7 +143,7 @@ export function BriefEditor({order, onClose, onSaved}: {
                     gap: 8,
                     fontSize: "0.78rem"
                 }}>
-                    <i className="bx bx-support" style={{color: "#ea5455"}}/>
+                    <Icon name="support" style={{color: "#ea5455"}}/>
                     <span style={{color: "#ea5455", fontWeight: 600}}>Заказчик запросил помощь менеджера</span>
                 </div>
             )}
@@ -149,7 +151,7 @@ export function BriefEditor({order, onClose, onSaved}: {
             {BRIEF_GROUPS.map(group => (
                 <div key={group.label} style={{marginBottom: 14}}>
                     <div style={{display: "flex", alignItems: "center", gap: 6, marginBottom: 8}}>
-                        <i className={`bx ${group.icon}`}
+                        <Icon name={stripBx(group.icon)}
                            style={{fontSize: "0.85rem", color: "var(--adm-active-color, #6366f1)"}}/>
                         <span style={{
                             fontSize: "0.7rem",

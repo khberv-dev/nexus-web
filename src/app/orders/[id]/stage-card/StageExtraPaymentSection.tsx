@@ -2,6 +2,7 @@
 
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
 import type {OrderStage} from "../types"
+import {Icon} from "@/components/ui/icon"
 
 export function StageExtraPaymentSection({
                                              stage,
@@ -23,7 +24,7 @@ export function StageExtraPaymentSection({
             }}
         >
             <div style={{display: "flex", alignItems: "center", gap: 8, marginBottom: 6}}>
-                <i className="bx bx-credit-card" style={{fontSize: "1.1rem", color: "var(--dash-danger)"}}/>
+                <Icon name="credit-card" style={{fontSize: "1.1rem", color: "var(--dash-danger)"}}/>
                 <span style={{fontWeight: 600, fontSize: "0.875rem", color: "var(--dash-danger)"}}>
           Требуется доплата за правки
         </span>

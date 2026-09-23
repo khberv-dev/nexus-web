@@ -4,6 +4,7 @@ import {useState} from "react"
 import {toast} from "sonner"
 import type {RegulationsDocument} from "@/lib/regulations"
 import {RegulationsRichEditor} from "./RegulationsRichEditor"
+import {Icon} from "@/components/ui/icon"
 
 export default function RegulationsEditorClient({document}: { document: RegulationsDocument }) {
     const [title, setTitle] = useState(document.title)
@@ -76,7 +77,7 @@ export default function RegulationsEditorClient({document}: { document: Regulati
                 color: "var(--adm-muted)",
             }}>
                 <span>
-                    <i className="bx bx-time-five" style={{marginRight: 4}}/>
+                    <Icon name="time-five" style={{marginRight: 4}}/>
                     {isDefault
                         ? "Показывается текст по умолчанию из кода — правки ещё не сохранялись"
                         : `Обновлено: ${updatedAt ? new Date(updatedAt).toLocaleString("ru-RU") : "—"}${document.updatedBy ? ` · ${document.updatedBy}` : ""}`}

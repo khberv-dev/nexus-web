@@ -2,6 +2,8 @@
 
 import {useEffect, useState} from "react"
 import {formatUserName} from "@/lib/user-name"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type LogEntry = {
     id: string; action: string; createdAt: string
@@ -156,7 +158,7 @@ export function AuditTimeline({entity, entityId}: { entity: string; entityId: st
                                     fontSize: "0.78rem",
                                     fontWeight: 500
                                 }}>
-                                    <i className={`bx ${meta.icon}`} style={{color: meta.color, fontSize: "0.85rem"}}/>
+                                    <Icon name={stripBx(meta.icon)} style={{color: meta.color, fontSize: "0.85rem"}}/>
                                     {meta.label}
                                 </div>
                                 <div style={{fontSize: "0.68rem", color: "var(--adm-muted)", marginTop: 1}}>

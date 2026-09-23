@@ -1,5 +1,6 @@
 import {StatusBadge} from "./AppCard"
 import {MAX_FREE_CLIENT_REVISIONS} from "@/lib/stage-constants"
+import {Icon} from "@/components/ui/icon"
 
 export type StageStatus =
     | "AWAITING_PAYMENT" | "BLOCKED" | "PENDING" | "UPLOADED" | "MOD_REVIEW" | "MOD_REVISION"
@@ -68,7 +69,7 @@ export function StagePipeline({stages, compact = false}: { stages: Stage[]; comp
                                     className={`avatar avatar-sm rounded-circle d-flex align-items-center justify-content-center ${isDone ? "bg-label-success" : "bg-label-secondary"}`}
                                     style={{width: 30, height: 30, fontSize: "0.78rem", fontWeight: 600}}
                                 >
-                                    {isDone ? <i className="bx bx-check"/> : i + 1}
+                                    {isDone ? <Icon name="check"/> : i + 1}
                                 </div>
                                 <span className="fw-medium">{stage.label}</span>
                             </div>
@@ -79,12 +80,12 @@ export function StagePipeline({stages, compact = false}: { stages: Stage[]; comp
                             <div className="d-flex gap-3 mt-2 ps-4">
                                 {stage.modRound > 0 && (
                                     <small className="text-muted">
-                                        <i className="bx bx-shield me-1"/>Модерация: {stage.modRound} кр.
+                                        <Icon name="shield" className="me-1"/>Модерация: {stage.modRound} кр.
                                     </small>
                                 )}
                                 {stage.clientRound > 0 && (
                                     <small className="text-muted">
-                                        <i className="bx bx-chat me-1"/>Правки: {stage.clientRound}/{MAX_FREE_CLIENT_REVISIONS}
+                                        <Icon name="chat" className="me-1"/>Правки: {stage.clientRound}/{MAX_FREE_CLIENT_REVISIONS}
                                     </small>
                                 )}
                             </div>

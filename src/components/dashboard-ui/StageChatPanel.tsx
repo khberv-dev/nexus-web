@@ -3,6 +3,7 @@
 import {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from "react"
 import {StageChatAiAssist} from "./StageChatAiAssist"
 import {ChatEmojiPicker} from "./ChatEmojiPicker"
+import {Icon} from "@/components/ui/icon"
 
 type ChatSender = { id: string; name: string | null; email: string | null; role: string }
 
@@ -221,7 +222,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                         gap: 8,
                     }}
                 >
-                    <i className="bx bx-message-dots" style={{color: "var(--dash-accent)", fontSize: "1rem"}}
+                    <Icon name="message-dots" style={{color: "var(--dash-accent)", fontSize: "1rem"}}
                        aria-hidden/>
                     Чат по этапу
                 </div>
@@ -371,7 +372,7 @@ export const StageChatPanel = forwardRef<StageChatPanelHandle, StageChatPanelPro
                             justifyContent: "center",
                         }}
                     >
-                        <i className={sending ? "bx bx-loader-alt bx-spin" : "bx bx-send"} style={{fontSize: "1.15rem"}} aria-hidden/>
+                        <Icon name={sending ? "loader-alt" : "send"} className={sending ? "bx-spin" : undefined} style={{fontSize: "1.15rem"}} aria-hidden/>
                     </button>
                 </div>
                 {viewerRole === "CLIENT" && aiAssist ? (

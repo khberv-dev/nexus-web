@@ -9,6 +9,7 @@ import {PortfolioCardBrowseModal} from "./PortfolioCardBrowseModal"
 import {type CardFile, type PortfolioCard, PortfolioCardEditorModal} from "./PortfolioCardEditorModal"
 import {PortfolioProjectMaterials} from "./PortfolioProjectMaterials"
 import {PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
+import {Icon} from "@/components/ui/icon"
 
 const cardShell: React.CSSProperties = {
     background: "rgba(20,25,40,0.22)",
@@ -354,7 +355,7 @@ export default function PortfolioProjects() {
                             <>
                                 {loadingProjects ? (
                                     <div className="text-muted small d-flex align-items-center gap-2">
-                                        <i className="bx bx-loader-alt bx-spin" aria-hidden/>
+                                        <Icon name="loader-alt" className="bx-spin" aria-hidden/>
                                         Загрузка…
                                     </div>
                                 ) : projects.length === 0 ? (
@@ -365,7 +366,7 @@ export default function PortfolioProjects() {
                                             background: "rgba(12,16,30,0.25)"
                                         }}
                                     >
-                                        <i className="bx bx-folder-plus d-block mb-2"
+                                        <Icon name="folder-plus" className="d-block mb-2"
                                            style={{fontSize: 28, opacity: 0.65}} aria-hidden/>
                                         <p className="small text-muted mb-0" style={{lineHeight: 1.55}}>
                                             Проектов нет. Создайте папку кнопкой <strong>«Добавить
@@ -404,7 +405,7 @@ export default function PortfolioProjects() {
                                                                         "linear-gradient(165deg, rgba(91,79,207,0.18) 0%, rgba(12,16,30,0.94) 55%, rgba(8,10,18,0.98) 100%)",
                                                                 }}
                                                             >
-                                                                <i className="bx bx-folder" style={{
+                                                                <Icon name="folder" style={{
                                                                     fontSize: 52,
                                                                     opacity: 0.38,
                                                                     color: "#b4bce8"
@@ -426,7 +427,7 @@ export default function PortfolioProjects() {
                                                                     void renameProject(project)
                                                                 }}
                                                             >
-                                                                <i className="bx bx-pencil" aria-hidden/>
+                                                                <Icon name="pencil" aria-hidden/>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -447,7 +448,7 @@ export default function PortfolioProjects() {
                                 {cardsError && <small className="text-danger">{cardsError}</small>}
                                 {loadingCards ? (
                                     <div className="text-muted small d-flex align-items-center gap-2">
-                                        <i className="bx bx-loader-alt bx-spin" aria-hidden/>
+                                        <Icon name="loader-alt" className="bx-spin" aria-hidden/>
                                         Загрузка работ…
                                     </div>
                                 ) : (
@@ -463,7 +464,7 @@ export default function PortfolioProjects() {
                                                         setCreateModalOpen(true)
                                                     }}
                                                 >
-                                                    <i className="bx bx-plus" aria-hidden/>
+                                                    <Icon name="plus" aria-hidden/>
                                                     <span className="pf-port-grid__add-title">Новая работа</span>
                                                 </button>
                                             </div>
@@ -499,7 +500,7 @@ export default function PortfolioProjects() {
                                                             ) : (
                                                                 <div
                                                                     className="d-flex align-items-center justify-content-center h-100 w-100 text-muted">
-                                                                    <i className="bx bx-image"
+                                                                    <Icon name="image"
                                                                        style={{fontSize: 32, opacity: 0.35}}
                                                                        aria-hidden/>
                                                                 </div>

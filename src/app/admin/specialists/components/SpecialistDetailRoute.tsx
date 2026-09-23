@@ -2,6 +2,7 @@
 
 import {useSpecialistsShell} from "../SpecialistsShell"
 import {SpecialistDetail} from "./SpecialistDetail"
+import {Icon} from "@/components/ui/icon"
 
 /** Карточка специалиста по адресу /admin/specialists/:id[/:tab]; данные и действия — из списка в layout. */
 export function SpecialistDetailRoute({id}: { id: string }) {
@@ -11,7 +12,7 @@ export function SpecialistDetailRoute({id}: { id: string }) {
     if (!specialist) {
         return (
             <div className="sp-detail-empty">
-                <i className="bx bx-user-circle"/>
+                <Icon name="user-circle"/>
                 <p>{shell.loading ? "Загрузка..." : "Специалист не найден"}</p>
             </div>
         )

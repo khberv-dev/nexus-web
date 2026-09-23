@@ -7,6 +7,7 @@ import {AdminRefreshProvider} from "./AdminRefreshContext"
 import {useAdminViewer} from "./AdminViewerContext"
 import NotificationBell from "@/components/Community/NotificationBell"
 import {SignOutButton} from "@/components/auth/SignOutButton"
+import {Icon} from "@/components/ui/icon"
 
 const NAV = [
     {href: "/admin", label: "Дашборд", icon: "bx-home-alt"},
@@ -72,7 +73,7 @@ function AdminProfileMenu() {
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
             >
-                <i className="bx bx-user"/>
+                <Icon name="user"/>
             </button>
             {/* Меню не размонтируем: диалог подтверждения выхода живёт внутри SignOutButton. */}
             <div className="adm-profile-menu" role="menu" hidden={!open}>
@@ -85,7 +86,7 @@ function AdminProfileMenu() {
                     className="adm-profile-menu__item adm-profile-menu__item--danger"
                     onOpen={() => setOpen(false)}
                 >
-                    <i className="bx bx-power-off"/>
+                    <Icon name="power-off"/>
                     Выйти
                 </SignOutButton>
             </div>

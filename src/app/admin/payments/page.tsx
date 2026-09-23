@@ -4,6 +4,8 @@ import {useCallback, useEffect, useState} from "react"
 import {StatusBadge, StatusVariant} from "@/components/app/AppCard"
 import {AdminLayout} from "@/components/admin/AdminLayout"
 import {useRegisterAdminRefresh} from "@/components/admin/AdminRefreshContext"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type PaymentStatus = "PENDING" | "HELD" | "RELEASED" | "REFUNDED" | "FAILED"
 
@@ -79,7 +81,7 @@ export default function PaymentsAdminPage() {
                                 <div className="d-flex align-items-center justify-content-between mb-2">
                                     <small className="text-muted">{s.label}</small>
                                     <span className={`badge bg-label-${s.color} rounded-pill`}>
-                    <i className={`bx ${s.icon}`}/>
+                    <Icon name={stripBx(s.icon)}/>
                   </span>
                                 </div>
                                 <h4 className="mb-0 fw-semibold">{fmt(s.value)} <small

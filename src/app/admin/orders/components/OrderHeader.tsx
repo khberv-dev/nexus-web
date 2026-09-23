@@ -4,6 +4,7 @@ import {StatusBadge} from "@/components/app/AppCard"
 import {formatBriefWizardProgress} from "@/lib/clientBriefDisplay"
 import type {Order} from "../types"
 import {ORDER_LABEL, ORDER_VARIANT} from "../types"
+import {Icon} from "@/components/ui/icon"
 
 export function OrderHeader({
                                 order,
@@ -34,7 +35,7 @@ export function OrderHeader({
                     onClick={onOpenChat}
                     style={{display: "inline-flex", alignItems: "center", gap: 8}}
                 >
-                    <i className="bx bx-message-dots" aria-hidden/>
+                    <Icon name="message-dots" aria-hidden/>
                     Чат
                     {!chatOpen && unreadChatCount > 0 && (
                         <span
@@ -60,10 +61,10 @@ export function OrderHeader({
                 </button>
             </div>
             <small style={{color: "var(--adm-muted)"}}>
-                <i className="bx bx-user" style={{marginRight: 3}}/>
+                <Icon name="user" style={{marginRight: 3}}/>
                 {order.client.name ?? order.client.email}
                 {" → "}
-                <i className="bx bx-brush" style={{marginRight: 3}}/>
+                <Icon name="brush" style={{marginRight: 3}}/>
                 {order.specialist ? (
                     order.specialist.name ?? order.specialist.email
                 ) : (
@@ -86,12 +87,12 @@ export function OrderHeader({
                     }}
                 >
           <span style={{display: "inline-flex", alignItems: "center", gap: 6}}>
-            <i className="bx bx-list-ul" style={{color: "var(--adm-active-color)"}}/>
+            <Icon name="list-ul" style={{color: "var(--adm-active-color)"}}/>
             <strong>Заполнение брифа:</strong> {formatBriefWizardProgress(order.briefStep)}
           </span>
                     {order.briefHelpRequested && (
                         <span className="sp-badge sp-badge--danger" style={{fontSize: "0.65rem"}}>
-              <i className="bx bx-support" style={{marginRight: 3}}/>
+              <Icon name="support" style={{marginRight: 3}}/>
               нужна помощь
             </span>
                     )}
@@ -108,7 +109,7 @@ export function OrderHeader({
                             onClick={() => onResolveHelp(order.id)}
                             disabled={acting !== null}
                         >
-                            <i className="bx bx-check" style={{marginRight: 3}}/>
+                            <Icon name="check" style={{marginRight: 3}}/>
                             Закрыть запрос
                         </button>
                     )}

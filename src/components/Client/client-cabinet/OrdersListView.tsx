@@ -13,6 +13,7 @@ import {ORDER_HUE, ORDER_STATUS_MAP} from "./constants"
 import {FILTER_EMPTY_HINT, type OrderListFilter} from "./order-filter"
 import type {ClientOrder} from "./types"
 import {DeleteButton, HelpButton} from "./OrderListActions"
+import {Icon} from "@/components/ui/icon"
 
 export function OrdersListView({
                                    orders,
@@ -63,7 +64,7 @@ export function OrdersListView({
                                     {order.briefHelpRequested && (
                                         <span className="dash-list__help-badge"
                                               title="Запрос на помощь менеджера уже отправлен">
-                      <i className="bx bx-check-shield"/>
+                      <Icon name="check-shield"/>
                       Запрос менеджеру отправлен
                     </span>
                                     )}
@@ -71,7 +72,7 @@ export function OrdersListView({
                                 <p className="dash-list__sub">
                                     {hasClientReview && (
                                         <>
-                                            <i className="bx bx-bell" style={{color: "var(--dash-warn)"}}/> Решение
+                                            <Icon name="bell" style={{color: "var(--dash-warn)"}}/> Решение
                                             ·{" "}
                                         </>
                                     )}

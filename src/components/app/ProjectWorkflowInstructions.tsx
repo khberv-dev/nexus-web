@@ -1,4 +1,5 @@
 import React from "react"
+import {Icon} from "@/components/ui/icon"
 
 export function ProjectWorkflowInstructions({defaultOpen = false}: { defaultOpen?: boolean }) {
     return (
@@ -26,10 +27,10 @@ export function ProjectWorkflowInstructions({defaultOpen = false}: { defaultOpen
               fontWeight: 700,
               color: "var(--dash-text)"
           }}>
-            <i className="bx bx-info-circle" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
+            <Icon name="info-circle" style={{color: "var(--dash-accent)", fontSize: "1.05rem"}}/>
             Как проходит работа по проекту
           </span>
-                    <i className="bx bx-chevron-down" style={{color: "var(--dash-muted)"}}/>
+                    <Icon name="chevron-down" style={{color: "var(--dash-muted)"}}/>
                 </summary>
                 <div style={{padding: "10px 12px", fontSize: "0.82rem", color: "var(--dash-text2)", lineHeight: 1.55}}>
                     <div style={{marginBottom: 10}}>

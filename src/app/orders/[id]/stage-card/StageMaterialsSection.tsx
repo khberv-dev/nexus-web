@@ -8,6 +8,7 @@ import {buildAdminStageReleaseWaves} from "@/lib/stage-admin-release-waves"
 import type {OrderStage} from "../types"
 import {FileThumbnail} from "./FileThumbnail"
 import {clientFileTimeIso, formatWaveDt, isVideoFilename} from "./utils"
+import {Icon} from "@/components/ui/icon"
 
 export function StageMaterialsSection({
                                           stage,
@@ -339,7 +340,7 @@ export function StageMaterialsSection({
                                                     textDecoration: "none",
                                                 }}
                                             >
-                                                <i className="bx bx-paperclip"/>
+                                                <Icon name="paperclip"/>
                                                 <span style={{
                                                     maxWidth: 220,
                                                     overflow: "hidden",
@@ -631,7 +632,7 @@ export function StageMaterialsSection({
                                                     textDecoration: "none",
                                                 }}
                                             >
-                                                <i className="bx bx-paperclip"/>
+                                                <Icon name="paperclip"/>
                                                 <span style={{
                                                     maxWidth: 220,
                                                     overflow: "hidden",

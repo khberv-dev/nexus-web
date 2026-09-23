@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from "react"
 import {usePathname} from "next/navigation"
 import {SignOutButton} from "@/components/auth/SignOutButton"
+import {Icon} from "@/components/ui/icon"
 
 /** Иконка профиля в шапке кабинета: по клику — меню с именем, почтой и выходом. */
 export function DashProfileMenu({name, email}: { name?: string | null; email?: string | null }) {
@@ -45,7 +46,7 @@ export function DashProfileMenu({name, email}: { name?: string | null; email?: s
                 data-tour="header-profile"
                 onClick={() => setOpen((v) => !v)}
             >
-                <i className="bx bx-user" aria-hidden/>
+                <Icon name="user" aria-hidden/>
             </button>
             {/* Меню не размонтируем: диалог подтверждения выхода живёт внутри SignOutButton. */}
             <div className="dash-profile__menu" role="menu" hidden={!open}>
@@ -58,7 +59,7 @@ export function DashProfileMenu({name, email}: { name?: string | null; email?: s
                     className="dash-profile__item dash-profile__item--danger"
                     onOpen={() => setOpen(false)}
                 >
-                    <i className="bx bx-power-off" aria-hidden/>
+                    <Icon name="power-off" aria-hidden/>
                     Выйти
                 </SignOutButton>
             </div>

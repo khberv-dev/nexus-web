@@ -9,6 +9,8 @@ import {DashProfileMenu} from "@/components/dashboard-ui/DashProfileMenu"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {OrderChatPanel, type OrderChatPanelHandle} from "@/components/dashboard-ui/OrderChatPanel"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export type DashHeaderNavItem = {
     /** Идентификатор раздела — из него собирается data-tour="nav-<id>" для экскурсии. */
@@ -205,7 +207,7 @@ export function DashTopHeader({
                             <span className="dash-drawer__title">Разделы</span>
                             <button type="button" className="dash-drawer__close" onClick={() => setDrawerOpen(false)}
                                     aria-label="Закрыть">
-                                <i className="bx bx-x"/>
+                                <Icon name="x"/>
                             </button>
                         </div>
                         <nav className="dash-drawer__nav" aria-label="Разделы кабинета">
@@ -217,7 +219,7 @@ export function DashTopHeader({
                                     aria-current={item.active ? "page" : undefined}
                                     onClick={() => setDrawerOpen(false)}
                                 >
-                                    {item.iconClassName ? <i className={item.iconClassName} aria-hidden/> : null}
+                                    {item.iconClassName ? <Icon name={stripBx(item.iconClassName)} aria-hidden/> : null}
                                     <span>{item.label}</span>
                                     <NavBadge count={item.badgeCount}/>
                                 </Link>
@@ -229,7 +231,7 @@ export function DashTopHeader({
                                         title={primaryAction.disabledTitle ?? primaryAction.label}
                                         aria-disabled="true"
                                     >
-                  <i className="bx bx-lock-alt" aria-hidden/>
+                  <Icon name="lock-alt" aria-hidden/>
                   <span>{primaryAction.label}</span>
                 </span>
                                 ) : (
@@ -239,7 +241,7 @@ export function DashTopHeader({
                                         onClick={() => setDrawerOpen(false)}
                                     >
                                         {primaryAction.iconClassName ?
-                                            <i className={primaryAction.iconClassName} aria-hidden/> : null}
+                                            <Icon name={stripBx(primaryAction.iconClassName)} aria-hidden/> : null}
                                         <span>{primaryAction.label}</span>
                                     </Link>
                                 )
@@ -263,7 +265,7 @@ export function DashTopHeader({
                             aria-expanded={drawerOpen}
                             onClick={() => setDrawerOpen(true)}
                         >
-                            <i className="bx bx-menu" aria-hidden/>
+                            <Icon name="menu" aria-hidden/>
                         </button>
                     ) : null}
                     <Link href={logoHref} className="dash-header__logo">
@@ -285,7 +287,7 @@ export function DashTopHeader({
                                 aria-current={item.active ? "page" : undefined}
                                 data-tour={`nav-${item.id}`}
                             >
-                                {item.iconClassName ? <i className={item.iconClassName} aria-hidden/> : null}
+                                {item.iconClassName ? <Icon name={stripBx(item.iconClassName)} aria-hidden/> : null}
                                 <span>{item.label}</span>
                                 <NavBadge count={item.badgeCount}/>
                             </Link>
@@ -333,7 +335,7 @@ export function DashTopHeader({
                             aria-controls={chatOpen ? "order-chat-drawer" : undefined}
                             style={{display: "inline-flex", alignItems: "center", gap: 8, position: "relative"}}
                         >
-                            <i className="bx bx-message-dots" aria-hidden/>
+                            <Icon name="message-dots" aria-hidden/>
                             Чат
                             {!chatOpen && unread > 0 ? (
                                 <span
@@ -366,13 +368,13 @@ export function DashTopHeader({
                                 title={primaryAction.disabledTitle ?? primaryAction.label}
                                 aria-disabled="true"
                             >
-                <i className="bx bx-lock-alt" aria-hidden style={{marginRight: 6}}/>
+                <Icon name="lock-alt" aria-hidden style={{marginRight: 6}}/>
                                 {primaryAction.label}
               </span>
                         ) : (
                             <Link href={primaryAction.href} className="dash-header__btn dash-header__btn--primary">
                                 {primaryAction.iconClassName ?
-                                    <i className={primaryAction.iconClassName} aria-hidden/> : null}
+                                    <Icon name={stripBx(primaryAction.iconClassName)} aria-hidden/> : null}
                                 {primaryAction.label}
                             </Link>
                         )
@@ -390,7 +392,7 @@ export function DashTopHeader({
                         void fetchUnread()
                     }}
                     title={orderChat.viewerRole === "CLIENT" ? "Чат с администратором" : "Чат"}
-                    titleIcon={<i className="bx bx-message-dots" aria-hidden/>}
+                    titleIcon={<Icon name="message-dots" aria-hidden/>}
                     panelWidth="min(460px, min(100vw - 24px, 520px))"
                     zIndex={12050}
                     ariaLabelledBy="order-chat-drawer-title"

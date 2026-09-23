@@ -2,6 +2,7 @@
 
 import {useState} from "react"
 import {isStagePaymentsDisabledPublic} from "@/lib/payments/flags"
+import {Icon} from "@/components/ui/icon"
 
 interface QuickPaymentButtonProps {
     invoiceId: string
@@ -97,7 +98,7 @@ export function QuickPaymentButton({
                     if (!loading) e.currentTarget.style.background = "#059669"
                 }}
             >
-                <i className="bx bx-credit-card" style={{fontSize: "1em"}}/>
+                <Icon name="credit-card" style={{fontSize: "1em"}}/>
                 <span>{loading ? "Обработка..." : skipPayments ? "Продолжить без оплаты" : "Оплатить картой"}</span>
             </button>
 

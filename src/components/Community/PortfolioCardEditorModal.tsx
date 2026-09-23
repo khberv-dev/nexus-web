@@ -7,6 +7,7 @@ import {isPortfolioVisualFile} from "@/lib/portfolioVisualFile"
 import {uploadUserFileToPortfolio} from "@/lib/portfolioFileUpload"
 import {PortfolioLocalFilePreview, PortfolioRemoteFilePreview} from "./PortfolioMediaPreview"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
+import {Icon} from "@/components/ui/icon"
 
 function DashSectionLabel({children}: { children: ReactNode }) {
     return (
@@ -373,7 +374,7 @@ export function PortfolioCardEditorModal({
                         onClick={handleClose}
                         disabled={saving}
                     >
-                        <i className="bx bx-x" style={{fontSize: 22}}/>
+                        <Icon name="x" style={{fontSize: 22}}/>
                     </button>
                 </div>
 
@@ -443,7 +444,7 @@ export function PortfolioCardEditorModal({
                                         color: "rgba(255,255,255,0.35)",
                                     }}
                                 >
-                                    <i className="bx bx-image" style={{fontSize: 36}} aria-hidden/>
+                                    <Icon name="image" style={{fontSize: 36}} aria-hidden/>
                                 </div>
                             )}
                         </div>
@@ -659,7 +660,7 @@ export function PortfolioCardEditorModal({
                     </button>
                     <button type="button" className="btn btn-sm btn-primary d-inline-flex align-items-center gap-1"
                             onClick={() => void submit()} disabled={saving}>
-                        <i className="bx bx-check"/>
+                        <Icon name="check"/>
                         {saving ? "Сохранение…" : mode === "create" ? "Создать работу" : "Сохранить"}
                     </button>
                 </div>

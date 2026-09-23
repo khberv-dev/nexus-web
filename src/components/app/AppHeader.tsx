@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import {SignOutButton} from "@/components/auth/SignOutButton"
+import {Icon} from "@/components/ui/icon"
 
 interface AppHeaderProps {
     title: string
@@ -49,7 +50,7 @@ export function AppHeader({title, backHref, backLabel}: AppHeaderProps) {
                 className="flex items-center gap-2 no-underline hover:opacity-70 transition-opacity"
                 style={{background: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.9em"}}
             >
-                <i className="bx bx-power-off" aria-hidden/>
+                <Icon name="power-off" aria-hidden/>
                 Выйти
             </SignOutButton>
         </header>

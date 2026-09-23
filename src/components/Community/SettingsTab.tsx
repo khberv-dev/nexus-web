@@ -4,6 +4,8 @@ import ProfileForm from "@/app/(dashboard)/work/profile/ProfileForm"
 import AvatarUpload from "./AvatarUpload"
 import type {OnboardingStep} from "./types"
 import {ONBOARDING_STEPS} from "./types"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export function SettingsCol1({
                                  name, email, city, experience, software, about, status, onboardingSteps,
@@ -44,7 +46,7 @@ export function SettingsCol1({
                     <li key={item.label} className="dash-list__item" style={{cursor: "default"}}>
                         <div className="dash-list__thumb"
                              style={{background: "var(--dash-accent-bg)", color: "var(--dash-accent)"}}>
-                            <i className={`bx ${item.icon}`} style={{fontSize: 16}}/>
+                            <Icon name={stripBx(item.icon)} style={{fontSize: 16}}/>
                         </div>
                         <div className="dash-list__wrap">
                             <p className="dash-list__content">{item.value}</p>
@@ -66,7 +68,7 @@ export function SettingsCol1({
                         <li key={step.key} className="dash-step">
                             <div
                                 className={`dash-step__dot ${done ? "dash-step__dot--done" : failed ? "dash-step__dot--failed" : "dash-step__dot--todo"}`}>
-                                {done ? <i className="bx bx-check"/> : failed ? <i className="bx bx-x"/> : i + 1}
+                                {done ? <Icon name="check"/> : failed ? <Icon name="x"/> : i + 1}
                             </div>
                             <div style={{flex: 1}}>
                                 <span style={{
@@ -80,7 +82,7 @@ export function SettingsCol1({
                                         color: "var(--dash-danger, #ea5455)",
                                         lineHeight: 1.4
                                     }}>
-                                        <i className="bx bx-error-circle"
+                                        <Icon name="error-circle"
                                            style={{marginRight: 4, verticalAlign: "middle"}}/>
                                         {stepData.comment}
                                     </p>
@@ -111,7 +113,7 @@ export function SettingsCol2({name, email, formData, status, onboardingSteps, fe
             {/* Profile form */}
             <div className="dash-settings-card">
                 <div className="dash-settings-card__hd">
-                    <i className="bx bx-edit" style={{color: "var(--dash-accent)"}}/>
+                    <Icon name="edit" style={{color: "var(--dash-accent)"}}/>
                     Редактировать данные
                 </div>
                 <ProfileForm initialData={formData ?? {}} hideTaxAndRequisites={hideTaxAndRequisites}/>
@@ -121,7 +123,7 @@ export function SettingsCol2({name, email, formData, status, onboardingSteps, fe
             <div className="dash-settings-card"
                  style={{borderColor: featuredOnLanding ? "var(--dash-success)" : "var(--dash-border)"}}>
                 <div className="dash-settings-card__hd">
-                    <i className="bx bx-globe"
+                    <Icon name="globe"
                        style={{color: featuredOnLanding ? "var(--dash-success)" : "var(--dash-muted)"}}/>
                     На главной странице
                 </div>
@@ -137,7 +139,7 @@ export function SettingsCol2({name, email, formData, status, onboardingSteps, fe
                     ].map(item => (
                         <li key={item.label}
                             style={{display: "flex", alignItems: "center", gap: 6, padding: "3px 0", fontSize: 12.5}}>
-                            <i className={`bx ${item.done ? "bx-check" : "bx-x"}`}
+                            <Icon name={stripBx(item.done ? "bx-check" : "bx-x")}
                                style={{color: item.done ? "var(--dash-success)" : "var(--dash-muted)"}}/>
                             <span
                                 style={{color: item.done ? "var(--dash-text)" : "var(--dash-muted)"}}>{item.label}</span>

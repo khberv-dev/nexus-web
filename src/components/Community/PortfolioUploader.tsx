@@ -7,6 +7,8 @@ import {ConfirmDialog} from "./ConfirmDialog"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 const DESC_MAX = 500
 
@@ -438,8 +440,7 @@ function PreviewModal({file, url, onClose, onSave}: {
                             <ActionButton icon="bx-edit" onClick={() => setEditing(true)}>Изменить</ActionButton>}
                         <ActionButton icon="bx-link-external"
                                       onClick={() => window.open(url, "_blank")}>Открыть</ActionButton>
-                        <button className="btn btn-sm btn-outline-secondary px-2" onClick={onClose}><i
-                            className="bx bx-x" style={{fontSize: 18}}/></button>
+                        <button className="btn btn-sm btn-outline-secondary px-2" onClick={onClose}><Icon name="x" style={{fontSize: 18}}/></button>
                     </div>
                 </div>
                 <div>
@@ -714,9 +715,8 @@ export default function PortfolioUploader() {
                                 // eslint-disable-next-line @next/next/no-img-element
                                 ? <img src={preview} alt={f.title ?? f.filename}
                                        style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-                                : <div className="d-flex align-items-center justify-content-center h-100"><i
-                                    className="bx bx-image text-muted" style={{fontSize: 48}}/></div>}
-                            <div className="portfolio-overlay"><i className="bx bx-zoom-in"
+                                : <div className="d-flex align-items-center justify-content-center h-100"><Icon name="image" className="text-muted" style={{fontSize: 48}}/></div>}
+                            <div className="portfolio-overlay"><Icon name="zoom-in"
                                                                   style={{fontSize: 28, color: "#fff"}}/></div>
                         </div>
                     ) : (
@@ -735,7 +735,7 @@ export default function PortfolioUploader() {
                                     objectFit: "cover",
                                     borderRadius: isList ? "8px 0 0 8px" : 8
                                 }}/>
-                                : <i className={`bx ${img ? "bx-image" : "bx-file"} text-primary`}
+                                : <Icon name={stripBx(img ? "bx-image" : "bx-file")} className="text-primary"
                                      style={{fontSize: 20}}/>}
                         </div>
                     )}
@@ -765,7 +765,7 @@ export default function PortfolioUploader() {
                                     e.stopPropagation();
                                     setConfirmDeleteId(f.id)
                                 }} aria-label="Удалить">
-                                    <i className="bx bx-trash text-danger"/>
+                                    <Icon name="trash" className="text-danger"/>
                                 </button>
                             </div>
                         </div>
@@ -795,7 +795,7 @@ export default function PortfolioUploader() {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={preview} alt={f.title ?? f.filename} className="pf-carousel__img"/>
                     ) : (
-                        <div className="pf-carousel__empty"><i className="bx bx-image"/></div>
+                        <div className="pf-carousel__empty"><Icon name="image"/></div>
                     )}
                     <div className="pf-carousel__overlay">
                         <p className="pf-carousel__title">{f.title || f.filename}</p>
@@ -805,7 +805,7 @@ export default function PortfolioUploader() {
                                 e.stopPropagation();
                                 void setConfirmDeleteId(f.id)
                             }} aria-label="Удалить">
-                                <i className="bx bx-trash text-danger"/>
+                                <Icon name="trash" className="text-danger"/>
                             </button>
                         </div>
                     </div>
@@ -867,7 +867,7 @@ export default function PortfolioUploader() {
                                         ) : (
                                             <div
                                                 className="d-flex flex-column align-items-center justify-content-center h-100 gap-2 p-3">
-                                                <i className="bx bx-file text-primary" style={{fontSize: 36}}/>
+                                                <Icon name="file" className="text-primary" style={{fontSize: 36}}/>
                                                 <p className="mb-0 small fw-medium text-truncate text-center"
                                                    style={{maxWidth: "90%"}}>{pendingFile.name}</p>
                                                 <small className="text-muted">{fmt(pendingFile.size)}</small>
@@ -890,7 +890,7 @@ export default function PortfolioUploader() {
                                                 cursor: "pointer",
                                                 fontSize: 14
                                             }} aria-label="Отменить выбор">
-                                                <i className="bx bx-x"/>
+                                                <Icon name="x"/>
                                             </button>
                                         )}
                                         {uploading && (
@@ -904,7 +904,7 @@ export default function PortfolioUploader() {
                                                 justifyContent: "center",
                                                 gap: 8
                                             }}>
-                                                <i className="bx bx-loader-alt bx-spin"
+                                                <Icon name="loader-alt" className="bx-spin"
                                                    style={{fontSize: 28, color: "#fff"}}/>
                                                 <div style={{width: "70%"}}>
                                                     <div className="progress" style={{
@@ -949,7 +949,7 @@ export default function PortfolioUploader() {
                                             padding: "1rem",
                                         }}
                                     >
-                                        <i className={`bx bx-cloud-upload ${dragging ? "text-primary" : "text-muted"}`}
+                                        <Icon name="cloud-upload" className={dragging ? "text-primary" : "text-muted"}
                                            style={{fontSize: 30}}/>
                                         <p className="mb-0 fw-medium small"
                                            style={{color: dragging ? "var(--dash-accent, var(--bs-primary))" : "var(--dash-text, #201d1d)"}}>
@@ -1002,8 +1002,7 @@ export default function PortfolioUploader() {
                                     <button className="btn btn-primary btn-sm d-flex align-items-center gap-1"
                                             onClick={uploadPending} disabled={!pendingFile || uploading}
                                             style={{minWidth: 120}}>
-                                        {uploading ? <><i className="bx bx-loader-alt bx-spin"/>Загрузка…</> : <><i
-                                            className="bx bx-upload"/>Загрузить</>}
+                                        {uploading ? <><Icon name="loader-alt" className="bx-spin"/>Загрузка…</> : <><Icon name="upload"/>Загрузить</>}
                                     </button>
                                     <button type="button" className="btn btn-sm d-flex align-items-center gap-1"
                                             style={{
@@ -1040,12 +1039,12 @@ export default function PortfolioUploader() {
                                     <button
                                         className={`btn ${view === "grid" ? "btn-primary" : "btn-outline-secondary"}`}
                                         onClick={() => setView("grid")} title="Блок">
-                                        <i className="bx bx-grid-alt"/>
+                                        <Icon name="grid-alt"/>
                                     </button>
                                     <button
                                         className={`btn ${view === "list" ? "btn-primary" : "btn-outline-secondary"}`}
                                         onClick={() => setView("list")} title="Списком">
-                                        <i className="bx bx-list-ul"/>
+                                        <Icon name="list-ul"/>
                                     </button>
                                 </div>
                             )}

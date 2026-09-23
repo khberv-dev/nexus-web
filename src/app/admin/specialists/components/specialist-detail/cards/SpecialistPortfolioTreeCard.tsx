@@ -3,6 +3,7 @@
 import {type CSSProperties, useCallback, useEffect, useState} from "react"
 import {ImageLightbox} from "@/components/ui/ImageLightbox"
 import {openAdminFileDownload} from "../utils"
+import {Icon} from "@/components/ui/icon"
 
 type PortfolioFile = {
     id: string
@@ -123,7 +124,7 @@ function AdminCoverThumb({file}: { file: PortfolioFile }) {
                     background: "linear-gradient(165deg, rgba(99,102,241,0.12) 0%, var(--adm-outer, #f3f4f6) 55%, var(--adm-sidebar, #fff) 100%)",
                 }}
             >
-                <i className="bx bx-image" style={{fontSize: 36, opacity: 0.35, color: "var(--adm-muted)"}}
+                <Icon name="image" style={{fontSize: 36, opacity: 0.35, color: "var(--adm-muted)"}}
                    aria-hidden/>
             </div>
         )
@@ -294,7 +295,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                     "linear-gradient(165deg, rgba(99,102,241,0.2) 0%, rgba(241,245,249,0.95) 52%, rgba(248,250,252,0.98) 100%)",
                                             }}
                                         >
-                                            <i className="bx bx-folder" style={{
+                                            <Icon name="folder" style={{
                                                 fontSize: 52,
                                                 opacity: 0.42,
                                                 color: "var(--adm-active-color, #6366f1)"
@@ -316,7 +317,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                     <div style={{display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap"}}>
                         <button type="button" className="sp-btn sp-btn-ghost" style={{fontSize: "0.8rem"}}
                                 onClick={() => setOpenedProjectId(null)}>
-                            <i className="bx bx-chevrons-left" style={{marginRight: 4}}/>
+                            <Icon name="chevrons-left" style={{marginRight: 4}}/>
                             Все объекты
                         </button>
                         <span
@@ -361,7 +362,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                         background: "var(--adm-outer, #f3f4f6)",
                                                     }}
                                                 >
-                                                    <i className="bx bx-image"
+                                                    <Icon name="image"
                                                        style={{fontSize: 32, opacity: 0.35, color: "var(--adm-muted)"}}
                                                        aria-hidden/>
                                                 </div>
@@ -393,7 +394,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                             {opened.attachments.map((a) => (
                                 <div key={a.id} style={rowStyle}>
                   <span style={{minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-                    <i className="bx bx-paperclip" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
+                    <Icon name="paperclip" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
                       {a.file.filename}
                       {a.file.mimeType ? (
                           <span style={{
@@ -409,7 +410,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                         style={{flexShrink: 0, fontSize: "0.7rem", padding: "3px 8px"}}
                                         onClick={() => void openAdminFileDownload(a.file.id)}
                                     >
-                                        <i className="bx bx-download"/>
+                                        <Icon name="download"/>
                                     </button>
                                 </div>
                             ))}
@@ -456,7 +457,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                             whiteSpace: "nowrap",
                             display: "block"
                         }}>
-                          <i className="bx bx-file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
+                          <Icon name="file" style={{marginRight: 6, color: "var(--adm-muted)"}}/>
                             {att.file.filename}
                         </span>
                                                 <span style={{fontSize: "0.68rem", color: "var(--adm-muted)"}}>
@@ -470,7 +471,7 @@ export function SpecialistPortfolioTreeCard({specialistId}: { specialistId: stri
                                                 style={{flexShrink: 0, fontSize: "0.7rem", padding: "3px 8px"}}
                                                 onClick={() => void openAdminFileDownload(att.file.id)}
                                             >
-                                                <i className="bx bx-download"/>
+                                                <Icon name="download"/>
                                             </button>
                                         </div>
                                     ))

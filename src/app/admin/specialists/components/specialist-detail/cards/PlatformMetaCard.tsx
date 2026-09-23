@@ -1,4 +1,5 @@
 import type {RawSpecialist} from "../../../types"
+import {Icon} from "@/components/ui/icon"
 
 export function PlatformMetaCard({profile}: { profile: NonNullable<RawSpecialist["specialistProfile"]> }) {
     if (!profile.bio && !profile.videoUrl && !profile.landingWorkPos) return null
@@ -16,7 +17,7 @@ export function PlatformMetaCard({profile}: { profile: NonNullable<RawSpecialist
                 {profile.videoUrl && (
                     <div className="sp-info-item" style={{marginBottom: 10}}>
                         <div className="sp-info-icon" style={{background: "rgba(236,72,153,0.12)", color: "#ec4899"}}>
-                            <i className="bx bx-video"/>
+                            <Icon name="video"/>
                         </div>
                         <div style={{minWidth: 0}}>
                             <div className="sp-info-label">Видео</div>

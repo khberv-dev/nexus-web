@@ -19,6 +19,7 @@ import {FilePreviewModal} from "./components/FilePreviewModal"
 import {OrderChatPanel} from "@/components/dashboard-ui/OrderChatPanel"
 import {DashRightDrawer} from "@/components/dashboard-ui/DashRightDrawer"
 import {subscribeToOrderChat} from "@/lib/client/order-chat-socket"
+import {Icon} from "@/components/ui/icon"
 
 interface Props {
     order: Order
@@ -261,7 +262,7 @@ export function OrderDetail({
                     void fetchUnreadChatCount()
                 }}
                 title={"Чат"}
-                titleIcon={<i className="bx bx-message-dots" aria-hidden/>}
+                titleIcon={<Icon name="message-dots" aria-hidden/>}
                 panelWidth="min(460px, min(100vw - 24px, 520px))"
                 zIndex={12050}
                 ariaLabelledBy="order-admin-chat-drawer-title"

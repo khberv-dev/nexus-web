@@ -7,6 +7,7 @@ import {PortfolioLinksField, splitPortfolioLinks} from "@/components/ui/Portfoli
 import {MultiSelectField} from "@/components/ui/MultiSelectField"
 import {Switch} from "@/components/ui/switch"
 import {INTERIOR_STYLE_OPTIONS, METHOD_OPTIONS, SPECIALTY_OPTIONS} from "@/lib/specialist-options"
+import {Icon} from "@/components/ui/icon"
 
 const FIELDS = [
     {name: "firstName", label: "Имя", placeholder: "Иван"},
@@ -179,7 +180,7 @@ export default function ProfileForm({
                     fontSize: "0.82rem",
                     color: "#856404"
                 }}>
-                    <i className="bx bx-time" style={{marginRight: 6}}/>{reqPending}
+                    <Icon name="time" style={{marginRight: 6}}/>{reqPending}
                 </div>
             )}
             <div className="rwd-grid-2" style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem"}}>
@@ -291,7 +292,7 @@ export default function ProfileForm({
                     borderRadius: 8,
                     border: "1px solid var(--dash-border)"
                 }}>
-                    <i className="bx bx-file-blank"
+                    <Icon name="file-blank"
                        style={{marginRight: 6, color: "var(--dash-accent)", verticalAlign: "middle"}}/>
                     Налоговый статус и банковские реквизиты подтверждаются на шаге договора.
                 </p>
@@ -306,7 +307,7 @@ export default function ProfileForm({
                         color: "var(--dash-muted)",
                         marginBottom: 8
                     }}>
-                        <i className="bx bx-building" style={{marginRight: 4}}/>Налоговый статус и реквизиты
+                        <Icon name="building" style={{marginRight: 4}}/>Налоговый статус и реквизиты
                     </label>
                     <div style={{display: "flex", gap: "0.5rem", marginBottom: "0.75rem", flexWrap: "wrap"}}>
                         {TAX_STATUSES.map((s) => (
@@ -492,7 +493,7 @@ export default function ProfileForm({
                     color: "var(--dash-muted)",
                     marginBottom: 8
                 }}>
-                    <i className="bx bx-transfer-alt" style={{marginRight: 4}}/>ЭДО
+                    <Icon name="transfer-alt" style={{marginRight: 4}}/>ЭДО
                 </label>
                 <div style={{display: "flex", flexWrap: "wrap", gap: "0.4rem"}}>
                     {EDO_PROVIDER_OPTIONS.map((o) => {

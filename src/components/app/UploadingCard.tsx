@@ -1,6 +1,8 @@
 "use client"
 
 import React from "react"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 export type UploadItemStatus = "pending" | "uploading" | "done" | "error"
 
@@ -63,8 +65,8 @@ export function UploadingCard({item, onRemove}: { item: UploadItem; onRemove?: (
                 {item.previewUrl && kind === "image"
                     // eslint-disable-next-line @next/next/no-img-element
                     ? <img src={item.previewUrl} alt="" className="upload-card__thumb-img"/>
-                    : <i className={`bx ${ICON[kind]}`}/>}
-                {isUploading && <span className="upload-card__thumb-veil"><i className="bx bx-loader-alt bx-spin"/></span>}
+                    : <Icon name={stripBx(ICON[kind])}/>}
+                {isUploading && <span className="upload-card__thumb-veil"><Icon name="loader-alt" className="bx-spin"/></span>}
             </div>
 
             <div className="upload-card__body">
@@ -87,13 +89,13 @@ export function UploadingCard({item, onRemove}: { item: UploadItem; onRemove?: (
             </div>
 
             <div className="upload-card__tail">
-                {item.status === "done" && <i className="bx bx-check-circle upload-card__ok"/>}
-                {item.status === "error" && <i className="bx bx-error-circle upload-card__fail"/>}
+                {item.status === "done" && <Icon name="check-circle" className="upload-card__ok"/>}
+                {item.status === "error" && <Icon name="error-circle" className="upload-card__fail"/>}
                 {isUploading && !indeterminate && <span className="upload-card__pct">{percent}%</span>}
                 {onRemove && item.status !== "uploading" && (
                     <button type="button" className="upload-card__remove" onClick={() => onRemove(item.id)}
                             aria-label="Убрать из списка">
-                        <i className="bx bx-x"/>
+                        <Icon name="x"/>
                     </button>
                 )}
             </div>

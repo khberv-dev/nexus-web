@@ -7,6 +7,8 @@ import AiImageStudio, {type AiImageResult} from "@/components/app/AiImageStudio"
 import {UploadingCards, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadJsonWithProgress} from "@/lib/upload-progress"
 import {AiIcon} from "@/components/app/AiIcon"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 interface AvatarUploadProps {
     initials: string
@@ -224,7 +226,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                     color: muted, fontSize: "1.05rem", lineHeight: 1, padding: 2,
                                 }}
                             >
-                                <i className="bx bx-x"/>
+                                <Icon name="x"/>
                             </button>
                         </div>
                     )}
@@ -291,7 +293,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                         : <span className="dash-avatar-btn__initials">{initials}</span>
                     }
                     <div className="dash-avatar-btn__overlay">
-                        <i className="bx bx-pencil"/>
+                        <Icon name="pencil"/>
                     </div>
                 </div>
                 <input
@@ -310,7 +312,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                             <div className="dash-crop-panel__hd">
                                 <span>Обрезать фото</span>
                                 <button className="dash-crop-panel__close" onClick={() => setSrcUrl(null)}>
-                                    <i className="bx bx-x"/>
+                                    <Icon name="x"/>
                                 </button>
                             </div>
                             <div className="dash-crop-panel__body">
@@ -333,7 +335,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                                     onClick={handleApply}
                                     disabled={uploading || !completedCrop}
                                 >
-                                    <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"}`}/>
+                                    <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-check")}/>
                                     {uploading ? "Загрузка…" : aiResult ? "Применить вариант ИИ" : "Применить"}
                                 </button>
                                 {renderAiButton("modal")}
@@ -366,7 +368,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                 </div>
                 <div>
                     <button className="btn btn-sm btn-outline-secondary" onClick={() => inputRef.current?.click()}>
-                        <i className="bx bx-upload me-1"/>Выбрать фото
+                        <Icon name="upload" className="me-1"/>Выбрать фото
                     </button>
                     <p className="text-muted small mb-0 mt-1">JPG, PNG · до 10 МБ</p>
                 </div>
@@ -397,7 +399,7 @@ export default function AvatarUpload({initials, currentUrl, onUploaded, heroMode
                     <div className="d-flex gap-2 mt-3">
                         <button className="btn btn-primary btn-sm" onClick={handleApply}
                                 disabled={uploading || !completedCrop}>
-                            <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-check"} me-1`}/>
+                            <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-check")} className="me-1"/>
                             {uploading ? "Загрузка..." : aiResult ? "Применить вариант ИИ" : "Применить"}
                         </button>
                         {renderAiButton("inline")}

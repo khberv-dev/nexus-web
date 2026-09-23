@@ -5,6 +5,8 @@ import {useRouter} from "next/navigation"
 import type {StageType} from "@prisma/client"
 import {UploadingCards, formatFileSize, type UploadItem} from "@/components/app/UploadingCard"
 import {uploadWithProgress} from "@/lib/upload-progress"
+import {Icon} from "@/components/ui/icon"
+import {stripBx} from "@/lib/icon-map"
 
 type UploadFile = {
     file: File
@@ -193,7 +195,7 @@ export function StageUpload({
     if (submitted) {
         return (
             <div className="alert alert-success d-flex align-items-center gap-2 mb-0">
-                <i className="bx bx-check-circle"/>
+                <Icon name="check-circle"/>
                 {doneHint ?? "Сдано"}
             </div>
         )
@@ -218,12 +220,12 @@ export function StageUpload({
                 <div className="d-flex gap-2 flex-wrap mb-3">
                     <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                             onClick={() => photoRef.current?.click()}>
-                        <i className="bx bx-image-add"/>
+                        <Icon name="image-add"/>
                         Добавить фото
                     </button>
                     <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                             onClick={() => videoRef.current?.click()}>
-                        <i className="bx bx-video-plus"/>
+                        <Icon name="video-plus"/>
                         Добавить видео
                     </button>
                 </div>
@@ -246,7 +248,7 @@ export function StageUpload({
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
             >
-                <i className="bx bx-cloud-upload fs-2 text-muted d-block mb-1"/>
+                <Icon name="cloud-upload" className="fs-2 text-muted d-block mb-1"/>
                 <span className="text-muted">Нажмите для выбора файлов или перетащите их сюда</span>
                 <div className="text-muted mt-1" style={{fontSize: "0.75rem"}}>
                     {formatsHint}
@@ -278,20 +280,19 @@ export function StageUpload({
                 {video ? (
                     <div className="d-flex align-items-center gap-2 p-2 rounded"
                          style={{background: "rgba(13,110,253,0.06)", border: "1px solid rgba(13,110,253,0.15)"}}>
-                        <i className="bx bx-video text-primary" style={{fontSize: "1.2rem"}}/>
+                        <Icon name="video" className="text-primary" style={{fontSize: "1.2rem"}}/>
                         <div className="flex-grow-1">
                             <div style={{fontSize: "0.82rem", fontWeight: 500}}>{video.name}</div>
                             <div className="text-muted" style={{fontSize: "0.72rem"}}>{formatFileSize(video.size)} ·
                                 Видео-пояснение
                             </div>
                         </div>
-                        <button className="btn btn-sm btn-text-secondary" onClick={() => setVideo(null)}><i
-                            className="bx bx-x"/></button>
+                        <button className="btn btn-sm btn-text-secondary" onClick={() => setVideo(null)}><Icon name="x"/></button>
                     </div>
                 ) : stageType !== "CONCEPT" ? (
                     <button type="button" className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                             onClick={() => videoRef.current?.click()}>
-                        <i className="bx bx-video"/>
+                        <Icon name="video"/>
                         Прикрепить видео-пояснение (MP4, WEBM, MOV, до 500 МБ)
                     </button>
                 ) : null}
@@ -303,7 +304,7 @@ export function StageUpload({
                     onClick={handleUpload}
                     disabled={uploading || files.some((f) => f.status === "uploading")}
                 >
-                    <i className={`bx ${uploading ? "bx-loader-alt bx-spin" : "bx-cloud-upload"} me-1`}/>
+                    <Icon name={stripBx(uploading ? "bx-loader-alt bx-spin" : "bx-cloud-upload")} className="me-1"/>
                     {uploading
                         ? "Загрузка..."
                         : files.length > 0
@@ -314,9 +315,9 @@ export function StageUpload({
 
             {uploaded && !submitted && (
                 <div className="d-flex gap-2 align-items-center">
-                    <span className="text-success"><i className="bx bx-check-circle me-1"/>Файлы загружены</span>
+                    <span className="text-success"><Icon name="check-circle" className="me-1"/>Файлы загружены</span>
                     <button className="btn btn-primary" onClick={handleSubmit}>
-                        <i className="bx bx-send me-1"/>
+                        <Icon name="send" className="me-1"/>
                         Сдать на проверку
                     </button>
                 </div>
