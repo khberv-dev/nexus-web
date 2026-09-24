@@ -94,7 +94,8 @@ export function SpecialistDetailHeader({
                     <h4 className="sp-profile-name">{displayName}</h4>
                     <div className="sp-profile-meta">
                         <StatusBadge variant={ONBOARDING_STATUS_VARIANT[status]}
-                                     label={ONBOARDING_STATUS_LABEL[status]}/>
+                                     label={ONBOARDING_STATUS_LABEL[status]}
+                                     className="sp-status-badge"/>
                         {isArchived && <span className="sp-badge">В архиве</span>}
                         <span className="sp-profile-email">{sp.email}</span>
                         {sp.phone && <span className="sp-profile-email">{sp.phone}</span>}

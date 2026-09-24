@@ -398,7 +398,8 @@ export function SpecialistsShell({children}: { children: ReactNode }) {
                                 </div>
                                 <div className="sp-user-card__bottom">
                                     <StatusBadge variant={ONBOARDING_STATUS_VARIANT[status]}
-                                                 label={ONBOARDING_STATUS_LABEL[status]}/>
+                                                 label={ONBOARDING_STATUS_LABEL[status]}
+                                                 className="sp-status-badge"/>
                                     <span className="sp-user-card__extra">
                     {s.archivedAt ? "В архиве" : rating ? `★ ${rating.toFixed(1)}` : fd?.city ?? ""}
                   </span>

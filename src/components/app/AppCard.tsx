@@ -66,9 +66,9 @@ const BADGE_CLASS: Record<StatusVariant, string> = {
     rejected: "bg-label-danger",
 }
 
-export function StatusBadge({variant, label}: { variant: StatusVariant; label: string }) {
+export function StatusBadge({variant, label, className}: { variant: StatusVariant; label: string; className?: string }) {
     return (
-        <span className={`badge rounded-pill ${BADGE_CLASS[variant]}`}>
+        <span className={`badge rounded-pill ${BADGE_CLASS[variant]}${className ? ` ${className}` : ""}`}>
       {label}
     </span>
     )

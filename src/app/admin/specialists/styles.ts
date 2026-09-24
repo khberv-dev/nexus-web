@@ -362,6 +362,20 @@ export const SPECIALISTS_STYLES = `
     padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600;
   }
 
+  /* Статус специалиста (StatusBadge в списке и в шапке карточки) — фон на 30% непрозрачности
+     цвета варианта вместо непрозрачного тона из bg-label-* (те объявлены с !important внутри
+     @layer sneat — по спеке cascade layers !important из именованного слоя всегда перебивает
+     !important вне слоёв независимо от специфичности, поэтому кладём override в тот же слой,
+     где специфичность уже решает в нашу пользу; текст остаётся полностью читаемым). */
+  @layer sneat {
+    .sp-status-badge.bg-label-secondary { background-color: color-mix(in srgb, var(--bs-secondary) 30%, transparent) !important; }
+    /* "Активен" (done → bg-label-success) — по запросу отдельный вид: белый фон 30%, тёмно-зелёный текст. */
+    .sp-status-badge.bg-label-success   { background-color: rgba(255,255,255,0.3) !important; color: #56d14f !important; }
+    .sp-status-badge.bg-label-info      { background-color: color-mix(in srgb, var(--bs-info) 30%, transparent) !important; }
+    .sp-status-badge.bg-label-warning   { background-color: color-mix(in srgb, var(--bs-warning) 30%, transparent) !important; }
+    .sp-status-badge.bg-label-danger    { background-color: color-mix(in srgb, var(--bs-danger) 30%, transparent) !important; }
+  }
+
   .sp-btn {
     display: inline-flex; align-items: center;
     padding: 5px 14px; border-radius: 6px; border: 1px solid transparent;
