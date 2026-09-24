@@ -566,18 +566,21 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
         }
 
         /* Больше одной карточки в очереди — первую в DOM (row-reverse кладёт её крайней у правого края экрана)
-           уводим наполовину за край, подсказка, что список длиннее видимого. CSS-свойство translate отдельное
-           от transform, поэтому не перетирается анимацией ds-preview-in (она анимирует именно transform) и
-           складывается с ней и с hover. */
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:not(:only-child):first-child {
+           уводим наполовину за край, подсказка, что список длиннее видимого. Остальные карточки сдвигаем
+           следом на тот же шаг (8%), чтобы зазоры между всеми карточками остались одинаковыми — при gap:0
+           зазор между соседями равен разнице их translate, поэтому весь ряд шагает синхронно. CSS-свойство
+           translate отдельное от transform, поэтому не перетирается анимацией ds-preview-in (она анимирует
+           именно transform) и складывается с ней и с hover. */
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:not(:only-child):nth-child(1) {
           translate: 50% 0;
         }
 
-        /* Средняя карточка (когда их три) — сдвигается следом, но мягче, чтобы не открыть разрыв
-           за ушедшей крайней, и не сдвинуться так же сильно, как она сама. Последняя (ближайшая
-           к активному дизайнеру) остаётся на месте — якорь ряда. */
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2):not(:last-child) {
-          translate: 20% 0;
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2) {
+          translate: 42% 0;
+        }
+
+        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(3) {
+          translate: 34% 0;
         }
 
         @keyframes ds-active-in {
