@@ -540,7 +540,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           display: flex;
           flex-direction: row-reverse;
           align-items: center;
-          gap: 1vw;
+          gap: 0;
           transform: translateY(-50%);
           margin: 0;
           padding: 0;
@@ -605,7 +605,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           }
 
           .ds-preview-rail {
-            gap: 8px;
+            gap: 0;
           }
 
           .ds-slide .ds-preview-rail .ds-slide-item--preview {
