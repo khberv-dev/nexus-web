@@ -16,9 +16,19 @@ type Props = Omit<SVGProps<SVGSVGElement>, "color"> & {
  * как и раньше вело себя шрифтовое подобие иконки.
  */
 export function Icon({name, size = "1em", color = "currentColor", strokeWidth = 1.8, ...rest}: Props) {
+    const icon = ICON_MAP[name]
+    if (!icon) {
+        // name чаще всего приходит через stripBx() из конфига/пропа (непроверяемый каст к
+        // IconName) — опечатка или пропущенный при миграции с bx-* вариант не должны ронять
+        // всю страницу (HugeiconsIcon падает с "not iterable" на undefined).
+        if (process.env.NODE_ENV !== "production") {
+            console.warn(`[Icon] Нет иконки для имени "${name}" в ICON_MAP`)
+        }
+        return null
+    }
     return (
         <HugeiconsIcon
-            icon={ICON_MAP[name]}
+            icon={icon}
             size={size}
             color={color}
             strokeWidth={strokeWidth}

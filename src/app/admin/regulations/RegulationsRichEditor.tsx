@@ -107,7 +107,7 @@ export function RegulationsRichEditor({initialMarkdown, onReady, onChange}: Prop
                             onClick={() => chain().toggleBulletList().run()}/>
                 <ToolButton label="Нумерованный список" icon="bx-list-ol" active={state?.orderedList}
                             onClick={() => chain().toggleOrderedList().run()}/>
-                <ToolButton label="Цитата" icon="bxs-quote-alt-left" active={state?.blockquote}
+                <ToolButton label="Цитата" icon="bx-quote-alt-left" active={state?.blockquote}
                             onClick={() => chain().toggleBlockquote().run()}/>
                 <ToolButton label="Разделитель" icon="bx-minus"
                             onClick={() => chain().setHorizontalRule().run()}/>

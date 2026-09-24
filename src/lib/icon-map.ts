@@ -97,6 +97,7 @@ import {
     PlusSignCircleIcon,
     PlusSignIcon,
     PowerOffIcon,
+    QuoteUpIcon,
     ReceiptIcon,
     Recycle01Icon,
     Radio01Icon,
@@ -291,6 +292,7 @@ export const ICON_MAP = {
     "task": Task01Icon,
     "message-detail": Message01Icon,
     "paper-plane": SendIcon,
+    "quote-alt-left": QuoteUpIcon,
 } as const satisfies Record<string, IconSvgElement>
 
 export type IconName = keyof typeof ICON_MAP
