@@ -114,7 +114,8 @@ export async function POST(req: NextRequest) {
         where: {userId: user.id},
         update: {
             formData: jsonFormData,
-            onboardingStatus: "PENDING",
+            // Не откатываем уже ACTIVE специалиста в PENDING при обычном редактировании профиля.
+            ...(existingProfile?.onboardingStatus === "ACTIVE" ? {} : {onboardingStatus: "PENDING"}),
             ...(bio !== undefined ? {bio} : {}),
         },
         create: {
