@@ -27,6 +27,7 @@ interface Props {
     activeTab: AdminOrderTab
     tabHref: (tab: AdminOrderTab) => string
     specialists: SpecialistForAssignment[]
+    specialistAvatarUrls: Record<string, string>
     assignMap: Record<string, string>
     assigning: string | null
     acting: string | null
@@ -50,7 +51,7 @@ interface Props {
 }
 
 export function OrderDetail({
-                                order, activeTab, tabHref, specialists, assignMap, assigning, acting,
+                                order, activeTab, tabHref, specialists, specialistAvatarUrls, assignMap, assigning, acting,
                                 onAssignMapChange, onAssign, onReviewStage, onExtraPayment, onChangeStatus,
                                 onBriefApprove, onBriefReject, onBriefSaved, onResolveHelp,
                                 onGenerateContract, onSendContractToClient, onConfirmContract,
@@ -192,6 +193,7 @@ export function OrderDetail({
     const manageTabProps = {
         order,
         specialists,
+        specialistAvatarUrls,
         assignMap,
         assigning,
         needsAssign,

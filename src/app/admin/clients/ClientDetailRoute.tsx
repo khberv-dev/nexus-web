@@ -350,6 +350,25 @@ export function ClientDetailRoute({id}: { id: string }) {
                                                     <Icon name="file"/>Бриф
                                                 </button>
                                             )}
+                                            <Link
+                                                href={adminOrderHref(o.id)}
+                                                style={{
+                                                    background: "none",
+                                                    border: "1px solid var(--adm-sidebar-border)",
+                                                    borderRadius: 5,
+                                                    padding: "2px 8px",
+                                                    cursor: "pointer",
+                                                    fontSize: "0.68rem",
+                                                    color: "var(--adm-active-color)",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: 3,
+                                                    textDecoration: "none",
+                                                    whiteSpace: "nowrap"
+                                                }}
+                                            >
+                                                <Icon name="link-external"/>Перейти к заказу
+                                            </Link>
                                         </div>
                                         {isDraft && (
                                             <div style={{
@@ -412,7 +431,7 @@ export function ClientDetailRoute({id}: { id: string }) {
 
                 {/* Timeline column */}
                 <div>
-                    <div className="cl-info-card" style={{position: "sticky", top: 24}}>
+                    <div className="cl-info-card" style={{position: "sticky", top: 24, padding: 14}}>
                         <div style={{
                             display: "flex",
                             alignItems: "center",

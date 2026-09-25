@@ -30,13 +30,14 @@ export interface User {
 export interface SpecialistForAssignment {
     id: string;
     email: string;
-    name: string | null
+    firstName: string | null
+    lastName: string | null
     specialistProfile: {
         onboardingStatus: string;
         rating: number | null;
         formData: Record<string, string> | null
     } | null
-    files: { id: string }[]
+    files: { id: string; category: string }[]
 }
 
 export type FileAudience = "DESIGNER" | "CLIENT" | "SHARED"

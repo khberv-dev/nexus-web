@@ -61,6 +61,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const [specialists, setSpecialists] = useState<SpecialistForAssignment[]>([])
+    const [specialistAvatarUrls, setSpecialistAvatarUrls] = useState<Record<string, string>>({})
     const [assignMap, setAssignMap] = useState<Record<string, string>>({})
     const [assigning, setAssigning] = useState<string | null>(null)
     const [acting, setActing] = useState<string | null>(null)
@@ -85,7 +86,20 @@ export function OrdersShell({children}: { children: ReactNode }) {
         if (ordRes.ok) setOrders(await ordRes.json())
         if (specRes.ok) {
             const all = await specRes.json() as SpecialistForAssignment[]
-            setSpecialists(all.filter(s => s.specialistProfile?.onboardingStatus === "ACTIVE"))
+            const active = all.filter(s => s.specialistProfile?.onboardingStatus === "ACTIVE")
+            setSpecialists(active)
+            const avatarFiles = active
+                .map((s) => ({specId: s.id, fileId: s.files.find((f) => f.category === "AVATAR")?.id}))
+                .filter((x): x is { specId: string; fileId: string } => !!x.fileId)
+            const urls: Record<string, string> = {}
+            await Promise.all(avatarFiles.map(async ({specId, fileId}) => {
+                const r = await fetch(`/api/admin/files/${fileId}/url`)
+                if (r.ok) {
+                    const {url} = await r.json()
+                    urls[specId] = url
+                }
+            }))
+            setSpecialistAvatarUrls(urls)
         }
         setLoading(false)
     }, [])
@@ -349,6 +363,7 @@ export function OrdersShell({children}: { children: ReactNode }) {
         loading,
         detailProps: {
             specialists,
+            specialistAvatarUrls,
             assignMap,
             assigning,
             acting,

@@ -2,11 +2,12 @@
 
 import type {Order, OrderStatus, SpecialistForAssignment} from "../types"
 import {ORDER_LABEL} from "../types"
-import {userDisplayName} from "@/lib/user-name"
+import {SpecialistPicker} from "./SpecialistPicker"
 
 export function OrderManageTab({
                                    order,
                                    specialists,
+                                   specialistAvatarUrls,
                                    assignMap,
                                    assigning,
                                    needsAssign,
@@ -17,6 +18,7 @@ export function OrderManageTab({
                                }: {
     order: Order
     specialists: SpecialistForAssignment[]
+    specialistAvatarUrls: Record<string, string>
     assignMap: Record<string, string>
     assigning: string | null
     needsAssign: boolean
@@ -34,22 +36,12 @@ export function OrderManageTab({
                     </div>
                     <div className="sp-card-bd">
                         <div style={{display: "flex", gap: 8}}>
-                            <select
-                                className="sp-select"
+                            <SpecialistPicker
+                                specialists={specialists}
+                                avatarUrls={specialistAvatarUrls}
                                 value={assignMap[order.id] ?? ""}
-                                onChange={(e) => onAssignMapChange(order.id, e.target.value)}
-                            >
-                                <option value="">Выберите…</option>
-                                {specialists.map((s) => {
-                                    const label = userDisplayName(s)
-                                    return (
-                                        <option key={s.id} value={s.id}>
-                                            {label}
-                                            {s.specialistProfile?.rating ? ` (★${s.specialistProfile.rating.toFixed(1)})` : ""}
-                                        </option>
-                                    )
-                                })}
-                            </select>
+                                onChange={(specId) => onAssignMapChange(order.id, specId)}
+                            />
                             <button
                                 onClick={() => onAssign(order.id)}
                                 disabled={!assignMap[order.id] || assigning === order.id}
