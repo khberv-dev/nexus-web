@@ -6,6 +6,7 @@ import {OrderStatus} from "@prisma/client"
 import {audit} from "@/lib/audit"
 import {notify} from "@/lib/notifications"
 import {parseJsonBody} from "@/lib/validate"
+import {syncStageSequentialLocks} from "@/lib/stage-sequencing"
 
 const statusSchema = z.object({
     status: z.enum(["DRAFT", "BRIEFING", "BRIEF_REVIEW", "ACTIVE", "DONE", "CANCELLED"]),
@@ -26,6 +27,8 @@ export async function PATCH(req: NextRequest, {params}: { params: Promise<{ id: 
     })
     if (!order || order.deletedAt) return NextResponse.json({error: "Not found"}, {status: 404})
     await prisma.order.update({where: {id}, data: {status: status as OrderStatus}})
+    // Этапы открываются только при подтверждённых договорах — sync сам это проверит.
+    if (status === "ACTIVE") await syncStageSequentialLocks(id)
 
     const dbUser = await prisma.user.findUnique({where: {email: user.email}, select: {id: true}})
     await audit(dbUser?.id ?? null, "order_status_changed", "Order", id, {status: {from: order?.status, to: status}})

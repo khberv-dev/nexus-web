@@ -1,6 +1,15 @@
-import type {StageType} from "@prisma/client";
+import type {ContractAudience, ContractStatus, StageType} from "@prisma/client";
 import {prisma} from "@/lib/db/prisma";
 import {STAGE_ORDER} from "@/lib/stage-constants";
+
+/** Оба договора по заказу (со специалистом и с заказчиком) подтверждены администратором. */
+export function bothOrderContractsConfirmed(
+    contracts: ReadonlyArray<{ audience: ContractAudience; status: ContractStatus }>,
+): boolean {
+    const confirmed = (audience: ContractAudience) =>
+        contracts.some((c) => c.audience === audience && c.status === "CONFIRMED");
+    return confirmed("SPECIALIST") && confirmed("CLIENT");
+}
 
 /**
  * Выравнивает статусы этапов по цепочке: следующий этап в `PENDING` только когда все предыдущие `APPROVED`.
@@ -11,17 +20,13 @@ export async function syncStageSequentialLocks(orderId: string): Promise<void> {
         where: {id: orderId},
         select: {
             id: true,
-            contracts: {orderBy: {createdAt: "desc"}, take: 1, select: {status: true, confirmedAt: true}},
+            contracts: {select: {audience: true, status: true}},
             stages: {select: {id: true, type: true, status: true, act: {select: {status: true}}}},
         },
     });
     if (!order) return;
 
-    // Defensive defaults also make this safe for partially selected legacy callers.
-    const latestContract = order.contracts?.[0] ?? null;
-    const contractOk =
-        latestContract != null &&
-        (latestContract.status === "CONFIRMED" || latestContract.confirmedAt != null);
+    const contractOk = bothOrderContractsConfirmed(order.contracts ?? []);
 
     const stages = order.stages ?? [];
     const byType = new Map<StageType, (typeof stages)[number]>();

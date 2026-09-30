@@ -2,23 +2,27 @@ import {prisma} from "@/lib/db/prisma"
 import {audit} from "@/lib/audit"
 import {notify} from "@/lib/notifications"
 import {OrderStatus} from "@prisma/client"
-import {syncStageSequentialLocks} from "@/lib/stage-sequencing"
+import {bothOrderContractsConfirmed, syncStageSequentialLocks} from "@/lib/stage-sequencing"
 
 /**
  * Заказ активируется, когда ОБА договора по нему (со специалистом и с заказчиком)
  * подтверждены администратором. Вызывается после подтверждения любого из двух —
  * сама проверяет готовность второго и не активирует заказ повторно.
+ * Этапы разблокируются всегда, даже если заказ уже был ACTIVE (например, после
+ * подписания рамочного договора или ручной смены статуса) — иначе первый этап
+ * остаётся в BLOCKED.
  */
 export async function activateOrderIfBothContractsConfirmed(orderId: string, adminUserId: string): Promise<void> {
     const order = await prisma.order.findUnique({
         where: {id: orderId},
         include: {contracts: true},
     })
-    if (!order || order.status === OrderStatus.ACTIVE) return
+    if (!order || !bothOrderContractsConfirmed(order.contracts)) return
 
-    const specialistConfirmed = order.contracts.some((c) => c.audience === "SPECIALIST" && c.status === "CONFIRMED")
-    const clientConfirmed = order.contracts.some((c) => c.audience === "CLIENT" && c.status === "CONFIRMED")
-    if (!specialistConfirmed || !clientConfirmed) return
+    if (order.status === OrderStatus.ACTIVE) {
+        await syncStageSequentialLocks(orderId)
+        return
+    }
 
     await prisma.order.update({where: {id: orderId}, data: {status: OrderStatus.ACTIVE}})
     await syncStageSequentialLocks(orderId)
