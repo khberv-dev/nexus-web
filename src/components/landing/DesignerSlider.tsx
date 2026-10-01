@@ -78,7 +78,7 @@ function ActiveDesignerContent({
             <div className="ds-meta">
                 <span>{slide.experience} лет опыта</span>
                 {slide.has3d && <span>3D</span>}
-                {slide.hasRd && <span>Чертежи</span>}
+                {slide.hasRd && <span>РД</span>}
             </div>
             <div className="ds-meta" style={{marginBottom: 4}}>
                 <span>Реализовано {slide.sqm} м²</span>
@@ -93,65 +93,87 @@ function ActiveDesignerContent({
 export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps) {
     const [activeDesigner, setActiveDesigner] = useState<DesignerSlide | null>(null)
     const [activeIndex, setActiveIndex] = useState(0)
+    // Автовоспроизведение без звука — единственное, что браузеры разрешают без жеста пользователя.
+    const [muted, setMuted] = useState(true)
     const activeSlide = slides[activeIndex] ?? slides[0]
-    const previewSlides = Array.from({length: Math.min(3, Math.max(0, slides.length - 1))}, (_, offset) => {
-        const index = (activeIndex + offset + 1) % slides.length
-        return {slide: slides[index], index}
-    })
 
-    const handleNext = useCallback(() => {
-        setActiveIndex((current) => (current + 1) % slides.length)
-    }, [slides.length])
-
-    const handlePrev = useCallback(() => {
-        setActiveIndex((current) => (current - 1 + slides.length) % slides.length)
-    }, [slides.length])
-
-    // ── Drag / swipe ──────────────────────────────────────────
-    const dragRef = useRef({active: false, startX: 0})
+    const trackRef = useRef<HTMLDivElement>(null)
+    const itemRefs = useRef<(HTMLDivElement | null)[]>([])
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
     useEffect(() => {
         if (activeSlide?.work && onBrightnessChange) sampleBrightness(activeSlide.work, onBrightnessChange)
     }, [activeSlide?.work, onBrightnessChange])
 
+    // Активный ролик — тот, что занимает большую часть ленты (scroll-snap докручивает до целого).
     useEffect(() => {
-        const THRESHOLD = 80
+        const root = trackRef.current
+        if (!root) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        setActiveIndex(Number((entry.target as HTMLElement).dataset.index))
+                    }
+                }
+            },
+            {root, threshold: 0.6},
+        )
+        itemRefs.current.forEach((el) => el && observer.observe(el))
+        return () => observer.disconnect()
+    }, [slides.length])
 
-        function onStart(x: number) {
-            dragRef.current = {active: true, startX: x}
+    // Играет только активный ролик; пока открыт профиль (там своё видео со звуком) — лента на паузе.
+    const paused = activeDesigner !== null
+    useEffect(() => {
+        videoRefs.current.forEach((video, i) => {
+            if (!video) return
+            video.muted = muted
+            if (i === activeIndex && !paused) {
+                video.play()?.catch(() => {
+                    // Звук без жеста пользователя заблокирован — продолжаем без звука.
+                    if (!video.muted) {
+                        video.muted = true
+                        setMuted(true)
+                        void video.play().catch(() => undefined)
+                    }
+                })
+            } else {
+                video.pause()
+                if (i !== activeIndex) video.currentTime = 0
+            }
+        })
+    }, [activeIndex, muted, paused])
+
+    const scrollToIndex = useCallback((index: number) => {
+        const track = trackRef.current
+        const item = itemRefs.current[index]
+        if (!track || !item) return
+        track.scrollTo({top: item.offsetTop, behavior: "smooth"})
+    }, [])
+
+    const handleNext = useCallback(() => {
+        if (activeIndex < slides.length - 1) scrollToIndex(activeIndex + 1)
+    }, [activeIndex, slides.length, scrollToIndex])
+
+    const handlePrev = useCallback(() => {
+        if (activeIndex > 0) scrollToIndex(activeIndex - 1)
+    }, [activeIndex, scrollToIndex])
+
+    useEffect(() => {
+        if (paused) return
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "ArrowDown") {
+                e.preventDefault()
+                handleNext()
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault()
+                handlePrev()
+            }
         }
-
-        function onEnd(x: number) {
-            if (!dragRef.current.active) return
-            dragRef.current.active = false
-            const dx = x - dragRef.current.startX
-            if (dx < -THRESHOLD) handleNext()
-            else if (dx > THRESHOLD) handlePrev()
-        }
-
-        // Mouse
-        const onMouseDown = (e: MouseEvent) => onStart(e.clientX)
-        const onMouseUp = (e: MouseEvent) => onEnd(e.clientX)
-
-        // Touch
-        const onTouchStart = (e: TouchEvent) => onStart(e.touches[0].clientX)
-        const onTouchEnd = (e: TouchEvent) => onEnd(e.changedTouches[0].clientX)
-
-        const target = document.querySelector<HTMLElement>(".ds-wrap")
-        if (!target) return
-        target.addEventListener("mousedown", onMouseDown)
-        window.addEventListener("mouseup", onMouseUp)
-        target.addEventListener("touchstart", onTouchStart, {passive: true})
-        target.addEventListener("touchend", onTouchEnd)
-
-        return () => {
-            target.removeEventListener("mousedown", onMouseDown)
-            window.removeEventListener("mouseup", onMouseUp)
-            target.removeEventListener("touchstart", onTouchStart)
-            target.removeEventListener("touchend", onTouchEnd)
-        }
-    }, [handleNext, handlePrev])
-    // ─────────────────────────────────────────────────────────
+        window.addEventListener("keydown", onKey)
+        return () => window.removeEventListener("keydown", onKey)
+    }, [paused, handleNext, handlePrev])
 
     return (
         <>
@@ -161,137 +183,206 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
             />
 
             <div className="ds-wrap">
-                <div className="ds-slide">
-                    {activeSlide && (
-                        <div
-                            key={`active-${slideKey(activeSlide, activeIndex)}`}
-                            className="ds-slide-item ds-slide-item--active"
-                        >
+                {activeSlide && (
+                    <div
+                        key={`bg-${slideKey(activeSlide, activeIndex)}`}
+                        className="ds-work-layer"
+                        style={{
+                            backgroundImage: `url('${activeSlide.work}')`,
+                            backgroundPosition: activeSlide.workPos,
+                        }}
+                    />
+                )}
+
+                {/* Лента роликов в духе Shorts/Reels: вертикальный скролл со snap, по ролику на специалиста. */}
+                <div className="ds-reel">
+                    <div className="ds-reel-track" ref={trackRef} aria-label="Видео-визитки специалистов">
+                        {slides.map((slide, i) => (
                             <div
-                                className="ds-work-layer"
-                                style={{
-                                    backgroundImage: `url('${activeSlide.work}')`,
-                                    backgroundPosition: activeSlide.workPos,
+                                key={`reel-${slideKey(slide, i)}`}
+                                ref={(el) => {
+                                    itemRefs.current[i] = el
                                 }}
-                            />
-                            <div className="ds-content">
-                                <div className="ds-designer-row">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img className="ds-avatar" src={activeSlide.avatar ?? undefined}
-                                         alt={activeSlide.name} decoding="async"/>
-                                    <div>
-                                        <div className="ds-name">{activeSlide.name}</div>
-                                        {activeSlide.levelTitle && (
-                                            <div className="ds-specialty"><LevelBadge slide={activeSlide}/></div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="ds-meta">
-                                    <span>{activeSlide.experience} лет опыта</span>
-                                    {activeSlide.has3d && <span>3D</span>}
-                                    {activeSlide.hasRd && <span>РД</span>}
-                                </div>
-                                <div className="ds-meta" style={{marginBottom: 4}}>
-                                    <span>Реализовано {activeSlide.sqm} м²</span>
-                                </div>
-                                <button className="ds-see-more" onClick={e => {
-                                    e.stopPropagation();
-                                    setActiveDesigner(activeSlide)
-                                }}>Открыть профиль
-                                </button>
+                                data-index={i}
+                                className="ds-reel-item"
+                            >
+                                {slide.introVideoUrl ? (
+                                    <video
+                                        ref={(el) => {
+                                            videoRefs.current[i] = el
+                                        }}
+                                        className="ds-reel-media"
+                                        src={slide.introVideoUrl}
+                                        poster={slide.avatar ?? slide.work}
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload={Math.abs(i - activeIndex) <= 1 ? "auto" : "metadata"}
+                                    />
+                                ) : (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img
+                                        className="ds-reel-media"
+                                        src={slide.avatar ?? slide.work}
+                                        alt={slide.name}
+                                        decoding="async"
+                                    />
+                                )}
+                                <div className="ds-reel-shade"/>
                             </div>
-                        </div>
-                    )}
+                        ))}
+                    </div>
 
-                    {previewSlides.length > 0 && (
-                        <div className="ds-preview-rail" aria-label="Выбор специалиста">
-                            {previewSlides.map(({slide: preview, index}) => (
-                                <button
-                                    type="button"
-                                    key={`preview-${slideKey(preview, index)}`}
-                                    className="ds-slide-item ds-slide-item--preview"
-                                    style={preview.avatar ? {backgroundImage: `url('${preview.avatar}')`} : undefined}
-                                    onClick={() => setActiveIndex(index)}
-                                    aria-label={`Показать специалиста ${preview.name}`}
-                                >
-                                    <div className="ds-card-label">
-                                        <div className="ds-card-name">{preview.name}</div>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
+                    {activeSlide?.introVideoUrl && (
+                        <button
+                            type="button"
+                            className="ds-mute"
+                            onClick={() => setMuted((m) => !m)}
+                            aria-label={muted ? "Включить звук" : "Выключить звук"}
+                            aria-pressed={!muted}
+                        >
+                            <Icon name={muted ? "volume-mute" : "volume-full"} size={20}/>
+                        </button>
                     )}
-
                 </div>
 
-                {slides[activeIndex] && (
-                    <div className="ds-active-overlay" key={activeIndex}>
+                {activeSlide && (
+                    <div className="ds-info" key={`info-${activeIndex}`}>
                         <ActiveDesignerContent
-                            slide={slides[activeIndex]}
-                            onOpenProfile={() => setActiveDesigner(slides[activeIndex])}
+                            slide={activeSlide}
+                            onOpenProfile={() => setActiveDesigner(activeSlide)}
                         />
                     </div>
                 )}
 
-                {slides.length > 1 && <div className="ds-nav">
-                    <button className="ds-btn ds-btn-prev" onClick={handlePrev} aria-label="Предыдущий дизайнер">
-                        <Icon name="left-arrow-alt" size={20}/>
-                    </button>
-                    <button className="ds-btn ds-btn-next" onClick={handleNext} aria-label="Следующий дизайнер">
-                        <Icon name="right-arrow-alt" size={20}/>
-                    </button>
-                </div>}
-
+                {slides.length > 1 && (
+                    <div className="ds-nav">
+                        <button
+                            className="ds-btn"
+                            onClick={handlePrev}
+                            disabled={activeIndex === 0}
+                            aria-label="Предыдущий дизайнер"
+                        >
+                            <Icon name="chevron-up" size={20}/>
+                        </button>
+                        <button
+                            className="ds-btn"
+                            onClick={handleNext}
+                            disabled={activeIndex === slides.length - 1}
+                            aria-label="Следующий дизайнер"
+                        >
+                            <Icon name="chevron-down" size={20}/>
+                        </button>
+                    </div>
+                )}
             </div>
 
             <style>{`
         .ds-wrap {
+          --ds-reel-h: min(calc(100dvh - 180px), 760px);
           position: absolute;
           inset: 0;
           overflow: hidden;
         }
 
-        .ds-slide {
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-
-        /* ── Базовая карточка (маленькая, справа) ── */
-        .ds-slide-item {
-          width: 14vw;
-          height: 62vh;
-          position: absolute;
-          top: 50%;
-          transform: translate(0, -50%);
-          border-radius: 20px;
-          box-shadow: 0 30px 50px #505050;
-          background-color: #1a1818;
-          background-size: cover;
-          background-position: center top;
-          display: inline-block;
-          transition: all 0.5s;
-          overflow: hidden;
-        }
-
-        /* ── Слой с работой (показывается только на full screen) ── */
+        /* ── Фон: работа активного специалиста ── */
         .ds-work-layer {
           position: absolute;
           inset: 0;
           background-size: cover;
-          opacity: 0;
-          transition: opacity 0.5s;
+          animation: ds-active-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        /* ── Контент активной карточки ── */
-        .ds-slide-item .ds-content {
+        .ds-work-layer::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,0.38);
+        }
+
+        /* ── Лента роликов справа ── */
+        .ds-reel {
+          position: absolute;
+          top: 50%;
+          right: 6vw;
+          transform: translateY(-50%);
+          height: var(--ds-reel-h);
+          aspect-ratio: 9 / 16;
+          border-radius: 20px;
+          overflow: hidden;
+          background: #1a1818;
+          box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+          z-index: 4;
+        }
+
+        .ds-reel-track {
+          height: 100%;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          scroll-snap-type: y mandatory;
+          scrollbar-width: none;
+        }
+
+        .ds-reel-track::-webkit-scrollbar {
+          display: none;
+        }
+
+        .ds-reel-item {
+          position: relative;
+          height: 100%;
+          scroll-snap-align: start;
+          scroll-snap-stop: always;
+          background: #000;
+        }
+
+        .ds-reel-media {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .ds-reel-shade {
+          position: absolute;
+          inset: auto 0 0 0;
+          height: 30%;
+          background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+          pointer-events: none;
+        }
+
+        .ds-mute {
+          position: absolute;
+          right: 14px;
+          bottom: 14px;
+          z-index: 2;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(255,255,255,0.2);
+          background: rgba(0,0,0,0.55);
+          backdrop-filter: blur(8px);
+          color: #fff;
+          cursor: pointer;
+          transition: background 0.2s, transform 0.2s;
+        }
+
+        .ds-mute:hover {
+          background: rgba(0,0,0,0.75);
+          transform: scale(1.06);
+        }
+
+        /* ── Инфо об активном специалисте (слева внизу) ── */
+        .ds-info {
           position: absolute;
           bottom: 80px;
           left: 12vw;
           width: 34vw;
           color: #eee;
-          display: none;
-          z-index: 2;
+          z-index: 5;
+          pointer-events: none;
         }
 
         .ds-designer-row {
@@ -391,32 +482,6 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           background-color: #fff;
         }
 
-        /* ── Подпись на маленькой карточке ── */
-        .ds-card-label {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 12px 14px;
-          background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-          color: #fff;
-          display: block;
-        }
-
-        .ds-card-name {
-          font-size: 0.85rem;
-          font-weight: 600;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          text-shadow:
-            0 0 1px rgba(0, 0, 0, 0.9),
-            0 1px 2px rgba(0, 0, 0, 0.8),
-            -1px 0 0 rgba(0, 0, 0, 0.6),
-            1px 0 0 rgba(0, 0, 0, 0.6);
-        }
-
-        /* ── Анимация контента ── */
         @keyframes ds-animate {
           from {
             opacity: 0;
@@ -430,15 +495,20 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           }
         }
 
-        /* ── Кнопки навигации ── */
+        @keyframes ds-active-in {
+          from { opacity: 0; transform: scale(1.035); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ── Вверх/вниз по ленте (рядом с роликом) ── */
         .ds-nav {
-          display: flex;
-          flex-direction: row;
-          gap: 14px;
           position: absolute;
-          bottom: 28px;
-          left: 45%;
-          pointer-events: auto;
+          top: 50%;
+          right: calc(6vw + var(--ds-reel-h) * 9 / 16 + 20px);
+          transform: translateY(-50%);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
           z-index: 10;
         }
 
@@ -446,7 +516,7 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 52px;
+          width: 46px;
           height: 46px;
           border-radius: 12px;
           cursor: pointer;
@@ -455,199 +525,66 @@ export function DesignerSlider({slides, onBrightnessChange}: DesignerSliderProps
           background: rgba(255,255,255,0.85);
           backdrop-filter: blur(8px);
           box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-          pointer-events: auto;
           color: #201d1d;
         }
 
-        .ds-btn:hover {
+        .ds-btn:hover:not(:disabled) {
           background: #fff;
           transform: scale(1.1);
           box-shadow: 0 6px 24px rgba(0,0,0,0.3);
         }
 
-        .ds-btn:focus {
-          transform: scale(1.1);
-          background: #ffffff;
-          outline: none;
+        .ds-btn:focus-visible {
+          outline: 2px solid #fff;
+          outline-offset: 2px;
         }
 
-        .ds-btn:active {
-          transform: scale(1.02);
+        .ds-btn:disabled {
+          opacity: 0.35;
+          cursor: default;
         }
 
-
-        /* Explicit state-driven layout: one active specialist + up to three previews. */
-        .ds-slide .ds-slide-item--active {
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          transform: none;
-          border-radius: 0;
-          cursor: grab;
-          animation: ds-active-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        .ds-slide .ds-slide-item--active .ds-work-layer {
-          opacity: 1;
-        }
-
-        .ds-slide .ds-slide-item--active .ds-work-layer::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: rgba(0,0,0,0.38);
-        }
-
-        .ds-slide .ds-slide-item--active .ds-content {
-          display: block;
-        }
-
-        .ds-slide .ds-slide-item--active .ds-card-label {
-          display: none;
-        }
-
-        /* Превью — квадратная карточка с фото профиля: клик переключает специалиста. */
-        .ds-slide .ds-slide-item--preview {
-          top: 50%;
-          width: clamp(120px, 12vw, 220px);
-          height: auto;
-          aspect-ratio: 1 / 1;
-          transform: translateY(-50%);
-          border-radius: 22%;
-          background-position: center;
-          cursor: pointer;
-          appearance: none;
-          padding: 0;
-          border: 0;
-          text-align: left;
-          z-index: 4;
-        }
-
-        .ds-slide .ds-slide-item--preview .ds-card-label { display: block; }
-
-        .ds-slide .ds-slide-item--preview:hover {
-          transform: translateY(-53%);
-          box-shadow: 0 40px 60px #303030;
-        }
-
-        .ds-preview-rail {
-          position: absolute;
-          top: 50%;
-          right: 0 !important;
-          left: auto !important;
-          z-index: 4;
-          display: flex;
-          flex-direction: row-reverse;
-          align-items: center;
-          gap: 0;
-          transform: translateY(-50%);
-          margin: 0;
-          padding: 0;
-          width: max-content;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview {
-          position: relative !important;
-          inset: auto !important;
-          flex: 0 0 clamp(120px, 12vw, 220px);
-          width: clamp(120px, 12vw, 220px);
-          transform: none;
-          margin: 0;
-          animation: ds-preview-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2) {
-          animation-delay: 0.08s;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:hover {
-          transform: translateY(-3%);
-        }
-
-        /* Больше одной карточки в очереди — первую в DOM (row-reverse кладёт её крайней у правого края экрана)
-           уводим наполовину за край, подсказка, что список длиннее видимого. Остальные карточки сдвигаем
-           следом на тот же шаг (8%), чтобы зазоры между всеми карточками остались одинаковыми — при gap:0
-           зазор между соседями равен разнице их translate, поэтому весь ряд шагает синхронно. CSS-свойство
-           translate отдельное от transform, поэтому не перетирается анимацией ds-preview-in (она анимирует
-           именно transform) и складывается с ней и с hover. */
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:not(:only-child):nth-child(1) {
-          translate: 50% 0;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(2) {
-          translate: 42% 0;
-        }
-
-        .ds-slide .ds-preview-rail .ds-slide-item--preview:nth-child(3) {
-          translate: 34% 0;
-        }
-
-        @keyframes ds-active-in {
-          from { opacity: 0; transform: scale(1.035); }
-          to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes ds-preview-in {
-          from { opacity: 0; transform: translateX(48px) scale(0.96); }
-          to { opacity: 1; transform: translateX(0) scale(1); }
-        }
-
-        /* ── Оверлей активного дизайнера (только мобильный) ── */
-        .ds-active-overlay {
-          display: none;
-        }
-
+        /* ── Мобильный: лента на весь экран, как в Shorts/Reels; инфо поверх ролика ── */
         @media (max-width: 768px) {
-          .ds-slide-item {
-            width: 28vw;
+          .ds-reel {
+            inset: 0;
+            transform: none;
+            height: auto;
+            aspect-ratio: auto;
+            border-radius: 0;
+            box-shadow: none;
           }
 
-          .ds-slide .ds-slide-item--preview {
-            width: 24vw;
+          .ds-reel-shade {
+            height: 45%;
+            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
           }
 
-          .ds-preview-rail {
-            gap: 0;
+          .ds-mute {
+            bottom: 96px;
+            right: 16px;
           }
 
-          .ds-slide .ds-preview-rail .ds-slide-item--preview {
-            flex-basis: 24vw;
-            width: 24vw;
+          .ds-nav {
+            display: none;
           }
 
-          .ds-slide .ds-slide-item .ds-card-label {
-            display: none !important;
-          }
-
-          .ds-slide .ds-slide-item .ds-content {
-            display: none !important;
-          }
-
-          .ds-active-overlay {
-            display: block;
-            position: absolute;
-            z-index: 15;
+          .ds-info {
             bottom: 96px;
             left: 20px;
-            right: 56px;
-            pointer-events: none;
-            color: #eee;
+            right: 72px;
+            width: auto;
           }
 
-          .ds-active-overlay .ds-see-more {
-            pointer-events: auto;
-          }
-
-          .ds-active-overlay .ds-name {
+          .ds-info .ds-name {
             font-size: clamp(1.25rem, 5.5vw, 1.75rem);
           }
 
-          .ds-active-overlay .ds-specialty {
+          .ds-info .ds-specialty {
             font-size: 0.8rem;
           }
 
-          .ds-active-overlay .ds-meta {
+          .ds-info .ds-meta {
             flex-wrap: wrap;
             gap: 10px 16px;
             font-size: 0.78rem;
